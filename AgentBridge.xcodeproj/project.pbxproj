@@ -1,0 +1,684 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */; };
+		6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */; };
+		6EBBD7571834823F00166D63 /* LoginDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7561834823F00166D63 /* LoginDetails.m */; };
+		6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */; };
+		6EBBD75E18349A1C00166D63 /* ABridge_BuyerPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD75C18349A1B00166D63 /* ABridge_BuyerPagesViewController.m */; };
+		6EBBD75F18349A1C00166D63 /* ABridge_BuyerPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD75D18349A1B00166D63 /* ABridge_BuyerPagesViewController.xib */; };
+		6EBBD7631834A56800166D63 /* ABridge_ReferralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7621834A56800166D63 /* ABridge_ReferralViewController.m */; };
+		6EBBD7671834A71D00166D63 /* ABridge_ReferralPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7651834A71D00166D63 /* ABridge_ReferralPagesViewController.m */; };
+		6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD7661834A71D00166D63 /* ABridge_ReferralPagesViewController.xib */; };
+		6EBBD76C1834B1FE00166D63 /* ABridge_ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD76B1834B1FE00166D63 /* ABridge_ActivityViewController.m */; };
+		6EBBD7701834B48A00166D63 /* ABridge_ActivityPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD76E1834B48A00166D63 /* ABridge_ActivityPagesViewController.m */; };
+		6EBBD7711834B48A00166D63 /* ABridge_ActivityPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */; };
+		6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */; };
+		6EEF583518337E4000C3214E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583418337E4000C3214E /* Foundation.framework */; };
+		6EEF583718337E4000C3214E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583618337E4000C3214E /* CoreGraphics.framework */; };
+		6EEF583918337E4000C3214E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583818337E4000C3214E /* UIKit.framework */; };
+		6EEF583B18337E4000C3214E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583A18337E4000C3214E /* CoreData.framework */; };
+		6EEF584118337E4000C3214E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6EEF583F18337E4000C3214E /* InfoPlist.strings */; };
+		6EEF584318337E4000C3214E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF584218337E4000C3214E /* main.m */; };
+		6EEF584718337E4000C3214E /* ABridge_AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF584618337E4000C3214E /* ABridge_AppDelegate.m */; };
+		6EEF584A18337E4000C3214E /* AgentBridge.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF584818337E4000C3214E /* AgentBridge.xcdatamodeld */; };
+		6EEF584C18337E4000C3214E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6EEF584B18337E4000C3214E /* Images.xcassets */; };
+		6EEF585318337E4000C3214E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF585218337E4000C3214E /* XCTest.framework */; };
+		6EEF585418337E4000C3214E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583418337E4000C3214E /* Foundation.framework */; };
+		6EEF585518337E4000C3214E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583818337E4000C3214E /* UIKit.framework */; };
+		6EEF585618337E4000C3214E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583A18337E4000C3214E /* CoreData.framework */; };
+		6EEF585E18337E4000C3214E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6EEF585C18337E4000C3214E /* InfoPlist.strings */; };
+		6EEF586018337E4000C3214E /* AgentBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF585F18337E4000C3214E /* AgentBridgeTests.m */; };
+		6EEF586A18337E6B00C3214E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EEF586918337E6B00C3214E /* Main.storyboard */; };
+		6EEF586D18337F1500C3214E /* ABridge_InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF586C18337F1500C3214E /* ABridge_InitialViewController.m */; };
+		6EEF587118337F4000C3214E /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF587018337F4000C3214E /* ECSlidingViewController.m */; };
+		6EEF58741833808400C3214E /* ABridge_MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF58731833808400C3214E /* ABridge_MenuViewController.m */; };
+		6EEF5877183382BD00C3214E /* ABridge_SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF5876183382BD00C3214E /* ABridge_SearchViewController.m */; };
+		6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */; };
+		6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF587E1833843000C3214E /* ABridge_PropertyViewController.m */; };
+		6EEF58821833857B00C3214E /* ABridge_LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF58811833857B00C3214E /* ABridge_LoginViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6EEF585718337E4000C3214E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6EEF582918337E4000C3214E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6EEF583018337E4000C3214E;
+			remoteInfo = AgentBridge;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6EBBD74C183473B200166D63 /* ABridge_PropertyPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_PropertyPagesViewController.h; sourceTree = "<group>"; };
+		6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_PropertyPagesViewController.m; sourceTree = "<group>"; };
+		6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_PropertyPagesViewController.xib; sourceTree = "<group>"; };
+		6EBBD7551834823F00166D63 /* LoginDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDetails.h; sourceTree = "<group>"; };
+		6EBBD7561834823F00166D63 /* LoginDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginDetails.m; sourceTree = "<group>"; };
+		6EBBD758183498CC00166D63 /* ABridge_BuyerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerViewController.h; sourceTree = "<group>"; };
+		6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerViewController.m; sourceTree = "<group>"; };
+		6EBBD75B18349A1B00166D63 /* ABridge_BuyerPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPagesViewController.h; sourceTree = "<group>"; };
+		6EBBD75C18349A1B00166D63 /* ABridge_BuyerPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerPagesViewController.m; sourceTree = "<group>"; };
+		6EBBD75D18349A1B00166D63 /* ABridge_BuyerPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_BuyerPagesViewController.xib; sourceTree = "<group>"; };
+		6EBBD7611834A56800166D63 /* ABridge_ReferralViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ReferralViewController.h; sourceTree = "<group>"; };
+		6EBBD7621834A56800166D63 /* ABridge_ReferralViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ReferralViewController.m; sourceTree = "<group>"; };
+		6EBBD7641834A71D00166D63 /* ABridge_ReferralPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ReferralPagesViewController.h; sourceTree = "<group>"; };
+		6EBBD7651834A71D00166D63 /* ABridge_ReferralPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ReferralPagesViewController.m; sourceTree = "<group>"; };
+		6EBBD7661834A71D00166D63 /* ABridge_ReferralPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_ReferralPagesViewController.xib; sourceTree = "<group>"; };
+		6EBBD76A1834B1FE00166D63 /* ABridge_ActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ActivityViewController.h; sourceTree = "<group>"; };
+		6EBBD76B1834B1FE00166D63 /* ABridge_ActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ActivityViewController.m; sourceTree = "<group>"; };
+		6EBBD76D1834B48A00166D63 /* ABridge_ActivityPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ActivityPagesViewController.h; sourceTree = "<group>"; };
+		6EBBD76E1834B48A00166D63 /* ABridge_ActivityPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ActivityPagesViewController.m; sourceTree = "<group>"; };
+		6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_ActivityPagesViewController.xib; sourceTree = "<group>"; };
+		6EBBD7731834CA2100166D63 /* ABridge_AgentProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AgentProfileViewController.h; sourceTree = "<group>"; };
+		6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentProfileViewController.m; sourceTree = "<group>"; };
+		6EEF583118337E4000C3214E /* AgentBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgentBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EEF583418337E4000C3214E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6EEF583618337E4000C3214E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6EEF583818337E4000C3214E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6EEF583A18337E4000C3214E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		6EEF583E18337E4000C3214E /* AgentBridge-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AgentBridge-Info.plist"; sourceTree = "<group>"; };
+		6EEF584018337E4000C3214E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6EEF584218337E4000C3214E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6EEF584418337E4000C3214E /* AgentBridge-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AgentBridge-Prefix.pch"; sourceTree = "<group>"; };
+		6EEF584518337E4000C3214E /* ABridge_AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ABridge_AppDelegate.h; sourceTree = "<group>"; };
+		6EEF584618337E4000C3214E /* ABridge_AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ABridge_AppDelegate.m; sourceTree = "<group>"; };
+		6EEF584918337E4000C3214E /* AgentBridge.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AgentBridge.xcdatamodel; sourceTree = "<group>"; };
+		6EEF584B18337E4000C3214E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6EEF585118337E4000C3214E /* AgentBridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgentBridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EEF585218337E4000C3214E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		6EEF585B18337E4000C3214E /* AgentBridgeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AgentBridgeTests-Info.plist"; sourceTree = "<group>"; };
+		6EEF585D18337E4000C3214E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6EEF585F18337E4000C3214E /* AgentBridgeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgentBridgeTests.m; sourceTree = "<group>"; };
+		6EEF586918337E6B00C3214E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		6EEF586B18337F1500C3214E /* ABridge_InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_InitialViewController.h; sourceTree = "<group>"; };
+		6EEF586C18337F1500C3214E /* ABridge_InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_InitialViewController.m; sourceTree = "<group>"; };
+		6EEF586F18337F4000C3214E /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
+		6EEF587018337F4000C3214E /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
+		6EEF58721833808400C3214E /* ABridge_MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_MenuViewController.h; sourceTree = "<group>"; };
+		6EEF58731833808400C3214E /* ABridge_MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_MenuViewController.m; sourceTree = "<group>"; };
+		6EEF5875183382BD00C3214E /* ABridge_SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_SearchViewController.h; sourceTree = "<group>"; };
+		6EEF5876183382BD00C3214E /* ABridge_SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_SearchViewController.m; sourceTree = "<group>"; };
+		6EEF587A1833837600C3214E /* ABridge_ParentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ParentViewController.h; sourceTree = "<group>"; };
+		6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ParentViewController.m; sourceTree = "<group>"; };
+		6EEF587D1833843000C3214E /* ABridge_PropertyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_PropertyViewController.h; sourceTree = "<group>"; };
+		6EEF587E1833843000C3214E /* ABridge_PropertyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_PropertyViewController.m; sourceTree = "<group>"; };
+		6EEF58801833857B00C3214E /* ABridge_LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_LoginViewController.h; sourceTree = "<group>"; };
+		6EEF58811833857B00C3214E /* ABridge_LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_LoginViewController.m; sourceTree = "<group>"; };
+		6EEF5883183396AB00C3214E /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6EEF582E18337E4000C3214E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EEF583718337E4000C3214E /* CoreGraphics.framework in Frameworks */,
+				6EEF583B18337E4000C3214E /* CoreData.framework in Frameworks */,
+				6EEF583918337E4000C3214E /* UIKit.framework in Frameworks */,
+				6EEF583518337E4000C3214E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EEF584E18337E4000C3214E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EEF585318337E4000C3214E /* XCTest.framework in Frameworks */,
+				6EEF585618337E4000C3214E /* CoreData.framework in Frameworks */,
+				6EEF585518337E4000C3214E /* UIKit.framework in Frameworks */,
+				6EEF585418337E4000C3214E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
+			isa = PBXGroup;
+			children = (
+				6EBBD7551834823F00166D63 /* LoginDetails.h */,
+				6EBBD7561834823F00166D63 /* LoginDetails.m */,
+			);
+			path = "CoreData Objects";
+			sourceTree = "<group>";
+		};
+		6EBBD76018349F8500166D63 /* Buyer Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6EBBD758183498CC00166D63 /* ABridge_BuyerViewController.h */,
+				6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */,
+				6EBBD75B18349A1B00166D63 /* ABridge_BuyerPagesViewController.h */,
+				6EBBD75C18349A1B00166D63 /* ABridge_BuyerPagesViewController.m */,
+				6EBBD75D18349A1B00166D63 /* ABridge_BuyerPagesViewController.xib */,
+			);
+			name = "Buyer Controller";
+			sourceTree = "<group>";
+		};
+		6EBBD7691834AD6A00166D63 /* Referral Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6EBBD7611834A56800166D63 /* ABridge_ReferralViewController.h */,
+				6EBBD7621834A56800166D63 /* ABridge_ReferralViewController.m */,
+				6EBBD7641834A71D00166D63 /* ABridge_ReferralPagesViewController.h */,
+				6EBBD7651834A71D00166D63 /* ABridge_ReferralPagesViewController.m */,
+				6EBBD7661834A71D00166D63 /* ABridge_ReferralPagesViewController.xib */,
+			);
+			name = "Referral Controller";
+			sourceTree = "<group>";
+		};
+		6EBBD7721834B84F00166D63 /* Activity Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6EBBD76A1834B1FE00166D63 /* ABridge_ActivityViewController.h */,
+				6EBBD76B1834B1FE00166D63 /* ABridge_ActivityViewController.m */,
+				6EBBD76D1834B48A00166D63 /* ABridge_ActivityPagesViewController.h */,
+				6EBBD76E1834B48A00166D63 /* ABridge_ActivityPagesViewController.m */,
+				6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */,
+			);
+			name = "Activity Controller";
+			sourceTree = "<group>";
+		};
+		6EBBD7761834DB1F00166D63 /* AgentProfile Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6EBBD7731834CA2100166D63 /* ABridge_AgentProfileViewController.h */,
+				6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */,
+			);
+			name = "AgentProfile Controller";
+			sourceTree = "<group>";
+		};
+		6EEF582818337E4000C3214E = {
+			isa = PBXGroup;
+			children = (
+				6EEF583C18337E4000C3214E /* AgentBridge */,
+				6EEF585918337E4000C3214E /* AgentBridgeTests */,
+				6EEF583318337E4000C3214E /* Frameworks */,
+				6EEF583218337E4000C3214E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6EEF583218337E4000C3214E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF583118337E4000C3214E /* AgentBridge.app */,
+				6EEF585118337E4000C3214E /* AgentBridgeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6EEF583318337E4000C3214E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF583418337E4000C3214E /* Foundation.framework */,
+				6EEF583618337E4000C3214E /* CoreGraphics.framework */,
+				6EEF583818337E4000C3214E /* UIKit.framework */,
+				6EEF583A18337E4000C3214E /* CoreData.framework */,
+				6EEF585218337E4000C3214E /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6EEF583C18337E4000C3214E /* AgentBridge */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF58781833834E00C3214E /* AppDelegate */,
+				6EEF58791833835B00C3214E /* SideMenu Controller */,
+				6EEF588418339F5D00C3214E /* Login Controller */,
+				6EBBD7721834B84F00166D63 /* Activity Controller */,
+				6EEF588518339F6E00C3214E /* Property Controller */,
+				6EBBD76018349F8500166D63 /* Buyer Controller */,
+				6EBBD7691834AD6A00166D63 /* Referral Controller */,
+				6EBBD7761834DB1F00166D63 /* AgentProfile Controller */,
+				6EEF584B18337E4000C3214E /* Images.xcassets */,
+				6EEF587A1833837600C3214E /* ABridge_ParentViewController.h */,
+				6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */,
+				6EEF586918337E6B00C3214E /* Main.storyboard */,
+				6EEF5883183396AB00C3214E /* Constants.h */,
+				6EEF584818337E4000C3214E /* AgentBridge.xcdatamodeld */,
+				6EBBD7541834823F00166D63 /* CoreData Objects */,
+				6EEF586E18337F4000C3214E /* ECSlidingViewController */,
+				6EEF583D18337E4000C3214E /* Supporting Files */,
+			);
+			path = AgentBridge;
+			sourceTree = "<group>";
+		};
+		6EEF583D18337E4000C3214E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF583E18337E4000C3214E /* AgentBridge-Info.plist */,
+				6EEF583F18337E4000C3214E /* InfoPlist.strings */,
+				6EEF584218337E4000C3214E /* main.m */,
+				6EEF584418337E4000C3214E /* AgentBridge-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6EEF585918337E4000C3214E /* AgentBridgeTests */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF585F18337E4000C3214E /* AgentBridgeTests.m */,
+				6EEF585A18337E4000C3214E /* Supporting Files */,
+			);
+			path = AgentBridgeTests;
+			sourceTree = "<group>";
+		};
+		6EEF585A18337E4000C3214E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF585B18337E4000C3214E /* AgentBridgeTests-Info.plist */,
+				6EEF585C18337E4000C3214E /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6EEF586E18337F4000C3214E /* ECSlidingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF586F18337F4000C3214E /* ECSlidingViewController.h */,
+				6EEF587018337F4000C3214E /* ECSlidingViewController.m */,
+			);
+			path = ECSlidingViewController;
+			sourceTree = "<group>";
+		};
+		6EEF58781833834E00C3214E /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF584518337E4000C3214E /* ABridge_AppDelegate.h */,
+				6EEF584618337E4000C3214E /* ABridge_AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		6EEF58791833835B00C3214E /* SideMenu Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF586B18337F1500C3214E /* ABridge_InitialViewController.h */,
+				6EEF586C18337F1500C3214E /* ABridge_InitialViewController.m */,
+				6EEF58721833808400C3214E /* ABridge_MenuViewController.h */,
+				6EEF58731833808400C3214E /* ABridge_MenuViewController.m */,
+				6EEF5875183382BD00C3214E /* ABridge_SearchViewController.h */,
+				6EEF5876183382BD00C3214E /* ABridge_SearchViewController.m */,
+			);
+			name = "SideMenu Controller";
+			sourceTree = "<group>";
+		};
+		6EEF588418339F5D00C3214E /* Login Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF58801833857B00C3214E /* ABridge_LoginViewController.h */,
+				6EEF58811833857B00C3214E /* ABridge_LoginViewController.m */,
+			);
+			name = "Login Controller";
+			sourceTree = "<group>";
+		};
+		6EEF588518339F6E00C3214E /* Property Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6EEF587D1833843000C3214E /* ABridge_PropertyViewController.h */,
+				6EEF587E1833843000C3214E /* ABridge_PropertyViewController.m */,
+				6EBBD74C183473B200166D63 /* ABridge_PropertyPagesViewController.h */,
+				6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */,
+				6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */,
+			);
+			name = "Property Controller";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6EEF583018337E4000C3214E /* AgentBridge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6EEF586318337E4000C3214E /* Build configuration list for PBXNativeTarget "AgentBridge" */;
+			buildPhases = (
+				6EEF582D18337E4000C3214E /* Sources */,
+				6EEF582E18337E4000C3214E /* Frameworks */,
+				6EEF582F18337E4000C3214E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AgentBridge;
+			productName = AgentBridge;
+			productReference = 6EEF583118337E4000C3214E /* AgentBridge.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6EEF585018337E4000C3214E /* AgentBridgeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6EEF586618337E4000C3214E /* Build configuration list for PBXNativeTarget "AgentBridgeTests" */;
+			buildPhases = (
+				6EEF584D18337E4000C3214E /* Sources */,
+				6EEF584E18337E4000C3214E /* Frameworks */,
+				6EEF584F18337E4000C3214E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6EEF585818337E4000C3214E /* PBXTargetDependency */,
+			);
+			name = AgentBridgeTests;
+			productName = AgentBridgeTests;
+			productReference = 6EEF585118337E4000C3214E /* AgentBridgeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6EEF582918337E4000C3214E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = ABridge_;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "host24_iOS Dev";
+				TargetAttributes = {
+					6EEF585018337E4000C3214E = {
+						TestTargetID = 6EEF583018337E4000C3214E;
+					};
+				};
+			};
+			buildConfigurationList = 6EEF582C18337E4000C3214E /* Build configuration list for PBXProject "AgentBridge" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6EEF582818337E4000C3214E;
+			productRefGroup = 6EEF583218337E4000C3214E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6EEF583018337E4000C3214E /* AgentBridge */,
+				6EEF585018337E4000C3214E /* AgentBridgeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6EEF582F18337E4000C3214E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EEF586A18337E6B00C3214E /* Main.storyboard in Resources */,
+				6EBBD75F18349A1C00166D63 /* ABridge_BuyerPagesViewController.xib in Resources */,
+				6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */,
+				6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */,
+				6EBBD7711834B48A00166D63 /* ABridge_ActivityPagesViewController.xib in Resources */,
+				6EEF584118337E4000C3214E /* InfoPlist.strings in Resources */,
+				6EEF584C18337E4000C3214E /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EEF584F18337E4000C3214E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EEF585E18337E4000C3214E /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6EEF582D18337E4000C3214E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EBBD7631834A56800166D63 /* ABridge_ReferralViewController.m in Sources */,
+				6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */,
+				6EEF5877183382BD00C3214E /* ABridge_SearchViewController.m in Sources */,
+				6EBBD75E18349A1C00166D63 /* ABridge_BuyerPagesViewController.m in Sources */,
+				6EEF586D18337F1500C3214E /* ABridge_InitialViewController.m in Sources */,
+				6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */,
+				6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */,
+				6EEF587118337F4000C3214E /* ECSlidingViewController.m in Sources */,
+				6EBBD76C1834B1FE00166D63 /* ABridge_ActivityViewController.m in Sources */,
+				6EEF58821833857B00C3214E /* ABridge_LoginViewController.m in Sources */,
+				6EEF584318337E4000C3214E /* main.m in Sources */,
+				6EEF584A18337E4000C3214E /* AgentBridge.xcdatamodeld in Sources */,
+				6EEF58741833808400C3214E /* ABridge_MenuViewController.m in Sources */,
+				6EBBD7571834823F00166D63 /* LoginDetails.m in Sources */,
+				6EEF584718337E4000C3214E /* ABridge_AppDelegate.m in Sources */,
+				6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */,
+				6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */,
+				6EBBD7671834A71D00166D63 /* ABridge_ReferralPagesViewController.m in Sources */,
+				6EBBD7701834B48A00166D63 /* ABridge_ActivityPagesViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EEF584D18337E4000C3214E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EEF586018337E4000C3214E /* AgentBridgeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6EEF585818337E4000C3214E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6EEF583018337E4000C3214E /* AgentBridge */;
+			targetProxy = 6EEF585718337E4000C3214E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6EEF583F18337E4000C3214E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6EEF584018337E4000C3214E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6EEF585C18337E4000C3214E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6EEF585D18337E4000C3214E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6EEF586118337E4000C3214E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		6EEF586218337E4000C3214E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6EEF586418337E4000C3214E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
+				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6EEF586518337E4000C3214E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
+				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		6EEF586718337E4000C3214E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AgentBridge.app/AgentBridge";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "AgentBridgeTests/AgentBridgeTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		6EEF586818337E4000C3214E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AgentBridge.app/AgentBridge";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
+				INFOPLIST_FILE = "AgentBridgeTests/AgentBridgeTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6EEF582C18337E4000C3214E /* Build configuration list for PBXProject "AgentBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6EEF586118337E4000C3214E /* Debug */,
+				6EEF586218337E4000C3214E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6EEF586318337E4000C3214E /* Build configuration list for PBXNativeTarget "AgentBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6EEF586418337E4000C3214E /* Debug */,
+				6EEF586518337E4000C3214E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6EEF586618337E4000C3214E /* Build configuration list for PBXNativeTarget "AgentBridgeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6EEF586718337E4000C3214E /* Debug */,
+				6EEF586818337E4000C3214E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6EEF584818337E4000C3214E /* AgentBridge.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6EEF584918337E4000C3214E /* AgentBridge.xcdatamodel */,
+			);
+			currentVersion = 6EEF584918337E4000C3214E /* AgentBridge.xcdatamodel */;
+			path = AgentBridge.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 6EEF582918337E4000C3214E /* Project object */;
+}
