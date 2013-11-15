@@ -16,12 +16,14 @@
 @property (assign, nonatomic) NSInteger numberOfProperty;
 @property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
 @property (strong, nonatomic) NSMutableData *dataReceived;
+@property (strong, nonatomic) LoginDetails *loginDetail;
 @end
 
 @implementation ABridge_PropertyViewController
 @synthesize numberOfProperty;
 @synthesize urlConnectionProperty;
 @synthesize dataReceived;
+@synthesize loginDetail;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,7 +39,24 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%li",(long) 1];
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context
+                               executeFetchRequest:fetchRequest error:&error];
+    
+    self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    NSLog(@"user_id [buyer]:%li",(long) self.loginDetail.user_id);
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%li",(long) self.loginDetail.user_id];
     
     self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php" andParameters:parameters];
     
@@ -108,6 +127,7 @@
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
 }
@@ -122,6 +142,7 @@
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -131,7 +152,7 @@
     
     NSLog(@"Did Finish:%@", json);
     
-//    if ([[json objectForKey:@"data"] count]) {
+    if ([[json objectForKey:@"data"] count]) {
     
         self.numberOfProperty = [[json objectForKey:@"data"] count];
         
@@ -152,8 +173,9 @@
         [[self view] addSubview:[self.pageController view]];
         [self.pageController didMoveToParentViewController:self];
         
-//    }
+    }
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     // Do something with responseData
 }
 

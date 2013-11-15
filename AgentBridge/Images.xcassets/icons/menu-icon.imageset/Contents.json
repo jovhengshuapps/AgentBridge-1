@@ -3,7 +3,11 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "back-icon.png"
+      "filename" : "menu-icon.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
     }
   ],
   "info" : {

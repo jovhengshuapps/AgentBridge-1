@@ -189,6 +189,7 @@
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
 }
@@ -203,6 +204,7 @@
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -210,7 +212,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"Did Finish:%@", json);
+    NSLog(@"Did Finish:%@", json);
     
     NSDictionary *dataJson = [[json objectForKey:@"data"] firstObject];
     
@@ -224,6 +226,7 @@
     item.username = [dataJson objectForKey:@"username"];
     item.email = [dataJson objectForKey:@"email"];
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     NSError *errorSave = nil;
     if (![context save:&errorSave]) {
         NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);

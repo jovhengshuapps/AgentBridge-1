@@ -8,7 +8,6 @@
 
 #import "ABridge_InitialViewController.h"
 #import "ABridge_LoginViewController.h"
-#import "LoginDetails.h"
 #import "ABridge_AppDelegate.h"
 
 @interface ABridge_InitialViewController ()
@@ -32,7 +31,7 @@
 	// Do any additional setup after loading the view.
     
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-        self.shouldAdjustChildViewHeightForStatusBar = YES;
+        self.shouldAdjustChildViewHeightForStatusBar = NO;
         self.statusBarBackgroundView.backgroundColor = [UIColor blackColor];
     }
     

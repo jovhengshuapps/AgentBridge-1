@@ -2,7 +2,7 @@
 //  LoginDetails.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/14/13.
+//  Created by host24_iOS Dev on 11/15/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
@@ -11,10 +11,10 @@
 
 @implementation LoginDetails
 
-@dynamic user_id;
-@dynamic profile_id;
-@dynamic name;
-@dynamic username;
 @dynamic email;
+@dynamic name;
+@dynamic profile_id;
+@dynamic user_id;
+@dynamic username;
 
 @end

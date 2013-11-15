@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E28ACB81835ED2D007E0C63 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB31835ED2D007E0C63 /* Activity.m */; };
+		6E28ACB91835ED2D007E0C63 /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB51835ED2D007E0C63 /* Buyer.m */; };
+		6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB71835ED2D007E0C63 /* LoginDetails.m */; };
 		6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */; };
 		6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */; };
-		6EBBD7571834823F00166D63 /* LoginDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7561834823F00166D63 /* LoginDetails.m */; };
 		6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */; };
 		6EBBD75E18349A1C00166D63 /* ABridge_BuyerPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD75C18349A1B00166D63 /* ABridge_BuyerPagesViewController.m */; };
 		6EBBD75F18349A1C00166D63 /* ABridge_BuyerPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD75D18349A1B00166D63 /* ABridge_BuyerPagesViewController.xib */; };
@@ -56,11 +58,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E28ACB21835ED2D007E0C63 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
+		6E28ACB31835ED2D007E0C63 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
+		6E28ACB41835ED2D007E0C63 /* Buyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Buyer.h; sourceTree = "<group>"; };
+		6E28ACB51835ED2D007E0C63 /* Buyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Buyer.m; sourceTree = "<group>"; };
+		6E28ACB61835ED2D007E0C63 /* LoginDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDetails.h; sourceTree = "<group>"; };
+		6E28ACB71835ED2D007E0C63 /* LoginDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginDetails.m; sourceTree = "<group>"; };
 		6EBBD74C183473B200166D63 /* ABridge_PropertyPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_PropertyPagesViewController.h; sourceTree = "<group>"; };
 		6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_PropertyPagesViewController.m; sourceTree = "<group>"; };
 		6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_PropertyPagesViewController.xib; sourceTree = "<group>"; };
-		6EBBD7551834823F00166D63 /* LoginDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDetails.h; sourceTree = "<group>"; };
-		6EBBD7561834823F00166D63 /* LoginDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginDetails.m; sourceTree = "<group>"; };
 		6EBBD758183498CC00166D63 /* ABridge_BuyerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerViewController.h; sourceTree = "<group>"; };
 		6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerViewController.m; sourceTree = "<group>"; };
 		6EBBD75B18349A1B00166D63 /* ABridge_BuyerPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPagesViewController.h; sourceTree = "<group>"; };
@@ -143,8 +149,12 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
-				6EBBD7551834823F00166D63 /* LoginDetails.h */,
-				6EBBD7561834823F00166D63 /* LoginDetails.m */,
+				6E28ACB21835ED2D007E0C63 /* Activity.h */,
+				6E28ACB31835ED2D007E0C63 /* Activity.m */,
+				6E28ACB41835ED2D007E0C63 /* Buyer.h */,
+				6E28ACB51835ED2D007E0C63 /* Buyer.m */,
+				6E28ACB61835ED2D007E0C63 /* LoginDetails.h */,
+				6E28ACB71835ED2D007E0C63 /* LoginDetails.m */,
 			);
 			path = "CoreData Objects";
 			sourceTree = "<group>";
@@ -432,19 +442,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EBBD7631834A56800166D63 /* ABridge_ReferralViewController.m in Sources */,
+				6E28ACB91835ED2D007E0C63 /* Buyer.m in Sources */,
 				6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */,
 				6EEF5877183382BD00C3214E /* ABridge_SearchViewController.m in Sources */,
 				6EBBD75E18349A1C00166D63 /* ABridge_BuyerPagesViewController.m in Sources */,
 				6EEF586D18337F1500C3214E /* ABridge_InitialViewController.m in Sources */,
 				6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */,
 				6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */,
+				6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */,
 				6EEF587118337F4000C3214E /* ECSlidingViewController.m in Sources */,
 				6EBBD76C1834B1FE00166D63 /* ABridge_ActivityViewController.m in Sources */,
 				6EEF58821833857B00C3214E /* ABridge_LoginViewController.m in Sources */,
 				6EEF584318337E4000C3214E /* main.m in Sources */,
 				6EEF584A18337E4000C3214E /* AgentBridge.xcdatamodeld in Sources */,
+				6E28ACB81835ED2D007E0C63 /* Activity.m in Sources */,
 				6EEF58741833808400C3214E /* ABridge_MenuViewController.m in Sources */,
-				6EBBD7571834823F00166D63 /* LoginDetails.m in Sources */,
 				6EEF584718337E4000C3214E /* ABridge_AppDelegate.m in Sources */,
 				6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */,
 				6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */,
@@ -508,7 +520,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "FakeDev Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "FakeDev Sign";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -524,7 +537,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -547,7 +560,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "FakeDev Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "FakeDev Sign";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -557,7 +571,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -568,6 +582,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "FakeDev Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "FakeDev Sign";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
 				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
@@ -583,6 +599,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "FakeDev Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "FakeDev Sign";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
 				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";

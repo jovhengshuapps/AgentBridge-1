@@ -7,9 +7,6 @@
 //
 
 #import "ABridge_ParentViewController.h"
-#import "ABridge_MenuViewController.h"
-#import "ABridge_SearchViewController.h"
-#import "Constants.h"
 
 @interface ABridge_ParentViewController ()
 
@@ -55,6 +52,8 @@
     for (NSURLConnection *urlConnection in self.arrayOfURLConnection) {
         [urlConnection cancel];
     }
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)didReceiveMemoryWarning

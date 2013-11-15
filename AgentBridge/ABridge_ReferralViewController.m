@@ -16,7 +16,7 @@
 @property (assign, nonatomic) NSInteger numberOfReferral;
 @property (strong, nonatomic) NSURLConnection *urlConnectionReferral;
 @property (strong, nonatomic) NSMutableData *dataReceived;
-@property (assign, nonatomic) NSInteger user_id;
+@property (strong, nonatomic) LoginDetails *loginDetail;
 
 
 - (IBAction)segmentedControlChange:(id)sender;
@@ -26,7 +26,7 @@
 @synthesize numberOfReferral;
 @synthesize urlConnectionReferral;
 @synthesize dataReceived;
-@synthesize user_id;
+@synthesize loginDetail;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,7 +42,21 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.user_id = 1;
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context
+                               executeFetchRequest:fetchRequest error:&error];
+    
+    self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     [self reloadPageController:@"In"];
 }
@@ -56,7 +70,8 @@
 
 -(void) reloadPageController:(NSString*)value {
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%li",(long) self.user_id];
+    NSLog(@"user_id [buyer]:%li",(long) self.loginDetail.user_id);
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%li",(long) self.loginDetail.user_id];
     
     self.urlConnectionReferral = [self urlConnectionWithURLString:([value isEqualToString:@"In"])?@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_in.php":@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_out.php" andParameters:parameters];
     
@@ -120,6 +135,7 @@
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
 }
@@ -134,6 +150,7 @@
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -143,7 +160,7 @@
     
     NSLog(@"Did Finish:%@", json);
     
-    //    if ([[json objectForKey:@"data"] count]) {
+    if ([[json objectForKey:@"data"] count]) {
     
     self.numberOfReferral = [[json objectForKey:@"data"] count];
     
@@ -164,9 +181,10 @@
     [[self view] addSubview:[self.pageController view]];
     [self.pageController didMoveToParentViewController:self];
     
-    //    }
+    }
     
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     // Do something with responseData
 }
 

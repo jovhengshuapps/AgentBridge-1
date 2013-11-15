@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "ABridge_MenuViewController.h"
+#import "ABridge_SearchViewController.h"
 #import "ECSlidingViewController.h"
+#import "ABridge_AppDelegate.h"
+#import "LoginDetails.h"
+#import "Constants.h"
 
 @interface ABridge_ParentViewController : UIViewController
 
