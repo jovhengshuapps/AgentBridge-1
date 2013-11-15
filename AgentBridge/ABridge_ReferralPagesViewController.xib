@@ -14,6 +14,7 @@
                 <outlet property="labelBuyerName" destination="RSs-b3-6ks" id="m9W-db-6Ev"/>
                 <outlet property="labelPage" destination="3Zo-Ee-hUh" id="gTI-w8-bYO"/>
                 <outlet property="labelPrice" destination="sRJ-n0-KgR" id="qqz-9o-dGA"/>
+                <outlet property="labelReferralFee" destination="utl-Vl-1En" id="ixE-rd-FqH"/>
                 <outlet property="labelStateCountry" destination="VjK-Ns-t29" id="cPC-m8-Cr8"/>
                 <outlet property="view" destination="OJz-QT-cEY" id="YvC-oK-BaI"/>
             </connections>

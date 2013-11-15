@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		6E28ACB81835ED2D007E0C63 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB31835ED2D007E0C63 /* Activity.m */; };
-		6E28ACB91835ED2D007E0C63 /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB51835ED2D007E0C63 /* Buyer.m */; };
 		6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB71835ED2D007E0C63 /* LoginDetails.m */; };
+		6E37720C18363D5F00135D60 /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E37720B18363D5F00135D60 /* Buyer.m */; };
+		6E37720F18363D6000135D60 /* Referral.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E37720E18363D6000135D60 /* Referral.m */; };
 		6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */; };
 		6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */; };
 		6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */; };
@@ -60,10 +61,12 @@
 /* Begin PBXFileReference section */
 		6E28ACB21835ED2D007E0C63 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
 		6E28ACB31835ED2D007E0C63 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
-		6E28ACB41835ED2D007E0C63 /* Buyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Buyer.h; sourceTree = "<group>"; };
-		6E28ACB51835ED2D007E0C63 /* Buyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Buyer.m; sourceTree = "<group>"; };
 		6E28ACB61835ED2D007E0C63 /* LoginDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDetails.h; sourceTree = "<group>"; };
 		6E28ACB71835ED2D007E0C63 /* LoginDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginDetails.m; sourceTree = "<group>"; };
+		6E37720A18363D5F00135D60 /* Buyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Buyer.h; sourceTree = "<group>"; };
+		6E37720B18363D5F00135D60 /* Buyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Buyer.m; sourceTree = "<group>"; };
+		6E37720D18363D6000135D60 /* Referral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Referral.h; sourceTree = "<group>"; };
+		6E37720E18363D6000135D60 /* Referral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Referral.m; sourceTree = "<group>"; };
 		6EBBD74C183473B200166D63 /* ABridge_PropertyPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_PropertyPagesViewController.h; sourceTree = "<group>"; };
 		6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_PropertyPagesViewController.m; sourceTree = "<group>"; };
 		6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_PropertyPagesViewController.xib; sourceTree = "<group>"; };
@@ -149,10 +152,12 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
+				6E37720D18363D6000135D60 /* Referral.h */,
+				6E37720E18363D6000135D60 /* Referral.m */,
+				6E37720A18363D5F00135D60 /* Buyer.h */,
+				6E37720B18363D5F00135D60 /* Buyer.m */,
 				6E28ACB21835ED2D007E0C63 /* Activity.h */,
 				6E28ACB31835ED2D007E0C63 /* Activity.m */,
-				6E28ACB41835ED2D007E0C63 /* Buyer.h */,
-				6E28ACB51835ED2D007E0C63 /* Buyer.m */,
 				6E28ACB61835ED2D007E0C63 /* LoginDetails.h */,
 				6E28ACB71835ED2D007E0C63 /* LoginDetails.m */,
 			);
@@ -442,12 +447,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EBBD7631834A56800166D63 /* ABridge_ReferralViewController.m in Sources */,
-				6E28ACB91835ED2D007E0C63 /* Buyer.m in Sources */,
 				6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */,
 				6EEF5877183382BD00C3214E /* ABridge_SearchViewController.m in Sources */,
 				6EBBD75E18349A1C00166D63 /* ABridge_BuyerPagesViewController.m in Sources */,
 				6EEF586D18337F1500C3214E /* ABridge_InitialViewController.m in Sources */,
 				6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */,
+				6E37720C18363D5F00135D60 /* Buyer.m in Sources */,
 				6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */,
 				6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */,
 				6EEF587118337F4000C3214E /* ECSlidingViewController.m in Sources */,
@@ -457,6 +462,7 @@
 				6EEF584A18337E4000C3214E /* AgentBridge.xcdatamodeld in Sources */,
 				6E28ACB81835ED2D007E0C63 /* Activity.m in Sources */,
 				6EEF58741833808400C3214E /* ABridge_MenuViewController.m in Sources */,
+				6E37720F18363D6000135D60 /* Referral.m in Sources */,
 				6EEF584718337E4000C3214E /* ABridge_AppDelegate.m in Sources */,
 				6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */,
 				6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */,

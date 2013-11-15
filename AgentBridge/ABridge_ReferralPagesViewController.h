@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Referral.h"
 
 @interface ABridge_ReferralPagesViewController : UIViewController
 
 @property (assign, nonatomic) NSInteger index;
+@property (strong, nonatomic) Referral *referralDetails;
 @end
