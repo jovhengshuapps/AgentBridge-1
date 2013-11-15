@@ -31,9 +31,10 @@
 	// Do any additional setup after loading the view.
     
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-        self.shouldAdjustChildViewHeightForStatusBar = NO;
+        self.shouldAdjustChildViewHeightForStatusBar = YES;
         self.statusBarBackgroundView.backgroundColor = [UIColor blackColor];
     }
+    
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     

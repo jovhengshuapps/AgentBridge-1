@@ -12,29 +12,32 @@
     </entity>
     <entity name="Buyer" representedClassName="Buyer" syncable="YES">
         <attribute name="available_sqft" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="bathroom" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="bedroom" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="bathroom" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bedroom" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bldg_sqft" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bldg_type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buyer_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="buyer_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="cap_rate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ceiling_height" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="closed" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="closed" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="condition" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="contact_method" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="contact_type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="contact_method" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contact_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="expiry" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="expiry" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="features1" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="features2" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="features3" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="furnished" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="garage" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="garage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="grm" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hasnew" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="hasnew_2" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="hasnew" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasnew_2" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="listing_class" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="listingcount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="listing_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="listingcount" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lot_size" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lot_sqft" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -43,16 +46,16 @@
         <attribute name="pet" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pool_spa" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="possession" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price_type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="price_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price_value" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="property_name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="property_type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="property_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="room_count" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="setting" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="setting" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stories" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="sub_type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sub_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type_lease" optional="YES" attributeType="String" syncable="YES"/>
@@ -60,8 +63,8 @@
         <attribute name="unit_sqft" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="units" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="view" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="year_built" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="zip" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="year_built" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoned" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="LoginDetails" representedClassName="LoginDetails" syncable="YES">
@@ -72,8 +75,8 @@
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="LoginDetails" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Buyer" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Activity" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Buyer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="LoginDetails" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

@@ -12,6 +12,7 @@
 @interface ABridge_PropertyViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfProperty;
 @property (weak, nonatomic) IBOutlet UIView *viewForPages;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSave;
 
 @property (assign, nonatomic) NSInteger numberOfProperty;
 @property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
@@ -39,6 +40,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+//        CGRect frame = self.viewForPages.frame;
+//        frame.size.height = 315.0f;
+//        self.viewForPages.frame = frame;
+//        
+//        frame = self.buttonSave.frame;
+//        frame.origin.y = 400.0f;
+//        self.buttonSave.frame = frame;
+//    }
+    
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -55,8 +66,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    NSLog(@"user_id [buyer]:%li",(long) self.loginDetail.user_id);
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%li",(long) self.loginDetail.user_id];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     
     self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php" andParameters:parameters];
     
@@ -150,7 +160,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-    NSLog(@"Did Finish:%@", json);
+//    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
     

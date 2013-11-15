@@ -42,6 +42,12 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+//        CGRect frame = self.viewForPages.frame;
+//        frame.size.height = 366.0f;
+//        self.viewForPages.frame = frame;
+//    }
+    
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -70,8 +76,7 @@
 
 -(void) reloadPageController:(NSString*)value {
     
-    NSLog(@"user_id [buyer]:%li",(long) self.loginDetail.user_id);
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%li",(long) self.loginDetail.user_id];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     
     self.urlConnectionReferral = [self urlConnectionWithURLString:([value isEqualToString:@"In"])?@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_in.php":@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_out.php" andParameters:parameters];
     
@@ -158,7 +163,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-    NSLog(@"Did Finish:%@", json);
+//    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
     

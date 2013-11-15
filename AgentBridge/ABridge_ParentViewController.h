@@ -25,5 +25,6 @@
 
 - (NSURLConnection*)urlConnectionWithURLString:(NSString*)urlString andParameters:(NSString*)parameters;
 - (void)addURLConnection:(NSURLConnection*)urlConnection;
+- (NSArray*)fetchObjectsWithEntityName:(NSString*)entity andPredicate:(NSPredicate*)predicate;
 
 @end

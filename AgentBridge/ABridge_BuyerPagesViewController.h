@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Buyer.h"
 
 @interface ABridge_BuyerPagesViewController : UIViewController
 
 @property (assign, nonatomic) NSInteger index;
+@property (strong, nonatomic) Buyer *buyerDetails;
 @end

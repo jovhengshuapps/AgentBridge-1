@@ -8,6 +8,7 @@
 
 #import "ABridge_BuyerViewController.h"
 #import "ABridge_BuyerPagesViewController.h"
+#import "Buyer.h"
 
 @interface ABridge_BuyerViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfBuyers;
@@ -19,6 +20,7 @@
 @property (strong, nonatomic) NSURLConnection *urlConnectionBuyer;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) LoginDetails *loginDetail;
+@property (strong, nonatomic) NSMutableArray *arrayOfBuyer;
 @end
 
 @implementation ABridge_BuyerViewController
@@ -26,6 +28,7 @@
 @synthesize urlConnectionBuyer;
 @synthesize dataReceived;
 @synthesize loginDetail;
+@synthesize arrayOfBuyer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,6 +43,22 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+//        CGRect frame = self.viewForPages.frame;
+//        frame.size.height = 315.0f;
+//        self.viewForPages.frame = frame;
+//        
+//        frame = self.labelNumberOfSaved.frame;
+//        frame.origin.y = 400.0f;
+//        self.labelNumberOfSaved.frame = frame;
+//        
+//        frame = self.labelNumberOfNew.frame;
+//        frame.origin.y = 400.0f;
+//        self.labelNumberOfNew.frame = frame;
+//        
+//        [self.view autoresizesSubviews];
+//    }
     
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
@@ -57,8 +76,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    NSLog(@"user_id [buyer]:%li",(long) self.loginDetail.user_id);
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%li",(long) self.loginDetail.user_id];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     
     self.urlConnectionBuyer = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers.php" andParameters:parameters];
     
@@ -82,6 +100,7 @@
     
     ABridge_BuyerPagesViewController *pagesViewController = [[ABridge_BuyerPagesViewController alloc] initWithNibName:@"ABridge_BuyerPagesViewController" bundle:nil];
     pagesViewController.index = index;
+    pagesViewController.buyerDetails = (Buyer*)[self.arrayOfBuyer objectAtIndex:index];
     
     return pagesViewController;
     
@@ -152,9 +171,37 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-    NSLog(@"Did Finish:%@", json);
+//    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
+        
+        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        for (NSDictionary *entry in [json objectForKey:@"data"]) {
+            Buyer *buyer = nil;
+            
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"buyer_id == %@", [entry objectForKey:@"buyer_id"]];
+            NSArray *result = [self fetchObjectsWithEntityName:@"Buyer" andPredicate:predicate];
+            if ([result count]) {
+                buyer = (Buyer*)[result firstObject];
+            }
+            else {
+                buyer = [NSEntityDescription insertNewObjectForEntityForName: @"Buyer" inManagedObjectContext: context];
+            }
+            
+            [buyer setValuesForKeysWithDictionary:entry];
+            
+            NSError *error = nil;
+            if (![context save:&error]) {
+                NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+            }
+            else {
+                if (arrayOfBuyer == nil) {
+                    arrayOfBuyer = [[NSMutableArray alloc] init];
+                }
+                
+                [arrayOfBuyer addObject:buyer];
+            }
+        }
     
         self.numberOfBuyer = [[json objectForKey:@"data"] count];
         

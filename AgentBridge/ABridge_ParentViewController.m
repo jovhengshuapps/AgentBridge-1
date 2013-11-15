@@ -30,6 +30,14 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        CGRect frame = self.view.frame;
+        frame.origin.y = 0.0f;
+        self.view.frame = frame;
+    }
+    
+    NSLog(@"view:%@",self.view);
+    
     self.view.layer.shadowOpacity = 0.75f;
     self.view.layer.shadowRadius = 10.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -45,6 +53,7 @@
 //    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     [self.imageViewTopBar addGestureRecognizer:self.slidingViewController.panGesture];
 }
+
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -78,6 +87,7 @@
     NSLog(@"url:%@",urlString);
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     return [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
 }
 
@@ -87,6 +97,16 @@
     }
     
     [self.arrayOfURLConnection addObject:urlConnection];
+}
+
+- (NSArray *)fetchObjectsWithEntityName:(NSString *)entity andPredicate:(NSPredicate *)predicate {
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:entity inManagedObjectContext:context]];
+    NSError * error = nil;
+    NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
+    return results;
 }
 
 @end
