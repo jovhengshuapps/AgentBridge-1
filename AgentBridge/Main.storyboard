@@ -363,22 +363,10 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" id="4gq-vA-eTY">
-                                <rect key="frame" x="0.0" y="81" width="320" height="430"/>
+                                <rect key="frame" x="0.0" y="81" width="320" height="470"/>
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved (1)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TE4-RD-wUH">
-                                <rect key="frame" x="20" y="519" width="131" height="43"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New (2)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WvJ-t1-CEa">
-                                <rect key="frame" x="169" y="519" width="131" height="43"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -386,8 +374,6 @@
                     <connections>
                         <outlet property="imageViewTopBar" destination="zMI-cN-g7C" id="X3V-t7-DXf"/>
                         <outlet property="labelNumberOfBuyers" destination="It7-UW-klf" id="2PA-8H-8Ky"/>
-                        <outlet property="labelNumberOfNew" destination="WvJ-t1-CEa" id="PMi-Fg-XuM"/>
-                        <outlet property="labelNumberOfSaved" destination="TE4-RD-wUH" id="PGv-n0-0uC"/>
                         <outlet property="view" destination="IJb-BJ-YPT" id="H0i-ZV-0Qx"/>
                         <outlet property="viewForPages" destination="4gq-vA-eTY" id="Mph-74-BnZ"/>
                     </connections>

@@ -34,7 +34,9 @@
         self.shouldAdjustChildViewHeightForStatusBar = YES;
         self.statusBarBackgroundView.backgroundColor = [UIColor blackColor];
     }
-    
+    else {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    }
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     

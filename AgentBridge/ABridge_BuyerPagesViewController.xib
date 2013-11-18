@@ -11,8 +11,10 @@
                 <outlet property="labelBuyerName" destination="Y8p-vG-8kH" id="TAb-vx-aZK"/>
                 <outlet property="labelBuyerType" destination="Ohq-aN-TvI" id="GuH-o8-og3"/>
                 <outlet property="labelExpiry" destination="wS9-Y2-zze" id="nsg-Wh-fmg"/>
+                <outlet property="labelNew" destination="UWM-x1-20V" id="x0H-uO-ftY"/>
                 <outlet property="labelPage" destination="fhV-4B-OcL" id="Ngc-Pa-RAH"/>
                 <outlet property="labelPrice" destination="DhK-fk-j3S" id="9ek-Zg-8nl"/>
+                <outlet property="labelSaved" destination="iUA-y9-UWh" id="PB6-hk-SuX"/>
                 <outlet property="labelZipcode" destination="RlQ-zc-AHM" id="OCa-KT-BuG"/>
                 <outlet property="textFeatures" destination="Y7V-Vq-bHu" id="ZVp-MG-es2"/>
                 <outlet property="view" destination="LH1-xy-LkG" id="vdu-sL-77x"/>
@@ -20,7 +22,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="LH1-xy-LkG">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="315"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="470"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y8p-vG-8kH">
@@ -43,10 +45,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" id="Y7V-Vq-bHu">
-                    <rect key="frame" x="5" y="140" width="310" height="155"/>
+                    <rect key="frame" x="5" y="140" width="310" height="250"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
@@ -57,7 +59,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wS9-Y2-zze">
-                    <rect key="frame" x="5" y="296" width="310" height="19"/>
+                    <rect key="frame" x="5" y="391" width="310" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <nil key="highlightedColor"/>
@@ -72,6 +74,20 @@
                     <rect key="frame" x="5" y="5" width="90" height="90"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                 </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iUA-y9-UWh">
+                    <rect key="frame" x="5" y="418" width="135" height="45"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UWM-x1-20V">
+                    <rect key="frame" x="180" y="418" width="135" height="45"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.82736073369999996" green="0.82736073369999996" blue="0.82736073369999996" alpha="1" colorSpace="calibratedRGB"/>
         </view>

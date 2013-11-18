@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelExpiry;
 @property (weak, nonatomic) IBOutlet UIImageView *imageProperty;
 @property (weak, nonatomic) IBOutlet UITextView *textFeatures;
+@property (weak, nonatomic) IBOutlet UILabel *labelSaved;
+@property (weak, nonatomic) IBOutlet UILabel *labelNew;
 
 @end
 
@@ -38,32 +40,43 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.labelPage.text = [NSString stringWithFormat:@"%li",(long)index+1];
+    self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
     
-    self.labelBuyerName.text = buyerDetails.name;
-    self.labelBuyerType.text = buyerDetails.buyer_type;
-    self.labelZipcode.text = [NSString stringWithFormat:@"%@",buyerDetails.zip];
+    self.labelBuyerName.text = self.buyerDetails.name;
+    self.labelBuyerType.text = self.buyerDetails.buyer_type;
+    self.labelZipcode.text = [NSString stringWithFormat:@"%@",self.buyerDetails.zip];
     NSMutableString *priceText = [NSMutableString stringWithString:@"$"];
-    [priceText appendString:buyerDetails.price_value];
+    [priceText appendString:self.buyerDetails.price_value];
     if ([priceText rangeOfString:@"-"].location != NSNotFound) {
         [priceText insertString:@"$" atIndex:[priceText rangeOfString:@"-"].location+1];
     }
     self.labelPrice.text = priceText;
-    self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %@ days", buyerDetails.expiry];
+    self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %@ days", self.buyerDetails.expiry];
     
     NSMutableString *featuresString = [NSMutableString stringWithFormat:@""];
-    NSEntityDescription *entity = [buyerDetails entity];
+    NSEntityDescription *entity = [self.buyerDetails entity];
     NSDictionary *attributes = [entity attributesByName];
+    int count = 0;
     for (NSString *attribute in attributes) {
         if([attribute isEqualToString:@"available_sqft"]||[attribute isEqualToString:@"bathroom"]||[attribute isEqualToString:@"bedroom"]||[attribute isEqualToString:@"bldg_sqft"]||[attribute isEqualToString:@"cap_rate"]||[attribute isEqualToString:@"ceiling_height"]||[attribute isEqualToString:@"condition"]||[attribute isEqualToString:@"furnished"]||[attribute isEqualToString:@"garage"]||[attribute isEqualToString:@"grm"]||[attribute isEqualToString:@"lot_size"]||[attribute isEqualToString:@"lot_sqft"]||[attribute isEqualToString:@"view"]||[attribute isEqualToString:@"year_built"]||[attribute isEqualToString:@"stories"]||[attribute isEqualToString:@"unit_sqft"]){
             
 //            NSLog(@"%@ value:%@",([self isNull:[buyerDetails valueForKey:attribute]])?@"YES":@"NO",[buyerDetails valueForKey:attribute]);
             
-            [featuresString appendFormat:@"%@",([self isNull:[buyerDetails valueForKey:attribute]])?@"":[NSString stringWithFormat:@"%@ %@, ",[buyerDetails valueForKey:attribute],attribute]];
+            if (count == 5) {
+                break;
+            }
+            else {
+                if (![self isNull:[self.buyerDetails valueForKey:attribute]]) {
+                   
+                    [featuresString appendFormat:@"%@",[NSString stringWithFormat:@"%@ %@, ",[self.buyerDetails valueForKey:attribute],attribute]];
+                }
+            }
+            
+            count++;
             
         }
         else if([attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
-            [featuresString appendFormat:@"%@, ", [buyerDetails valueForKey:attribute]];
+            [featuresString appendFormat:@"%@, ", [self.buyerDetails valueForKey:attribute]];
         }
     }
     
@@ -71,11 +84,14 @@
     
     [featuresString setString:removedLastComma];
     
-    [featuresString appendFormat:@"\n\nNote: %@",buyerDetails.desc];
+    [featuresString appendFormat:@"\n\nNote: %@",self.buyerDetails.desc];
     
     self.textFeatures.text = featuresString;
     
-    self.imageProperty.image = [UIImage imageNamed:[self imageStringForPropertyType:[buyerDetails.property_type integerValue] andSubType:[buyerDetails.sub_type integerValue]]];
+    self.imageProperty.image = [UIImage imageNamed:[self imageStringForPropertyType:[self.buyerDetails.property_type integerValue] andSubType:[self.buyerDetails.sub_type integerValue]]];
+    
+    self.labelSaved.text = [NSString stringWithFormat:@"Saved (%@)",self.buyerDetails.hasnew_2];
+    self.labelNew.text = [NSString stringWithFormat:@"New (%@)",self.buyerDetails.hasnew];
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,7 +101,7 @@
 }
 
 -(BOOL)isNull:(id)value {
-    return ([value length] == 6 && [[value class] isEqual:@"(null)"]);
+    return ([[NSNull class] isMemberOfClass:[((NSNull *) value) class]]);
 }
 
 -(NSString*)imageStringForPropertyType:(NSInteger)property_type andSubType:(NSInteger)sub_type {

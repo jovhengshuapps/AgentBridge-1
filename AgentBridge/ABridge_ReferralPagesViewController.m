@@ -39,16 +39,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.labelPage.text = [NSString stringWithFormat:@"%li",(long)index+1];
+    self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
     
-    self.labelAgentName.text = referralDetails.agent_name;
-    self.labelAddress.text = referralDetails.city;
-    self.labelStateCountry.text = [NSString stringWithFormat:@"%@, %@",referralDetails.state,referralDetails.countries_iso_code_3];
+    self.labelAgentName.text = self.referralDetails.agent_name;
+    self.labelAddress.text = self.referralDetails.city;
+    self.labelStateCountry.text = [NSString stringWithFormat:@"%@, %@",self.referralDetails.state,self.referralDetails.countries_iso_code_3];
     
-    self.labelBuyerName.text = referralDetails.client_name;
-    self.labelPrice.text = [NSString stringWithFormat:@"$%@ - $%@",referralDetails.price_1, referralDetails.price_2];
+    self.labelBuyerName.text = self.referralDetails.client_name;
+    self.labelPrice.text = [NSString stringWithFormat:@"$%@ - $%@",self.referralDetails.price_1, self.referralDetails.price_2];
     
-    self.labelReferralFee.text = [NSString stringWithFormat:@"Referral Agreement (%@)",referralDetails.referral_fee];
+    self.labelReferralFee.text = [NSString stringWithFormat:@"Referral Agreement (%@)",self.referralDetails.referral_fee];
 }
 
 - (void)didReceiveMemoryWarning

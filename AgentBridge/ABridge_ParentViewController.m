@@ -35,9 +35,7 @@
         frame.origin.y = 0.0f;
         self.view.frame = frame;
     }
-    
-    NSLog(@"view:%@",self.view);
-    
+        
     self.view.layer.shadowOpacity = 0.75f;
     self.view.layer.shadowRadius = 10.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;

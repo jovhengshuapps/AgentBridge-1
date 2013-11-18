@@ -8,6 +8,6 @@
 
 #import "ABridge_ParentViewController.h"
 
-@interface ABridge_AgentProfileViewController : ABridge_ParentViewController <UITableViewDataSource>
+@interface ABridge_AgentProfileViewController : ABridge_ParentViewController <UITableViewDataSource,NSURLConnectionDelegate>
 
 @end

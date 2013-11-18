@@ -132,6 +132,7 @@
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
@@ -164,8 +165,12 @@
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     self.pageController.dataSource = self;
-    self.pageController.view.frame = self.viewForPages.frame;
-    
+    CGRect pageControllerFrame = self.viewForPages.frame;
+    pageControllerFrame.origin.x = 0.0f;
+    pageControllerFrame.origin.y = 0.0f;
+    self.pageController.view.frame = pageControllerFrame;
+        
+        
     self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
     
     ABridge_ActivityPagesViewController *initialViewController = [self viewControllerAtIndex:0];
@@ -175,12 +180,13 @@
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     [self addChildViewController:self.pageController];
-    [[self view] addSubview:[self.pageController view]];
+    [[self viewForPages] addSubview:[self.pageController view]];
     [self.pageController didMoveToParentViewController:self];
     
     }
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 
