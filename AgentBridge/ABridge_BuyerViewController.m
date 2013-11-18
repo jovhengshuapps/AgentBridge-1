@@ -42,22 +42,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-//        CGRect frame = self.viewForPages.frame;
-//        frame.size.height = 315.0f;
-//        self.viewForPages.frame = frame;
-//        
-//        frame = self.labelNumberOfSaved.frame;
-//        frame.origin.y = 400.0f;
-//        self.labelNumberOfSaved.frame = frame;
-//        
-//        frame = self.labelNumberOfNew.frame;
-//        frame.origin.y = 400.0f;
-//        self.labelNumberOfNew.frame = frame;
-//        
-//        [self.view autoresizesSubviews];
-//    }
-    
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -194,15 +178,15 @@
                 NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
             }
             else {
-                if (arrayOfBuyer == nil) {
-                    arrayOfBuyer = [[NSMutableArray alloc] init];
+                if (self.arrayOfBuyer == nil) {
+                    self.arrayOfBuyer = [[NSMutableArray alloc] init];
                 }
                 
-                [arrayOfBuyer addObject:buyer];
+                [self.arrayOfBuyer addObject:buyer];
             }
         }
     
-        self.numberOfBuyer = [[json objectForKey:@"data"] count];
+        self.numberOfBuyer = [self.arrayOfBuyer count];
         
         self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
         

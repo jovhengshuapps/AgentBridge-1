@@ -23,6 +23,8 @@
 		6EBBD7701834B48A00166D63 /* ABridge_ActivityPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD76E1834B48A00166D63 /* ABridge_ActivityPagesViewController.m */; };
 		6EBBD7711834B48A00166D63 /* ABridge_ActivityPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */; };
 		6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */; };
+		6EC708A91839ED1C00A9B5D8 /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC708A81839ED1C00A9B5D8 /* Property.m */; };
+		6EC708AF183A007200A9B5D8 /* AgentProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC708AE183A007200A9B5D8 /* AgentProfile.m */; };
 		6EEF583518337E4000C3214E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583418337E4000C3214E /* Foundation.framework */; };
 		6EEF583718337E4000C3214E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583618337E4000C3214E /* CoreGraphics.framework */; };
 		6EEF583918337E4000C3214E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583818337E4000C3214E /* UIKit.framework */; };
@@ -87,6 +89,10 @@
 		6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_ActivityPagesViewController.xib; sourceTree = "<group>"; };
 		6EBBD7731834CA2100166D63 /* ABridge_AgentProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AgentProfileViewController.h; sourceTree = "<group>"; };
 		6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentProfileViewController.m; sourceTree = "<group>"; };
+		6EC708A71839ED1C00A9B5D8 /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Property.h; sourceTree = "<group>"; };
+		6EC708A81839ED1C00A9B5D8 /* Property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Property.m; sourceTree = "<group>"; };
+		6EC708AD183A007200A9B5D8 /* AgentProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgentProfile.h; sourceTree = "<group>"; };
+		6EC708AE183A007200A9B5D8 /* AgentProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgentProfile.m; sourceTree = "<group>"; };
 		6EEF583118337E4000C3214E /* AgentBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgentBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EEF583418337E4000C3214E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6EEF583618337E4000C3214E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -152,6 +158,10 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
+				6EC708AD183A007200A9B5D8 /* AgentProfile.h */,
+				6EC708AE183A007200A9B5D8 /* AgentProfile.m */,
+				6EC708A71839ED1C00A9B5D8 /* Property.h */,
+				6EC708A81839ED1C00A9B5D8 /* Property.m */,
 				6E37720D18363D6000135D60 /* Referral.h */,
 				6E37720E18363D6000135D60 /* Referral.m */,
 				6E37720A18363D5F00135D60 /* Buyer.h */,
@@ -463,6 +473,8 @@
 				6E28ACB81835ED2D007E0C63 /* Activity.m in Sources */,
 				6EEF58741833808400C3214E /* ABridge_MenuViewController.m in Sources */,
 				6E37720F18363D6000135D60 /* Referral.m in Sources */,
+				6EC708AF183A007200A9B5D8 /* AgentProfile.m in Sources */,
+				6EC708A91839ED1C00A9B5D8 /* Property.m in Sources */,
 				6EEF584718337E4000C3214E /* ABridge_AppDelegate.m in Sources */,
 				6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */,
 				6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */,

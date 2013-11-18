@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Property.h"
 
-@interface ABridge_PropertyPagesViewController : UIViewController
+@interface ABridge_PropertyPagesViewController : UIViewController <UIScrollViewDelegate>
 
 @property (assign, nonatomic) NSInteger index;
+@property (strong, nonatomic) Property *propertyDetails;
 @end

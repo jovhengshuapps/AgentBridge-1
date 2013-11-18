@@ -525,6 +525,7 @@
                         <outlet property="labelEmail" destination="BF1-t0-R34" id="TPb-Ob-B4J"/>
                         <outlet property="labelMobile" destination="D4T-t8-TIl" id="PsP-FH-MHD"/>
                         <outlet property="labelName" destination="Oxf-Tu-IQT" id="Sue-Er-vRY"/>
+                        <outlet property="tableView" destination="dIx-9h-62Z" id="ykS-ek-6hx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KIw-9E-76b" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -8,6 +8,7 @@
 
 #import "ABridge_PropertyViewController.h"
 #import "ABridge_PropertyPagesViewController.h"
+#import "Property.h"
 
 @interface ABridge_PropertyViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfProperty;
@@ -18,6 +19,7 @@
 @property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) LoginDetails *loginDetail;
+@property (strong, nonatomic) NSMutableArray *arrayOfProperty;
 @end
 
 @implementation ABridge_PropertyViewController
@@ -25,6 +27,7 @@
 @synthesize urlConnectionProperty;
 @synthesize dataReceived;
 @synthesize loginDetail;
+@synthesize arrayOfProperty;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,16 +42,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
-//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-//        CGRect frame = self.viewForPages.frame;
-//        frame.size.height = 315.0f;
-//        self.viewForPages.frame = frame;
-//        
-//        frame = self.buttonSave.frame;
-//        frame.origin.y = 400.0f;
-//        self.buttonSave.frame = frame;
-//    }
     
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
@@ -90,6 +83,7 @@
     
     ABridge_PropertyPagesViewController *pagesViewController = [[ABridge_PropertyPagesViewController alloc] initWithNibName:@"ABridge_PropertyPagesViewController" bundle:nil];
     pagesViewController.index = index;
+    pagesViewController.propertyDetails = (Property*)[self.arrayOfProperty objectAtIndex:index];
     
     return pagesViewController;
     
@@ -161,11 +155,40 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-    NSLog(@"Did Finish:%@", json);
+//    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
+        
+        
+        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        for (NSDictionary *entry in [json objectForKey:@"data"]) {
+            Property *property = nil;
+            
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"listing_id == %@", [entry objectForKey:@"listing_id"]];
+            NSArray *result = [self fetchObjectsWithEntityName:@"Property" andPredicate:predicate];
+            if ([result count]) {
+                property = (Property*)[result firstObject];
+            }
+            else {
+                property = [NSEntityDescription insertNewObjectForEntityForName: @"Property" inManagedObjectContext: context];
+            }
+            
+            [property setValuesForKeysWithDictionary:entry];
+            
+            NSError *error = nil;
+            if (![context save:&error]) {
+                NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+            }
+            else {
+                if (self.arrayOfProperty == nil) {
+                    self.arrayOfProperty = [[NSMutableArray alloc] init];
+                }
+                
+                [self.arrayOfProperty addObject:property];
+            }
+        }
     
-        self.numberOfProperty = [[json objectForKey:@"data"] count];
+        self.numberOfProperty = [self.arrayOfProperty count];
         
         self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
         

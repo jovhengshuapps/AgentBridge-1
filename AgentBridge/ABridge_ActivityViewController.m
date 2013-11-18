@@ -39,12 +39,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-//        CGRect frame = self.viewForPages.frame;
-//        frame.size.height = 374.0f;
-//        self.viewForPages.frame = frame;
-//    }
-    
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

@@ -7,7 +7,8 @@
 //
 
 #import "ABridge_ParentViewController.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface ABridge_AgentProfileViewController : ABridge_ParentViewController <UITableViewDataSource,NSURLConnectionDelegate>
+@interface ABridge_AgentProfileViewController : ABridge_ParentViewController <UITableViewDataSource,NSURLConnectionDelegate, MFMailComposeViewControllerDelegate>
 
 @end
