@@ -312,7 +312,7 @@
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="gotoNetwork:" destination="ms5-oB-1zM" eventType="touchUpInside" id="gjg-E1-vvY"/>
+                                    <action selector="gotoNetwork:" destination="ms5-oB-1zM" eventType="touchUpInside" id="CxY-FQ-Wey"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LTh-MZ-Z7U">
@@ -594,7 +594,6 @@
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nuJ-zI-ekr">
                                 <rect key="frame" x="268" y="6" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="pops_icon">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -767,6 +766,73 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KZS-PT-bWQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="742" y="-1107"/>
+        </scene>
+        <!--Bridge Agent Network View Controller - Buyers-->
+        <scene sceneID="KY1-OD-j6q">
+            <objects>
+                <viewController storyboardIdentifier="Network" id="Lw2-NS-qnm" customClass="ABridge_AgentNetworkViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3OU-RK-qw9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="jrc-5O-BuG">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_mobile" id="yRP-1o-SvM">
+                                        <rect key="frame" x="0.0" y="5" width="320" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ay2-Xs-LnX">
+                                <rect key="frame" x="20" y="52" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="K0U-8i-qEc">
+                                <rect key="frame" x="20" y="6" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="menu-icon">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="revealMenu:" destination="Lw2-NS-qnm" eventType="touchUpInside" id="JqN-gK-gyT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hdm-jt-Ueq">
+                                <rect key="frame" x="268" y="6" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="pops_icon">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="goBackToRoot:" destination="Lw2-NS-qnm" eventType="touchUpInside" id="81R-LG-deR"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" id="Bsr-tE-CDg">
+                                <rect key="frame" x="0.0" y="81" width="320" height="470"/>
+                                <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Buyers" image="buyers_icon" id="bUD-iE-Kc5"/>
+                    <connections>
+                        <outlet property="imageViewTopBar" destination="jrc-5O-BuG" id="Q0z-8e-ZPc"/>
+                        <outlet property="labelNumberOfAgentNetwork" destination="ay2-Xs-LnX" id="NbN-kU-yGU"/>
+                        <outlet property="view" destination="3OU-RK-qw9" id="0IH-Ar-tTE"/>
+                        <outlet property="viewForPages" destination="Bsr-tE-CDg" id="BKS-zD-NjP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RhK-RT-BdG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="208" y="1629"/>
         </scene>
     </scenes>
     <resources>

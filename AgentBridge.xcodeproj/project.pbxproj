@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		6E0D48FB183B3118000EEC9D /* AgentProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0D48FA183B3118000EEC9D /* AgentProfile.m */; };
+		6E0D48FE183B66FD000EEC9D /* ABridge_AgentNetworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0D48FD183B66FC000EEC9D /* ABridge_AgentNetworkViewController.m */; };
+		6E0D4902183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0D4900183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m */; };
+		6E0D4903183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E0D4901183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.xib */; };
 		6E28ACB81835ED2D007E0C63 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB31835ED2D007E0C63 /* Activity.m */; };
 		6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB71835ED2D007E0C63 /* LoginDetails.m */; };
 		6E37720C18363D5F00135D60 /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E37720B18363D5F00135D60 /* Buyer.m */; };
@@ -63,6 +66,11 @@
 /* Begin PBXFileReference section */
 		6E0D48F9183B3118000EEC9D /* AgentProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgentProfile.h; sourceTree = "<group>"; };
 		6E0D48FA183B3118000EEC9D /* AgentProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgentProfile.m; sourceTree = "<group>"; };
+		6E0D48FC183B66FC000EEC9D /* ABridge_AgentNetworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AgentNetworkViewController.h; sourceTree = "<group>"; };
+		6E0D48FD183B66FC000EEC9D /* ABridge_AgentNetworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentNetworkViewController.m; sourceTree = "<group>"; };
+		6E0D48FF183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AgentNetworkPagesViewController.h; sourceTree = "<group>"; };
+		6E0D4900183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentNetworkPagesViewController.m; sourceTree = "<group>"; };
+		6E0D4901183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_AgentNetworkPagesViewController.xib; sourceTree = "<group>"; };
 		6E28ACB21835ED2D007E0C63 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
 		6E28ACB31835ED2D007E0C63 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		6E28ACB61835ED2D007E0C63 /* LoginDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDetails.h; sourceTree = "<group>"; };
@@ -155,6 +163,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E0D4904183B683E000EEC9D /* AgentNetwork Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6E0D48FC183B66FC000EEC9D /* ABridge_AgentNetworkViewController.h */,
+				6E0D48FD183B66FC000EEC9D /* ABridge_AgentNetworkViewController.m */,
+				6E0D48FF183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.h */,
+				6E0D4900183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m */,
+				6E0D4901183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.xib */,
+			);
+			name = "AgentNetwork Controller";
+			sourceTree = "<group>";
+		};
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +281,7 @@
 				6EBBD76018349F8500166D63 /* Buyer Controller */,
 				6EBBD7691834AD6A00166D63 /* Referral Controller */,
 				6EBBD7761834DB1F00166D63 /* AgentProfile Controller */,
+				6E0D4904183B683E000EEC9D /* AgentNetwork Controller */,
 				6EEF584B18337E4000C3214E /* Images.xcassets */,
 				6EEF587A1833837600C3214E /* ABridge_ParentViewController.h */,
 				6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */,
@@ -432,6 +453,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EEF586A18337E6B00C3214E /* Main.storyboard in Resources */,
+				6E0D4903183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.xib in Resources */,
 				6EBBD75F18349A1C00166D63 /* ABridge_BuyerPagesViewController.xib in Resources */,
 				6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */,
 				6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */,
@@ -463,6 +485,7 @@
 				6EEF586D18337F1500C3214E /* ABridge_InitialViewController.m in Sources */,
 				6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */,
 				6E37720C18363D5F00135D60 /* Buyer.m in Sources */,
+				6E0D48FE183B66FD000EEC9D /* ABridge_AgentNetworkViewController.m in Sources */,
 				6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */,
 				6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */,
 				6EEF587118337F4000C3214E /* ECSlidingViewController.m in Sources */,
@@ -478,6 +501,7 @@
 				6EEF584718337E4000C3214E /* ABridge_AppDelegate.m in Sources */,
 				6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */,
 				6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */,
+				6E0D4902183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m in Sources */,
 				6EBBD7671834A71D00166D63 /* ABridge_ReferralPagesViewController.m in Sources */,
 				6EBBD7701834B48A00166D63 /* ABridge_ActivityPagesViewController.m in Sources */,
 			);

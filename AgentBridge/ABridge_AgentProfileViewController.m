@@ -90,6 +90,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
     if([self.profileData.activation_status integerValue])
         return 5;
     else
@@ -106,51 +107,58 @@
     }
     
     NSInteger row = [indexPath row];
-//    if([self.profileData.activation_status integerValue]){
-//        row += 1;
-//    }
-    if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"verify_image"]) {
-        cell.textLabel.text = @"";
-        cell.detailTextLabel.text = @"";
-        if ([self.profileData.activation_status integerValue]) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"agent-bridge-verified.png"]];
-            imageView.frame = CGRectMake(0.0f, 0.0f, 105.0f, cell.frame.size.height);
-            imageView.center = CGPointMake(cell.frame.size.width/2, cell.frame.size.height/2);
-            imageView.contentMode = UIViewContentModeScaleAspectFit;
-            [cell addSubview:imageView];
-        }
-    }
-    else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"zipcodes"]) {
-        cell.textLabel.text = self.profileData.zipcodes;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ works around zip codes",self.profileData.firstname];
-    }
-    else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"average_sales"]) {
-        NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        formatter.currencyCode = @"USD";
-        
-        cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.average_price doubleValue]]];
-        cell.detailTextLabel.text = @"Average Sales Price";
-    }
-    else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"total_volume"]) {
-        NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        formatter.currencyCode = @"USD";
-        
-        cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.total_volume doubleValue]]];
-        cell.detailTextLabel.text = @"Total Volume";
-    }
-    else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"total_sides"]) {
-        NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        formatter.currencyCode = @"USD";
-        
-        cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.total_sides doubleValue]]];
-        cell.detailTextLabel.text = @"Total Sides";
+    
+    if (self.profileData == nil) {
+            cell.textLabel.text = @"";
+            cell.detailTextLabel.text = @"";
     }
     else {
-        cell.textLabel.text = @"";
-        cell.detailTextLabel.text = @"";
+        if(![self.profileData.activation_status integerValue]){
+            row += 1;
+        }
+        if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"verify_image"]) {
+            cell.textLabel.text = @"";
+            cell.detailTextLabel.text = @"";
+            if ([self.profileData.activation_status integerValue]) {
+                UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"agent-bridge-verified.png"]];
+                imageView.frame = CGRectMake(0.0f, 0.0f, 105.0f, cell.frame.size.height);
+                imageView.center = CGPointMake(cell.frame.size.width/2, cell.frame.size.height/2);
+                imageView.contentMode = UIViewContentModeScaleAspectFit;
+                [cell addSubview:imageView];
+            }
+        }
+        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"zipcodes"]) {
+            cell.textLabel.text = self.profileData.zipcodes;
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ works around zip codes",self.profileData.firstname];
+        }
+        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"average_sales"]) {
+            NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            formatter.currencyCode = @"USD";
+            
+            cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.average_price doubleValue]]];
+            cell.detailTextLabel.text = @"Average Sales Price";
+        }
+        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"total_volume"]) {
+            NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            formatter.currencyCode = @"USD";
+            
+            cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.total_volume doubleValue]]];
+            cell.detailTextLabel.text = @"Total Volume";
+        }
+        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"total_sides"]) {
+            NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            formatter.currencyCode = @"USD";
+            
+            cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.total_sides doubleValue]]];
+            cell.detailTextLabel.text = @"Total Sides";
+        }
+        else {
+            cell.textLabel.text = @"";
+            cell.detailTextLabel.text = @"";
+        }
     }
     
     return cell;
