@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "LoginDetails.h"
 #import "ABridge_AppDelegate.h"
+#import "AgentProfile.h"
 
 @interface ABridge_LoginViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewBackground;
@@ -25,8 +26,11 @@
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSTimer* timer;
 @property (assign, nonatomic) NSInteger count;
-
-
+    
+@property (strong, nonatomic) NSURLConnection *urlConnectionProfile;
+    
+    @property (strong, nonatomic) AgentProfile *profileData;
+    
 -(IBAction)signIn:(id)sender;
 -(IBAction)forgotPassword:(id)sender;
 @end
@@ -37,6 +41,8 @@
 @synthesize dataReceived;
 @synthesize timer;
 @synthesize count;
+    @synthesize urlConnectionProfile;
+    @synthesize profileData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -143,7 +149,7 @@
 //            NSLog(@"url:%@",urlString);
             NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
             
-            urlConnectionLogin = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+            self.urlConnectionLogin = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
             
             
 //            if (urlConnectionLogin) {
@@ -214,30 +220,82 @@
     
     NSLog(@"Did Finish:%@", json);
     
-    NSDictionary *dataJson = [[json objectForKey:@"data"] firstObject];
-    
-    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    
-    LoginDetails *item = [NSEntityDescription
-                          insertNewObjectForEntityForName:@"LoginDetails"
-                          inManagedObjectContext:context];
-    item.user_id = [NSNumber numberWithInt:[[dataJson objectForKey:@"id"] integerValue]];
-    item.name = [dataJson objectForKey:@"name"];
-    item.username = [dataJson objectForKey:@"username"];
-    item.email = [dataJson objectForKey:@"email"];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    NSError *errorSave = nil;
-    if (![context save:&errorSave]) {
-        NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
-    }
-    else {
+    if (connection == self.urlConnectionLogin) {
         
-        [self dismissViewControllerAnimated:YES completion:^{
+        NSDictionary *dataJson = [[json objectForKey:@"data"] firstObject];
+        
+        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        
+        LoginDetails *item = [NSEntityDescription
+                              insertNewObjectForEntityForName:@"LoginDetails"
+                              inManagedObjectContext:context];
+        item.user_id = [NSNumber numberWithInt:[[dataJson objectForKey:@"id"] integerValue]];
+        item.name = [dataJson objectForKey:@"name"];
+        item.username = [dataJson objectForKey:@"username"];
+        item.email = [dataJson objectForKey:@"email"];
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSError *errorSave = nil;
+        if (![context save:&errorSave]) {
+            NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
+        }
+        else {
             
-            NSLog(@"Successfully saved Login Details");
-        }];
+            NSString *parameters = [NSString stringWithFormat:@"?email=%@",item.email];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php"];
+            [urlString appendString:parameters];
+            //            NSLog(@"url:%@",urlString);
+            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+            
+            self.urlConnectionProfile = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+            
+            if (self.urlConnectionProfile) {
+                NSLog(@"Connection Successful");
+            }
+            else {
+                NSLog(@"Connection Failed");
+            }
+            
+            [self dismissViewControllerAnimated:YES completion:^{
+                [self.timer invalidate];
+                NSLog(@"Successfully saved Login Details");
+            }];
+        }
     }
+    else if(connection == self.urlConnectionProfile) {
+        
+        if ([[json objectForKey:@"data"] count]) {
+            
+            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+            for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                self.profileData = nil;
+                
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == %@", [entry objectForKey:@"user_id"]];
+                NSArray *result = [self fetchObjectsWithEntityName:@"AgentProfile" andPredicate:predicate];
+                if ([result count]) {
+                    self.profileData = (AgentProfile*)[result firstObject];
+                }
+                else {
+                    self.profileData = [NSEntityDescription insertNewObjectForEntityForName: @"AgentProfile" inManagedObjectContext: context];
+                }
+                
+                [self.profileData setValuesForKeysWithDictionary:entry];
+                
+                NSError *error = nil;
+                if (![context save:&error]) {
+                    NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                }
+            }
+            
+            
+            if (self.profileData.image_data == nil) {
+                self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
+            }
+            
+        }
+    }
+    
     
     
     // Do something with responseData
@@ -253,5 +311,16 @@
     self.viewOverlay.alpha = 0.0f;
     
     [UIView commitAnimations];
+}
+    
+    
+- (NSArray *)fetchObjectsWithEntityName:(NSString *)entity andPredicate:(NSPredicate *)predicate {
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:entity inManagedObjectContext:context]];
+    NSError * error = nil;
+    NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
+    return results;
 }
 @end

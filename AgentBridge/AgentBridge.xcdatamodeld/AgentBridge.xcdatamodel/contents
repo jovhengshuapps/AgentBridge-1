@@ -13,6 +13,8 @@
     <entity name="AgentProfile" representedClassName="AgentProfile" syncable="YES">
         <attribute name="about" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="activation_status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="average_price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="average_sales" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="broker_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brokerage_license" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,21 +22,25 @@
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="image_data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="is_premium" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="licence" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mobile_number" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mobile_number_main" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mobile_number_show" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profile_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="registration_date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="street_address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="suburb" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tax_id_num" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="total_sides" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="total_volume" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zip" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zipcodes" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Buyer" representedClassName="Buyer" syncable="YES">
         <attribute name="available_sqft" optional="YES" attributeType="String" syncable="YES"/>
@@ -178,11 +184,11 @@
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Activity" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="Buyer" positionX="0" positionY="0" width="128" height="870"/>
-        <element name="LoginDetails" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Referral" positionX="0" positionY="0" width="128" height="360"/>
-        <element name="Property" positionX="250" positionY="30" width="128" height="808"/>
+        <element name="Activity" positionX="0" positionY="0" width="0" height="0"/>
         <element name="AgentProfile" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Buyer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="LoginDetails" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Property" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Referral" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

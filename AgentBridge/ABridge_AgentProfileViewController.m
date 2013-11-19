@@ -50,6 +50,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.slidingViewController.underRightViewController = nil;
+    
     self.arrayKTableKeys = [NSArray arrayWithObjects:@"verify_image", @"zipcodes", @"average_sales", @"total_volume", @"total_sides", nil];
     
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
@@ -89,9 +91,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if([self.profileData.activation_status integerValue])
-        return 6;
-    else
         return 5;
+    else
+        return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -104,33 +106,46 @@
     }
     
     NSInteger row = [indexPath row];
-    if([self.profileData.activation_status integerValue]){
-        row += 1;
-    }
+//    if([self.profileData.activation_status integerValue]){
+//        row += 1;
+//    }
     if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"verify_image"]) {
         cell.textLabel.text = @"";
         cell.detailTextLabel.text = @"";
         if ([self.profileData.activation_status integerValue]) {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"agent-bridge-verified.png"]];
-            imageView.frame = CGRectMake(0.0f, 0.0f, 105.0f, 36.0f);
+            imageView.frame = CGRectMake(0.0f, 0.0f, 105.0f, cell.frame.size.height);
             imageView.center = CGPointMake(cell.frame.size.width/2, cell.frame.size.height/2);
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
             [cell addSubview:imageView];
         }
     }
     else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"zipcodes"]) {
-        cell.textLabel.text = @"";
+        cell.textLabel.text = self.profileData.zipcodes;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ works around zip codes",self.profileData.firstname];
     }
     else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"average_sales"]) {
-        cell.textLabel.text = @"";
+        NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        formatter.currencyCode = @"USD";
+        
+        cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.average_price doubleValue]]];
         cell.detailTextLabel.text = @"Average Sales Price";
     }
     else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"total_volume"]) {
-        cell.textLabel.text = @"";
+        NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        formatter.currencyCode = @"USD";
+        
+        cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.total_volume doubleValue]]];
         cell.detailTextLabel.text = @"Total Volume";
     }
     else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"total_sides"]) {
-        cell.textLabel.text = @"";
+        NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        formatter.currencyCode = @"USD";
+        
+        cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.total_sides doubleValue]]];
         cell.detailTextLabel.text = @"Total Sides";
     }
     else {
@@ -168,7 +183,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-    NSLog(@"Did Finish:%@", json);
+//    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
         
@@ -193,12 +208,20 @@
             }
         }
         
+        
         self.labelName.text = [NSString stringWithFormat:@"%@ %@",self.profileData.firstname, self.profileData.lastname];
         self.labelBroker.text = self.profileData.broker_name;
         self.labelAddress.text = [NSString stringWithFormat:@"%@, %@, %@", self.profileData.street_address, self.profileData.city, self.profileData.countries_name];
         [self.buttonMobileNumber setTitle:self.profileData.mobile_number forState:UIControlStateNormal];
         [self.buttonEmailAddress setTitle:self.profileData.email forState:UIControlStateNormal];
         [self.tableView reloadData];
+        
+        
+        if (self.profileData.image_data == nil) {
+            self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
+        }
+        
+        self.imagePicture.image = [UIImage imageWithData:self.profileData.image_data];
     }
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

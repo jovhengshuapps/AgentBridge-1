@@ -3,11 +3,7 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "activity-icon.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x"
+      "filename" : "activity_icon.png"
     }
   ],
   "info" : {

@@ -30,15 +30,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        CGRect frame = self.view.frame;
-        frame.origin.y = 0.0f;
-        self.view.frame = frame;
-    }
-        
     self.view.layer.shadowOpacity = 0.75f;
     self.view.layer.shadowRadius = 10.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    
     
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[ABridge_MenuViewController class]]) {
         self.slidingViewController.underLeftViewController  = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
@@ -105,6 +100,11 @@
     NSError * error = nil;
     NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
     return results;
+}
+    
+-(IBAction)goBackToRoot:(id)sender {
+    
+    [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
 }
 
 @end

@@ -8,8 +8,13 @@
 
 #import "ABridge_MenuViewController.h"
 #import "ABridge_AppDelegate.h"
+#import "LoginDetails.h"
+#import "AgentProfile.h"
 
 @interface ABridge_MenuViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *buttonProfile;
+    
+    
 - (IBAction)gotoMain:(id)sender;
 - (IBAction)gotoProfile:(id)sender;
 - (IBAction)gotoNetwork:(id)sender;
@@ -34,8 +39,50 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    [self.slidingViewController setAnchorRightRevealAmount:280.0f];
+    [self.slidingViewController setAnchorRightRevealAmount:255.0f];
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
+    
+}
+    
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (self.buttonProfile.tag == NO) {
+        
+        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                                  inManagedObjectContext:context];
+        [fetchRequest setEntity:entity];
+        NSError *error = nil;
+        NSArray *fetchedObjects = [context
+                                   executeFetchRequest:fetchRequest error:&error];
+        
+        LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+        
+        fetchRequest = [[NSFetchRequest alloc] init];
+        entity = [NSEntityDescription entityForName:@"AgentProfile"
+                             inManagedObjectContext:context];
+        [fetchRequest setEntity:entity];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user_id=%@",loginDetail.user_id];
+        [fetchRequest setPredicate:predicate];
+        error = nil;
+        fetchedObjects = nil;
+        fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+        
+        AgentProfile *profileData = (AgentProfile*)[fetchedObjects firstObject];
+        if (profileData.image_data == nil) {
+            profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:profileData.image]];
+        }
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 5.0f, 60.0f, 60.0f)];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.image = [UIImage imageWithData:profileData.image_data];
+        
+        [self.buttonProfile addSubview:imageView];
+        self.buttonProfile.tag = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -105,5 +152,16 @@
     }
 }
 
-
+    
+    
+- (NSArray *)fetchObjectsWithEntityName:(NSString *)entity andPredicate:(NSPredicate *)predicate {
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:entity inManagedObjectContext:context]];
+    NSError * error = nil;
+    NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
+    return results;
+}
+    
 @end

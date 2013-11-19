@@ -132,6 +132,7 @@
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    self.arrayOfBuyer = nil;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
 }

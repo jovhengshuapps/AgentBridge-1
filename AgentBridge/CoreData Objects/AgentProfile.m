@@ -2,7 +2,7 @@
 //  AgentProfile.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/18/13.
+//  Created by host24_iOS Dev on 11/19/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
@@ -35,5 +35,11 @@
 @dynamic tax_id_num;
 @dynamic user_id;
 @dynamic zip;
+@dynamic profile_id;
+@dynamic zipcodes;
+@dynamic average_sales;
+@dynamic total_volume;
+@dynamic total_sides;
+@dynamic average_price;
 
 @end

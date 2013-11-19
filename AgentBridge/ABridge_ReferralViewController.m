@@ -171,7 +171,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"Did Finish:%@", json);
+    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
     
@@ -241,6 +241,7 @@
         [self addChildViewController:self.pageController];
         [[self viewForPages] addSubview:[self.pageController view]];
         [self.pageController didMoveToParentViewController:self];
+        
     
     }
     

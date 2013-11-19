@@ -18,10 +18,11 @@
 @interface ABridge_ParentViewController : UIViewController
 
 @property (strong, nonatomic) NSMutableArray *arrayOfURLConnection;
-@property (strong, nonatomic) IBOutlet UIImageView *imageViewTopBar;
+@property (strong, nonatomic) IBOutlet UIView *imageViewTopBar;
 
 - (IBAction)revealMenu:(id)sender;
 - (IBAction)revealSearch:(id)sender;
+- (IBAction)goBackToRoot:(id)sender;
 
 - (NSURLConnection*)urlConnectionWithURLString:(NSString*)urlString andParameters:(NSString*)parameters;
 - (void)addURLConnection:(NSURLConnection*)urlConnection;

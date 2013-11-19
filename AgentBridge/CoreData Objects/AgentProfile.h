@@ -2,7 +2,7 @@
 //  AgentProfile.h
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/18/13.
+//  Created by host24_iOS Dev on 11/19/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
@@ -21,7 +21,7 @@
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSString * firstname;
 @property (nonatomic, retain) NSString * image;
-@property (nonatomic, retain) NSString * image_data;
+@property (nonatomic, retain) NSData * image_data;
 @property (nonatomic, retain) NSString * is_premium;
 @property (nonatomic, retain) NSString * lastname;
 @property (nonatomic, retain) NSString * licence;
@@ -36,5 +36,11 @@
 @property (nonatomic, retain) NSString * tax_id_num;
 @property (nonatomic, retain) NSString * user_id;
 @property (nonatomic, retain) NSString * zip;
+@property (nonatomic, retain) NSString * profile_id;
+@property (nonatomic, retain) NSString * zipcodes;
+@property (nonatomic, retain) NSString * average_sales;
+@property (nonatomic, retain) NSString * total_volume;
+@property (nonatomic, retain) NSString * total_sides;
+@property (nonatomic, retain) NSString * average_price;
 
 @end
