@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ABridge_AgentNetworkPagesViewController">
             <connections>
+                <outlet property="PrototypeCell" destination="xqx-v3-Kzi" id="w39-RJ-lVe"/>
                 <outlet property="buttonEmailAddress" destination="bjZ-xe-aoN" id="ehd-8u-1Ur"/>
                 <outlet property="buttonMobileNumber" destination="vzW-gG-k0c" id="9Ka-y4-3dI"/>
                 <outlet property="imagePicture" destination="SSJ-Ne-k1N" id="IBD-dS-ozn"/>
@@ -94,6 +95,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="sae-oh-x0D"/>
+                    </connections>
                 </tableView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tqb-fk-pvy">
                     <rect key="frame" x="265" y="5" width="47" height="12"/>
@@ -104,5 +108,14 @@
             </subviews>
             <color key="backgroundColor" red="0.92291525139999997" green="0.92291525139999997" blue="0.92291525139999997" alpha="1" colorSpace="calibratedRGB"/>
         </view>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="xqx-v3-Kzi">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xqx-v3-Kzi" id="v44-fJ-19o">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.17254901959999999" green="0.59999999999999998" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+        </tableViewCell>
     </objects>
 </document>

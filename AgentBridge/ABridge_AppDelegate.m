@@ -28,8 +28,6 @@
     
     [[UITabBar appearance] setBackgroundImage:tabBackground];
     [[UITabBar appearance] setSelectionIndicatorImage:tabBackgroundSelected];
-    [[UITabBar appearance] setBackgroundColor:[UIColor colorWithPatternImage:tabBackground]];
-    ;
     
     return YES;
 }

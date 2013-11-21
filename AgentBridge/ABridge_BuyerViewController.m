@@ -42,6 +42,17 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.labelNumberOfBuyers.font = FONT_OPENSANS_REGULAR(20.0f);
+    
+    // Add a topBorder.
+    CALayer *topBorder = [CALayer layer];
+    
+    topBorder.frame = CGRectMake(0.0f, 0.0f, self.viewForPages.frame.size.width, 1.0f);
+    
+    topBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.viewForPages.layer addSublayer:topBorder];
+    
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -65,6 +76,7 @@
     if (self.urlConnectionBuyer) {
         NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionBuyer];
+        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
         NSLog(@"Connection Failed");
@@ -84,6 +96,9 @@
     pagesViewController.index = index;
     pagesViewController.buyerDetails = (Buyer*)[self.arrayOfBuyer objectAtIndex:index];
     
+    if ([pagesViewController.buyerDetails.hasnew_2 integerValue] == 0 && [pagesViewController.buyerDetails.hasnew integerValue] == 0) {
+        [self showOverlayWithMessage:@"Matching POPs™ may be available on the website." withIndicator:NO];
+    }
     return pagesViewController;
     
 }
@@ -144,7 +159,7 @@
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
     NSLog(@"Did Fail");
-    
+    [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -152,7 +167,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
-    
+    [self dismissOverlay];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);
@@ -194,7 +209,7 @@
         self.pageController.dataSource = self;
         CGRect pageControllerFrame = self.viewForPages.frame;
         pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 0.0f;
+        pageControllerFrame.origin.y = 1.0f;
         self.pageController.view.frame = pageControllerFrame;
         
         self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
@@ -210,7 +225,15 @@
         [self.pageController didMoveToParentViewController:self];
         
     }
-    
+    else {
+        [self.pageController.view removeFromSuperview];
+        [self.pageController removeFromParentViewController];
+        self.pageController = nil;
+        self.numberOfBuyer = 0;
+        self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
+        
+        [self showOverlayWithMessage:@"You currently don't have any Buyers." withIndicator:NO];
+    }
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];

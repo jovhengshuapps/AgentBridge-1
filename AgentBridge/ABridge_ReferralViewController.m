@@ -95,6 +95,7 @@
     if (self.urlConnectionReferral) {
         NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionReferral];
+        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
         NSLog(@"Connection Failed");
@@ -172,7 +173,7 @@
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
     NSLog(@"Did Fail");
-    
+    [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -180,7 +181,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
-    
+    [self dismissOverlay];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);
@@ -262,6 +263,12 @@
         self.pageController = nil;
         self.numberOfReferral = 0;
         self.labelNumberOfReferral.text = [NSString stringWithFormat:@"My Referrals (%li)",(long)self.numberOfReferral];
+        if (self.segmentedControl.selectedSegmentIndex) {
+            [self showOverlayWithMessage:@"You currently don't have any outgoing Referrals." withIndicator:NO];
+        }
+        else {
+            [self showOverlayWithMessage:@"You currently don't have any incoming Referrals." withIndicator:NO];
+        }
     }
     
     

@@ -73,6 +73,7 @@
     if (self.urlConnectionProfile) {
         NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProfile];
+        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
         NSLog(@"Connection Failed");
@@ -180,7 +181,7 @@
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
     NSLog(@"Did Fail");
-    
+    [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -188,7 +189,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
-    
+    [self dismissOverlay];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);

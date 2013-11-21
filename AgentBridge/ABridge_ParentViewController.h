@@ -23,6 +23,8 @@
 - (IBAction)revealMenu:(id)sender;
 - (IBAction)revealSearch:(id)sender;
 - (IBAction)goBackToRoot:(id)sender;
+- (void) showOverlayWithMessage:(NSString*) message withIndicator:(BOOL) with_indicator;
+- (void) dismissOverlay;
 
 - (NSURLConnection*)urlConnectionWithURLString:(NSString*)urlString andParameters:(NSString*)parameters;
 - (void)addURLConnection:(NSURLConnection*)urlConnection;

@@ -41,7 +41,17 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_REGULAR(20.0f);
     self.slidingViewController.underRightViewController = nil;
+    
+    // Add a topBorder.
+    CALayer *topBorder = [CALayer layer];
+    
+    topBorder.frame = CGRectMake(0.0f, 0.0f, self.viewForPages.frame.size.width, 1.0f);
+    
+    topBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.viewForPages.layer addSublayer:topBorder];
     
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
@@ -58,11 +68,12 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",loginDetail.user_id];
     
-    self.urlConnectionAgentNetwork = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers.php" andParameters:parameters];
+    self.urlConnectionAgentNetwork = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_network_info.php" andParameters:parameters];
     
     if (self.urlConnectionAgentNetwork) {
         NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionAgentNetwork];
+        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
         NSLog(@"Connection Failed");
@@ -79,7 +90,7 @@
 
 - (ABridge_AgentNetworkPagesViewController *)viewControllerAtIndex:(NSUInteger)index {
     
-    ABridge_AgentNetworkPagesViewController *pagesViewController = [[ABridge_AgentNetworkPagesViewController alloc] initWithNibName:@"ABridge_AgentNetworkPagesViewController" bundle:nil];
+    ABridge_AgentNetworkPagesViewController *pagesViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NetworkPages"];
     pagesViewController.index = index;
     pagesViewController.profileData = (AgentProfile*)[self.arrayOfAgents objectAtIndex:index];
     
@@ -143,7 +154,7 @@
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
     NSLog(@"Did Fail");
-    
+    [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -151,39 +162,39 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
-    
+    [self dismissOverlay];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
         
-//        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
         for (NSDictionary *entry in [json objectForKey:@"data"]) {
             AgentProfile *agent = nil;
             
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == 1124"];
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == %@", [entry objectForKey:@"user_id"]];
             NSArray *result = [self fetchObjectsWithEntityName:@"AgentProfile" andPredicate:predicate];
-//            if ([result count]) {
+            if ([result count]) {
                 agent = (AgentProfile*)[result firstObject];
-//            }
-//            else {
-//                agent = [NSEntityDescription insertNewObjectForEntityForName: @"AgentProfile" inManagedObjectContext: context];
-//            }
+            }
+            else {
+                agent = [NSEntityDescription insertNewObjectForEntityForName: @"AgentProfile" inManagedObjectContext: context];
+            }
             
-//            [agent setValuesForKeysWithDictionary:entry];
+            [agent setValuesForKeysWithDictionary:entry];
             
-//            NSError *error = nil;
-//            if (![context save:&error]) {
-//                NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
-//            }
-//            else {
+            NSError *error = nil;
+            if (![context save:&error]) {
+                NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+            }
+            else {
                 if (self.arrayOfAgents == nil) {
                     self.arrayOfAgents = [[NSMutableArray alloc] init];
                 }
                 
                 [self.arrayOfAgents addObject:agent];
-//            }
+            }
         }
         
         self.numberOfAgentNetwork = [self.arrayOfAgents count];
@@ -193,7 +204,7 @@
         self.pageController.dataSource = self;
         CGRect pageControllerFrame = self.viewForPages.frame;
         pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 0.0f;
+        pageControllerFrame.origin.y = 1.0f;
         self.pageController.view.frame = pageControllerFrame;
         
         self.labelNumberOfAgentNetwork.text = [NSString stringWithFormat:@"My Network (%li)",(long)self.numberOfAgentNetwork];
@@ -209,7 +220,15 @@
         [self.pageController didMoveToParentViewController:self];
         
     }
-    
+    else {
+        [self.pageController.view removeFromSuperview];
+        [self.pageController removeFromParentViewController];
+        self.pageController = nil;
+        self.numberOfAgentNetwork = 0;
+        self.labelNumberOfAgentNetwork.text = [NSString stringWithFormat:@"My Network (%li)",(long)self.numberOfAgentNetwork];
+        
+        [self showOverlayWithMessage:@"You currently have no members in your Network." withIndicator:NO];
+    }
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];

@@ -39,6 +39,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
     self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
     
     self.labelZip.text = self.propertyDetails.zip;

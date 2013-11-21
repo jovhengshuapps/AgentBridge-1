@@ -43,6 +43,17 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(20.0f);
+    
+    // Add a topBorder.
+    CALayer *topBorder = [CALayer layer];
+    
+    topBorder.frame = CGRectMake(0.0f, 0.0f, self.viewForPages.frame.size.width, 1.0f);
+    
+    topBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.viewForPages.layer addSublayer:topBorder];
+    
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -66,6 +77,7 @@
     if (self.urlConnectionProperty) {
         NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProperty];
+        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
         NSLog(@"Connection Failed");
@@ -145,7 +157,7 @@
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
     NSLog(@"Did Fail");
-    
+    [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -153,6 +165,8 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
+    
+    [self dismissOverlay];
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
@@ -196,7 +210,7 @@
         self.pageController.dataSource = self;
         CGRect pageControllerFrame = self.viewForPages.frame;
         pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 0.0f;
+        pageControllerFrame.origin.y = 1.0f;
         self.pageController.view.frame = pageControllerFrame;
         
         self.labelNumberOfProperty.text = [NSString stringWithFormat:@"My POPs™ (%li)",(long)self.numberOfProperty];
@@ -210,7 +224,16 @@
         [self addChildViewController:self.pageController];
         [[self viewForPages] addSubview:[self.pageController view]];
         [self.pageController didMoveToParentViewController:self];
-        
+        self.buttonSave.hidden = NO;
+    }
+    else {
+        [self.pageController.view removeFromSuperview];
+        [self.pageController removeFromParentViewController];
+        self.pageController = nil;
+        self.numberOfProperty = 0;
+        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"My POPs™ (%li)",(long)self.numberOfProperty];
+        self.buttonSave.hidden = YES:
+        [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
     }
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

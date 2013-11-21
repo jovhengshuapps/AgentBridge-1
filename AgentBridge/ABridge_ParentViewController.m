@@ -9,7 +9,7 @@
 #import "ABridge_ParentViewController.h"
 
 @interface ABridge_ParentViewController ()
-
+@property (strong, nonatomic) UIView *viewOverlay;
 @end
 
 @implementation ABridge_ParentViewController
@@ -104,7 +104,59 @@
     
 -(IBAction)goBackToRoot:(id)sender {
     
-    [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
+    [self.slidingViewController anchorTopViewOffScreenTo:ECLeft animations:nil onComplete:^{
+        [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
+    }];
 }
 
+- (void) showOverlayWithMessage:(NSString*) message withIndicator:(BOOL) with_indicator{
+    [self dismissOverlay];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(50.0f, (with_indicator)?30.0f:20.0f, 200.0f, 30.0f)];
+    label.text = message;
+    label.textColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = FONT_OPENSANS_REGULAR(20.0f);
+    label.textAlignment = NSTextAlignmentCenter;
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    [label sizeToFit];
+    
+    CGRect frame = label.frame;
+    frame.size.width = 200.0f;
+    label.frame = frame;
+    
+    self.viewOverlay = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 300.0f, (label.frame.origin.y + label.frame.size.height + 20.0f))];
+    self.viewOverlay.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
+    self.viewOverlay.layer.cornerRadius = 10.0f;
+    self.viewOverlay.layer.masksToBounds = YES;
+    
+    [self.viewOverlay addSubview:label];
+    
+    self.viewOverlay.center = self.view.center;
+    
+    if (with_indicator) {
+        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityIndicator.center = self.viewOverlay.center;
+        activityIndicator.frame = CGRectMake(activityIndicator.frame.origin.x, 5.0f, 20.0f, 20.0f);
+        [activityIndicator startAnimating];
+        
+        [self.viewOverlay addSubview:activityIndicator];
+    }
+    
+    UITapGestureRecognizer *tapToClose = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissOverlay)];
+    tapToClose.numberOfTapsRequired = 1;
+    tapToClose.numberOfTouchesRequired = 1;
+    
+    [self.viewOverlay addGestureRecognizer:tapToClose];
+    
+    [self.view addSubview:self.viewOverlay];
+}
+
+- (void) dismissOverlay {
+    self.viewOverlay.hidden = YES;
+    [self.viewOverlay removeFromSuperview];
+    self.viewOverlay = nil;
+}
 @end

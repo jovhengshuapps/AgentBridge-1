@@ -97,14 +97,21 @@
     
     [featuresString setString:removedLastComma];
     
-    [featuresString appendFormat:@"\n\nNote: %@",self.buyerDetails.desc];
+    if (![self isNull:self.buyerDetails.desc]) {
+        [featuresString appendFormat:@"\n\nNote: %@",self.buyerDetails.desc];
+    }
     
     self.textFeatures.text = featuresString;
     
     self.imageProperty.image = [UIImage imageNamed:[self imageStringForPropertyType:[self.buyerDetails.property_type integerValue] andSubType:[self.buyerDetails.sub_type integerValue]]];
     
-    self.labelSaved.text = [NSString stringWithFormat:@"Saved (%@)",self.buyerDetails.hasnew_2];
-    self.labelNew.text = [NSString stringWithFormat:@"New (%@)",self.buyerDetails.hasnew];
+        if ([self.buyerDetails.hasnew_2 integerValue] != 0) {
+            self.labelSaved.text = [NSString stringWithFormat:@"Saved (%@)",self.buyerDetails.hasnew_2];
+        }
+        if ([self.buyerDetails.hasnew integerValue] != 0) {
+            self.labelNew.text = [NSString stringWithFormat:@"New (%@)",self.buyerDetails.hasnew];
+        }
+    
 }
 
 - (void)didReceiveMemoryWarning
