@@ -19,6 +19,18 @@
 {
     // Override point for customization after application launch.
     _initalStoryboard = self.window.rootViewController.storyboard;
+    
+    UIImage *tabBackground = [[UIImage imageNamed:@"nav_bg.png"]
+                              resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    UIImage *tabBackgroundSelected = [[UIImage imageNamed:@"nav_bg_hover.png"]
+                              resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    [[UITabBar appearance] setBackgroundImage:tabBackground];
+    [[UITabBar appearance] setSelectionIndicatorImage:tabBackgroundSelected];
+    [[UITabBar appearance] setBackgroundColor:[UIColor colorWithPatternImage:tabBackground]];
+    ;
+    
     return YES;
 }
 

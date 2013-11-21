@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AddressBook/AddressBook.h>
 #import "Referral.h"
 
 @interface ABridge_ReferralPagesViewController : UIViewController

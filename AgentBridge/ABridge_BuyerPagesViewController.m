@@ -45,11 +45,24 @@
     self.labelBuyerName.text = self.buyerDetails.name;
     self.labelBuyerType.text = self.buyerDetails.buyer_type;
     self.labelZipcode.text = [NSString stringWithFormat:@"%@",self.buyerDetails.zip];
-    NSMutableString *priceText = [NSMutableString stringWithString:@"$"];
-    [priceText appendString:self.buyerDetails.price_value];
-    if ([priceText rangeOfString:@"-"].location != NSNotFound) {
-        [priceText insertString:@"$" atIndex:[priceText rangeOfString:@"-"].location+1];
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyCode = @"USD";
+    
+    NSMutableString *priceText = [NSMutableString stringWithString:@""];
+    
+    if ([self.buyerDetails.price_value rangeOfString:@"-"].location != NSNotFound) {
+        NSString *price1 = [self.buyerDetails.price_value substringToIndex:[self.buyerDetails.price_value rangeOfString:@"-"].location];
+        NSString *price2 = [self.buyerDetails.price_value substringFromIndex:[self.buyerDetails.price_value rangeOfString:@"-"].location+1];
+        [priceText setString:[formatter stringFromNumber: [NSNumber numberWithDouble:[price1 doubleValue]]]];
+        [priceText appendString:@" - "];
+        [priceText appendString:[formatter stringFromNumber: [NSNumber numberWithDouble:[price2 doubleValue]]]];
+        
     }
+    else {
+        [priceText setString:[formatter stringFromNumber: [NSNumber numberWithDouble:[self.buyerDetails.price_value doubleValue]]]];
+    }
+    
     self.labelPrice.text = priceText;
     self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %@ days", self.buyerDetails.expiry];
     

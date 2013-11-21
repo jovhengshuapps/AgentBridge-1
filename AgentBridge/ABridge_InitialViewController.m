@@ -42,6 +42,13 @@
     
     
     self.topViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+    
+    CGRect viewFrame=((UITabBarController*)self.topViewController).tabBar.frame;
+    viewFrame.origin.y += 5.0f;
+    viewFrame.size.height=44.0f;
+    ((UITabBarController*)self.topViewController).tabBar.frame=viewFrame;
+    
+    
     self.shouldAddPanGestureRecognizerToTopViewSnapshot = NO;
     
 }

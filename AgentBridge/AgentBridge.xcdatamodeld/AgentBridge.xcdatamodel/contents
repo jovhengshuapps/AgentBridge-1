@@ -165,22 +165,35 @@
         <attribute name="agent_b" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="agent_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_address_1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_address_2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_country_code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_country_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="client_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="client_intention" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="client_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_state_code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_state_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_zip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="counter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countered" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countries_iso_code_3" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countries_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="docusign_envelope" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="price_1" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price_2" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="property_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="reason" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="referral_fee" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="referral_id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state_code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>

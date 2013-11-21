@@ -48,6 +48,18 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.labelNumberOfReferral.font = FONT_OPENSANS_REGULAR(20.0f);
+    [self defineSegmentControlStyle];
+    // Add a topBorder.
+    CALayer *topBorder = [CALayer layer];
+    
+    topBorder.frame = CGRectMake(0.0f, 0.0f, self.viewForPages.frame.size.width, 1.0f);
+    
+    topBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.viewForPages.layer addSublayer:topBorder];
+
+    
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -126,7 +138,7 @@
     
     index++;
     
-    if (index == self.numberOfReferral) {
+    if (index == self.numberOfReferral || self.numberOfReferral == 0) {
         return nil;
     }
     
@@ -171,7 +183,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-    NSLog(@"Did Finish:%@", json);
+//    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
     
@@ -227,7 +239,7 @@
         self.pageController.dataSource = self;
         CGRect pageControllerFrame = self.viewForPages.frame;
         pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 0.0f;
+        pageControllerFrame.origin.y = 1.0f;
         self.pageController.view.frame = pageControllerFrame;
     
         self.labelNumberOfReferral.text = [NSString stringWithFormat:@"My Referrals (%li)",(long)self.numberOfReferral];
@@ -244,6 +256,13 @@
         
     
     }
+    else {
+        [self.pageController.view removeFromSuperview];
+        [self.pageController removeFromParentViewController];
+        self.pageController = nil;
+        self.numberOfReferral = 0;
+        self.labelNumberOfReferral.text = [NSString stringWithFormat:@"My Referrals (%li)",(long)self.numberOfReferral];
+    }
     
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -258,4 +277,20 @@
     self.arrayOfReferralOut = nil;
     [self reloadPageController:value];
 }
+
+-(void)defineSegmentControlStyle
+{
+    
+    [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    
+    [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"nav_bg_hover.png"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    self.segmentedControl.layer.cornerRadius = 4.0f;
+    self.segmentedControl.layer.masksToBounds = YES;
+    
+    CGRect frame = self.segmentedControl.frame;
+    frame.size.height = 24.0f;
+    self.segmentedControl.frame = frame;
+}
+
 @end

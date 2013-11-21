@@ -44,11 +44,14 @@
     self.labelZip.text = self.propertyDetails.zip;
     self.labelPropertyName.text = self.propertyDetails.property_name;
     self.labelPropertyType.text = [NSString stringWithFormat:@"%@ - %@",self.propertyDetails.type_name, self.propertyDetails.sub_type_name];
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyCode = @"USD";
     
     NSMutableString *priceText = [NSMutableString stringWithString:@"$"];
-    [priceText appendString:self.propertyDetails.price1];
+    [priceText appendString:[formatter stringFromNumber: [NSNumber numberWithDouble:[self.propertyDetails.price1 doubleValue]]]];
     if ([self.propertyDetails.price_type integerValue] == YES) {
-        [priceText appendFormat:@" - $%@",self.propertyDetails.price2];
+        [priceText appendFormat:@" - $%@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.propertyDetails.price2 doubleValue]]]];
     }
     self.labelPrice.text = priceText;
     self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %@ days", self.propertyDetails.expiry];
