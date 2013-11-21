@@ -85,8 +85,8 @@
 		6E791B39183C8B9300BB76B3 /* OpenSans-Light-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light-webfont.ttf"; sourceTree = "<group>"; };
 		6E791B3A183C8B9300BB76B3 /* OpenSans-Regular-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular-webfont.ttf"; sourceTree = "<group>"; };
 		6E791B3B183C8B9300BB76B3 /* OpenSans-Semibold-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold-webfont.ttf"; sourceTree = "<group>"; };
-		6E791B47183CD28200BB76B3 /* Referral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Referral.h; path = "CoreData Objects/Referral.h"; sourceTree = "<group>"; };
-		6E791B48183CD28200BB76B3 /* Referral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Referral.m; path = "CoreData Objects/Referral.m"; sourceTree = "<group>"; };
+		6E791B47183CD28200BB76B3 /* Referral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Referral.h; sourceTree = "<group>"; };
+		6E791B48183CD28200BB76B3 /* Referral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Referral.m; sourceTree = "<group>"; };
 		6EBBD74C183473B200166D63 /* ABridge_PropertyPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_PropertyPagesViewController.h; sourceTree = "<group>"; };
 		6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_PropertyPagesViewController.m; sourceTree = "<group>"; };
 		6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_PropertyPagesViewController.xib; sourceTree = "<group>"; };
@@ -185,6 +185,8 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
+				6E791B47183CD28200BB76B3 /* Referral.h */,
+				6E791B48183CD28200BB76B3 /* Referral.m */,
 				6E0D48F9183B3118000EEC9D /* AgentProfile.h */,
 				6E0D48FA183B3118000EEC9D /* AgentProfile.m */,
 				6EC708A71839ED1C00A9B5D8 /* Property.h */,
@@ -293,8 +295,6 @@
 				6EEF586918337E6B00C3214E /* Main.storyboard */,
 				6EEF5883183396AB00C3214E /* Constants.h */,
 				6EEF584818337E4000C3214E /* AgentBridge.xcdatamodeld */,
-				6E791B47183CD28200BB76B3 /* Referral.h */,
-				6E791B48183CD28200BB76B3 /* Referral.m */,
 				6EBBD7541834823F00166D63 /* CoreData Objects */,
 				6EEF586E18337F4000C3214E /* ECSlidingViewController */,
 				6EEF583D18337E4000C3214E /* Supporting Files */,

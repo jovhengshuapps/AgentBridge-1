@@ -77,7 +77,7 @@
 - (NSURLConnection *)urlConnectionWithURLString:(NSString *)urlString andParameters:(NSString *)parameters {
     NSMutableString *urlString_ = [NSMutableString stringWithString:urlString];
     [urlString_ appendString:parameters];
-    NSLog(@"url:%@",urlString);
+//    NSLog(@"url:%@",urlString);
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

@@ -73,7 +73,6 @@
     for (NSString *attribute in attributes) {
         if([attribute isEqualToString:@"available_sqft"]||[attribute isEqualToString:@"bathroom"]||[attribute isEqualToString:@"bedroom"]||[attribute isEqualToString:@"bldg_sqft"]||[attribute isEqualToString:@"cap_rate"]||[attribute isEqualToString:@"ceiling_height"]||[attribute isEqualToString:@"condition"]||[attribute isEqualToString:@"furnished"]||[attribute isEqualToString:@"garage"]||[attribute isEqualToString:@"grm"]||[attribute isEqualToString:@"lot_size"]||[attribute isEqualToString:@"lot_sqft"]||[attribute isEqualToString:@"view"]||[attribute isEqualToString:@"year_built"]||[attribute isEqualToString:@"stories"]||[attribute isEqualToString:@"unit_sqft"]){
             
-//            NSLog(@"%@ value:%@",([self isNull:[buyerDetails valueForKey:attribute]])?@"YES":@"NO",[buyerDetails valueForKey:attribute]);
             
             if (count == 5) {
                 break;
@@ -93,12 +92,14 @@
         }
     }
     
-    NSString *removedLastComma = [featuresString substringToIndex:[featuresString length]-2];
-    
-    [featuresString setString:removedLastComma];
+    if ([featuresString rangeOfString:@","].location != NSNotFound) {
+        NSString *removedLastComma = [featuresString substringToIndex:[featuresString length]-2];
+        
+        [featuresString setString:[NSString stringWithFormat:@"%@\n\n",removedLastComma]];
+    }
     
     if (![self isNull:self.buyerDetails.desc]) {
-        [featuresString appendFormat:@"\n\nNote: %@",self.buyerDetails.desc];
+        [featuresString appendFormat:@"Note: %@",self.buyerDetails.desc];
     }
     
     self.textFeatures.text = featuresString;
@@ -121,7 +122,7 @@
 }
 
 -(BOOL)isNull:(id)value {
-    return ([[NSNull class] isMemberOfClass:[((NSNull *) value) class]]);
+    return ((NSNull*)value == nil);
 }
 
 -(NSString*)imageStringForPropertyType:(NSInteger)property_type andSubType:(NSInteger)sub_type {

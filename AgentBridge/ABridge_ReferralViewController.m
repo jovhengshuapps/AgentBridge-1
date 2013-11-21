@@ -93,12 +93,12 @@
     self.urlConnectionReferral = [self urlConnectionWithURLString:([value isEqualToString:@"In"])?@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_in.php":@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_out.php" andParameters:parameters];
     
     if (self.urlConnectionReferral) {
-        NSLog(@"Connection Successful");
+//        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionReferral];
         [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
-        NSLog(@"Connection Failed");
+//        NSLog(@"Connection Failed");
     }
 }
 
@@ -172,7 +172,7 @@
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-    NSLog(@"Did Fail");
+//    NSLog(@"Did Fail");
     [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
@@ -295,9 +295,9 @@
     self.segmentedControl.layer.cornerRadius = 4.0f;
     self.segmentedControl.layer.masksToBounds = YES;
     
-    CGRect frame = self.segmentedControl.frame;
-    frame.size.height = 24.0f;
-    self.segmentedControl.frame = frame;
+//    CGRect frame = self.segmentedControl.frame;
+//    frame.size.height = 24.0f;
+//    self.segmentedControl.frame = frame;
 }
 
 @end

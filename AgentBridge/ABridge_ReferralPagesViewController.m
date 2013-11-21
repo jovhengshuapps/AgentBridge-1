@@ -100,16 +100,48 @@
 }
 
 - (IBAction)saveBuyerVCard:(id)sender {
-    NSLog(@"name:%@",self.referralDetails.client_name);
+//    NSLog(@"name:%@",self.referralDetails.client_name);
+    
     CFErrorRef error = NULL;
-     ABAddressBookRef iPhoneAddressBook = ABAddressBookCreate();
-    CFRetain(iPhoneAddressBook);
+    ABAddressBookRef iPhoneAddressBook = ABAddressBookCreate();
+    
+    __block BOOL accessGranted = NO;
+    
+    if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
+        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+        
+        ABAddressBookRequestAccessWithCompletion(iPhoneAddressBook, ^(bool granted, CFErrorRef error) {
+            accessGranted = granted;
+            dispatch_semaphore_signal(sema);
+        });
+        
+        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    }
+    else { // we're on iOS 5 or older
+        accessGranted = YES;
+    }
+    
+    
+    if (accessGranted) {
+        
+//        NSArray *thePeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(iPhoneAddressBook);
+        // Do whatever you need with thePeople...
+        
     
      ABRecordRef newPerson = ABPersonCreate();
-    CFRetain(newPerson);
     
-    ABRecordSetValue(newPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)(self.referralDetails.client_name), &error);
-    ABRecordSetValue(newPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)(self.referralDetails.client_name), &error);
+        NSString *firstName = @"";
+        NSString *lastName = @"";
+        if ([self.referralDetails.client_name rangeOfString:@" "].location == NSNotFound) {
+            firstName = self.referralDetails.client_name;
+        }
+        else {
+            firstName = [[self.referralDetails.client_name componentsSeparatedByString:@" "] objectAtIndex:0];
+            lastName = [[self.referralDetails.client_name componentsSeparatedByString:@" "] objectAtIndex:1];
+        }
+        
+    ABRecordSetValue(newPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)(firstName), &error);
+    ABRecordSetValue(newPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)(lastName), &error);
     ABRecordSetValue(newPerson, kABPersonOrganizationProperty, @"Agent Bridge", &error);
     ABRecordSetValue(newPerson, kABPersonJobTitleProperty, CLIENT_INTENTION([self.referralDetails.client_intention integerValue]), &error);
     
@@ -138,17 +170,23 @@
     CFRelease(multiAddress);
     
     ABAddressBookAddRecord(iPhoneAddressBook, newPerson, &error);
-    
-    
-    CFRelease(newPerson);
-    CFRelease(iPhoneAddressBook);
-    
-    if (ABAddressBookSave(iPhoneAddressBook, &error))
-    {
-        NSLog(@"Save!");
+        CFRelease(newPerson);
+        
+        if (ABAddressBookSave(iPhoneAddressBook, &error))
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Successfully saved Buyer into Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Failed in saving Buyer into Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        
     }
     else {
-        NSLog(@"error!!");
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Please allow the AgentBridge to Access your Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
     }
 }
 @end

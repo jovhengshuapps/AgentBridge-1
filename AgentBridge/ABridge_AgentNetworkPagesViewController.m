@@ -175,7 +175,7 @@
     
     else {
         
-        NSLog(@"Device is unable to send email in its current state.");
+//        NSLog(@"Device is unable to send email in its current state.");
         
     }
     

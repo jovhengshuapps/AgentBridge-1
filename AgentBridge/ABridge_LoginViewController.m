@@ -218,7 +218,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-    NSLog(@"Did Finish:%@", json);
+//    NSLog(@"Did Finish:%@", json);
     
     if (connection == self.urlConnectionLogin) {
         
@@ -251,15 +251,15 @@
             self.urlConnectionProfile = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
             
             if (self.urlConnectionProfile) {
-                NSLog(@"Connection Successful");
+//                NSLog(@"Connection Successful");
             }
             else {
-                NSLog(@"Connection Failed");
+//                NSLog(@"Connection Failed");
             }
             
             [self dismissViewControllerAnimated:YES completion:^{
                 [self.timer invalidate];
-                NSLog(@"Successfully saved Login Details");
+//                NSLog(@"Successfully saved Login Details");
             }];
         }
     }

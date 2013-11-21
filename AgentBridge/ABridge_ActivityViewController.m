@@ -72,12 +72,12 @@
     
     if (self.urlConnectionActivity) {
         [self addURLConnection:self.urlConnectionActivity];
-        NSLog(@"Connection Successful");
+//        NSLog(@"Connection Successful");
         
         [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
-        NSLog(@"Connection Failed");
+//        NSLog(@"Connection Failed");
     }
 }
 
@@ -151,7 +151,7 @@
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-    NSLog(@"Did Fail");
+//    NSLog(@"Did Fail");
     [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];

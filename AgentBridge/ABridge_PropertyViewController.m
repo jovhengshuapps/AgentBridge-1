@@ -75,12 +75,12 @@
     self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php" andParameters:parameters];
     
     if (self.urlConnectionProperty) {
-        NSLog(@"Connection Successful");
+//        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProperty];
         [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
-        NSLog(@"Connection Failed");
+//        NSLog(@"Connection Failed");
     }
 }
 
@@ -156,7 +156,7 @@
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-    NSLog(@"Did Fail");
+//    NSLog(@"Did Fail");
     [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
@@ -232,7 +232,7 @@
         self.pageController = nil;
         self.numberOfProperty = 0;
         self.labelNumberOfProperty.text = [NSString stringWithFormat:@"My POPs™ (%li)",(long)self.numberOfProperty];
-        self.buttonSave.hidden = YES:
+        self.buttonSave.hidden = YES;
         [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
     }
     

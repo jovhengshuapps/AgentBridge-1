@@ -71,12 +71,12 @@
     self.urlConnectionProfile = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php" andParameters:parameters];
     
     if (self.urlConnectionProfile) {
-        NSLog(@"Connection Successful");
+//        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProfile];
         [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
-        NSLog(@"Connection Failed");
+//        NSLog(@"Connection Failed");
     }
 }
 
@@ -180,7 +180,7 @@
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-    NSLog(@"Did Fail");
+//    NSLog(@"Did Fail");
     [self dismissOverlay];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
@@ -261,7 +261,7 @@
     
     else {
         
-        NSLog(@"Device is unable to send email in its current state.");
+//        NSLog(@"Device is unable to send email in its current state.");
         
     }
     
