@@ -16,6 +16,13 @@
 #define FONT_OPENSANS_REGULAR(s) [UIFont fontWithName:@"OpenSans-Regular-webfont" size:s]
 #define FONT_OPENSANS_SEMIBOLD(s) [UIFont fontWithName:@"OpenSans-Semibold-webfont" size:s]
 #define CLIENT_INTENTION(choice) (choice == 1)?@"Buying":(choice == 2)?@"Selling":(choice == 3)?@"Buying and Selling":(choice == 4)?@"Leasing":@""
+#define REFERRAL_STATUS_UNDERCONTRACT                                               1
+#define REFERRAL_STATUS_CLOSED                                                      4
+#define REFERRAL_STATUS_NOGO                                                        5
+#define REFERRAL_STATUS_NEEDHELP                                                    6
+#define REFERRAL_STATUS_PENDING                                                     7
+#define REFERRAL_STATUS_ACCEPTED                                                    8
+#define REFERRAL_STATUS_COMMISSIONRECEIVED                                          9
 
 #define RESIDENTIAL_PURCHASE                                                        1
 #define RESIDENTIAL_LEASE                                                           2

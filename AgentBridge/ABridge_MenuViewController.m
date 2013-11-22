@@ -10,9 +10,16 @@
 #import "ABridge_AppDelegate.h"
 #import "LoginDetails.h"
 #import "AgentProfile.h"
+#import "Constants.h"
 
 @interface ABridge_MenuViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *buttonProfile;
+@property (weak, nonatomic) IBOutlet UIButton *buttonNetwork;
+@property (weak, nonatomic) IBOutlet UIButton *buttonAccountSettings;
+@property (weak, nonatomic) IBOutlet UIButton *buttonAboutMe;
+@property (weak, nonatomic) IBOutlet UIButton *buttonNotification;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSecurity;
+@property (weak, nonatomic) IBOutlet UIButton *buttonLogOut;
     
     
 - (IBAction)gotoMain:(id)sender;
@@ -46,6 +53,36 @@
     
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    self.buttonProfile.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.buttonNetwork.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.buttonAccountSettings.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.buttonAboutMe.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.buttonNotification.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.buttonSecurity.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.buttonLogOut.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    
+    
+    // Add a bottomBorder.
+    CALayer *bottomBorder = [CALayer layer];
+    
+    bottomBorder.frame = CGRectMake(0.0f, self.buttonAboutMe.frame.size.height-1.0f, self.buttonAboutMe.frame.size.width, 1.0f);
+    
+    bottomBorder.backgroundColor = [UIColor colorWithRed:127.0f/255.0f green:127.0f/255.0f blue:127.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.buttonAboutMe.layer addSublayer:bottomBorder];
+    
+    
+    // Add a bottomBorder.
+    CALayer *bottomBorder2 = [CALayer layer];
+    
+    bottomBorder2.frame = CGRectMake(0.0f, self.buttonNotification.frame.size.height-1.0f, self.buttonNotification.frame.size.width, 1.0f);
+    
+    bottomBorder2.backgroundColor = [UIColor colorWithRed:127.0f/255.0f green:127.0f/255.0f blue:127.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.buttonNotification.layer addSublayer:bottomBorder2];
+    
+    
     
     if (self.buttonProfile.tag == NO) {
         

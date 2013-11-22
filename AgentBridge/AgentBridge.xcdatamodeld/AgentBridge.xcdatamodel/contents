@@ -160,6 +160,11 @@
         <attribute name="zip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoned" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="PropertyImages" representedClassName="PropertyImages" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="image_id" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Referral" representedClassName="Referral" syncable="YES">
         <attribute name="agent_a" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="agent_b" optional="YES" attributeType="String" syncable="YES"/>
@@ -203,5 +208,6 @@
         <element name="LoginDetails" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Property" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Referral" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PropertyImages" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

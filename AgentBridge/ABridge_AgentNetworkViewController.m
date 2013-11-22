@@ -199,7 +199,7 @@
         
         self.numberOfAgentNetwork = [self.arrayOfAgents count];
         
-        self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+        self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
         
         self.pageController.dataSource = self;
         CGRect pageControllerFrame = self.viewForPages.frame;

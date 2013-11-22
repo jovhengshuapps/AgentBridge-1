@@ -80,6 +80,7 @@
 //    NSLog(@"url:%@",urlString);
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
     
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     return [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
 }
@@ -128,7 +129,7 @@
     label.frame = frame;
     
     self.viewOverlay = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 300.0f, (label.frame.origin.y + label.frame.size.height + 20.0f))];
-    self.viewOverlay.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
+    self.viewOverlay.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6f];
     self.viewOverlay.layer.cornerRadius = 10.0f;
     self.viewOverlay.layer.masksToBounds = YES;
     

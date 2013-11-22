@@ -232,13 +232,29 @@
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
+                            <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="3" id="KEV-2a-GwZ">
+                                <rect key="frame" x="0.0" y="60" width="320" height="439"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="MyM-yj-3Uc">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="439"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.45000000000000001" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="delegate" destination="tNa-SB-5EU" id="n2l-La-7k7"/>
+                                </connections>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="POPs™" image="pops_icon" id="9Sa-cU-jkW"/>
                     <connections>
                         <outlet property="buttonSave" destination="nS8-XG-dLW" id="vip-e6-KU2"/>
+                        <outlet property="imageView" destination="MyM-yj-3Uc" id="5yL-Ro-ggz"/>
                         <outlet property="labelNumberOfProperty" destination="w6D-VC-2bB" id="dJu-y7-vkF"/>
+                        <outlet property="scrollViewZoom" destination="KEV-2a-GwZ" id="yUr-t0-waa"/>
                         <outlet property="view" destination="vse-pC-vC4" id="Acg-mL-9Io"/>
                         <outlet property="viewForPages" destination="0lj-5m-xEq" id="LSR-cd-OKs"/>
                     </connections>
@@ -312,7 +328,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LTh-MZ-Z7U">
-                                <rect key="frame" x="0.0" y="111" width="255" height="30"/>
+                                <rect key="frame" x="0.0" y="108" width="255" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -345,7 +361,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dT7-Z5-W8w">
-                                <rect key="frame" x="0.0" y="141" width="255" height="34"/>
+                                <rect key="frame" x="0.0" y="138" width="255" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.2110011889" green="0.2110011889" blue="0.2110011889" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -358,7 +374,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="P5K-xI-zNx">
-                                <rect key="frame" x="0.0" y="174" width="255" height="34"/>
+                                <rect key="frame" x="0.0" y="173" width="255" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.2110011889" green="0.2110011889" blue="0.2110011889" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -387,7 +403,13 @@
                         <color key="backgroundColor" red="0.21100118885869568" green="0.21100118885869568" blue="0.21100118885869568" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
-                        <outlet property="buttonProfile" destination="Alj-zq-jhf" id="ww6-T2-VYO"/>
+                        <outlet property="buttonAboutMe" destination="dT7-Z5-W8w" id="obH-c5-Ph9"/>
+                        <outlet property="buttonAccountSettings" destination="LTh-MZ-Z7U" id="xiD-DA-VJk"/>
+                        <outlet property="buttonLogOut" destination="kld-xE-5x8" id="JcA-Qs-3sK"/>
+                        <outlet property="buttonNetwork" destination="kl0-dv-D51" id="HqA-n9-jTB"/>
+                        <outlet property="buttonNotification" destination="P5K-xI-zNx" id="ZGi-jA-cuK"/>
+                        <outlet property="buttonProfile" destination="Alj-zq-jhf" id="xuf-c9-F9E"/>
+                        <outlet property="buttonSecurity" destination="8T3-1e-yfy" id="DFz-bP-maW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3jC-Xc-6WW" userLabel="First Responder" sceneMemberID="firstResponder"/>

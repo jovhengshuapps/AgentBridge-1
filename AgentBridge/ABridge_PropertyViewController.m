@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfProperty;
 @property (weak, nonatomic) IBOutlet UIView *viewForPages;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSave;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewZoom;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @property (assign, nonatomic) NSInteger numberOfProperty;
 @property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
@@ -96,6 +98,7 @@
     ABridge_PropertyPagesViewController *pagesViewController = [[ABridge_PropertyPagesViewController alloc] initWithNibName:@"ABridge_PropertyPagesViewController" bundle:nil];
     pagesViewController.index = index;
     pagesViewController.propertyDetails = (Property*)[self.arrayOfProperty objectAtIndex:index];
+    pagesViewController.delegate = self;
     
     return pagesViewController;
     
@@ -205,7 +208,7 @@
     
         self.numberOfProperty = [self.arrayOfProperty count];
         
-        self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+        self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
         
         self.pageController.dataSource = self;
         CGRect pageControllerFrame = self.viewForPages.frame;
@@ -225,6 +228,7 @@
         [[self viewForPages] addSubview:[self.pageController view]];
         [self.pageController didMoveToParentViewController:self];
         self.buttonSave.hidden = NO;
+        
     }
     else {
         [self.pageController.view removeFromSuperview];
@@ -239,6 +243,34 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
+}
+
+- (void) zoomImage:(NSData *)image_data {
+    
+    UIImage *imageZoom = [UIImage imageWithData:image_data];
+    
+    self.imageView.image = imageZoom;
+    
+    CGRect frame = self.imageView.frame;
+    frame.size.width = imageZoom.size.width;
+    frame.size.height = imageZoom.size.height;
+    self.imageView.frame = frame;
+    
+    self.scrollViewZoom.contentSize = self.imageView.frame.size;
+    
+    self.scrollViewZoom.hidden = NO;
+    
+    
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return self.imageView;
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    if (scrollView.zoomScale < 0.75) {
+        self.scrollViewZoom.hidden = YES;
+    }
 }
 
 @end

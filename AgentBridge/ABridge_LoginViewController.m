@@ -64,6 +64,8 @@
 //    self.viewBox.layer.cornerRadius = 5;
 //    self.viewBox.layer.masksToBounds = YES;
     
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
     timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(updateImage) userInfo:nil repeats:YES];
     count = 2;
 }
@@ -222,45 +224,47 @@
     
     if (connection == self.urlConnectionLogin) {
         
-        NSDictionary *dataJson = [[json objectForKey:@"data"] firstObject];
-        
-        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-        
-        LoginDetails *item = [NSEntityDescription
-                              insertNewObjectForEntityForName:@"LoginDetails"
-                              inManagedObjectContext:context];
-        item.user_id = [NSNumber numberWithInt:[[dataJson objectForKey:@"id"] integerValue]];
-        item.name = [dataJson objectForKey:@"name"];
-        item.username = [dataJson objectForKey:@"username"];
-        item.email = [dataJson objectForKey:@"email"];
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        NSError *errorSave = nil;
-        if (![context save:&errorSave]) {
-            NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
-        }
-        else {
+        if ([[json objectForKey:@"data"] count]) {
+            NSDictionary *dataJson = [[json objectForKey:@"data"] firstObject];
             
-            NSString *parameters = [NSString stringWithFormat:@"?email=%@",item.email];
+            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php"];
-            [urlString appendString:parameters];
-            //            NSLog(@"url:%@",urlString);
-            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+            LoginDetails *item = [NSEntityDescription
+                                  insertNewObjectForEntityForName:@"LoginDetails"
+                                  inManagedObjectContext:context];
+            item.user_id = [NSNumber numberWithInt:[[dataJson objectForKey:@"id"] integerValue]];
+            item.name = [dataJson objectForKey:@"name"];
+            item.username = [dataJson objectForKey:@"username"];
+            item.email = [dataJson objectForKey:@"email"];
             
-            self.urlConnectionProfile = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
-            
-            if (self.urlConnectionProfile) {
-//                NSLog(@"Connection Successful");
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            NSError *errorSave = nil;
+            if (![context save:&errorSave]) {
+                NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
             }
             else {
-//                NSLog(@"Connection Failed");
+                
+                NSString *parameters = [NSString stringWithFormat:@"?email=%@",item.email];
+                
+                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php"];
+                [urlString appendString:parameters];
+                //            NSLog(@"url:%@",urlString);
+                NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+                
+                self.urlConnectionProfile = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+                
+                if (self.urlConnectionProfile) {
+                    //                NSLog(@"Connection Successful");
+                }
+                else {
+                    //                NSLog(@"Connection Failed");
+                }
+                
             }
-            
-            [self dismissViewControllerAnimated:YES completion:^{
-                [self.timer invalidate];
-//                NSLog(@"Successfully saved Login Details");
-            }];
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Error" message:@"Email and password does not match a member profile. Please try again or apply for membership." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
         }
     }
     else if(connection == self.urlConnectionProfile) {
@@ -292,6 +296,12 @@
             if (self.profileData.image_data == nil) {
                 self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
             }
+            
+            
+            [self dismissViewControllerAnimated:YES completion:^{
+                [self.timer invalidate];
+                //                NSLog(@"Successfully saved Login Details");
+            }];
             
         }
     }

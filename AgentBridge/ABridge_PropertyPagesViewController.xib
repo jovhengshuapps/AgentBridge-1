@@ -57,7 +57,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" id="oN0-eh-tMf">
+                <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" id="oN0-eh-tMf">
                     <rect key="frame" x="6" y="196" width="309" height="79"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>

@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "Property.h"
 
-@interface ABridge_PropertyPagesViewController : UIViewController <UIScrollViewDelegate>
+@protocol ABridge_PropertyPagesViewControllerDelegate <NSObject>
+
+- (void) zoomImage:(NSData*)image_data;
+
+@end
+
+@interface ABridge_PropertyPagesViewController : UIViewController <UIScrollViewDelegate, NSURLConnectionDelegate>
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) Property *propertyDetails;
+@property (assign, nonatomic) id <ABridge_PropertyPagesViewControllerDelegate> delegate;
 @end

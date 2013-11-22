@@ -79,6 +79,7 @@
     
     self.labelReferralFee.text = [NSString stringWithFormat:@"Referral Agreement (%@)",self.referralDetails.referral_fee];
     
+    self.imagePendingAccepted.image = [self imageForReferralStatus:[self.referralDetails.status integerValue]];
     
     self.labelBuyerName.font = FONT_OPENSANS_REGULAR(12.0f);
     self.labelPrice.font = FONT_OPENSANS_REGULAR(12.0f);
@@ -97,6 +98,36 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (UIImage*) imageForReferralStatus:(NSInteger)referral_status {
+    UIImage *image = nil;
+    switch (referral_status) {
+        case REFERRAL_STATUS_UNDERCONTRACT:
+            image = [UIImage imageNamed:@"under_contract"];
+            break;
+        case REFERRAL_STATUS_CLOSED:
+            image = [UIImage imageNamed:@"closed"];
+            break;
+        case REFERRAL_STATUS_NOGO:
+            image = [UIImage imageNamed:@"no_go"];
+            break;
+        case REFERRAL_STATUS_NEEDHELP:
+            image = [UIImage imageNamed:@"need_help"];
+            break;
+        case REFERRAL_STATUS_PENDING:
+            image = [UIImage imageNamed:@"pending"];
+            break;
+        case REFERRAL_STATUS_ACCEPTED:
+            image = [UIImage imageNamed:@"accepted"];
+            break;
+        case REFERRAL_STATUS_COMMISSIONRECEIVED:
+            image = [UIImage imageNamed:@"commission"];
+            break;
+        default:
+            break;
+    }
+    return image;
 }
 
 - (IBAction)saveBuyerVCard:(id)sender {
