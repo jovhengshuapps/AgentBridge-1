@@ -189,73 +189,78 @@
     if ([[json objectForKey:@"data"] count]) {
     
         
-        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-        for (NSDictionary *entry in [json objectForKey:@"data"]) {
-            Referral *referral = nil;
-            
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"referral_id == %@", [entry objectForKey:@"referral_id"]];
-            NSArray *result = [self fetchObjectsWithEntityName:@"Referral" andPredicate:predicate];
-            if ([result count]) {
-                referral = (Referral*)[result firstObject];
-            }
-            else {
-                referral = [NSEntityDescription insertNewObjectForEntityForName: @"Referral" inManagedObjectContext: context];
-            }
-            
-            [referral setValuesForKeysWithDictionary:entry];
-            
-            NSError *error = nil;
-            if (![context save:&error]) {
-                NSLog(@"Error on saving Referral:%@",[error localizedDescription]);
-            }
-            else {
-                if (self.segmentedControl.selectedSegmentIndex) {
-                    
-                    if (self.arrayOfReferralOut == nil) {
-                        self.arrayOfReferralOut = [[NSMutableArray alloc] init];
-                    }
-                    
-                    [self.arrayOfReferralOut addObject:referral];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+            for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                Referral *referral = nil;
+                
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"referral_id == %@", [entry objectForKey:@"referral_id"]];
+                NSArray *result = [self fetchObjectsWithEntityName:@"Referral" andPredicate:predicate];
+                if ([result count]) {
+                    referral = (Referral*)[result firstObject];
                 }
                 else {
-                    
-                    if (self.arrayOfReferralIn == nil) {
-                        self.arrayOfReferralIn = [[NSMutableArray alloc] init];
+                    referral = [NSEntityDescription insertNewObjectForEntityForName: @"Referral" inManagedObjectContext: context];
+                }
+                
+                [referral setValuesForKeysWithDictionary:entry];
+                
+                NSError *error = nil;
+                if (![context save:&error]) {
+                    NSLog(@"Error on saving Referral:%@",[error localizedDescription]);
+                }
+                else {
+                    if (self.segmentedControl.selectedSegmentIndex) {
+                        
+                        if (self.arrayOfReferralOut == nil) {
+                            self.arrayOfReferralOut = [[NSMutableArray alloc] init];
+                        }
+                        
+                        [self.arrayOfReferralOut addObject:referral];
                     }
-                    
-                    [self.arrayOfReferralIn addObject:referral];
+                    else {
+                        
+                        if (self.arrayOfReferralIn == nil) {
+                            self.arrayOfReferralIn = [[NSMutableArray alloc] init];
+                        }
+                        
+                        [self.arrayOfReferralIn addObject:referral];
+                    }
                 }
             }
-        }
-        
-        if (self.segmentedControl.selectedSegmentIndex) {
-            self.numberOfReferral = [self.arrayOfReferralOut count];
-        }
-        else {
-            self.numberOfReferral = [self.arrayOfReferralIn count];
-        }
-    
-        self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-    
-        self.pageController.dataSource = self;
-        CGRect pageControllerFrame = self.viewForPages.frame;
-        pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 1.0f;
-        self.pageController.view.frame = pageControllerFrame;
-    
-        self.labelNumberOfReferral.text = [NSString stringWithFormat:@"My Referrals (%li)",(long)self.numberOfReferral];
-    
-        ABridge_ReferralPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-    
-        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-    
-        [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-        
-        [self addChildViewController:self.pageController];
-        [[self viewForPages] addSubview:[self.pageController view]];
-        [self.pageController didMoveToParentViewController:self];
-        
-    
+            
+            if (self.segmentedControl.selectedSegmentIndex) {
+                self.numberOfReferral = [self.arrayOfReferralOut count];
+            }
+            else {
+                self.numberOfReferral = [self.arrayOfReferralIn count];
+            }
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+                
+                self.pageController.dataSource = self;
+                CGRect pageControllerFrame = self.viewForPages.frame;
+                pageControllerFrame.origin.x = 0.0f;
+                pageControllerFrame.origin.y = 1.0f;
+                self.pageController.view.frame = pageControllerFrame;
+                
+                self.labelNumberOfReferral.text = [NSString stringWithFormat:@"My Referrals (%li)",(long)self.numberOfReferral];
+                
+                ABridge_ReferralPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+                
+                NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+                
+                [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+                
+                [self addChildViewController:self.pageController];
+                [[self viewForPages] addSubview:[self.pageController view]];
+                [self.pageController didMoveToParentViewController:self];
+                
+
+            });
+        });
     }
     else {
         [self.pageController.view removeFromSuperview];

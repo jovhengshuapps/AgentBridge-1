@@ -215,13 +215,14 @@
 }
 
 - (void) loadPOPsImages {
-    NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
-    [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
-    NSLog(@"url:%@",urlString_);
-    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
+        [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
+        NSLog(@"url:%@",urlString_);
+        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        self.urlConnectionImages = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    self.urlConnectionImages = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
 }
 
 
@@ -254,57 +255,66 @@
     
     if ([[json objectForKey:@"data"] count]) {
         
-        CGFloat xOffset = 0.0f;
-        NSInteger i = 0;
-        [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-        
-        for (NSDictionary *entry in [json objectForKey:@"data"]) {
-            PropertyImages *image = nil;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            __block CGFloat xOffset = 0.0f;
+            __block NSInteger i = 0;
             
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
-            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-            NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-            [fetchRequest setPredicate:predicate];
-            [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
-            NSError * error = nil;
-            NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
-            if ([results count]) {
-                image = (PropertyImages*)[results firstObject];
-            }
-            else {
-                image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
-            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+            });
             
-            [image setValuesForKeysWithDictionary:entry];
-            
-            NSError *errorSave = nil;
-            if (![context save:&errorSave]) {
-                NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
-            }
-            else {
+            for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                PropertyImages *image = nil;
                 
-                if (self.arrayOfImageData == nil) {
-                    self.arrayOfImageData = [[NSMutableArray alloc] init];
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
+                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+                [fetchRequest setPredicate:predicate];
+                [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
+                NSError * error = nil;
+                NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
+                if ([results count]) {
+                    image = (PropertyImages*)[results firstObject];
+                }
+                else {
+                    image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
                 }
                 
-                if (image.image_data == nil) {
-                    image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
+                [image setValuesForKeysWithDictionary:entry];
+                
+                NSError *errorSave = nil;
+                if (![context save:&errorSave]) {
+                    NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
                 }
-                
-                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-                imageView.contentMode = UIViewContentModeScaleAspectFill;
-                imageView.image = [UIImage imageWithData:image.image_data];
-                
-                [self.arrayOfImageData addObject:image.image_data];
-                
-                [self.scrollImages addSubview:imageView];
-                
-                xOffset += imageView.frame.size.width;
-                i++;
-                
-                [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
+                else {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // Update UI
+                        if (self.arrayOfImageData == nil) {
+                            self.arrayOfImageData = [[NSMutableArray alloc] init];
+                        }
+                        
+                        if (image.image_data == nil) {
+                            image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
+                        }
+                        
+                        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+                        imageView.contentMode = UIViewContentModeScaleAspectFill;
+                        imageView.image = [UIImage imageWithData:image.image_data];
+                        
+                        [self.arrayOfImageData addObject:image.image_data];
+                        
+                        [self.scrollImages addSubview:imageView];
+                        
+                        xOffset += imageView.frame.size.width;
+                        i++;
+                        
+                        [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
+                    });
+                    
+                }
             }
-        }
+        });
         
     }
     else {

@@ -133,91 +133,100 @@
 - (IBAction)saveBuyerVCard:(id)sender {
 //    NSLog(@"name:%@",self.referralDetails.client_name);
     
-    CFErrorRef error = NULL;
-    ABAddressBookRef iPhoneAddressBook = ABAddressBookCreate();
-    
-    __block BOOL accessGranted = NO;
-    
-    if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
-        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        __block CFErrorRef error = NULL;
+        ABAddressBookRef iPhoneAddressBook = ABAddressBookCreate();
         
-        ABAddressBookRequestAccessWithCompletion(iPhoneAddressBook, ^(bool granted, CFErrorRef error) {
-            accessGranted = granted;
-            dispatch_semaphore_signal(sema);
-        });
+        __block BOOL accessGranted = NO;
         
-        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
-    }
-    else { // we're on iOS 5 or older
-        accessGranted = YES;
-    }
-    
-    
-    if (accessGranted) {
+        if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
+            dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+            
+            ABAddressBookRequestAccessWithCompletion(iPhoneAddressBook, ^(bool granted, CFErrorRef error) {
+                accessGranted = granted;
+                dispatch_semaphore_signal(sema);
+            });
+            
+            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+        }
+        else { // we're on iOS 5 or older
+            accessGranted = YES;
+        }
         
-//        NSArray *thePeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(iPhoneAddressBook);
-        // Do whatever you need with thePeople...
         
-    
-     ABRecordRef newPerson = ABPersonCreate();
-    
-        NSString *firstName = @"";
-        NSString *lastName = @"";
-        if ([self.referralDetails.client_name rangeOfString:@" "].location == NSNotFound) {
-            firstName = self.referralDetails.client_name;
+        if (accessGranted) {
+            
+            //        NSArray *thePeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(iPhoneAddressBook);
+            // Do whatever you need with thePeople...
+            
+            
+            ABRecordRef newPerson = ABPersonCreate();
+            
+            NSString *firstName = @"";
+            NSString *lastName = @"";
+            if ([self.referralDetails.client_name rangeOfString:@" "].location == NSNotFound) {
+                firstName = self.referralDetails.client_name;
+            }
+            else {
+                firstName = [[self.referralDetails.client_name componentsSeparatedByString:@" "] objectAtIndex:0];
+                lastName = [[self.referralDetails.client_name componentsSeparatedByString:@" "] objectAtIndex:1];
+            }
+            
+            ABRecordSetValue(newPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)(firstName), &error);
+            ABRecordSetValue(newPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)(lastName), &error);
+            
+            ABPersonSetImageData (newPerson,(__bridge CFDataRef)(self.referralDetails.image_data),&error);
+            
+            ABRecordSetValue(newPerson, kABPersonOrganizationProperty, @"Agent Bridge", &error);
+            ABRecordSetValue(newPerson, kABPersonJobTitleProperty, CLIENT_INTENTION([self.referralDetails.client_intention integerValue]), &error);
+            
+            //Client Number
+            ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(self.referralDetails.client_number), kABPersonPhoneMobileLabel, NULL);
+            ABRecordSetValue(newPerson, kABPersonPhoneProperty, multiPhone,nil);
+            CFRelease(multiPhone);
+            
+            //Client Email
+            ABMutableMultiValueRef multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+            ABMultiValueAddValueAndLabel(multiEmail, (__bridge CFTypeRef)(self.referralDetails.client_email), kABWorkLabel, NULL);
+            ABRecordSetValue(newPerson, kABPersonEmailProperty, multiEmail, &error);
+            CFRelease(multiEmail);
+            
+            //Client Address
+            ABMutableMultiValueRef multiAddress = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
+            NSMutableDictionary *addressDictionary = [[NSMutableDictionary alloc] init];
+            [addressDictionary setObject:self.referralDetails.client_address_1 forKey:(NSString *) kABPersonAddressStreetKey];
+            [addressDictionary setObject:self.referralDetails.client_city forKey:(NSString *)kABPersonAddressCityKey];
+            [addressDictionary setObject:self.referralDetails.client_state_name forKey:(NSString *)kABPersonAddressStateKey];
+            [addressDictionary setObject:self.referralDetails.client_zip forKey:(NSString *)kABPersonAddressZIPKey];
+            [addressDictionary setObject:self.referralDetails.client_country_name forKey:(NSString *)kABPersonAddressCountryKey];
+            ABMultiValueAddValueAndLabel(multiAddress, (__bridge CFTypeRef)(addressDictionary), kABWorkLabel, NULL);
+            ABRecordSetValue(newPerson, kABPersonAddressProperty, multiAddress,&error);
+            CFRelease(multiAddress);
+            
+            ABAddressBookAddRecord(iPhoneAddressBook, newPerson, &error);
+            CFRelease(newPerson);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (ABAddressBookSave(iPhoneAddressBook, &error))
+                {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Successfully saved Buyer into Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alert show];
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Failed in saving Buyer into Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alert show];
+                }
+            });
+            
         }
         else {
-            firstName = [[self.referralDetails.client_name componentsSeparatedByString:@" "] objectAtIndex:0];
-            lastName = [[self.referralDetails.client_name componentsSeparatedByString:@" "] objectAtIndex:1];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Please allow the AgentBridge to Access your Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            });
         }
-        
-    ABRecordSetValue(newPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)(firstName), &error);
-    ABRecordSetValue(newPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)(lastName), &error);
-    ABRecordSetValue(newPerson, kABPersonOrganizationProperty, @"Agent Bridge", &error);
-    ABRecordSetValue(newPerson, kABPersonJobTitleProperty, CLIENT_INTENTION([self.referralDetails.client_intention integerValue]), &error);
-    
-    //Client Number
-    ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-    ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(self.referralDetails.client_number), kABPersonPhoneMobileLabel, NULL);
-    ABRecordSetValue(newPerson, kABPersonPhoneProperty, multiPhone,nil);
-    CFRelease(multiPhone);
-    
-    //Client Email
-    ABMutableMultiValueRef multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-    ABMultiValueAddValueAndLabel(multiEmail, (__bridge CFTypeRef)(self.referralDetails.client_email), kABWorkLabel, NULL);
-    ABRecordSetValue(newPerson, kABPersonEmailProperty, multiEmail, &error);
-    CFRelease(multiEmail);
-    
-    //Client Address
-    ABMutableMultiValueRef multiAddress = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-    NSMutableDictionary *addressDictionary = [[NSMutableDictionary alloc] init];
-    [addressDictionary setObject:self.referralDetails.client_address_1 forKey:(NSString *) kABPersonAddressStreetKey];
-    [addressDictionary setObject:self.referralDetails.client_city forKey:(NSString *)kABPersonAddressCityKey];
-    [addressDictionary setObject:self.referralDetails.client_state_name forKey:(NSString *)kABPersonAddressStateKey];
-    [addressDictionary setObject:self.referralDetails.client_zip forKey:(NSString *)kABPersonAddressZIPKey];
-    [addressDictionary setObject:self.referralDetails.client_country_name forKey:(NSString *)kABPersonAddressCountryKey];
-    ABMultiValueAddValueAndLabel(multiAddress, (__bridge CFTypeRef)(addressDictionary), kABWorkLabel, NULL);
-    ABRecordSetValue(newPerson, kABPersonAddressProperty, multiAddress,&error);
-    CFRelease(multiAddress);
-    
-    ABAddressBookAddRecord(iPhoneAddressBook, newPerson, &error);
-        CFRelease(newPerson);
-        
-        if (ABAddressBookSave(iPhoneAddressBook, &error))
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Successfully saved Buyer into Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-        else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Failed in saving Buyer into Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-        
-    }
-    else {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Saving Contacts" message:@"Please allow the AgentBridge to Access your Contacts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }
+    });
 }
 @end
