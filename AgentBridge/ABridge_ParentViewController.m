@@ -115,7 +115,7 @@
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(50.0f, (with_indicator)?30.0f:20.0f, 200.0f, 30.0f)];
     label.text = message;
-    label.textColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
+    label.textColor = [UIColor darkGrayColor];
     label.backgroundColor = [UIColor clearColor];
     label.font = FONT_OPENSANS_REGULAR(20.0f);
     label.textAlignment = NSTextAlignmentCenter;
@@ -129,7 +129,7 @@
     label.frame = frame;
     
     self.viewOverlay = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 300.0f, (label.frame.origin.y + label.frame.size.height + 20.0f))];
-    self.viewOverlay.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6f];
+//    self.viewOverlay.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6f];
     self.viewOverlay.layer.cornerRadius = 10.0f;
     self.viewOverlay.layer.masksToBounds = YES;
     
@@ -138,7 +138,7 @@
     self.viewOverlay.center = self.view.center;
     
     if (with_indicator) {
-        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         activityIndicator.center = self.viewOverlay.center;
         activityIndicator.frame = CGRectMake(activityIndicator.frame.origin.x, 5.0f, 20.0f, 20.0f);
         [activityIndicator startAnimating];

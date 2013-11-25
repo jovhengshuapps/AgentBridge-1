@@ -39,7 +39,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfActivity.font = FONT_OPENSANS_REGULAR(20.0f);
+    self.labelNumberOfActivity.font = FONT_OPENSANS_REGULAR(14.0f);
     
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
@@ -197,7 +197,7 @@
         [self.pageController removeFromParentViewController];
         self.pageController = nil;
         self.numberOfActivity = 0;
-        self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
+        self.labelNumberOfActivity.text = @"My Activity";
         
         [self showOverlayWithMessage:@"You currently don't have any Activities." withIndicator:NO];
     }

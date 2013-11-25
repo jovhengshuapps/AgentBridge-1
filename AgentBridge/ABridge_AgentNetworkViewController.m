@@ -41,7 +41,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_REGULAR(20.0f);
+    self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_REGULAR(14.0f);
     self.slidingViewController.underRightViewController = nil;
     
     // Add a topBorder.
@@ -225,7 +225,7 @@
         [self.pageController removeFromParentViewController];
         self.pageController = nil;
         self.numberOfAgentNetwork = 0;
-        self.labelNumberOfAgentNetwork.text = [NSString stringWithFormat:@"My Network (%li)",(long)self.numberOfAgentNetwork];
+        self.labelNumberOfAgentNetwork.text = @"My Network";
         
         [self showOverlayWithMessage:@"You currently have no members in your Network." withIndicator:NO];
     }

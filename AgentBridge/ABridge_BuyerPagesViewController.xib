@@ -22,7 +22,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="LH1-xy-LkG">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="470"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="422"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y8p-vG-8kH">
@@ -45,7 +45,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" id="Y7V-Vq-bHu">
-                    <rect key="frame" x="5" y="140" width="310" height="250"/>
+                    <rect key="frame" x="5" y="140" width="310" height="202"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -57,12 +57,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wS9-Y2-zze">
-                    <rect key="frame" x="5" y="391" width="310" height="19"/>
+                    <rect key="frame" x="0.0" y="343" width="320" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <color key="backgroundColor" red="0.90980392160000001" green="0.90980392160000001" blue="0.90980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.17254901959999999" green="0.59999999999999998" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fhV-4B-OcL">
+                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fhV-4B-OcL">
                     <rect key="frame" x="268" y="5" width="47" height="12"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -73,14 +75,14 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iUA-y9-UWh">
-                    <rect key="frame" x="5" y="418" width="135" height="45"/>
+                    <rect key="frame" x="5" y="370" width="135" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UWM-x1-20V">
-                    <rect key="frame" x="180" y="418" width="135" height="45"/>
+                    <rect key="frame" x="180" y="370" width="135" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>

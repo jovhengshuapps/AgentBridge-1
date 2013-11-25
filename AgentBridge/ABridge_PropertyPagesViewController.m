@@ -100,6 +100,14 @@
     
     self.textFeatures.text = featuresString;
     
+    self.labelZip.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelPrice.font = FONT_OPENSANS_REGULAR(17.0f);
+    self.labelPropertyName.font = FONT_OPENSANS_REGULAR(17.0f);
+    self.labelPropertyType.font = FONT_OPENSANS_REGULAR(17.0f);
+    
+    self.labelExpiry.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.textFeatures.font = FONT_OPENSANS_REGULAR(12.0f);
+    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
     imageView.contentMode = UIViewContentModeCenter;
     imageView.image = [UIImage imageNamed:[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];

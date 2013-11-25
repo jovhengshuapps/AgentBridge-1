@@ -45,7 +45,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(20.0f);
+    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(14.0f);
     
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
@@ -235,7 +235,7 @@
         [self.pageController removeFromParentViewController];
         self.pageController = nil;
         self.numberOfProperty = 0;
-        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"My POPs™ (%li)",(long)self.numberOfProperty];
+        self.labelNumberOfProperty.text = @"My POPs™";
         self.buttonSave.hidden = YES;
         [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
     }

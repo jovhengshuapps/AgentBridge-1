@@ -10,7 +10,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import "AgentProfile.h"
 
-@interface ABridge_AgentNetworkPagesViewController : UIViewController <UITableViewDataSource, MFMailComposeViewControllerDelegate>
+@interface ABridge_AgentNetworkPagesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
     
     @property (assign, nonatomic) NSInteger index;
     @property (strong, nonatomic) AgentProfile *profileData;

@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelMobile;
 @property (weak, nonatomic) IBOutlet UILabel *labelEmail;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *viewContacts;
+
 - (IBAction)callMobileNumber:(id)sender;
 - (IBAction)sendEmail:(id)sender;
 
@@ -27,6 +29,7 @@
 @property (strong, nonatomic) LoginDetails *loginDetail;
 @property (strong, nonatomic) AgentProfile *profileData;
 @property (strong, nonatomic) NSArray *arrayKTableKeys;
+
 @end
 
 @implementation ABridge_AgentProfileViewController
@@ -78,6 +81,13 @@
     else {
 //        NSLog(@"Connection Failed");
     }
+    
+    self.labelName.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelBroker.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.labelAddress.font = FONT_OPENSANS_REGULAR(12.0f);
+    
+    self.buttonMobileNumber.titleLabel.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.buttonMobileNumber.titleLabel.font = FONT_OPENSANS_REGULAR(12.0f);
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,6 +119,8 @@
     
     NSInteger row = [indexPath row];
     
+    cell.textLabel.font = FONT_OPENSANS_REGULAR(14.0f);
+    cell.detailTextLabel.font = FONT_OPENSANS_REGULAR(10.0f);
     if (self.profileData == nil) {
             cell.textLabel.text = @"";
             cell.detailTextLabel.text = @"";
@@ -219,8 +231,28 @@
         
         
         self.labelName.text = [NSString stringWithFormat:@"%@ %@",self.profileData.firstname, self.profileData.lastname];
+        
+        [self.labelName sizeToFit];
+        
+        
         self.labelBroker.text = self.profileData.broker_name;
+        
+        [self.labelBroker sizeToFit];
+        
+        CGRect frame = self.labelBroker.frame;
+        frame.origin.y = self.labelName.frame.origin.y + self.labelName.frame.size.height + 8.0f;
+        self.labelBroker.frame = frame;
+        
         self.labelAddress.text = [NSString stringWithFormat:@"%@, %@, %@", self.profileData.street_address, self.profileData.city, self.profileData.countries_name];
+        
+        [self.labelAddress sizeToFit];
+        
+        
+        frame = self.labelAddress.frame;
+        frame.origin.y = self.labelBroker.frame.origin.y + self.labelBroker.frame.size.height - 1.0f;
+        self.labelAddress.frame = frame;
+        
+        
         [self.buttonMobileNumber setTitle:self.profileData.mobile_number forState:UIControlStateNormal];
         [self.buttonEmailAddress setTitle:self.profileData.email forState:UIControlStateNormal];
         [self.tableView reloadData];
@@ -242,9 +274,11 @@
 - (IBAction)callMobileNumber:(id)sender {
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.profileData.mobile_number]];
     [[UIApplication sharedApplication] openURL:URL];
+    
 }
 
 - (IBAction)sendEmail:(id)sender {
+    
     
     if ([MFMailComposeViewController canSendMail]) {
         

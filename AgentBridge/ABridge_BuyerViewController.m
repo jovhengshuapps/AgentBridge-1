@@ -42,7 +42,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfBuyers.font = FONT_OPENSANS_REGULAR(20.0f);
+    self.labelNumberOfBuyers.font = FONT_OPENSANS_REGULAR(14.0f);
     
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
@@ -230,7 +230,7 @@
         [self.pageController removeFromParentViewController];
         self.pageController = nil;
         self.numberOfBuyer = 0;
-        self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
+        self.labelNumberOfBuyers.text = @"My Buyers";
         
         [self showOverlayWithMessage:@"You currently don't have any Buyers." withIndicator:NO];
     }

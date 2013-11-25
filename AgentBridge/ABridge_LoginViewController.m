@@ -64,6 +64,16 @@
 //    self.viewBox.layer.cornerRadius = 5;
 //    self.viewBox.layer.masksToBounds = YES;
     
+    self.textEmail.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.textPassword.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.buttonSignIn.titleLabel.font = FONT_OPENSANS_REGULAR(19.0f);
+    self.buttonForgot.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    
+    self.textEmail.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
+    self.textEmail.layer.borderWidth = 1.0f;
+    self.textPassword.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
+    self.textPassword.layer.borderWidth = 1.0f;
+    
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(updateImage) userInfo:nil repeats:YES];

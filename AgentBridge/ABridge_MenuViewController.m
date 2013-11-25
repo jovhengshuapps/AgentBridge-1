@@ -114,7 +114,7 @@
         }
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 5.0f, 60.0f, 60.0f)];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.contentMode = UIViewContentModeScaleAspectFill ;
         imageView.image = [UIImage imageWithData:profileData.image_data];
         
         [self.buttonProfile addSubview:imageView];

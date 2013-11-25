@@ -113,6 +113,15 @@
             self.labelNew.text = [NSString stringWithFormat:@"New (%@)",self.buyerDetails.hasnew];
         }
     
+    self.labelExpiry.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.textFeatures.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.labelBuyerName.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelBuyerType.font = FONT_OPENSANS_REGULAR(12.0f);
+    
+    self.labelPrice.font = FONT_OPENSANS_REGULAR(17.0f);
+    self.labelZipcode.font = FONT_OPENSANS_REGULAR(17.0f);
+    self.labelNew.font = FONT_OPENSANS_REGULAR(17.0f);
+    self.labelSaved.font = FONT_OPENSANS_REGULAR(17.0f);
 }
 
 - (void)didReceiveMemoryWarning

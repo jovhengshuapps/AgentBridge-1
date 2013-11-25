@@ -48,7 +48,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfReferral.font = FONT_OPENSANS_REGULAR(20.0f);
+    self.labelNumberOfReferral.font = FONT_OPENSANS_REGULAR(14.0f);
     [self defineSegmentControlStyle];
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
@@ -267,7 +267,7 @@
         [self.pageController removeFromParentViewController];
         self.pageController = nil;
         self.numberOfReferral = 0;
-        self.labelNumberOfReferral.text = [NSString stringWithFormat:@"My Referrals (%li)",(long)self.numberOfReferral];
+        self.labelNumberOfReferral.text = @"My Referrals";
         if (self.segmentedControl.selectedSegmentIndex) {
             [self showOverlayWithMessage:@"You currently don't have any outgoing Referrals." withIndicator:NO];
         }
