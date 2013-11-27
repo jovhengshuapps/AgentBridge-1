@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonSave;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewZoom;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (assign, nonatomic) NSInteger numberOfProperty;
 @property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
@@ -45,7 +46,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    
+    self.labelNumberOfProperty.text = @"My POPs™";
     
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
@@ -79,7 +83,10 @@
     if (self.urlConnectionProperty) {
 //        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProperty];
-        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+        
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
     }
     else {
 //        NSLog(@"Connection Failed");
@@ -148,6 +155,9 @@
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [self.pageController.view removeFromSuperview];
+    [self.pageController removeFromParentViewController];
+    self.pageController = nil;
     self.arrayOfProperty = nil;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
@@ -161,15 +171,17 @@
 {
 //    NSLog(@"Did Fail");
     [self dismissOverlay];
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
     
-    [self dismissOverlay];
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
@@ -177,58 +189,62 @@
     
     if ([[json objectForKey:@"data"] count]) {
         
-        
-        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-        for (NSDictionary *entry in [json objectForKey:@"data"]) {
-            Property *property = nil;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"listing_id == %@", [entry objectForKey:@"listing_id"]];
-            NSArray *result = [self fetchObjectsWithEntityName:@"Property" andPredicate:predicate];
-            if ([result count]) {
-                property = (Property*)[result firstObject];
-            }
-            else {
-                property = [NSEntityDescription insertNewObjectForEntityForName: @"Property" inManagedObjectContext: context];
-            }
-            
-            [property setValuesForKeysWithDictionary:entry];
-            
-            NSError *error = nil;
-            if (![context save:&error]) {
-                NSLog(@"Error on saving Property:%@",[error localizedDescription]);
-            }
-            else {
-                if (self.arrayOfProperty == nil) {
-                    self.arrayOfProperty = [[NSMutableArray alloc] init];
+            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+            for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                Property *property = nil;
+                
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"listing_id == %@", [entry objectForKey:@"listing_id"]];
+                NSArray *result = [self fetchObjectsWithEntityName:@"Property" andPredicate:predicate];
+                if ([result count]) {
+                    property = (Property*)[result firstObject];
+                }
+                else {
+                    property = [NSEntityDescription insertNewObjectForEntityForName: @"Property" inManagedObjectContext: context];
                 }
                 
-                [self.arrayOfProperty addObject:property];
+                [property setValuesForKeysWithDictionary:entry];
+                
+                NSError *error = nil;
+                if (![context save:&error]) {
+                    NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+                }
+                else {
+                    if (self.arrayOfProperty == nil) {
+                        self.arrayOfProperty = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [self.arrayOfProperty addObject:property];
+                }
             }
-        }
-    
-        self.numberOfProperty = [self.arrayOfProperty count];
-        
-        self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-        
-        self.pageController.dataSource = self;
-        CGRect pageControllerFrame = self.viewForPages.frame;
-        pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 1.0f;
-        self.pageController.view.frame = pageControllerFrame;
-        
-        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"My POPs™ (%li)",(long)self.numberOfProperty];
-        
-        ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-        
-        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-        
-        [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-        
-        [self addChildViewController:self.pageController];
-        [[self viewForPages] addSubview:[self.pageController view]];
-        [self.pageController didMoveToParentViewController:self];
-        self.buttonSave.hidden = NO;
-        
+            
+            self.numberOfProperty = [self.arrayOfProperty count];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+                
+                self.pageController.dataSource = self;
+                CGRect pageControllerFrame = self.viewForPages.frame;
+                pageControllerFrame.origin.x = 0.0f;
+                pageControllerFrame.origin.y = 1.0f;
+                self.pageController.view.frame = pageControllerFrame;
+                
+                self.labelNumberOfProperty.text = [NSString stringWithFormat:@"My POPs™ (%li)",(long)self.numberOfProperty];
+                
+                ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+                
+                NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+                
+                [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+                
+                [self addChildViewController:self.pageController];
+                [[self viewForPages] addSubview:[self.pageController view]];
+                [self.pageController didMoveToParentViewController:self];
+                self.buttonSave.hidden = NO;
+            });
+            
+        });
     }
     else {
         [self.pageController.view removeFromSuperview];
@@ -240,6 +256,9 @@
         [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
     }
     
+    [self dismissOverlay];
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData

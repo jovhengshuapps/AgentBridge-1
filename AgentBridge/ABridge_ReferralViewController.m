@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfReferral;
 @property (weak, nonatomic) IBOutlet UIView *viewForPages;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (assign, nonatomic) NSInteger numberOfReferral;
 @property (strong, nonatomic) NSURLConnection *urlConnectionReferral;
@@ -48,7 +49,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfReferral.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelNumberOfReferral.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    
+    self.labelNumberOfReferral.text = @"My Referrals";
     [self defineSegmentControlStyle];
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
@@ -95,7 +98,9 @@
     if (self.urlConnectionReferral) {
 //        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionReferral];
-        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
     }
     else {
 //        NSLog(@"Connection Failed");
@@ -162,6 +167,11 @@
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [self.pageController.view removeFromSuperview];
+    [self.pageController removeFromParentViewController];
+    self.pageController = nil;
+    self.arrayOfReferralIn = nil;
+    self.arrayOfReferralOut = nil;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
 }
@@ -174,14 +184,16 @@
 {
 //    NSLog(@"Did Fail");
     [self dismissOverlay];
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
-    [self dismissOverlay];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);
@@ -258,6 +270,29 @@
                 [[self viewForPages] addSubview:[self.pageController view]];
                 [self.pageController didMoveToParentViewController:self];
                 
+                
+                for (UIView *view in self.pageController.view.subviews) {
+                    if([view isKindOfClass:[UIScrollView class]]){
+                        ((UIScrollView*)view).contentSize = CGSizeMake(0.0f, 0.0f);
+//                        for (UIGestureRecognizer *gesture in view.gestureRecognizers) {
+//                            NSString *className = NSStringFromClass([gesture class]);
+//                            if ([className rangeOfString:@"Swipe"].location!=NSNotFound)
+//                            {
+//                                UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:nil action:nil];
+//                                swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+//                                
+//                                UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:nil action:nil];
+//                                swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+//                                
+//                                if ( ((UISwipeGestureRecognizer*)gesture).direction == swipeLeft.direction )
+//                                    NSLog(@" *** SWIPE LEFT ***");
+//                                if ( ((UISwipeGestureRecognizer*)gesture).direction == swipeRight.direction )
+//                                    NSLog(@" *** SWIPE RIGHT ***");
+//                            }
+//                            
+//                        }
+                    }
+                }
 
             });
         });
@@ -276,7 +311,9 @@
         }
     }
     
-    
+    [self dismissOverlay];
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
@@ -295,7 +332,9 @@
     
     [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
-    [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"nav_bg_hover.png"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"nav_bg_hover_light.png"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    [self.segmentedControl setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor darkGrayColor],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
     
     self.segmentedControl.layer.cornerRadius = 4.0f;
     self.segmentedControl.layer.masksToBounds = YES;

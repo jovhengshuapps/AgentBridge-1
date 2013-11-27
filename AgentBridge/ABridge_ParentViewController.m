@@ -66,11 +66,15 @@
 
 - (IBAction)revealMenu:(id)sender
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 
 - (IBAction)revealSearch:(id)sender
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     [self.slidingViewController anchorTopViewTo:ECLeft];
 }
 
@@ -80,8 +84,8 @@
 //    NSLog(@"url:%@",urlString);
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     return [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
 }
 
@@ -104,6 +108,9 @@
 }
     
 -(IBAction)goBackToRoot:(id)sender {
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
     [self.slidingViewController anchorTopViewOffScreenTo:ECLeft animations:nil onComplete:^{
         [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
@@ -146,11 +153,11 @@
         [self.viewOverlay addSubview:activityIndicator];
     }
     
-    UITapGestureRecognizer *tapToClose = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissOverlay)];
-    tapToClose.numberOfTapsRequired = 1;
-    tapToClose.numberOfTouchesRequired = 1;
-    
-    [self.viewOverlay addGestureRecognizer:tapToClose];
+//    UITapGestureRecognizer *tapToClose = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissOverlay)];
+//    tapToClose.numberOfTapsRequired = 1;
+//    tapToClose.numberOfTouchesRequired = 1;
+//    
+//    [self.viewOverlay addGestureRecognizer:tapToClose];
     
     [self.view addSubview:self.viewOverlay];
 }

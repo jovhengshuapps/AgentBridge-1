@@ -13,11 +13,14 @@
 @interface ABridge_AgentNetworkViewController ()
     @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfAgentNetwork;
     @property (weak, nonatomic) IBOutlet UIView *viewForPages;
+@property (weak, nonatomic) IBOutlet UIButton *buttonRefer;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
     
     @property (assign, nonatomic) NSInteger numberOfAgentNetwork;
     @property (strong, nonatomic) NSURLConnection *urlConnectionAgentNetwork;
     @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSMutableArray *arrayOfAgents;
+- (IBAction)buttonReferNetwork:(id)sender;
 
 @end
 
@@ -41,7 +44,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.buttonRefer.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.labelNumberOfAgentNetwork.text = @"My Network";
     self.slidingViewController.underRightViewController = nil;
     
     // Add a topBorder.
@@ -73,7 +78,10 @@
     if (self.urlConnectionAgentNetwork) {
 //        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionAgentNetwork];
-        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+        
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
     }
     else {
 //        NSLog(@"Connection Failed");
@@ -155,6 +163,8 @@
 {
 //    NSLog(@"Did Fail");
     [self dismissOverlay];
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -162,63 +172,69 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
-    [self dismissOverlay];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
         
-        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-        for (NSDictionary *entry in [json objectForKey:@"data"]) {
-            AgentProfile *agent = nil;
-            
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == %@", [entry objectForKey:@"user_id"]];
-            NSArray *result = [self fetchObjectsWithEntityName:@"AgentProfile" andPredicate:predicate];
-            if ([result count]) {
-                agent = (AgentProfile*)[result firstObject];
-            }
-            else {
-                agent = [NSEntityDescription insertNewObjectForEntityForName: @"AgentProfile" inManagedObjectContext: context];
-            }
-            
-            [agent setValuesForKeysWithDictionary:entry];
-            
-            NSError *error = nil;
-            if (![context save:&error]) {
-                NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
-            }
-            else {
-                if (self.arrayOfAgents == nil) {
-                    self.arrayOfAgents = [[NSMutableArray alloc] init];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+            for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                AgentProfile *agent = nil;
+                
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == %@", [entry objectForKey:@"user_id"]];
+                NSArray *result = [self fetchObjectsWithEntityName:@"AgentProfile" andPredicate:predicate];
+                if ([result count]) {
+                    agent = (AgentProfile*)[result firstObject];
+                }
+                else {
+                    agent = [NSEntityDescription insertNewObjectForEntityForName: @"AgentProfile" inManagedObjectContext: context];
                 }
                 
-                [self.arrayOfAgents addObject:agent];
+                [agent setValuesForKeysWithDictionary:entry];
+                
+//                NSLog(@"agent:%@",[agent valueForKey:@"firstname"]);
+                
+                NSError *error = nil;
+                if (![context save:&error]) {
+                    NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                }
+                else {
+                    if (self.arrayOfAgents == nil) {
+                        self.arrayOfAgents = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [self.arrayOfAgents addObject:agent];
+                }
             }
-        }
+            
+            self.numberOfAgentNetwork = [self.arrayOfAgents count];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+                
+                self.pageController.dataSource = self;
+                CGRect pageControllerFrame = self.viewForPages.frame;
+                pageControllerFrame.origin.x = 0.0f;
+                pageControllerFrame.origin.y = 1.0f;
+                self.pageController.view.frame = pageControllerFrame;
+                
+                self.labelNumberOfAgentNetwork.text = [NSString stringWithFormat:@"My Network (%li)",(long)self.numberOfAgentNetwork];
+                
+                ABridge_AgentNetworkPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+                
+                NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+                
+                [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+                
+                [self addChildViewController:self.pageController];
+                [[self viewForPages] addSubview:[self.pageController view]];
+                [self.pageController didMoveToParentViewController:self];
+                self.buttonRefer.hidden = NO;
+            });
         
-        self.numberOfAgentNetwork = [self.arrayOfAgents count];
-        
-        self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-        
-        self.pageController.dataSource = self;
-        CGRect pageControllerFrame = self.viewForPages.frame;
-        pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 1.0f;
-        self.pageController.view.frame = pageControllerFrame;
-        
-        self.labelNumberOfAgentNetwork.text = [NSString stringWithFormat:@"My Network (%li)",(long)self.numberOfAgentNetwork];
-        
-        ABridge_AgentNetworkPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-        
-        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-        
-        [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-        
-        [self addChildViewController:self.pageController];
-        [[self viewForPages] addSubview:[self.pageController view]];
-        [self.pageController didMoveToParentViewController:self];
-        
+        });
     }
     else {
         [self.pageController.view removeFromSuperview];
@@ -227,12 +243,18 @@
         self.numberOfAgentNetwork = 0;
         self.labelNumberOfAgentNetwork.text = @"My Network";
         
+        self.buttonRefer.hidden = YES;
         [self showOverlayWithMessage:@"You currently have no members in your Network." withIndicator:NO];
     }
     
+    [self dismissOverlay];
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 
+- (IBAction)buttonReferNetwork:(id)sender {
+}
 @end

@@ -13,7 +13,7 @@
 #define FONT_OPENSANS_BOLD(s) [UIFont fontWithName:@"OpenSans-Bold-webfont" size:s]
 #define FONT_OPENSANS_ITALIC(s) [UIFont fontWithName:@"OpenSans-Italic-webfont" size:s]
 #define FONT_OPENSANS_LIGHT(s) [UIFont fontWithName:@"OpenSans-Light-webfont" size:s]
-#define FONT_OPENSANS_REGULAR(s) [UIFont fontWithName:@"OpenSans-Regular-webfont" size:s]
+#define FONT_OPENSANS_REGULAR(s) [UIFont fontWithName:@"OpenSans" size:s]
 #define FONT_OPENSANS_SEMIBOLD(s) [UIFont fontWithName:@"OpenSans-Semibold-webfont" size:s]
 #define CLIENT_INTENTION(choice) (choice == 1)?@"Buying":(choice == 2)?@"Selling":(choice == 3)?@"Buying and Selling":(choice == 4)?@"Leasing":@""
 #define REFERRAL_STATUS_UNDERCONTRACT                                               1
@@ -47,5 +47,9 @@
 #define COMMERCIAL_LEASE_OFFICE                                                     16
 #define COMMERCIAL_LEASE_INDUSTRIAL                                                 17
 #define COMMERCIAL_LEASE_RETAIL                                                     18
+
+#define FONT_SIZE_TITLE                                                             18.0f
+#define FONT_SIZE_REGULAR                                                           16.0f
+#define FONT_SIZE_SMALL                                                             14.0f
 
 #endif

@@ -13,6 +13,7 @@
 @interface ABridge_BuyerViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfBuyers;
 @property (weak, nonatomic) IBOutlet UIView *viewForPages;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (assign, nonatomic) NSInteger numberOfBuyer;
 @property (strong, nonatomic) NSURLConnection *urlConnectionBuyer;
@@ -42,8 +43,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfBuyers.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelNumberOfBuyers.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     
+    self.labelNumberOfBuyers.text = @"My Buyers";
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
     
@@ -76,7 +78,9 @@
     if (self.urlConnectionBuyer) {
 //        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionBuyer];
-        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
+//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
 //        NSLog(@"Connection Failed");
@@ -96,9 +100,6 @@
     pagesViewController.index = index;
     pagesViewController.buyerDetails = (Buyer*)[self.arrayOfBuyer objectAtIndex:index];
     
-    if ([pagesViewController.buyerDetails.hasnew_2 integerValue] == 0 && [pagesViewController.buyerDetails.hasnew integerValue] == 0) {
-        [self showOverlayWithMessage:@"Matching POPs™ may be available on the website." withIndicator:NO];
-    }
     return pagesViewController;
     
 }
@@ -147,6 +148,10 @@
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    [self.pageController.view removeFromSuperview];
+    [self.pageController removeFromParentViewController];
+    self.pageController = nil;
     self.arrayOfBuyer = nil;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
@@ -160,70 +165,76 @@
 {
 //    NSLog(@"Did Fail");
     [self dismissOverlay];
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
-    [self dismissOverlay];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
-        
-        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-        for (NSDictionary *entry in [json objectForKey:@"data"]) {
-            Buyer *buyer = nil;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"buyer_id == %@", [entry objectForKey:@"buyer_id"]];
-            NSArray *result = [self fetchObjectsWithEntityName:@"Buyer" andPredicate:predicate];
-            if ([result count]) {
-                buyer = (Buyer*)[result firstObject];
-            }
-            else {
-                buyer = [NSEntityDescription insertNewObjectForEntityForName: @"Buyer" inManagedObjectContext: context];
-            }
-            
-            [buyer setValuesForKeysWithDictionary:entry];
-            
-            NSError *error = nil;
-            if (![context save:&error]) {
-                NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
-            }
-            else {
-                if (self.arrayOfBuyer == nil) {
-                    self.arrayOfBuyer = [[NSMutableArray alloc] init];
+            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+            for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                Buyer *buyer = nil;
+                
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"buyer_id == %@", [entry objectForKey:@"buyer_id"]];
+                NSArray *result = [self fetchObjectsWithEntityName:@"Buyer" andPredicate:predicate];
+                if ([result count]) {
+                    buyer = (Buyer*)[result firstObject];
+                }
+                else {
+                    buyer = [NSEntityDescription insertNewObjectForEntityForName: @"Buyer" inManagedObjectContext: context];
                 }
                 
-                [self.arrayOfBuyer addObject:buyer];
+                [buyer setValuesForKeysWithDictionary:entry];
+                
+                NSError *error = nil;
+                if (![context save:&error]) {
+                    NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                }
+                else {
+                    if (self.arrayOfBuyer == nil) {
+                        self.arrayOfBuyer = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [self.arrayOfBuyer addObject:buyer];
+                }
             }
-        }
-    
-        self.numberOfBuyer = [self.arrayOfBuyer count];
-        
-        self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-        
-        self.pageController.dataSource = self;
-        CGRect pageControllerFrame = self.viewForPages.frame;
-        pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 1.0f;
-        self.pageController.view.frame = pageControllerFrame;
-        
-        self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
-        
-        ABridge_BuyerPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-        
-        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-        
-        [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-        
-        [self addChildViewController:self.pageController];
-        [[self viewForPages] addSubview:[self.pageController view]];
-        [self.pageController didMoveToParentViewController:self];
-        
+            
+            self.numberOfBuyer = [self.arrayOfBuyer count];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+                
+                self.pageController.dataSource = self;
+                CGRect pageControllerFrame = self.viewForPages.frame;
+                pageControllerFrame.origin.x = 0.0f;
+                pageControllerFrame.origin.y = 1.0f;
+                self.pageController.view.frame = pageControllerFrame;
+                
+                self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
+                
+                ABridge_BuyerPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+                
+                NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+                
+                [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+                
+                [self addChildViewController:self.pageController];
+                [[self viewForPages] addSubview:[self.pageController view]];
+                [self.pageController didMoveToParentViewController:self];
+            });
+            
+        });
     }
     else {
         [self.pageController.view removeFromSuperview];
@@ -235,6 +246,10 @@
         [self showOverlayWithMessage:@"You currently don't have any Buyers." withIndicator:NO];
     }
     
+    
+    [self dismissOverlay];
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData

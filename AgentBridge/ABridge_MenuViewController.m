@@ -54,13 +54,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.buttonProfile.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
-    self.buttonNetwork.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
-    self.buttonAccountSettings.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
-    self.buttonAboutMe.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
-    self.buttonNotification.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
-    self.buttonSecurity.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
-    self.buttonLogOut.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    self.buttonProfile.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonNetwork.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonAccountSettings.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonAboutMe.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonNotification.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonSecurity.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonLogOut.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     
     // Add a bottomBorder.

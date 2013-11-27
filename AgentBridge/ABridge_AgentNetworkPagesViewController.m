@@ -49,48 +49,60 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.labelName.font = FONT_OPENSANS_REGULAR(14.0f);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+    self.labelName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
 //    self.labelBroker.font = FONT_OPENSANS_REGULAR(12.0f);
 //    self.labelAddress.font = FONT_OPENSANS_REGULAR(12.0f);
 //    self.buttonMobileNumber.titleLabel.font = FONT_OPENSANS_REGULAR(12.0f);
 //    self.buttonMobileNumber.titleLabel.font = FONT_OPENSANS_REGULAR(12.0f);
-    
-    self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
-    
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
+        });
 //    self.arrayKTableKeys = [NSArray arrayWithObjects:@"verify_image", @"zipcodes", @"average_sales", @"total_volume", @"total_sides", nil];
     
     self.arrayKTableKeys = [NSArray arrayWithObjects:/*@"verify_image",*/ @"brokerage", @"address", @"mobile", @"email", @"zipcodes", nil];
-    
-    self.labelName.text = [NSString stringWithFormat:@"%@ %@ hfjfifhb 92jfnbf99 b_02802nfh oekfffsdfsdf",self.profileData.firstname, self.profileData.lastname];
-    CGSize constraint = CGSizeMake(150.0f, 20000.0f);
-    
-    CGSize size = [self.labelName.text sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    
-    CGFloat height = MAX(size.height, 27.0f);
-    
-    CGRect frame = self.viewForContacts.frame;
-    frame.size.height += (height - self.labelName.frame.size.height);
-    self.viewForContacts.frame = frame;
-    
-    frame = self.labelName.frame;
-    frame.size.height = height;
-    self.labelName.frame = frame;
-    
-    self.tableView.tableHeaderView = self.viewForContacts;
-    
-    [self.tableView reloadData];
-    
-    
-    if (self.profileData.image_data == nil) {
-        self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
-    }
-    
-    self.imagePicture.image = [UIImage imageWithData:self.profileData.image_data];
-    
-    if ([self.profileData.activation_status integerValue]) {
-        self.imageViewVerified.hidden = NO;
         
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.labelName.text = [NSString stringWithFormat:@"%@ %@",self.profileData.firstname, self.profileData.lastname];
+            CGSize constraint = CGSizeMake(150.0f, 20000.0f);
+            
+            CGSize size = [self.labelName.text sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+            
+            CGFloat height = MAX(size.height, 27.0f);
+            
+            CGRect frame = self.viewForContacts.frame;
+            frame.size.height += (height - self.labelName.frame.size.height);
+            self.viewForContacts.frame = frame;
+            
+            frame = self.labelName.frame;
+            frame.size.height = height;
+            self.labelName.frame = frame;
+            
+            self.tableView.tableHeaderView = self.viewForContacts;
+            
+            frame = self.imageViewVerified.frame;
+            frame.origin.y = self.labelName.frame.origin.y + self.labelName.frame.size.height + 5.0f;
+            self.imageViewVerified.frame = frame;
+            
+            [self.tableView reloadData];
+        });
+        
+            if (self.profileData.image_data == nil) {
+                self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
+            }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.imagePicture.image = [UIImage imageWithData:self.profileData.image_data];
+            
+            if ([self.profileData.activation_status integerValue]) {
+                self.imageViewVerified.hidden = NO;
+                
+            }
+        });
+        
+    });
     
     // Add a bottomBorder.
     CALayer *bottomBorder = [CALayer layer];
@@ -142,13 +154,13 @@
         text = self.profileData.zipcodes;
     }
     
-    CGSize constraint = CGSizeMake(320.0f - (10.0f * 2), 20000.0f);
+    CGSize constraint = CGSizeMake(320.0f - (5.0f * 2), 20000.0f);
     
-    CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    
+    CGSize size = [text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    size.height += 10.0f;
     CGFloat height = MAX(size.height, 44.0f);
     
-    return height + (10.0f * 2);
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -162,14 +174,16 @@
     
     NSInteger row = [indexPath row];
     
-    cell.textLabel.font = FONT_OPENSANS_REGULAR(8.0f);
-    cell.detailTextLabel.font = FONT_OPENSANS_REGULAR(14.0f);
+    cell.textLabel.font = FONT_OPENSANS_REGULAR(10.0f);
+    cell.detailTextLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     [cell.detailTextLabel setLineBreakMode:UILineBreakModeWordWrap];
     [cell.detailTextLabel setNumberOfLines:0];
     
     cell.textLabel.textColor = [UIColor lightGrayColor];
     cell.detailTextLabel.textColor = [UIColor blackColor];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (self.profileData == nil) {
         cell.textLabel.text = @"";
@@ -190,15 +204,17 @@
         }
         else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"address"]) {
             cell.textLabel.text = @"Address";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@, %@", self.profileData.street_address, self.profileData.city, self.profileData.countries_name];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", self.profileData.street_address, self.profileData.city, self.profileData.state_code, self.profileData.countries_iso_code_3];
         }
         else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"mobile"]) {
             cell.textLabel.text = @"Mobile";
             cell.detailTextLabel.text = self.profileData.mobile_number;
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"email"]) {
             cell.textLabel.text = @"Email";
             cell.detailTextLabel.text = self.profileData.email;
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
         else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"zipcodes"]) {
@@ -241,6 +257,7 @@
     
     CGSize size = [cell.detailTextLabel.text sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     
+    size.height += 10.0f;
     
     CGRect frame = cell.detailTextLabel.frame;
     frame.size.height =MAX(size.height, 44.0f);
@@ -251,41 +268,62 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch ([indexPath row]) {
+        case 2:
+            [self callMobileNumber:nil];
+            break;
+        case 3:
+            [self sendEmail:nil];
+            break;
+        default:
+            break;
+    }
     
-//- (IBAction)callMobileNumber:(id)sender {
-//    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.profileData.mobile_number]];
-//    [[UIApplication sharedApplication] openURL:URL];
-//}
-//    
-//- (IBAction)sendEmail:(id)sender {
-//    
-//    if ([MFMailComposeViewController canSendMail]) {
-//        
-//        MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
-//        mailViewController.mailComposeDelegate = self;
-//        [mailViewController setSubject:[NSString stringWithFormat:@"Hello %@",self.profileData.firstname]];
-//        [mailViewController setMessageBody:@"Your message goes here." isHTML:NO];
-//        
-//        [self presentViewController:mailViewController animated:YES completion:^{
-//            
-//        }];
-//        
-//    }
-//    
-//    else {
-//        
-////        NSLog(@"Device is unable to send email in its current state.");
-//        
-//    }
-//    
-//}
-//    
-//-(void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-//    
-//    [self dismissViewControllerAnimated:YES completion:^{
-//        
-//    }];
-//    
-//}
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+    
+- (IBAction)callMobileNumber:(id)sender {
+    NSMutableString *mobileNumber = [NSMutableString stringWithString:self.profileData.mobile_number];
+    [mobileNumber replaceOccurrencesOfString:@"-" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
+    [mobileNumber replaceOccurrencesOfString:@"(" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
+    [mobileNumber replaceOccurrencesOfString:@")" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
+    [mobileNumber replaceOccurrencesOfString:@" " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
+//    NSLog(@"number:%@",mobileNumber);
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",mobileNumber]];
+    [[UIApplication sharedApplication] openURL:URL];
+}
+    
+- (IBAction)sendEmail:(id)sender {
+    
+    if ([MFMailComposeViewController canSendMail]) {
+        
+        MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
+        mailViewController.mailComposeDelegate = self;
+        [mailViewController setSubject:[NSString stringWithFormat:@"Hello %@",self.profileData.firstname]];
+        [mailViewController setMessageBody:@"Your message goes here." isHTML:NO];
+        
+        [self presentViewController:mailViewController animated:YES completion:^{
+            
+        }];
+        
+    }
+    
+    else {
+        
+//        NSLog(@"Device is unable to send email in its current state.");
+        
+    }
+    
+}
+    
+-(void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+    
+}
+
 
 @end

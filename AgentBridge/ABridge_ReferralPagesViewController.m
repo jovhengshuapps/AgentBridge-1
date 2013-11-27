@@ -60,9 +60,9 @@
     self.labelAddress.text = self.referralDetails.city;
     self.labelStateCountry.text = [NSString stringWithFormat:@"%@, %@",self.referralDetails.state_code,self.referralDetails.countries_iso_code_3];
     
-    self.labelAgentName.font = FONT_OPENSANS_REGULAR(12.0f);
-    self.labelAddress.font = FONT_OPENSANS_REGULAR(12.0f);
-    self.labelStateCountry.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.labelAgentName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelAddress.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelStateCountry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     self.labelBuyerName.text = self.referralDetails.client_name;
     NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
@@ -81,17 +81,24 @@
     
     self.imagePendingAccepted.image = [self imageForReferralStatus:[self.referralDetails.status integerValue]];
     
-    self.labelBuyerName.font = FONT_OPENSANS_REGULAR(12.0f);
-    self.labelPrice.font = FONT_OPENSANS_REGULAR(12.0f);
-    self.labelReferralFee.font = FONT_OPENSANS_REGULAR(12.0f);
-    self.labelInfo.font = FONT_OPENSANS_REGULAR(12.0f);
-    self.labelIntention.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.labelBuyerName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelReferralFee.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.labelInfo.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelIntention.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
-    if (self.referralDetails.image_data == nil) {
-        self.referralDetails.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.referralDetails.image]];
+    
+    if (self.referralDetails.image == nil || [self.referralDetails.image isEqualToString:@""]) {
+        self.imagePicture.image = [UIImage imageNamed:@"blank-image"];
     }
-    
-    self.imagePicture.image = [UIImage imageWithData:self.referralDetails.image_data];
+    else {
+        if (self.referralDetails.image_data == nil) {
+            self.referralDetails.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.referralDetails.image]];
+        }
+        
+        self.imagePicture.image = [UIImage imageWithData:self.referralDetails.image_data];
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -175,7 +182,7 @@
             ABRecordSetValue(newPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)(firstName), &error);
             ABRecordSetValue(newPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)(lastName), &error);
             
-            ABPersonSetImageData (newPerson,(__bridge CFDataRef)(self.referralDetails.image_data),&error);
+            ABPersonSetImageData (newPerson,(__bridge CFDataRef)([NSData dataWithContentsOfFile:@"blank-image.png"]),&error);
             
             ABRecordSetValue(newPerson, kABPersonOrganizationProperty, @"Agent Bridge", &error);
             ABRecordSetValue(newPerson, kABPersonJobTitleProperty, CLIENT_INTENTION([self.referralDetails.client_intention integerValue]), &error);

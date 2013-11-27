@@ -18,6 +18,7 @@
         <attribute name="broker_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brokerage_license" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="countries_iso_code_3" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countries_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstname" optional="YES" attributeType="String" syncable="YES"/>
@@ -31,7 +32,8 @@
         <attribute name="mobile_number_show" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profile_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="registration_date" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state_code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="street_address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="suburb" optional="YES" attributeType="String" syncable="YES"/>
@@ -207,7 +209,7 @@
         <element name="Buyer" positionX="0" positionY="0" width="0" height="0"/>
         <element name="LoginDetails" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Property" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Referral" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PropertyImages" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Referral" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

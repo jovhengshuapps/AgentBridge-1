@@ -68,6 +68,8 @@
     self.textPassword.font = FONT_OPENSANS_REGULAR(15.0f);
     self.buttonSignIn.titleLabel.font = FONT_OPENSANS_REGULAR(19.0f);
     self.buttonForgot.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
+    [self.textEmail textRectForBounds:CGRectInset( self.textEmail.bounds , 10 , 10 )];
+    [self.textPassword textRectForBounds:CGRectInset( self.textPassword.bounds , 10 , 10 )];
     
     self.textEmail.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
     self.textEmail.layer.borderWidth = 1.0f;

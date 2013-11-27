@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelPrice;
 @property (weak, nonatomic) IBOutlet UILabel *labelExpiry;
 @property (weak, nonatomic) IBOutlet UILabel *labelPage;
+@property (weak, nonatomic) IBOutlet UIView *viewForScroll;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingImageIndicator;
 
 @property (strong, nonatomic) NSURLConnection *urlConnectionImages;
 @property (strong, nonatomic) NSMutableData *dataReceived;
@@ -62,30 +64,39 @@
     }
     self.labelPrice.text = priceText;
     self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %@ days", self.propertyDetails.expiry];
-    
+    /*
     NSMutableString *featuresString = [NSMutableString stringWithFormat:@"%@\n\n",self.propertyDetails.desc];
     NSEntityDescription *entity = [self.propertyDetails entity];
     NSDictionary *attributes = [entity attributesByName];
     int count = 0;
     for (NSString *attribute in attributes) {
-        if([attribute isEqualToString:@"available_sqft"]||[attribute isEqualToString:@"bathroom"]||[attribute isEqualToString:@"bedroom"]||[attribute isEqualToString:@"bldg_sqft"]||[attribute isEqualToString:@"cap_rate"]||[attribute isEqualToString:@"ceiling_height"]||[attribute isEqualToString:@"condition"]||[attribute isEqualToString:@"furnished"]||[attribute isEqualToString:@"garage"]||[attribute isEqualToString:@"grm"]||[attribute isEqualToString:@"lot_size"]||[attribute isEqualToString:@"lot_sqft"]||[attribute isEqualToString:@"view"]||[attribute isEqualToString:@"year_built"]||[attribute isEqualToString:@"stories"]||[attribute isEqualToString:@"unit_sqft"]){
+        if([attribute isEqualToString:@"available_sqft"]||[attribute isEqualToString:@"bathroom"]||[attribute isEqualToString:@"bedroom"]||[attribute isEqualToString:@"bldg_sqft"]||[attribute isEqualToString:@"cap_rate"]||[attribute isEqualToString:@"ceiling_height"]||[attribute isEqualToString:@"condition"]||[attribute isEqualToString:@"furnished"]||[attribute isEqualToString:@"garage"]||[attribute isEqualToString:@"grm"]||[attribute isEqualToString:@"lot_size"]||[attribute isEqualToString:@"lot_sqft"]||[attribute isEqualToString:@"view"]||[attribute isEqualToString:@"year_built"]||[attribute isEqualToString:@"stories"]||[attribute isEqualToString:@"unit_sqft"]||[attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
+            
             
             if (count == 5) {
                 break;
             }
             else {
                 if (![self isNull:[self.propertyDetails valueForKey:attribute]]) {
+                    if([attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
+                        [featuresString appendFormat:@"%@, ", [self.propertyDetails valueForKey:attribute]];
+                    }
+                    else {
+                        NSMutableString *unit = [NSMutableString stringWithString:attribute];
+                        [unit replaceOccurrencesOfString:@"_sqft" withString:@" sq.ft." options:NSCaseInsensitiveSearch range:NSMakeRange(0, [unit length])];
+                        [unit replaceOccurrencesOfString:@"_" withString:@" " options:NSCaseInsensitiveSearch range:NSMakeRange(0, [unit length])];
+                        [featuresString appendFormat:@"%@",[NSString stringWithFormat:@"%@ %@, ",[self.propertyDetails valueForKey:attribute],unit]];
+                    }
                     
-                    [featuresString appendFormat:@"%@",[NSString stringWithFormat:@"%@ %@, ",[self.propertyDetails valueForKey:attribute],attribute]];
+                    count++;
                 }
             }
             
-            count++;
             
         }
-        else if([attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
-            [featuresString appendFormat:@"%@, ", [self.propertyDetails valueForKey:attribute]];
-        }
+//        else if([attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
+//            [featuresString appendFormat:@"%@, ", [self.propertyDetails valueForKey:attribute]];
+//        }
     }
     
     if ([featuresString rangeOfString:@","].location != NSNotFound) {
@@ -94,19 +105,20 @@
         [featuresString setString:[NSString stringWithFormat:@"%@\n\n",removedLastComma]];
     }
     
-    if (![self isNull:self.propertyDetails.desc]) {
-        [featuresString appendFormat:@"Note: %@",self.propertyDetails.desc];
-    }
+//    if (![self isNull:self.propertyDetails.desc]) {
+//        [featuresString appendFormat:@"Note: %@",self.propertyDetails.desc];
+//    }
     
     self.textFeatures.text = featuresString;
+    */
     
-    self.labelZip.font = FONT_OPENSANS_REGULAR(14.0f);
-    self.labelPrice.font = FONT_OPENSANS_REGULAR(17.0f);
-    self.labelPropertyName.font = FONT_OPENSANS_REGULAR(17.0f);
-    self.labelPropertyType.font = FONT_OPENSANS_REGULAR(17.0f);
+    self.labelZip.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPropertyName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPropertyType.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
-    self.labelExpiry.font = FONT_OPENSANS_REGULAR(12.0f);
-    self.textFeatures.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.labelExpiry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.textFeatures.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
     imageView.contentMode = UIViewContentModeCenter;
@@ -119,6 +131,15 @@
     [self.scrollImages addGestureRecognizer:tapZoom];
     
     [self.scrollImages addSubview:imageView];
+    
+    // Add a bottomBorder.
+    CALayer *bottomBorder = [CALayer layer];
+    
+    bottomBorder.frame = CGRectMake(0.0f, self.viewForScroll.frame.size.height - 1.0f, self.scrollImages.frame.size.width, 1.0f);
+    
+    bottomBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.viewForScroll.layer addSublayer:bottomBorder];
     
     [self loadPOPsImages];
     
@@ -135,7 +156,7 @@
 }
 
 -(BOOL)isNull:(id)value {
-    return ((NSNull*)value == nil);
+    return ((NSNull*)value == nil || [value isEqualToString:@""]);
 }
 
 -(NSString*)imageStringForPropertyType:(NSInteger)property_type andSubType:(NSInteger)sub_type {
@@ -223,6 +244,7 @@
 }
 
 - (void) loadPOPsImages {
+    self.loadingImageIndicator.hidden = NO;
         NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
         [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
         NSLog(@"url:%@",urlString_);
@@ -330,8 +352,11 @@
     }
     
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.loadingImageIndicator.hidden = YES;
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    });
     // Do something with responseData
 }
 
