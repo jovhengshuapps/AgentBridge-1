@@ -82,7 +82,7 @@
     self.imagePendingAccepted.image = [self imageForReferralStatus:[self.referralDetails.status integerValue]];
     
     self.labelBuyerName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.labelReferralFee.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     self.labelInfo.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelIntention.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);

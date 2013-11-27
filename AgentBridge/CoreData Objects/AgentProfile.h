@@ -2,7 +2,7 @@
 //  AgentProfile.h
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/25/13.
+//  Created by host24_iOS Dev on 11/27/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSString * broker_name;
 @property (nonatomic, retain) NSString * brokerage_license;
 @property (nonatomic, retain) NSString * city;
+@property (nonatomic, retain) NSString * countries_iso_code_3;
 @property (nonatomic, retain) NSString * countries_name;
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSString * firstname;
@@ -32,6 +33,8 @@
 @property (nonatomic, retain) NSString * mobile_number_show;
 @property (nonatomic, retain) NSString * profile_id;
 @property (nonatomic, retain) NSString * registration_date;
+@property (nonatomic, retain) NSString * state_code;
+@property (nonatomic, retain) NSString * state_name;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSString * street_address;
 @property (nonatomic, retain) NSString * suburb;
@@ -41,8 +44,6 @@
 @property (nonatomic, retain) NSString * user_id;
 @property (nonatomic, retain) NSString * zip;
 @property (nonatomic, retain) NSString * zipcodes;
-@property (nonatomic, retain) NSString * state_code;
-@property (nonatomic, retain) NSString * state_name;
-@property (nonatomic, retain) NSString * countries_iso_code_3;
+@property (nonatomic, retain) NSString * is_term_accepted;
 
 @end

@@ -29,6 +29,16 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    //[FONT NAME TEST]
+//    for (NSString* family in [UIFont familyNames])
+//    {
+//        NSLog(@"%@", family);
+//        
+//        for (NSString* name in [UIFont fontNamesForFamilyName: family])
+//        {
+//            NSLog(@"  %@", name);
+//        }
+//    }
     
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
         self.shouldAdjustChildViewHeightForStatusBar = YES;
@@ -66,8 +76,9 @@
     NSError *error = nil;
     NSArray *fetchedObjects = [context
                                executeFetchRequest:fetchRequest error:&error];
+   
     
-    if (![fetchedObjects count]) {
+    if ([fetchedObjects count] == 0) {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         ABridge_LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"Login"];

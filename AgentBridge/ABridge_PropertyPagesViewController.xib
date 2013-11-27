@@ -65,7 +65,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" id="oN0-eh-tMf">
-                    <rect key="frame" x="6" y="196" width="309" height="186"/>
+                    <rect key="frame" x="6" y="196" width="309" height="190"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -77,7 +77,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WEV-7q-7jJ">
-                    <rect key="frame" x="0.0" y="403" width="320" height="19"/>
+                    <rect key="frame" x="0.0" y="394" width="320" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <color key="backgroundColor" red="0.90980392160000001" green="0.90980392160000001" blue="0.90980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>

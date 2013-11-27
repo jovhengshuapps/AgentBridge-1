@@ -165,36 +165,36 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     [self dismissOverlay];
-    NSError *error = nil;
-    
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
+//    NSError *error = nil;
+//    
+//    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);
     
-    if ([[json objectForKey:@"data"] count]) {
+    if (/*[[json objectForKey:@"data"] count]*/NO) {
     
-    self.numberOfActivity = [[json objectForKey:@"data"] count];
-    
-    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-    
-        self.pageController.dataSource = self;
-        CGRect pageControllerFrame = self.viewForPages.frame;
-        pageControllerFrame.origin.x = 0.0f;
-        pageControllerFrame.origin.y = 1.0f;
-        self.pageController.view.frame = pageControllerFrame;
-        
-        
-    self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
-    
-    ABridge_ActivityPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-    
-    NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-    
-    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-    
-    [self addChildViewController:self.pageController];
-    [[self viewForPages] addSubview:[self.pageController view]];
-    [self.pageController didMoveToParentViewController:self];
+//    self.numberOfActivity = [[json objectForKey:@"data"] count];
+//    
+//    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+//    
+//        self.pageController.dataSource = self;
+//        CGRect pageControllerFrame = self.viewForPages.frame;
+//        pageControllerFrame.origin.x = 0.0f;
+//        pageControllerFrame.origin.y = 1.0f;
+//        self.pageController.view.frame = pageControllerFrame;
+//        
+//        
+//    self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
+//    
+//    ABridge_ActivityPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+//    
+//    NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+//    
+//    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+//    
+//    [self addChildViewController:self.pageController];
+//    [[self viewForPages] addSubview:[self.pageController view]];
+//    [self.pageController didMoveToParentViewController:self];
     
     }
     else {

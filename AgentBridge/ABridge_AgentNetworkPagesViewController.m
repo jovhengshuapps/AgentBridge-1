@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelPage;
 //- (IBAction)callMobileNumber:(id)sender;
 //- (IBAction)sendEmail:(id)sender;
-    @property (strong, nonatomic) NSArray *arrayKTableKeys;
+    @property (strong, nonatomic) NSMutableArray *arrayKTableKeys;
 
 @end
 
@@ -52,23 +52,39 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
     self.labelName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-//    self.labelBroker.font = FONT_OPENSANS_REGULAR(12.0f);
-//    self.labelAddress.font = FONT_OPENSANS_REGULAR(12.0f);
-//    self.buttonMobileNumber.titleLabel.font = FONT_OPENSANS_REGULAR(12.0f);
-//    self.buttonMobileNumber.titleLabel.font = FONT_OPENSANS_REGULAR(12.0f);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
         });
-//    self.arrayKTableKeys = [NSArray arrayWithObjects:@"verify_image", @"zipcodes", @"average_sales", @"total_volume", @"total_sides", nil];
     
-    self.arrayKTableKeys = [NSArray arrayWithObjects:/*@"verify_image",*/ @"brokerage", @"address", @"mobile", @"email", @"zipcodes", nil];
+        self.arrayKTableKeys = [[NSMutableArray alloc] init];
+        
+        if (![self isNull:self.profileData.broker_name]) {
+            [self.arrayKTableKeys addObject:@"brokerage"];
+        }
+        
+        if (![self isNull:self.profileData.street_address] || ![self isNull:self.profileData.suburb] || ![self isNull:self.profileData.city] || ![self isNull:self.profileData.state_code] || ![self isNull:self.profileData.zip] || ![self isNull:self.profileData.countries_iso_code_3]) {
+            [self.arrayKTableKeys addObject:@"address"];
+        }
+        
+        if (![self isNull:self.profileData.mobile_number]) {
+            [self.arrayKTableKeys addObject:@"mobile"];
+        }
+        
+        if (![self isNull:self.profileData.email]) {
+            [self.arrayKTableKeys addObject:@"email"];
+        }
+        
+        if (![self isNull:self.profileData.zipcodes]) {
+            [self.arrayKTableKeys addObject:@"zipcodes"];
+        }
+        
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.labelName.text = [NSString stringWithFormat:@"%@ %@",self.profileData.firstname, self.profileData.lastname];
             CGSize constraint = CGSizeMake(150.0f, 20000.0f);
             
-            CGSize size = [self.labelName.text sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+            CGSize size = [self.labelName.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
             
             CGFloat height = MAX(size.height, 27.0f);
             
@@ -86,19 +102,23 @@
             frame.origin.y = self.labelName.frame.origin.y + self.labelName.frame.size.height + 5.0f;
             self.imageViewVerified.frame = frame;
             
+            if([self.profileData.is_term_accepted integerValue])
+                self.imageViewVerified.hidden = NO;
+            else
+                self.imageViewVerified.hidden = YES;
+            
+            
             [self.tableView reloadData];
         });
         
-            if (self.profileData.image_data == nil) {
-                self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
-            }
+        if (self.profileData.image_data == nil && ![self isNull:self.profileData.image]) {
+            self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
+        }
+        
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.imagePicture.image = [UIImage imageWithData:self.profileData.image_data];
-            
-            if ([self.profileData.activation_status integerValue]) {
-                self.imageViewVerified.hidden = NO;
-                
+            if (self.profileData.image_data != nil) {
+                self.imagePicture.image = [UIImage imageWithData:self.profileData.image_data];
             }
         });
         
@@ -119,20 +139,19 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-    
+
+
+-(BOOL)isNull:(id)value {
+    return ((NSNull*)value == nil || [value isEqualToString:@""]);
+}
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
     
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    if([self.profileData.activation_status integerValue])
-//        return 6;
-//    else
-        return 5;
-//    if([self.profileData.activation_status integerValue])
-//    return 5;
-//    else
-//    return 4;
+    return [self.arrayKTableKeys count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -142,7 +161,32 @@
         text = self.profileData.broker_name;
     }
     else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"address"]) {
-        text = [NSString stringWithFormat:@"%@, %@, %@", self.profileData.street_address, self.profileData.city, self.profileData.countries_name];
+        text = @"";
+        NSMutableString *string = [NSMutableString stringWithString:@""];
+        if (![self isNull:self.profileData.street_address]) {
+            [string appendFormat:@"%@\n",self.profileData.street_address];
+        }
+        if (![self isNull:self.profileData.suburb]) {
+            [string appendFormat:@"%@\n",self.profileData.suburb];
+        }
+        if (![self isNull:self.profileData.city]) {
+            [string appendFormat:@"%@ ",self.profileData.city];
+        }
+        if (![self isNull:self.profileData.state_code]) {
+            [string appendFormat:@"%@ ",self.profileData.state_code];
+        }
+        if (![self isNull:self.profileData.zip]) {
+            [string appendFormat:@"%@\n",self.profileData.zip];
+        }
+        if (![self isNull:self.profileData.countries_iso_code_3]) {
+            [string appendFormat:@"%@ ",self.profileData.countries_iso_code_3];
+        }
+        
+        NSString *removedLastChar = [string substringToIndex:[string length]-1];
+        
+        [string setString:[NSString stringWithString:removedLastChar]];
+        
+        text = string;
     }
     else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"mobile"]) {
         text = self.profileData.mobile_number;
@@ -156,11 +200,13 @@
     
     CGSize constraint = CGSizeMake(320.0f - (5.0f * 2), 20000.0f);
     
-    CGSize size = [text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    size.height += 10.0f;
+    CGSize size = [text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    
+    size.height += FONT_SIZE_REGULAR;
+    
     CGFloat height = MAX(size.height, 44.0f);
     
-    return height;
+    return height + 5.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -172,12 +218,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    NSInteger row = [indexPath row];
-    
-    cell.textLabel.font = FONT_OPENSANS_REGULAR(10.0f);
+    cell.textLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_FOR_PROFILE);
     cell.detailTextLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
-    [cell.detailTextLabel setLineBreakMode:UILineBreakModeWordWrap];
+    [cell.detailTextLabel setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.detailTextLabel setNumberOfLines:0];
     
     cell.textLabel.textColor = [UIColor lightGrayColor];
@@ -190,61 +234,55 @@
         cell.detailTextLabel.text = @"";
     }
     else {
-        if(![self.profileData.activation_status integerValue]){
-            row += 1;
-        }
-        /*if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"verify_image"]) {
-            cell.textLabel.text = @"";
-            cell.detailTextLabel.text = @"";
-            
-        }
-        else*/ if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"brokerage"]) {
+        if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"brokerage"]) {
             cell.textLabel.text = @"Brokerage";
             cell.detailTextLabel.text = self.profileData.broker_name;
         }
-        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"address"]) {
+        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"address"]) {
             cell.textLabel.text = @"Address";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", self.profileData.street_address, self.profileData.city, self.profileData.state_code, self.profileData.countries_iso_code_3];
+            cell.detailTextLabel.text = @"";
+            NSMutableString *string = [NSMutableString stringWithString:@""];
+            if (![self isNull:self.profileData.street_address]) {
+                [string appendFormat:@"%@\n",self.profileData.street_address];
+            }
+            if (![self isNull:self.profileData.suburb]) {
+                [string appendFormat:@"%@\n",self.profileData.suburb];
+            }
+            if (![self isNull:self.profileData.city]) {
+                [string appendFormat:@"%@ ",self.profileData.city];
+            }
+            if (![self isNull:self.profileData.state_code]) {
+                [string appendFormat:@"%@ ",self.profileData.state_code];
+            }
+            if (![self isNull:self.profileData.zip]) {
+                [string appendFormat:@"%@\n",self.profileData.zip];
+            }
+            if (![self isNull:self.profileData.countries_iso_code_3]) {
+                [string appendFormat:@"%@ ",self.profileData.countries_iso_code_3];
+            }
+            
+            NSString *removedLastChar = [string substringToIndex:[string length]-1];
+            
+            [string setString:[NSString stringWithString:removedLastChar]];
+            
+            cell.detailTextLabel.text = string;
         }
-        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"mobile"]) {
+        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"mobile"]) {
             cell.textLabel.text = @"Mobile";
             cell.detailTextLabel.text = self.profileData.mobile_number;
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:44.0f/255.0f green:153.0f/255.0f blue:206.0f/255.0f alpha:1.0f];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
-        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"email"]) {
+        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"email"]) {
             cell.textLabel.text = @"Email";
             cell.detailTextLabel.text = self.profileData.email;
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:44.0f/255.0f green:153.0f/255.0f blue:206.0f/255.0f alpha:1.0f];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
-        
-        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"zipcodes"]) {
+        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"zipcodes"]) {
             cell.textLabel.text = [NSString stringWithFormat:@"%@ works around zip codes",self.profileData.firstname];
             cell.detailTextLabel.text = self.profileData.zipcodes;
         }
-//        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"average_sales"]) {
-//            NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-//            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-//            formatter.currencyCode = @"USD";
-//            
-//            cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.average_price doubleValue]]];
-//            cell.detailTextLabel.text = @"Average Sales Price";
-//        }
-//        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"total_volume"]) {
-//            NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-//            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-//            formatter.currencyCode = @"USD";
-//            
-//            cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.total_volume doubleValue]]];
-//            cell.detailTextLabel.text = @"Total Volume";
-//        }
-//        else if ([[self.arrayKTableKeys objectAtIndex:row] isEqualToString:@"total_sides"]) {
-//            NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-//            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-//            formatter.currencyCode = @"USD";
-//            
-//            cell.textLabel.text = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.profileData.total_sides doubleValue]]];
-//            cell.detailTextLabel.text = @"Total Sides";
-//        }
         else {
             cell.textLabel.text = @"";
             cell.detailTextLabel.text = @"";
@@ -255,12 +293,12 @@
     
     CGSize constraint = CGSizeMake(320.0f - (10.0f * 2), 20000.0f);
     
-    CGSize size = [cell.detailTextLabel.text sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGSize size = [cell.detailTextLabel.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    size.height += 10.0f;
+    size.height += FONT_SIZE_REGULAR;
     
     CGRect frame = cell.detailTextLabel.frame;
-    frame.size.height =MAX(size.height, 44.0f);
+    frame.size.height = MAX(size.height, 44.0f);
     cell.detailTextLabel.frame = frame;
     
     
@@ -269,16 +307,14 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch ([indexPath row]) {
-        case 2:
-            [self callMobileNumber:nil];
-            break;
-        case 3:
-            [self sendEmail:nil];
-            break;
-        default:
-            break;
+    
+    if ([indexPath row] == [self.arrayKTableKeys indexOfObject:@"mobile"]) {
+        [self callMobileNumber:nil];
     }
+    else if ([indexPath row] == [self.arrayKTableKeys indexOfObject:@"email"]) {
+        [self sendEmail:nil];
+    }
+    
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

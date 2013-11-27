@@ -2,7 +2,7 @@
 //  AgentProfile.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/25/13.
+//  Created by host24_iOS Dev on 11/27/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
@@ -18,6 +18,7 @@
 @dynamic broker_name;
 @dynamic brokerage_license;
 @dynamic city;
+@dynamic countries_iso_code_3;
 @dynamic countries_name;
 @dynamic email;
 @dynamic firstname;
@@ -31,6 +32,8 @@
 @dynamic mobile_number_show;
 @dynamic profile_id;
 @dynamic registration_date;
+@dynamic state_code;
+@dynamic state_name;
 @dynamic status;
 @dynamic street_address;
 @dynamic suburb;
@@ -40,8 +43,6 @@
 @dynamic user_id;
 @dynamic zip;
 @dynamic zipcodes;
-@dynamic state_code;
-@dynamic state_name;
-@dynamic countries_iso_code_3;
+@dynamic is_term_accepted;
 
 @end

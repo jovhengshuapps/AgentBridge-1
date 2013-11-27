@@ -25,6 +25,7 @@
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="is_premium" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_term_accepted" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="licence" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mobile_number" optional="YES" attributeType="String" syncable="YES"/>

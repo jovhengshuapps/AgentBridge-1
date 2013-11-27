@@ -28,7 +28,8 @@
 		6EBBD7711834B48A00166D63 /* ABridge_ActivityPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */; };
 		6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */; };
 		6EC708A91839ED1C00A9B5D8 /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC708A81839ED1C00A9B5D8 /* Property.m */; };
-		6ECB090218434A2200A783F0 /* AgentProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECB090118434A2200A783F0 /* AgentProfile.m */; };
+		6EDF11B61845A762001BFC6B /* OpenSans-Bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EDF11B51845A762001BFC6B /* OpenSans-Bold-webfont.ttf */; };
+		6EDF11B91845D5FA001BFC6B /* AgentProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EDF11B81845D5FA001BFC6B /* AgentProfile.m */; };
 		6EEF583518337E4000C3214E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583418337E4000C3214E /* Foundation.framework */; };
 		6EEF583718337E4000C3214E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583618337E4000C3214E /* CoreGraphics.framework */; };
 		6EEF583918337E4000C3214E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583818337E4000C3214E /* UIKit.framework */; };
@@ -102,8 +103,9 @@
 		6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentProfileViewController.m; sourceTree = "<group>"; };
 		6EC708A71839ED1C00A9B5D8 /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Property.h; sourceTree = "<group>"; };
 		6EC708A81839ED1C00A9B5D8 /* Property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Property.m; sourceTree = "<group>"; };
-		6ECB090018434A2200A783F0 /* AgentProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgentProfile.h; sourceTree = "<group>"; };
-		6ECB090118434A2200A783F0 /* AgentProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgentProfile.m; sourceTree = "<group>"; };
+		6EDF11B51845A762001BFC6B /* OpenSans-Bold-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold-webfont.ttf"; sourceTree = "<group>"; };
+		6EDF11B71845D5FA001BFC6B /* AgentProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgentProfile.h; sourceTree = "<group>"; };
+		6EDF11B81845D5FA001BFC6B /* AgentProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgentProfile.m; sourceTree = "<group>"; };
 		6EEF583118337E4000C3214E /* AgentBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgentBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EEF583418337E4000C3214E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6EEF583618337E4000C3214E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -180,8 +182,8 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
-				6ECB090018434A2200A783F0 /* AgentProfile.h */,
-				6ECB090118434A2200A783F0 /* AgentProfile.m */,
+				6EDF11B71845D5FA001BFC6B /* AgentProfile.h */,
+				6EDF11B81845D5FA001BFC6B /* AgentProfile.m */,
 				6EB6E358183F134C00161E75 /* PropertyImages.h */,
 				6EB6E359183F134C00161E75 /* PropertyImages.m */,
 				6E791B47183CD28200BB76B3 /* Referral.h */,
@@ -302,6 +304,7 @@
 		6EEF583D18337E4000C3214E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6EDF11B51845A762001BFC6B /* OpenSans-Bold-webfont.ttf */,
 				6EA551031844525E00702E94 /* OpenSans-Regular-webfont.ttf */,
 				6EEF583E18337E4000C3214E /* AgentBridge-Info.plist */,
 				6EEF583F18337E4000C3214E /* InfoPlist.strings */,
@@ -463,6 +466,7 @@
 				6EA551041844525E00702E94 /* OpenSans-Regular-webfont.ttf in Resources */,
 				6EEF586A18337E6B00C3214E /* Main.storyboard in Resources */,
 				6EBBD75F18349A1C00166D63 /* ABridge_BuyerPagesViewController.xib in Resources */,
+				6EDF11B61845A762001BFC6B /* OpenSans-Bold-webfont.ttf in Resources */,
 				6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */,
 				6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */,
 				6EBBD7711834B48A00166D63 /* ABridge_ActivityPagesViewController.xib in Resources */,
@@ -512,7 +516,7 @@
 				6E0D4902183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m in Sources */,
 				6EBBD7671834A71D00166D63 /* ABridge_ReferralPagesViewController.m in Sources */,
 				6EBBD7701834B48A00166D63 /* ABridge_ActivityPagesViewController.m in Sources */,
-				6ECB090218434A2200A783F0 /* AgentProfile.m in Sources */,
+				6EDF11B91845D5FA001BFC6B /* AgentProfile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

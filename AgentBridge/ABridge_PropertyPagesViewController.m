@@ -113,7 +113,7 @@
     */
     
     self.labelZip.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.labelPropertyName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelPropertyType.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
@@ -247,7 +247,7 @@
     self.loadingImageIndicator.hidden = NO;
         NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
         [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
-        NSLog(@"url:%@",urlString_);
+//        NSLog(@"url:%@",urlString_);
         NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

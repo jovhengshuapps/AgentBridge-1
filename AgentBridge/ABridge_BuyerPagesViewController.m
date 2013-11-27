@@ -135,7 +135,7 @@
     self.labelBuyerName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelBuyerType.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
-    self.labelPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.labelZipcode.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelNew.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     self.labelSaved.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
