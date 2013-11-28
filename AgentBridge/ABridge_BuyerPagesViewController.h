@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "Buyer.h"
 
+@protocol ABridge_BuyerPagesViewControllerDelegate <NSObject>
+
+-(void)viewSavedPopsWithBuyerId:(NSInteger)buyer_id;
+-(void)viewNewPopsWithBuyerId:(NSInteger)buyer_id;
+
+@end
 @interface ABridge_BuyerPagesViewController : UIViewController
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) Buyer *buyerDetails;
+@property (assign, nonatomic) id<ABridge_BuyerPagesViewControllerDelegate> delegate;
 @end

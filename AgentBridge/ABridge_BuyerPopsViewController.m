@@ -1,38 +1,37 @@
 //
-//  ABridge_BuyerViewController.m
+//  ABridge_BuyerPopsViewController.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/14/13.
+//  Created by host24_iOS Dev on 11/27/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
-#import "ABridge_BuyerViewController.h"
-#import "ABridge_BuyerPagesViewController.h"
 #import "ABridge_BuyerPopsViewController.h"
-#import "Buyer.h"
+#import "ABridge_PropertyPagesViewController.h"
+#import "Property.h"
 
-@interface ABridge_BuyerViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *labelNumberOfBuyers;
+@interface ABridge_BuyerPopsViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *labelNumberOfProperty;
 @property (weak, nonatomic) IBOutlet UIView *viewForPages;
+//@property (weak, nonatomic) IBOutlet UIButton *buttonSave;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewZoom;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+- (IBAction)backToBuyers:(id)sender;
 
-@property (assign, nonatomic) NSInteger numberOfBuyer;
-@property (strong, nonatomic) NSURLConnection *urlConnectionBuyer;
+@property (assign, nonatomic) NSInteger numberOfProperty;
+@property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
 @property (strong, nonatomic) NSMutableData *dataReceived;
-@property (strong, nonatomic) LoginDetails *loginDetail;
-@property (strong, nonatomic) NSMutableArray *arrayOfBuyer;
-@property (assign, nonatomic) BOOL saved_pressed;
-@property (assign, nonatomic) NSInteger buyer_id_pops;
+@property (strong, nonatomic) NSMutableArray *arrayOfProperty;
 @end
 
-@implementation ABridge_BuyerViewController
-@synthesize numberOfBuyer;
-@synthesize urlConnectionBuyer;
+@implementation ABridge_BuyerPopsViewController
+@synthesize numberOfProperty;
+@synthesize urlConnectionProperty;
 @synthesize dataReceived;
-@synthesize loginDetail;
-@synthesize arrayOfBuyer;
-@synthesize saved_pressed;
-@synthesize buyer_id_pops;
+@synthesize arrayOfProperty;
+@synthesize is_saved;
+@synthesize buyer_id;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,9 +47,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfBuyers.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+//    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     
-    self.labelNumberOfBuyers.text = @"My Buyers";
+    if (is_saved) {
+        self.labelNumberOfProperty.text = @"Saved POPs™";
+    }
+    else {
+        self.labelNumberOfProperty.text = @"New POPs™";
+    }
+    
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
     
@@ -59,36 +65,33 @@
     topBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
     
     [self.viewForPages.layer addSublayer:topBorder];
-    
-    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    NSError *error = nil;
-    NSArray *fetchedObjects = [context
-                               executeFetchRequest:fetchRequest error:&error];
-    
-    self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
+    NSString *parameters = [NSString stringWithFormat:@"?buyer_id=%li",(long)self.buyer_id];
     
-    self.urlConnectionBuyer = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers.php" andParameters:parameters];
-    
-    if (self.urlConnectionBuyer) {
-//        NSLog(@"Connection Successful");
-        [self addURLConnection:self.urlConnectionBuyer];
-        self.activityIndicator.hidden = NO;
-        [self.activityIndicator startAnimating];
-//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+    if (is_saved) {
+        
+        self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers_saved.php" andParameters:parameters];
     }
     else {
-//        NSLog(@"Connection Failed");
+        
+        self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers_new.php" andParameters:parameters];
+    }
+    
+//    NSLog(@"url:%@",self.urlConnectionProperty.originalRequest.URL);
+    if (self.urlConnectionProperty) {
+        NSLog(@"Connection Successful");
+        [self addURLConnection:self.urlConnectionProperty];
+        //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+        
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
+    }
+    else {
+        NSLog(@"Connection Failed");
     }
 }
 
@@ -99,11 +102,11 @@
 }
 
 
-- (ABridge_BuyerPagesViewController *)viewControllerAtIndex:(NSUInteger)index {
+- (ABridge_PropertyPagesViewController *)viewControllerAtIndex:(NSUInteger)index {
     
-    ABridge_BuyerPagesViewController *pagesViewController = [[ABridge_BuyerPagesViewController alloc] initWithNibName:@"ABridge_BuyerPagesViewController" bundle:nil];
+    ABridge_PropertyPagesViewController *pagesViewController = [[ABridge_PropertyPagesViewController alloc] initWithNibName:@"ABridge_PropertyPagesViewController" bundle:nil];
     pagesViewController.index = index;
-    pagesViewController.buyerDetails = (Buyer*)[self.arrayOfBuyer objectAtIndex:index];
+    pagesViewController.propertyDetails = (Property*)[self.arrayOfProperty objectAtIndex:index];
     pagesViewController.delegate = self;
     
     return pagesViewController;
@@ -112,7 +115,7 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     
-    NSUInteger index = [(ABridge_BuyerPagesViewController *)viewController index];
+    NSUInteger index = [(ABridge_PropertyPagesViewController *)viewController index];
     
     if (index == 0) {
         return nil;
@@ -127,11 +130,11 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     
-    NSUInteger index = [(ABridge_BuyerPagesViewController *)viewController index];
+    NSUInteger index = [(ABridge_PropertyPagesViewController *)viewController index];
     
     index++;
     
-    if (index == self.numberOfBuyer) {
+    if (index == self.numberOfProperty) {
         return nil;
     }
     
@@ -141,7 +144,7 @@
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
     // The number of items reflected in the page indicator.
-    return self.numberOfBuyer;
+    return self.numberOfProperty;
 }
 
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
@@ -154,11 +157,10 @@
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
     [self.pageController.view removeFromSuperview];
     [self.pageController removeFromParentViewController];
     self.pageController = nil;
-    self.arrayOfBuyer = nil;
+    self.arrayOfProperty = nil;
     self.dataReceived = nil;
     self.dataReceived = [[NSMutableData alloc]init];
 }
@@ -169,7 +171,7 @@
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-//    NSLog(@"Did Fail");
+    //    NSLog(@"Did Fail");
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
@@ -181,42 +183,44 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
+    
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"Did Finish:%@", json);
+//    NSLog(@"%@ Did Finish:%@", (is_saved)?@"YES":@"NO", json);
     
     if ([[json objectForKey:@"data"] count]) {
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
             for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                Buyer *buyer = nil;
+                Property *property = nil;
                 
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"buyer_id == %@", [entry objectForKey:@"buyer_id"]];
-                NSArray *result = [self fetchObjectsWithEntityName:@"Buyer" andPredicate:predicate];
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"listing_id == %@", [entry objectForKey:@"listing_id"]];
+                NSArray *result = [self fetchObjectsWithEntityName:@"Property" andPredicate:predicate];
                 if ([result count]) {
-                    buyer = (Buyer*)[result firstObject];
+                    property = (Property*)[result firstObject];
                 }
                 else {
-                    buyer = [NSEntityDescription insertNewObjectForEntityForName: @"Buyer" inManagedObjectContext: context];
+                    property = [NSEntityDescription insertNewObjectForEntityForName: @"Property" inManagedObjectContext: context];
                 }
                 
-                [buyer setValuesForKeysWithDictionary:entry];
+                [property setValuesForKeysWithDictionary:entry];
                 
                 NSError *error = nil;
                 if (![context save:&error]) {
-                    NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                    NSLog(@"Error on saving Property:%@",[error localizedDescription]);
                 }
                 else {
-                    if (self.arrayOfBuyer == nil) {
-                        self.arrayOfBuyer = [[NSMutableArray alloc] init];
+                    if (self.arrayOfProperty == nil) {
+                        self.arrayOfProperty = [[NSMutableArray alloc] init];
                     }
                     
-                    [self.arrayOfBuyer addObject:buyer];
+                    [self.arrayOfProperty addObject:property];
                 }
             }
             
-            self.numberOfBuyer = [self.arrayOfBuyer count];
+            self.numberOfProperty = [self.arrayOfProperty count];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
@@ -227,9 +231,14 @@
                 pageControllerFrame.origin.y = 1.0f;
                 self.pageController.view.frame = pageControllerFrame;
                 
-                self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
+                if (is_saved) {
+                    self.labelNumberOfProperty.text = [NSString stringWithFormat:@"Saved POPs™ (%li)",(long)self.numberOfProperty];
+                }
+                else {
+                    self.labelNumberOfProperty.text = [NSString stringWithFormat:@"New POPs™ (%li)",(long)self.numberOfProperty];
+                }
                 
-                ABridge_BuyerPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+                ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                 
                 NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
                 
@@ -238,6 +247,7 @@
                 [self addChildViewController:self.pageController];
                 [[self viewForPages] addSubview:[self.pageController view]];
                 [self.pageController didMoveToParentViewController:self];
+//                self.buttonSave.hidden = NO;
             });
             
         });
@@ -246,12 +256,16 @@
         [self.pageController.view removeFromSuperview];
         [self.pageController removeFromParentViewController];
         self.pageController = nil;
-        self.numberOfBuyer = 0;
-        self.labelNumberOfBuyers.text = @"My Buyers";
-        
-        [self showOverlayWithMessage:@"You currently don't have any Buyers." withIndicator:NO];
+        self.numberOfProperty = 0;
+        if (is_saved) {
+            self.labelNumberOfProperty.text = @"Saved POPs™";
+        }
+        else {
+            self.labelNumberOfProperty.text = @"New POPs™";
+        }
+//        self.buttonSave.hidden = YES;
+        [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
     }
-    
     
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
@@ -261,23 +275,35 @@
     // Do something with responseData
 }
 
-
--(void)viewSavedPopsWithBuyerId:(NSInteger)buyer_id {
-    self.saved_pressed = YES;
-    self.buyer_id_pops = buyer_id;
-    [self performSegueWithIdentifier:@"showPops" sender:self];
+- (void) zoomImage:(NSData *)image_data {
+    
+    UIImage *imageZoom = [UIImage imageWithData:image_data];
+    
+    self.imageView.image = imageZoom;
+    
+    CGRect frame = self.imageView.frame;
+    frame.size.width = imageZoom.size.width;
+    frame.size.height = imageZoom.size.height;
+    self.imageView.frame = frame;
+    
+    self.scrollViewZoom.contentSize = self.imageView.frame.size;
+    
+    self.scrollViewZoom.hidden = NO;
+    
+    
 }
 
--(void)viewNewPopsWithBuyerId:(NSInteger)buyer_id {
-    self.saved_pressed = NO;
-    self.buyer_id_pops = buyer_id;
-    [self performSegueWithIdentifier:@"showPops" sender:self];
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return self.imageView;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"showPops"]) {
-        ((ABridge_BuyerPopsViewController*) segue.destinationViewController).is_saved = self.saved_pressed;
-        ((ABridge_BuyerPopsViewController*) segue.destinationViewController).buyer_id = self.buyer_id_pops;
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    if (scrollView.zoomScale < 0.75) {
+        self.scrollViewZoom.hidden = YES;
     }
+}
+
+- (IBAction)backToBuyers:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 @end

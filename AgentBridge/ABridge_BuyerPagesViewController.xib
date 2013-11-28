@@ -7,15 +7,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ABridge_BuyerPagesViewController">
             <connections>
+                <outlet property="buttonNew" destination="I4l-rj-YFp" id="wUX-6Y-PSe"/>
+                <outlet property="buttonSave" destination="BKf-nm-Kog" id="POq-6v-3tm"/>
                 <outlet property="imageProperty" destination="sYa-eG-wy5" id="xl2-0Z-Bgz"/>
                 <outlet property="labelBuyerName" destination="Y8p-vG-8kH" id="TAb-vx-aZK"/>
                 <outlet property="labelBuyerType" destination="Ohq-aN-TvI" id="GuH-o8-og3"/>
                 <outlet property="labelExpiry" destination="wS9-Y2-zze" id="nsg-Wh-fmg"/>
                 <outlet property="labelMatching" destination="2Wt-TK-Ujg" id="ScA-BC-GJW"/>
-                <outlet property="labelNew" destination="UWM-x1-20V" id="x0H-uO-ftY"/>
                 <outlet property="labelPage" destination="fhV-4B-OcL" id="Ngc-Pa-RAH"/>
                 <outlet property="labelPrice" destination="DhK-fk-j3S" id="9ek-Zg-8nl"/>
-                <outlet property="labelSaved" destination="iUA-y9-UWh" id="PB6-hk-SuX"/>
                 <outlet property="labelZipcode" destination="RlQ-zc-AHM" id="OCa-KT-BuG"/>
                 <outlet property="textFeatures" destination="Y7V-Vq-bHu" id="ZVp-MG-es2"/>
                 <outlet property="view" destination="LH1-xy-LkG" id="vdu-sL-77x"/>
@@ -81,20 +81,22 @@
                     <rect key="frame" x="10" y="15" width="78" height="78"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iUA-y9-UWh">
-                    <rect key="frame" x="5" y="390" width="135" height="25"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BKf-nm-Kog">
+                    <rect key="frame" x="5" y="388" width="135" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UWM-x1-20V">
-                    <rect key="frame" x="180" y="390" width="135" height="25"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal">
+                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="I4l-rj-YFp">
+                    <rect key="frame" x="180" y="388" width="135" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal">
+                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2Wt-TK-Ujg">
                     <rect key="frame" x="46" y="385" width="228" height="35"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>

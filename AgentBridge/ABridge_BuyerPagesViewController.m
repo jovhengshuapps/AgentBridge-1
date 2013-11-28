@@ -18,16 +18,17 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelExpiry;
 @property (weak, nonatomic) IBOutlet UIImageView *imageProperty;
 @property (weak, nonatomic) IBOutlet UITextView *textFeatures;
-@property (weak, nonatomic) IBOutlet UILabel *labelSaved;
-@property (weak, nonatomic) IBOutlet UILabel *labelNew;
 @property (weak, nonatomic) IBOutlet UILabel *labelMatching;
 @property (weak, nonatomic) IBOutlet UIView *viewForTop;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSave;
+@property (weak, nonatomic) IBOutlet UIButton *buttonNew;
 
 @end
 
 @implementation ABridge_BuyerPagesViewController
 @synthesize index;
 @synthesize buyerDetails;
+@synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -118,14 +119,21 @@
     
     if ([self.buyerDetails.hasnew_2 integerValue] == 0 && [self.buyerDetails.hasnew integerValue] == 0) {
         self.labelMatching.text = @"Matching POPs™ may be available on the website.";
+        self.labelMatching.hidden = NO;
+        self.buttonSave.hidden = YES;
+        self.buttonSave.hidden = YES;
     }
     else {
-        
+        self.labelMatching.hidden = YES;
         if ([self.buyerDetails.hasnew_2 integerValue] != 0) {
-            self.labelSaved.text = [NSString stringWithFormat:@"Saved (%@)",self.buyerDetails.hasnew_2];
+            self.buttonSave.hidden = NO;
+            [self.buttonSave setTitle:[NSString stringWithFormat:@"Saved (%@)",self.buyerDetails.hasnew_2] forState:UIControlStateNormal];
+            [self.buttonSave addTarget:self action:@selector(showSavedPopsView) forControlEvents:UIControlEventTouchUpInside];
         }
         if ([self.buyerDetails.hasnew integerValue] != 0) {
-            self.labelNew.text = [NSString stringWithFormat:@"New (%@)",self.buyerDetails.hasnew];
+            self.buttonNew.hidden = NO;
+            [self.buttonNew setTitle:[NSString stringWithFormat:@"New (%@)",self.buyerDetails.hasnew] forState:UIControlStateNormal];
+            [self.buttonNew addTarget:self action:@selector(showNewPopsView) forControlEvents:UIControlEventTouchUpInside];
         }
     }
     
@@ -137,8 +145,8 @@
     
     self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.labelZipcode.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelNew.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
-    self.labelSaved.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonNew.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     self.labelMatching.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     
     // Add a bottomBorder.
@@ -155,6 +163,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)showSavedPopsView {
+    [self.delegate viewSavedPopsWithBuyerId:[self.buyerDetails.buyer_id integerValue]];
+}
+
+- (void)showNewPopsView {
+    [self.delegate viewNewPopsWithBuyerId:[self.buyerDetails.buyer_id integerValue]];
 }
 
 -(BOOL)isNull:(id)value {

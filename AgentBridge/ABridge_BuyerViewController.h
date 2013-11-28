@@ -7,8 +7,9 @@
 //
 
 #import "ABridge_ParentViewController.h"
+#import "ABridge_BuyerPagesViewController.m"
 
-@interface ABridge_BuyerViewController : ABridge_ParentViewController <UIPageViewControllerDataSource, NSURLConnectionDelegate>
+@interface ABridge_BuyerViewController : ABridge_ParentViewController <UIPageViewControllerDataSource, NSURLConnectionDelegate, ABridge_BuyerPagesViewControllerDelegate>
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 
