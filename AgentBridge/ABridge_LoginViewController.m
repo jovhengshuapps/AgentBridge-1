@@ -20,12 +20,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonSignIn;
 @property (weak, nonatomic) IBOutlet UIButton *buttonForgot;
 @property (weak, nonatomic) IBOutlet UIView *viewOverlay;
+@property (weak, nonatomic) IBOutlet UILabel *labelLoading;
 
 
 @property (strong, nonatomic) NSURLConnection *urlConnectionLogin;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSTimer* timer;
 @property (assign, nonatomic) NSInteger count;
+@property (strong, nonatomic) LoginDetails *item;
     
 @property (strong, nonatomic) NSURLConnection *urlConnectionProfile;
     
@@ -43,6 +45,7 @@
 @synthesize count;
     @synthesize urlConnectionProfile;
     @synthesize profileData;
+@synthesize item;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -81,6 +84,8 @@
     self.textPassword.layer.borderWidth = 1.0f;
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+    self.labelLoading.font = FONT_OPENSANS_REGULAR(15.0f);
     
     timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(updateImage) userInfo:nil repeats:YES];
     count = 2;
@@ -241,17 +246,18 @@
     if (connection == self.urlConnectionLogin) {
         
         if ([[json objectForKey:@"data"] count]) {
+            self.labelLoading.text = @"Saving Login details.";
             NSDictionary *dataJson = [[json objectForKey:@"data"] firstObject];
             
             NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
             
-            LoginDetails *item = [NSEntityDescription
+            self.item = [NSEntityDescription
                                   insertNewObjectForEntityForName:@"LoginDetails"
                                   inManagedObjectContext:context];
-            item.user_id = [NSNumber numberWithInt:[[dataJson objectForKey:@"id"] integerValue]];
-            item.name = [dataJson objectForKey:@"name"];
-            item.username = [dataJson objectForKey:@"username"];
-            item.email = [dataJson objectForKey:@"email"];
+            self.item.user_id = [NSNumber numberWithInt:[[dataJson objectForKey:@"id"] integerValue]];
+            self.item.name = [dataJson objectForKey:@"name"];
+            self.item.username = [dataJson objectForKey:@"username"];
+            self.item.email = [dataJson objectForKey:@"email"];
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             NSError *errorSave = nil;
@@ -260,7 +266,7 @@
             }
             else {
                 
-                NSString *parameters = [NSString stringWithFormat:@"?email=%@",item.email];
+                NSString *parameters = [NSString stringWithFormat:@"?email=%@",self.item.email];
                 
                 NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php"];
                 [urlString appendString:parameters];
@@ -269,7 +275,9 @@
                 
                 self.urlConnectionProfile = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
                 
+                
                 if (self.urlConnectionProfile) {
+                    self.labelLoading.text = @"Retrieving Profile.";
                     //                NSLog(@"Connection Successful");
                 }
                 else {
@@ -287,6 +295,7 @@
         
         if ([[json objectForKey:@"data"] count]) {
             
+            self.labelLoading.text = @"Saving Profile.";
             NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
             for (NSDictionary *entry in [json objectForKey:@"data"]) {
                 self.profileData = nil;
@@ -306,18 +315,33 @@
                 if (![context save:&error]) {
                     NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                 }
+                else {
+//                    NSFetchRequest *fetchRequestProfile = [[NSFetchRequest alloc] init];
+//                    NSEntityDescription *entityProfile = [NSEntityDescription entityForName:@"AgentProfile"
+//                                                                     inManagedObjectContext:context];
+//                    [fetchRequestProfile setEntity:entityProfile];
+//                    
+//                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == %@", self.item.user_id];
+//                    [fetchRequestProfile setPredicate:predicate];
+//                    
+//                    NSError *error = nil;
+//                    NSArray *fetchedProfile = [context executeFetchRequest:fetchRequestProfile error:&error];
+//                    
+//                    NSLog(@"%@\nprofile:%@",self.item.user_id,fetchedProfile);
+//                    if ([fetchedProfile count] == 0) {
+//                        if (![context save:&error]) {
+//                            NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+//                        }
+//                        else {
+                            [self performSelector:@selector(proceedToMainApp) withObject:nil afterDelay:1];
+//                        }
+//                    }
+//                    else {
+//                    }
+                }
             }
             
             
-            if (self.profileData.image_data == nil) {
-                self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
-            }
-            
-            
-            [self dismissViewControllerAnimated:YES completion:^{
-                [self.timer invalidate];
-                //                NSLog(@"Successfully saved Login Details");
-            }];
             
         }
     }
@@ -325,6 +349,19 @@
     
     
     // Do something with responseData
+}
+
+- (void)proceedToMainApp {
+    
+    if (self.profileData.image_data == nil) {
+        self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
+    }
+    
+    self.labelLoading.text = @"Done!";
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.timer invalidate];
+        //                NSLog(@"Successfully saved Login Details");
+    }];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

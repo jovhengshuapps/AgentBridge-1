@@ -83,7 +83,7 @@
     
 //    NSLog(@"url:%@",self.urlConnectionProperty.originalRequest.URL);
     if (self.urlConnectionProperty) {
-        NSLog(@"Connection Successful");
+//        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProperty];
         //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
         
@@ -91,7 +91,7 @@
         [self.activityIndicator startAnimating];
     }
     else {
-        NSLog(@"Connection Failed");
+//        NSLog(@"Connection Failed");
     }
 }
 
@@ -108,6 +108,7 @@
     pagesViewController.index = index;
     pagesViewController.propertyDetails = (Property*)[self.arrayOfProperty objectAtIndex:index];
     pagesViewController.delegate = self;
+    pagesViewController.disclose_price = YES;
     
     return pagesViewController;
     

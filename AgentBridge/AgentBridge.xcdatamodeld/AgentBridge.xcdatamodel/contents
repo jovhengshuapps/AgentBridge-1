@@ -102,6 +102,13 @@
         <attribute name="zip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoned" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Country" representedClassName="Country" syncable="YES">
+        <attribute name="address_format_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="countries_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="countries_iso_code_2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="countries_iso_code_3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="countries_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="LoginDetails" representedClassName="LoginDetails" syncable="YES">
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -120,6 +127,8 @@
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="closed" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="condition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date_created" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date_expired" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="disclose" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="expiry" optional="YES" attributeType="String" syncable="YES"/>
@@ -136,6 +145,7 @@
         <attribute name="occupancy" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="parking_ratio" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pet" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pocket_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pool_spa" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="possession" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price_type" optional="YES" attributeType="String" syncable="YES"/>
@@ -204,13 +214,21 @@
         <attribute name="state_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="State" representedClassName="State" syncable="YES">
+        <attribute name="zone_code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zone_country_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zone_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zone_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Activity" positionX="0" positionY="0" width="0" height="0"/>
         <element name="AgentProfile" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Buyer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Country" positionX="0" positionY="0" width="0" height="0"/>
         <element name="LoginDetails" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Property" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PropertyImages" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Referral" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="State" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

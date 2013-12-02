@@ -9,6 +9,8 @@
 #import "ABridge_InitialViewController.h"
 #import "ABridge_LoginViewController.h"
 #import "ABridge_AppDelegate.h"
+#import "LoginDetails.h"
+#import "AgentProfile.h"
 
 @interface ABridge_InitialViewController ()
 
@@ -89,6 +91,65 @@
         [self presentViewController:loginViewController animated:YES completion:^{
             
         }];
+    }
+    else {
+        NSFetchRequest *fetchRequestProfile = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entityProfile = [NSEntityDescription entityForName:@"AgentProfile" inManagedObjectContext:context];
+        [fetchRequestProfile setEntity:entityProfile];
+        
+//        LoginDetails *login = (LoginDetails*)[fetchedObjects firstObject];
+//        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == %@", login.user_id];
+//        [fetchRequestProfile setPredicate:predicate];
+        
+//        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"(user_id == '%@')", [[fetchedObjects firstObject] valueForKey:@"user_id"]];
+//        [fetchRequestProfile setPredicate:predicate];
+
+        
+        NSError *error = nil;
+        NSArray *fetchedProfile = [context executeFetchRequest:fetchRequestProfile error:&error];
+        
+//        NSLog(@"%@profile:%@",[[fetchedObjects firstObject] valueForKey:@"user_id"],fetchedProfile);
+        
+        BOOL found = NO;
+        
+        for (AgentProfile *profile in fetchedProfile) {
+            if ([profile.user_id integerValue] == [[[fetchedObjects firstObject] valueForKey:@"user_id"] integerValue]) {
+                found = YES;
+                break;
+            }
+        }
+        
+        if ([fetchedProfile count] == 0 && !found) {
+            
+            NSFetchRequest *fetchRequest_ = [[NSFetchRequest alloc] init];
+            NSEntityDescription *entity_ = [NSEntityDescription entityForName:@"LoginDetails"
+                                                      inManagedObjectContext:context];
+            [fetchRequest_ setEntity:entity_];
+            NSError *error = nil;
+            NSArray *fetchedObjects_ = [context
+                                       executeFetchRequest:fetchRequest_ error:&error];
+            for (NSManagedObject *obj in fetchedObjects_) {
+                [context deleteObject:obj];
+            }
+            
+            NSError *errorSave = nil;
+            if (![context save:&errorSave]) {
+                NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
+            }
+            else {
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                ABridge_LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"Login"];
+                
+                loginViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+                loginViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                
+                [self presentViewController:loginViewController animated:YES completion:^{
+                    
+                }];
+            }
+            
+            
+        }
     }
 }
 

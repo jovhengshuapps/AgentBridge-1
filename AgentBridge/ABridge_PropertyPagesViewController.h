@@ -20,4 +20,5 @@
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) Property *propertyDetails;
 @property (assign, nonatomic) id <ABridge_PropertyPagesViewControllerDelegate> delegate;
+@property (assign, nonatomic) BOOL disclose_price;
 @end

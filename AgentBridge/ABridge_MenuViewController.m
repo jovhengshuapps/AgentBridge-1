@@ -27,6 +27,7 @@
 - (IBAction)gotoNetwork:(id)sender;
 - (IBAction)gotoSetting:(id)sender;
 - (IBAction)gotoLogOut:(id)sender;
+- (IBAction)gotoSecurity:(id)sender;
 
 @end
 
@@ -89,26 +90,35 @@
         NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
         
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
-                                                  inManagedObjectContext:context];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails" inManagedObjectContext:context];
         [fetchRequest setEntity:entity];
         NSError *error = nil;
         NSArray *fetchedObjects = [context
                                    executeFetchRequest:fetchRequest error:&error];
         
-        LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+//        LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
         
         fetchRequest = [[NSFetchRequest alloc] init];
         entity = [NSEntityDescription entityForName:@"AgentProfile"
                              inManagedObjectContext:context];
         [fetchRequest setEntity:entity];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user_id=%@",loginDetail.user_id];
-        [fetchRequest setPredicate:predicate];
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user_id=%@",loginDetail.user_id];
+//        [fetchRequest setPredicate:predicate];
         error = nil;
         fetchedObjects = nil;
         fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
         
-        AgentProfile *profileData = (AgentProfile*)[fetchedObjects firstObject];
+//        AgentProfile *profileData = (AgentProfile*)[fetchedObjects firstObject];
+        
+        AgentProfile *profileData = nil;
+        for (AgentProfile *profile in fetchedObjects) {
+            if ([profile.user_id integerValue] == [[[fetchedObjects firstObject] valueForKey:@"user_id"] integerValue]) {
+                profileData = profile;
+                break;
+            }
+        }
+        
+        
         if (profileData.image_data == nil) {
             profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:profileData.image]];
         }
@@ -162,11 +172,30 @@
 }
 
 - (IBAction)gotoSetting:(id)sender {
+    UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NavAccntSetting"];
+    
+    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+        CGRect frame = self.slidingViewController.topViewController.view.frame;
+        self.slidingViewController.topViewController = newTopViewController;
+        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
 }
 
 - (IBAction)gotoLogOut:(id)sender {
     UIAlertView *alertLogout = [[UIAlertView alloc] initWithTitle:@"Log Out?" message:@"Are you sure you want to Log Out?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
     [alertLogout show];
+}
+
+- (IBAction)gotoSecurity:(id)sender {
+    UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Security"];
+    
+    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+        CGRect frame = self.slidingViewController.topViewController.view.frame;
+        self.slidingViewController.topViewController = newTopViewController;
+        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
 }
 
 

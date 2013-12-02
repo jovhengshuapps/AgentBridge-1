@@ -165,6 +165,8 @@
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -232,6 +234,7 @@
                 [[self viewForPages] addSubview:[self.pageController view]];
                 [self.pageController didMoveToParentViewController:self];
                 self.buttonRefer.hidden = NO;
+//                NSLog(@"agents:%@",self.arrayOfAgents);
             });
         
         });

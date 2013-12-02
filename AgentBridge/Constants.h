@@ -10,7 +10,7 @@
 #define AgentBridge_Constants_h
 
 #define isiPhone5  ([[UIScreen mainScreen] bounds].size.height == 568)?TRUE:FALSE
-#define FONT_OPENSANS_BOLD(s) [UIFont fontWithName:@"OpenSans-Bold" size:s]
+#define FONT_OPENSANS_BOLD(s) [UIFont fontWithName:@"OpenSans-Bold" size:s+1.0f]
 #define FONT_OPENSANS_ITALIC(s) [UIFont fontWithName:@"OpenSans-Italic-webfont" size:s]
 #define FONT_OPENSANS_LIGHT(s) [UIFont fontWithName:@"OpenSans-Light-webfont" size:s]
 #define FONT_OPENSANS_REGULAR(s) [UIFont fontWithName:@"OpenSans" size:s]

@@ -2,7 +2,7 @@
 //  Property.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/18/13.
+//  Created by host24_iOS Dev on 11/28/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
@@ -22,6 +22,7 @@
 @dynamic closed;
 @dynamic condition;
 @dynamic desc;
+@dynamic disclose;
 @dynamic expiry;
 @dynamic features1;
 @dynamic features2;
@@ -39,6 +40,8 @@
 @dynamic pool_spa;
 @dynamic possession;
 @dynamic price_type;
+@dynamic price1;
+@dynamic price2;
 @dynamic property_name;
 @dynamic room_count;
 @dynamic setting;
@@ -46,22 +49,22 @@
 @dynamic stories;
 @dynamic style;
 @dynamic sub_type;
+@dynamic sub_type_name;
 @dynamic term;
 @dynamic type;
 @dynamic type_lease;
 @dynamic type_lease2;
+@dynamic type_name;
+@dynamic type_property_type;
 @dynamic unit_sqft;
 @dynamic units;
+@dynamic user_id;
 @dynamic view;
 @dynamic year_built;
 @dynamic zip;
 @dynamic zoned;
-@dynamic disclose;
-@dynamic price1;
-@dynamic price2;
-@dynamic sub_type_name;
-@dynamic user_id;
-@dynamic type_name;
-@dynamic type_property_type;
+@dynamic date_expired;
+@dynamic date_created;
+@dynamic pocket_id;
 
 @end

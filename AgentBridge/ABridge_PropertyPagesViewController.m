@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "PropertyImages.h"
 #import "ABridge_AppDelegate.h"
+#import "LoginDetails.h"
 
 @interface ABridge_PropertyPagesViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollImages;
@@ -33,6 +34,7 @@
 @synthesize index;
 @synthesize propertyDetails;
 @synthesize delegate;
+@synthesize disclose_price;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,17 +55,79 @@
     self.labelZip.text = self.propertyDetails.zip;
     self.labelPropertyName.text = self.propertyDetails.property_name;
     self.labelPropertyType.text = [NSString stringWithFormat:@"%@ - %@",self.propertyDetails.type_name, self.propertyDetails.sub_type_name];
-    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    formatter.currencyCode = @"USD";
     
-    NSMutableString *priceText = [NSMutableString stringWithString:@""];
-    [priceText appendString:[formatter stringFromNumber: [NSNumber numberWithDouble:[self.propertyDetails.price1 doubleValue]]]];
-    if ([self.propertyDetails.price_type integerValue] == YES) {
-        [priceText appendFormat:@" - %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.propertyDetails.price2 doubleValue]]]];
+    if (disclose_price) {
+        
+        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                                  inManagedObjectContext:context];
+        [fetchRequest setEntity:entity];
+        NSError *error = nil;
+        LoginDetails *loginDetails = (LoginDetails*)[[context executeFetchRequest:fetchRequest error:&error] firstObject];
+        
+        if ([loginDetails.user_id integerValue] == [self.propertyDetails.user_id integerValue]) {
+            [self getPriceText];
+        }
+        else {
+            if ([self.propertyDetails.disclose boolValue]) {
+                [self getPriceText];
+            }
+            else {
+                self.labelPrice.text = @"Price Undisclosed.";
+            }
+        }
     }
-    self.labelPrice.text = priceText;
-    self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %@ days", self.propertyDetails.expiry];
+    else {
+        [self getPriceText];
+    }
+    
+    
+    
+    
+    
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date_tested = [dateFormatter dateFromString:self.propertyDetails.date_created];
+    NSDate *date_expired = [dateFormatter dateFromString:self.propertyDetails.date_expired];
+    NSDate *date_now = [NSDate date];
+    
+    if ([date_now compare:date_tested] == NSOrderedDescending || date_tested == nil) {
+        date_tested = date_now;
+    }
+    
+//    NSLog(@"%@ --- %@",date_expired,self.propertyDetails.date_expired);
+    NSTimeInterval interval = [date_expired timeIntervalSinceDate:date_tested];
+    
+    NSInteger remainingDays = (NSInteger)(interval/86400.0f);
+    
+    if (remainingDays > -1) {
+        remainingDays += 1;
+        
+        if (remainingDays == 1) {
+            self.labelExpiry.text = @"Expiry of 1 day";
+        }
+        else {
+            self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %li days",(long)remainingDays];
+        }
+    }
+    else {
+        
+        self.labelExpiry.text = [NSString stringWithFormat:@"Expired at %@",self.propertyDetails.date_expired];
+    }
+    
+    
+//    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//    NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+//                                               fromDate:date_tested
+//                                                 toDate:date_expired
+//                                                options:0];
+//    
+//    NSLog(@"Difference in date components: %i/%i/%i", components.day, components.month, components.year);
+//    
+//    self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %i days",components.day];
     /*
     NSMutableString *featuresString = [NSMutableString stringWithFormat:@"%@\n\n",self.propertyDetails.desc];
     NSEntityDescription *entity = [self.propertyDetails entity];
@@ -255,6 +319,18 @@
     
 }
 
+- (void) getPriceText {
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyCode = @"USD";
+    
+    NSMutableString *priceText = [NSMutableString stringWithString:@""];
+    [priceText appendString:[formatter stringFromNumber: [NSNumber numberWithDouble:[self.propertyDetails.price1 doubleValue]]]];
+    if ([self.propertyDetails.price_type integerValue] == YES) {
+        [priceText appendFormat:@" - %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.propertyDetails.price2 doubleValue]]]];
+    }
+    self.labelPrice.text = priceText;
+}
 
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response

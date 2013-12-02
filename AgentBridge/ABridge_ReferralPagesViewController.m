@@ -55,7 +55,6 @@
     
     self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
     
-    
     self.labelAgentName.text = self.referralDetails.agent_name;
     self.labelAddress.text = self.referralDetails.city;
     self.labelStateCountry.text = [NSString stringWithFormat:@"%@, %@",self.referralDetails.state_code,self.referralDetails.countries_iso_code_3];

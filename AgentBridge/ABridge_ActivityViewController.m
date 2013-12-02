@@ -66,19 +66,19 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
-    
-    self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivities.php" andParameters:parameters];
-    
-    if (self.urlConnectionActivity) {
-        [self addURLConnection:self.urlConnectionActivity];
-//        NSLog(@"Connection Successful");
-        
-        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
-    }
-    else {
-//        NSLog(@"Connection Failed");
-    }
+//    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
+//    
+//    self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivities.php" andParameters:parameters];
+//    
+//    if (self.urlConnectionActivity) {
+//        [self addURLConnection:self.urlConnectionActivity];
+////        NSLog(@"Connection Successful");
+//        
+//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+//    }
+//    else {
+////        NSLog(@"Connection Failed");
+//    }
 }
 
 - (void)didReceiveMemoryWarning

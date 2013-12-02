@@ -145,8 +145,21 @@
         
         text = string;
     }
-    else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"mobile"]) {
-        text = self.profileData.mobile_number;
+    else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] rangeOfString:@"mobile"].location != NSNotFound) {
+        
+        if ([self.profileData.mobile_number rangeOfString:@","].location == NSNotFound) {
+            text = self.profileData.mobile_number;
+        }
+        else {
+            NSMutableArray *array = [NSMutableArray arrayWithArray:[self.profileData.mobile_number componentsSeparatedByString:@","]];
+            NSString *key = [self.arrayKTableKeys objectAtIndex:[indexPath row]];
+            
+            NSInteger array_index = [[key substringFromIndex:[key rangeOfString:@"mobile"].length] integerValue];
+            text = [array objectAtIndex:array_index - 1];
+            if ([self isNull:text]) {
+                text = [array objectAtIndex:array_index];
+            }
+        }
     }
     else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"email"]) {
         text = self.profileData.email;
@@ -229,9 +242,27 @@
             
             cell.detailTextLabel.text = string;
         }
-        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"mobile"]) {
-            cell.textLabel.text = @"Mobile";
-            cell.detailTextLabel.text = self.profileData.mobile_number;
+        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] rangeOfString:@"mobile"].location != NSNotFound) {
+            
+            if ([self.profileData.mobile_number rangeOfString:@","].location == NSNotFound) {
+                cell.detailTextLabel.text = self.profileData.mobile_number;
+            }
+            else {
+                NSArray *array = [self.profileData.mobile_number componentsSeparatedByString:@","];
+                NSString *key = [self.arrayKTableKeys objectAtIndex:[indexPath row]];
+                NSInteger array_index = [[key substringFromIndex:[key rangeOfString:@"mobile"].length] integerValue];
+                cell.detailTextLabel.text = [array objectAtIndex:array_index - 1];
+                if ([self isNull:cell.detailTextLabel.text]) {
+                    cell.detailTextLabel.text = [array objectAtIndex:array_index];
+                }
+            }
+            if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"mobile1"]) {
+                cell.textLabel.text = @"Mobile";
+            }
+            else {
+                cell.textLabel.text = @"";
+            }
+            
             cell.detailTextLabel.textColor = [UIColor colorWithRed:44.0f/255.0f green:153.0f/255.0f blue:206.0f/255.0f alpha:1.0f];
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
@@ -344,7 +375,19 @@
             }
             
             if (![self isNull:self.profileData.mobile_number]) {
-                [self.arrayKTableKeys addObject:@"mobile"];
+                if ([self.profileData.mobile_number rangeOfString:@","].location == NSNotFound) {
+                    [self.arrayKTableKeys addObject:@"mobile1"];
+                }
+                else {
+                    NSInteger counter = 1;
+                    NSArray *array = [self.profileData.mobile_number componentsSeparatedByString:@","];
+                    for (NSString *number in array) {
+                        if (![self isNull:number]) {
+                            [self.arrayKTableKeys addObject:[NSString stringWithFormat:@"mobile%li",(long)counter]];
+                            counter++;
+                        }
+                    }
+                }
             }
             
             if (![self isNull:self.profileData.email]) {
