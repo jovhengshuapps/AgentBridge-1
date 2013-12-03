@@ -15,5 +15,6 @@
 @dynamic user_b;
 @dynamic property_id;
 @dynamic permission;
+@dynamic access_id;
 
 @end

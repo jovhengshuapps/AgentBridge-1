@@ -16,5 +16,6 @@
 @property (nonatomic, retain) NSString * user_b;
 @property (nonatomic, retain) NSString * property_id;
 @property (nonatomic, retain) NSString * permission;
+@property (nonatomic, retain) NSString * access_id;
 
 @end

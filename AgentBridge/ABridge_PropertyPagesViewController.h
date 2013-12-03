@@ -21,6 +21,4 @@
 @property (strong, nonatomic) Property *propertyDetails;
 @property (assign, nonatomic) id <ABridge_PropertyPagesViewControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL buyers_view;
-@property (assign, nonatomic) NSInteger modify_view_type;
-@property (assign, nonatomic) BOOL user_has_permission;
 @end

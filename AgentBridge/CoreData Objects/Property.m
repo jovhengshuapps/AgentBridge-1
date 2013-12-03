@@ -66,5 +66,6 @@
 @dynamic date_expired;
 @dynamic date_created;
 @dynamic pocket_id;
+@dynamic name;
 
 @end

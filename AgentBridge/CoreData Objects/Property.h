@@ -67,5 +67,6 @@
 @property (nonatomic, retain) NSString * date_expired;
 @property (nonatomic, retain) NSString * date_created;
 @property (nonatomic, retain) NSString * pocket_id;
+@property (nonatomic, retain) NSString * name;
 
 @end

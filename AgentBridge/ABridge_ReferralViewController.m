@@ -266,6 +266,10 @@
                 self.labelNumberOfReferral.text = [NSString stringWithFormat:@"My Referrals (%li)",(long)self.numberOfReferral];
                 [self.labelNumberOfReferral sizeToFit];
                 
+                CGRect frame = self.activityIndicator.frame;
+                frame.origin.x = self.labelNumberOfReferral.frame.origin.x + self.labelNumberOfReferral.frame.size.width + 10.0f;
+                self.activityIndicator.frame = frame;
+                
                 ABridge_ReferralPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                 
                 NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
@@ -309,6 +313,11 @@
         self.pageController = nil;
         self.numberOfReferral = 0;
         self.labelNumberOfReferral.text = @"My Referrals";
+        [self.labelNumberOfReferral sizeToFit];
+        
+        CGRect frame = self.activityIndicator.frame;
+        frame.origin.x = self.labelNumberOfReferral.frame.origin.x + self.labelNumberOfReferral.frame.size.width + 10.0f;
+        self.activityIndicator.frame = frame;
         if (self.segmentedControl.selectedSegmentIndex) {
             [self showOverlayWithMessage:@"You currently don't have any outgoing Referrals." withIndicator:NO];
         }

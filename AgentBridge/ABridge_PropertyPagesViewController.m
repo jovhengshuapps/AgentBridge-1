@@ -11,6 +11,8 @@
 #import "PropertyImages.h"
 #import "ABridge_AppDelegate.h"
 #import "LoginDetails.h"
+#import "RequestNetwork.h"
+#import "RequestAccess.h"
 
 @interface ABridge_PropertyPagesViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollImages;
@@ -31,15 +33,20 @@
 @property (strong, nonatomic) NSURLConnection *urlConnectionImages;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSMutableArray *arrayOfImageData;
+@property (strong, nonatomic) NSURLConnection * urlConnectionRequestNetwork;
+@property (strong, nonatomic) NSURLConnection * urlConnectionRequestAccess;
+@property (strong, nonatomic) LoginDetails *loginDetail;
 @end
 
 @implementation ABridge_PropertyPagesViewController
 @synthesize index;
 @synthesize propertyDetails;
+@synthesize urlConnectionRequestNetwork;
+@synthesize urlConnectionRequestAccess;
+@synthesize urlConnectionImages;
 @synthesize delegate;
 @synthesize buyers_view;
-@synthesize modify_view_type;
-@synthesize user_has_permission;
+@synthesize loginDetail;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,6 +61,18 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context
+                               executeFetchRequest:fetchRequest error:&error];
+    
+    self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+    
     
     self.labelZip.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
@@ -61,6 +80,7 @@
     self.labelPropertyType.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     self.labelExpiry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.labelExpiry.hidden = NO;
     self.textFeatures.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     self.buttonDescription.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
@@ -74,23 +94,22 @@
     
     if (buyers_view) {
         
-        if (modify_view_type == MODIFYVIEW_CHECKSETTING) {
-            if ([self.propertyDetails.setting integerValue] == 1) {
-                [self checkSettingGetPrice];
-            }
-            else {
-                if (user_has_permission) {
-                    [self checkSettingGetPrice];
-                    self.viewForDescription.hidden = YES;
-                }
-                else {
-                    self.viewForDescription.hidden = NO;
-                    self.labelDescription.text = @"";
-                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
-                }
+        if ([self.loginDetail.user_id integerValue] != [self.propertyDetails.user_id integerValue]) {
+            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.propertyDetails.user_id,self.loginDetail.user_id];
+            
+            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php"];
+            [urlString_ appendString:parameters];
+            //        NSLog(@"url:%@",urlString_);
+            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+            
+            self.urlConnectionRequestNetwork = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+            
+            if (self.urlConnectionRequestNetwork) {
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
             }
         }
-        else if (modify_view_type == MODIFYVIEW_NORMAL) {
+        else {
             [self getPriceText];
         }
         
@@ -99,35 +118,7 @@
         [self getPriceText];
     }
     
-    
-    
-    
-    if (buyers_view) {
-        switch (modify_view_type) {
-            case MODIFYVIEW_NORMAL:
-                [self getExpiredText];
-                self.viewForDescription.hidden = YES;
-                break;
-            case MODIFYVIEW_PENDINGREQUEST:
-                self.labelExpiry.text = @"";
-                self.viewForDescription.hidden = NO;
-                self.labelDescription.text = @"";
-                [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
-                break;
-            case MODIFYVIEW_REQUESTTOVIEW:
-                self.labelExpiry.text = @"";
-                self.viewForDescription.hidden = NO;
-                self.labelDescription.text = [NSString stringWithFormat:@"This POPs is restricted to %@'s Network members only",@"username"];
-                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-                break;
-                
-            default:
-                break;
-        }
-    }
-    else {
-        [self getExpiredText];
-    }
+    [self getExpiredText];
     
     CGSize constraint = CGSizeMake(309.0f, 20000.0f);
     
@@ -160,18 +151,13 @@
     
     [self.viewForScroll.layer addSublayer:bottomBorder];
     
-    if (buyers_view) {
-        switch (modify_view_type) {
-            case MODIFYVIEW_NORMAL:
-                [self getImageReady];
-                break;
-            default:
-                break;
-        }
-    }
-    else {
+//    if (buyers_view) {
+//        [self.loadingImageIndicator stopAnimating];
+//        self.loadingImageIndicator.hidden = YES;
+//    }
+//    else {
         [self getImageReady];
-    }
+//    }
     
 }
 
@@ -340,16 +326,8 @@
 }
 
 - (void) checkSettingGetPrice {
-    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    NSError *error = nil;
-    LoginDetails *loginDetails = (LoginDetails*)[[context executeFetchRequest:fetchRequest error:&error] firstObject];
-    
-    if ([loginDetails.user_id integerValue] == [self.propertyDetails.user_id integerValue]) {
+    if ([self.loginDetail.user_id integerValue] == [self.propertyDetails.user_id integerValue]) {
         [self getPriceText];
     }
     else {
@@ -387,81 +365,227 @@
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
 //    NSLog(@"Did Finish:%@", json);
-    
-    if ([[json objectForKey:@"data"] count]) {
+    if (connection == self.urlConnectionImages) {
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            __block CGFloat xOffset = 0.0f;
-            __block NSInteger i = 0;
+        if ([[json objectForKey:@"data"] count]) {
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                __block CGFloat xOffset = 0.0f;
+                __block NSInteger i = 0;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                });
+                
+                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                    PropertyImages *image = nil;
+                    
+                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
+                    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+                    [fetchRequest setPredicate:predicate];
+                    [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
+                    NSError * error = nil;
+                    NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
+                    if ([results count]) {
+                        image = (PropertyImages*)[results firstObject];
+                    }
+                    else {
+                        image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
+                    }
+                    
+                    [image setValuesForKeysWithDictionary:entry];
+                    
+                    NSError *errorSave = nil;
+                    if (![context save:&errorSave]) {
+                        NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
+                    }
+                    else {
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            // Update UI
+                            if (self.arrayOfImageData == nil) {
+                                self.arrayOfImageData = [[NSMutableArray alloc] init];
+                            }
+                            
+                            if (image.image_data == nil) {
+                                image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
+                            }
+                            
+                            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+                            imageView.contentMode = UIViewContentModeScaleAspectFill;
+                            imageView.image = [UIImage imageWithData:image.image_data];
+                            
+                            [self.arrayOfImageData addObject:image.image_data];
+                            
+                            [self.scrollImages addSubview:imageView];
+                            
+                            xOffset += imageView.frame.size.width;
+                            i++;
+                            
+                            [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
+                        });
+                        
+                    }
+                }
             });
             
-            for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                PropertyImages *image = nil;
-                
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
-                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-                [fetchRequest setPredicate:predicate];
-                [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
-                NSError * error = nil;
-                NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
-                if ([results count]) {
-                    image = (PropertyImages*)[results firstObject];
-                }
-                else {
-                    image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
-                }
-                
-                [image setValuesForKeysWithDictionary:entry];
-                
-                NSError *errorSave = nil;
-                if (![context save:&errorSave]) {
-                    NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
-                }
-                else {
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // Update UI
-                        if (self.arrayOfImageData == nil) {
-                            self.arrayOfImageData = [[NSMutableArray alloc] init];
-                        }
-                        
-                        if (image.image_data == nil) {
-                            image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
-                        }
-                        
-                        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-                        imageView.contentMode = UIViewContentModeScaleAspectFill;
-                        imageView.image = [UIImage imageWithData:image.image_data];
-                        
-                        [self.arrayOfImageData addObject:image.image_data];
-                        
-                        [self.scrollImages addSubview:imageView];
-                        
-                        xOffset += imageView.frame.size.width;
-                        i++;
-                        
-                        [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
-                    });
-                    
-                }
-            }
-        });
+        }
+        else {
+            NSLog(@"no data");
+        }
         
-    }
-    else {
-        NSLog(@"no data");
-    }
-    
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
         self.loadingImageIndicator.hidden = YES;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    });
+    }
+    else if (connection == self.urlConnectionRequestNetwork) {
+        if ([[json objectForKey:@"data"] count]) {
+//            NSLog(@"Did Finish:%@", json);
+                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                
+                NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+                if ([[json objectForKey:@"data"] count]) {
+                    RequestNetwork *network = nil;
+                    
+                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"network_id == %@", [entry objectForKey:@"network_id"]];
+                    
+                    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+                    [fetchRequest setPredicate:predicate];
+                    [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestNetwork" inManagedObjectContext:context]];
+                    NSError * error = nil;
+                    NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+                    if ([result count]) {
+                        network = (RequestNetwork*)[result firstObject];
+                    }
+                    else {
+                        network = [NSEntityDescription insertNewObjectForEntityForName: @"RequestNetwork" inManagedObjectContext: context];
+                    }
+                    
+                    [network setValuesForKeysWithDictionary:entry];
+                    
+                    NSError *errorSave = nil;
+                    if (![context save:&errorSave]) {
+                        NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
+                    }
+                    
+                    if ([network.status integerValue] == 1) {
+                        if ([self.propertyDetails.setting integerValue] == 1) {
+                            [self checkSettingGetPrice];
+                        }
+                        else if ([self.propertyDetails.setting integerValue] == 2) {
+                            
+                            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.propertyDetails.user_id,self.loginDetail.user_id, self.propertyDetails.listing_id];
+                            
+                            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
+                            [urlString_ appendString:parameters];
+                            //        NSLog(@"url:%@",urlString_);
+                            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+                            
+                            self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+                            
+                            if (self.urlConnectionRequestAccess) {
+                                    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                                    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+                            }
+                        }
+                        
+                    }
+                    else if ([network.status integerValue] == 0){
+                        self.labelExpiry.text = @"";
+                        self.labelExpiry.hidden = YES;
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = @"";
+                        [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                    }
+                }
+                else {
+                    self.labelExpiry.text = @"";
+                    self.labelExpiry.hidden = YES;
+                    self.viewForDescription.hidden = NO;
+                    self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+                    [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+            
+        }
+        else {
+            self.labelExpiry.text = @"";
+            self.labelExpiry.hidden = YES;
+            self.viewForDescription.hidden = NO;
+            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        }
+        
+    }
+    else if (connection == self.urlConnectionRequestAccess) {
+        if ([[json objectForKey:@"data"] count]) {
+//            NSLog(@"Did Finish:%@", json);
+            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+            NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+            
+            if ([[json objectForKey:@"data"] count]) {
+                RequestAccess *access = nil;
+                
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"access_id == %@", [entry objectForKey:@"access_id"]];
+                
+                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+                [fetchRequest setPredicate:predicate];
+                [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestAccess" inManagedObjectContext:context]];
+                NSError * error = nil;
+                NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+                
+                if ([result count]) {
+                    access = (RequestAccess*)[result firstObject];
+                }
+                else {
+                    access = [NSEntityDescription insertNewObjectForEntityForName: @"RequestAccess" inManagedObjectContext: context];
+                }
+                
+                [access setValuesForKeysWithDictionary:entry];
+                
+                NSError *errorSave = nil;
+                if (![context save:&errorSave]) {
+                    NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
+                }
+                
+                if ([access.permission boolValue] == YES) {
+                    [self getPriceText];
+                }
+                else if ([access.permission boolValue] == NO){
+                    self.labelExpiry.text = @"";
+                    self.labelExpiry.hidden = YES;
+                    self.viewForDescription.hidden = NO;
+                    self.labelDescription.text = @"";
+                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                }
+                
+            }
+            else {
+                self.labelExpiry.text = @"";
+                self.labelExpiry.hidden = YES;
+                self.viewForDescription.hidden = NO;
+                self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        }
+        else {
+            self.labelExpiry.text = @"";
+            self.labelExpiry.hidden = YES;
+            self.viewForDescription.hidden = NO;
+            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        }
+    }
     // Do something with responseData
 }
 

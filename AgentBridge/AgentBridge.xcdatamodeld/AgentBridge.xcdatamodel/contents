@@ -144,6 +144,7 @@
         <attribute name="listing_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lot_size" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lot_sqft" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="occupancy" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="parking_ratio" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pet" optional="YES" attributeType="String" syncable="YES"/>
@@ -217,6 +218,7 @@
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="RequestAccess" representedClassName="RequestAccess" syncable="YES">
+        <attribute name="access_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="permission" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="property_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="user_a" optional="YES" attributeType="String" syncable="YES"/>
@@ -243,8 +245,8 @@
         <element name="Property" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PropertyImages" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Referral" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="State" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RequestNetwork" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RequestAccess" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RequestNetwork" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="State" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

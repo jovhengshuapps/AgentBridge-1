@@ -22,7 +22,6 @@
 		6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD74D183473B200166D63 /* ABridge_PropertyPagesViewController.m */; };
 		6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */; };
 		6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */; };
-		6EBBD75F18349A1C00166D63 /* ABridge_BuyerPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD75D18349A1B00166D63 /* ABridge_BuyerPagesViewController.xib */; };
 		6EBBD7631834A56800166D63 /* ABridge_ReferralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7621834A56800166D63 /* ABridge_ReferralViewController.m */; };
 		6EBBD7671834A71D00166D63 /* ABridge_ReferralPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7651834A71D00166D63 /* ABridge_ReferralPagesViewController.m */; };
 		6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD7661834A71D00166D63 /* ABridge_ReferralPagesViewController.xib */; };
@@ -106,7 +105,6 @@
 		6EBBD74E183473B200166D63 /* ABridge_PropertyPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_PropertyPagesViewController.xib; sourceTree = "<group>"; };
 		6EBBD758183498CC00166D63 /* ABridge_BuyerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerViewController.h; sourceTree = "<group>"; };
 		6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerViewController.m; sourceTree = "<group>"; };
-		6EBBD75D18349A1B00166D63 /* ABridge_BuyerPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_BuyerPagesViewController.xib; sourceTree = "<group>"; };
 		6EBBD7611834A56800166D63 /* ABridge_ReferralViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ReferralViewController.h; sourceTree = "<group>"; };
 		6EBBD7621834A56800166D63 /* ABridge_ReferralViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ReferralViewController.m; sourceTree = "<group>"; };
 		6EBBD7641834A71D00166D63 /* ABridge_ReferralPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ReferralPagesViewController.h; sourceTree = "<group>"; };
@@ -245,7 +243,6 @@
 				6EBBD759183498CC00166D63 /* ABridge_BuyerViewController.m */,
 				6E67D993184D864200568C5F /* ABridge_BuyerPagesViewController.h */,
 				6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */,
-				6EBBD75D18349A1B00166D63 /* ABridge_BuyerPagesViewController.xib */,
 				6EF741161845FE910021603D /* ABridge_BuyerPopsViewController.h */,
 				6EF741171845FE910021603D /* ABridge_BuyerPopsViewController.m */,
 			);
@@ -470,6 +467,7 @@
 				6EEF582D18337E4000C3214E /* Sources */,
 				6EEF582E18337E4000C3214E /* Frameworks */,
 				6EEF582F18337E4000C3214E /* Resources */,
+				6E67D996184DB59600568C5F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -541,7 +539,6 @@
 			files = (
 				6EA551041844525E00702E94 /* OpenSans-Regular-webfont.ttf in Resources */,
 				6EEF586A18337E6B00C3214E /* Main.storyboard in Resources */,
-				6EBBD75F18349A1C00166D63 /* ABridge_BuyerPagesViewController.xib in Resources */,
 				6EDF11B61845A762001BFC6B /* OpenSans-Bold-webfont.ttf in Resources */,
 				6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */,
 				6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */,
@@ -560,6 +557,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6E67D996184DB59600568C5F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildPlist=${INFOPLIST_FILE}\nCFBundleVersion=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" $buildPlist)\nBuildNumber=$(/usr/libexec/PlistBuddy -c \"Print BuildNumber\" $buildPlist)\nBuildNumberINCR=$((BuildNumber + 1))\nCFBundleVersionINCR=$((majorVersion)). $((minorVersion)).$((revisionVersion))b$((BuildNumberINCR))\n/usr/libexec/PlistBuddy -c \"Set :BuildNumber $BuildNumberINCR\" $buildPlist\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $CFBundleVersionINCR\" $buildPlist\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $CFBundleVersionINCR\" $buildPlist";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6EEF582D18337E4000C3214E /* Sources */ = {

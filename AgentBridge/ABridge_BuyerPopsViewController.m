@@ -23,27 +23,17 @@
 
 @property (assign, nonatomic) NSInteger numberOfProperty;
 @property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
-@property (strong, nonatomic) NSURLConnection * urlConnectionRequestNetwork;
-@property (strong, nonatomic) NSURLConnection * urlConnectionRequestAccess;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSMutableArray *arrayOfProperty;
-@property (strong, nonatomic) NSMutableArray *arrayRequestNetwork;
-@property (strong, nonatomic) NSMutableArray *arrayRequestAccess;
-@property (strong, nonatomic) LoginDetails *loginDetail;
 @end
 
 @implementation ABridge_BuyerPopsViewController
 @synthesize numberOfProperty;
 @synthesize urlConnectionProperty;
-@synthesize urlConnectionRequestNetwork;
-@synthesize urlConnectionRequestAccess;
 @synthesize dataReceived;
 @synthesize arrayOfProperty;
-@synthesize arrayRequestNetwork;
-@synthesize arrayRequestAccess;
 @synthesize is_saved;
 @synthesize buyer_id;
-@synthesize loginDetail;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -77,18 +67,6 @@
     topBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
     
     [self.viewForPages.layer addSublayer:topBorder];
-    
-    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    NSError *error = nil;
-    NSArray *fetchedObjects = [context
-                               executeFetchRequest:fetchRequest error:&error];
-    
-    self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -134,45 +112,45 @@
     pagesViewController.propertyDetails = property;
     pagesViewController.delegate = self;
     pagesViewController.buyers_view = YES;
-    pagesViewController.modify_view_type = MODIFYVIEW_NORMAL;
-    
-    if ([self.loginDetail.user_id integerValue] != [property.user_id integerValue]) {
-        for (RequestNetwork *network in self.arrayRequestNetwork) {
+//    pagesViewController.modify_view_type = MODIFYVIEW_NORMAL;
+//    
+//    if ([self.loginDetail.user_id integerValue] != [property.user_id integerValue]) {
+//        for (RequestNetwork *network in self.arrayRequestNetwork) {
 //            NSLog(@"%@network:%@",property.user_id,network);
-            if ([property.user_id integerValue] == [network.other_user_id integerValue]) {
-                if ([network.status integerValue] == 0) {
-                    pagesViewController.modify_view_type = MODIFYVIEW_PENDINGREQUEST;
-                }
-                else if ([network.status integerValue] == 1) {
-                    pagesViewController.modify_view_type = MODIFYVIEW_CHECKSETTING;
-                    if ([property.setting integerValue] == 2) {
-                        
-                        if ([self.arrayRequestAccess count] == 0) {
-                            pagesViewController.modify_view_type = MODIFYVIEW_REQUESTVIEWPRICE;
-                        }
-                        else {
-                            for (RequestAccess *access in self.arrayRequestAccess) {
-                                if ([property.user_id integerValue] == [access.user_b integerValue]) {
-                                    
-                                    pagesViewController.user_has_permission = [access.permission boolValue];
-                                    
-                                    break;
-                                }
-                            }
-                        }
-                        
-                    }
-                }
-                else if ([network.status integerValue] == 2) {
-                    pagesViewController.modify_view_type = MODIFYVIEW_REQUESTTOVIEW;
-                }
-                break;
-            }
-            else {
-                pagesViewController.modify_view_type = MODIFYVIEW_REQUESTTOVIEW;
-            }
-        }
-    }
+//            if ([property.user_id integerValue] == [network.other_user_id integerValue]) {
+//                if ([network.status integerValue] == 0) {
+//                    pagesViewController.modify_view_type = MODIFYVIEW_PENDINGREQUEST;
+//                }
+//                else if ([network.status integerValue] == 1) {
+//                    pagesViewController.modify_view_type = MODIFYVIEW_CHECKSETTING;
+//                    if ([property.setting integerValue] == 2) {
+//                        
+//                        if ([self.arrayRequestAccess count] == 0) {
+//                            pagesViewController.modify_view_type = MODIFYVIEW_REQUESTVIEWPRICE;
+//                        }
+//                        else {
+//                            for (RequestAccess *access in self.arrayRequestAccess) {
+//                                if ([property.user_id integerValue] == [access.user_b integerValue]) {
+//                                    
+//                                    pagesViewController.user_has_permission = [access.permission boolValue];
+//                                    
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        
+//                    }
+//                }
+//                else if ([network.status integerValue] == 2) {
+//                    pagesViewController.modify_view_type = MODIFYVIEW_REQUESTTOVIEW;
+//                }
+//                break;
+//            }
+//            else {
+//                pagesViewController.modify_view_type = MODIFYVIEW_REQUESTTOVIEW;
+//            }
+//        }
+//    }
     
     
     
@@ -293,41 +271,30 @@
                 self.numberOfProperty = [self.arrayOfProperty count];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
                     
-                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
+                    self.pageController.dataSource = self;
+                    CGRect pageControllerFrame = self.viewForPages.frame;
+                    pageControllerFrame.origin.x = 0.0f;
+                    pageControllerFrame.origin.y = 1.0f;
+                    self.pageController.view.frame = pageControllerFrame;
                     
-                    self.urlConnectionRequestNetwork = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php" andParameters:parameters];
-                    
-                    if (self.urlConnectionRequestNetwork) {
-                        [self addURLConnection:self.urlConnectionRequestNetwork];
-                        self.activityIndicator.hidden = NO;
-                        [self.activityIndicator startAnimating];
+                    if (is_saved) {
+                        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"Saved POPs™ (%li)",(long)self.numberOfProperty];
+                    }
+                    else {
+                        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"New POPs™ (%li)",(long)self.numberOfProperty];
                     }
                     
-//                    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-//                    
-//                    self.pageController.dataSource = self;
-//                    CGRect pageControllerFrame = self.viewForPages.frame;
-//                    pageControllerFrame.origin.x = 0.0f;
-//                    pageControllerFrame.origin.y = 1.0f;
-//                    self.pageController.view.frame = pageControllerFrame;
-//                    
-//                    if (is_saved) {
-//                        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"Saved POPs™ (%li)",(long)self.numberOfProperty];
-//                    }
-//                    else {
-//                        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"New POPs™ (%li)",(long)self.numberOfProperty];
-//                    }
-//                    
-//                    ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-//                    
-//                    NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-//                    
-//                    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-//                    
-//                    [self addChildViewController:self.pageController];
-//                    [[self viewForPages] addSubview:[self.pageController view]];
-//                    [self.pageController didMoveToParentViewController:self];
+                    ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+                    
+                    NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+                    
+                    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+                    
+                    [self addChildViewController:self.pageController];
+                    [[self viewForPages] addSubview:[self.pageController view]];
+                    [self.pageController didMoveToParentViewController:self];
                     
                 });
                 
@@ -347,161 +314,6 @@
             //        self.buttonSave.hidden = YES;
             [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
         }
-    }
-    else if (connection == self.urlConnectionRequestNetwork) {
-        
-        if ([[json objectForKey:@"data"] count]) {
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                
-                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-                for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                    RequestNetwork *network = nil;
-                    
-                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"network_id == %@", [entry objectForKey:@"network_id"]];
-                    NSArray *result = [self fetchObjectsWithEntityName:@"RequestNetwork" andPredicate:predicate];
-                    if ([result count]) {
-                        network = (RequestNetwork*)[result firstObject];
-                    }
-                    else {
-                        network = [NSEntityDescription insertNewObjectForEntityForName: @"RequestNetwork" inManagedObjectContext: context];
-                    }
-                    
-                    [network setValuesForKeysWithDictionary:entry];
-                    
-                    NSError *error = nil;
-                    if (![context save:&error]) {
-                        NSLog(@"Error on saving RequestNetwork:%@",[error localizedDescription]);
-                    }
-                    else {
-                        if (self.arrayRequestNetwork == nil) {
-                            self.arrayRequestNetwork = [[NSMutableArray alloc] init];
-                        }
-                        
-                        [self.arrayRequestNetwork addObject:network];
-                    }
-                }
-                
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
-                    
-                    self.urlConnectionRequestAccess = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php" andParameters:parameters];
-                    
-                    if (self.urlConnectionRequestAccess) {
-                        [self addURLConnection:self.urlConnectionRequestAccess];
-                        self.activityIndicator.hidden = NO;
-                        [self.activityIndicator startAnimating];
-                    }
-                    
-//                    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-//                    
-//                    self.pageController.dataSource = self;
-//                    CGRect pageControllerFrame = self.viewForPages.frame;
-//                    pageControllerFrame.origin.x = 0.0f;
-//                    pageControllerFrame.origin.y = 1.0f;
-//                    self.pageController.view.frame = pageControllerFrame;
-//                    
-//                    if (is_saved) {
-//                        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"Saved POPs™ (%li)",(long)self.numberOfProperty];
-//                    }
-//                    else {
-//                        self.labelNumberOfProperty.text = [NSString stringWithFormat:@"New POPs™ (%li)",(long)self.numberOfProperty];
-//                    }
-//                    
-//                    ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-//                    
-//                    NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-//                    
-//                    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-//                    
-//                    [self addChildViewController:self.pageController];
-//                    [[self viewForPages] addSubview:[self.pageController view]];
-//                    [self.pageController didMoveToParentViewController:self];
-                    //                self.buttonSave.hidden = NO;
-                });
-                
-            });
-        }
-        else {
-//            [self.pageController.view removeFromSuperview];
-//            [self.pageController removeFromParentViewController];
-//            self.pageController = nil;
-//            self.numberOfProperty = 0;
-//            if (is_saved) {
-//                self.labelNumberOfProperty.text = @"Saved POPs™";
-//            }
-//            else {
-//                self.labelNumberOfProperty.text = @"New POPs™";
-//            }
-//            //        self.buttonSave.hidden = YES;
-//            [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
-        }
-    }
-    else if (connection == self.urlConnectionRequestAccess) {
-        
-        if ([[json objectForKey:@"data"] count]) {
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                
-                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-                for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                    RequestAccess *access = nil;
-                    
-                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"access_id == %@", [entry objectForKey:@"access_id"]];
-                    NSArray *result = [self fetchObjectsWithEntityName:@"RequestAccess" andPredicate:predicate];
-                    if ([result count]) {
-                        access = (RequestAccess*)[result firstObject];
-                    }
-                    else {
-                        access = [NSEntityDescription insertNewObjectForEntityForName: @"RequestAccess" inManagedObjectContext: context];
-                    }
-                    
-                    [access setValuesForKeysWithDictionary:entry];
-                    
-                    NSError *error = nil;
-                    if (![context save:&error]) {
-                        NSLog(@"Error on saving RequestAccess:%@",[error localizedDescription]);
-                    }
-                    else {
-                        if (self.arrayRequestAccess == nil) {
-                            self.arrayRequestAccess = [[NSMutableArray alloc] init];
-                        }
-                        
-                        [self.arrayRequestAccess addObject:access];
-                    }
-                }
-                
-                
-                
-            });
-        }
-            
-                self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-                
-                self.pageController.dataSource = self;
-                CGRect pageControllerFrame = self.viewForPages.frame;
-                pageControllerFrame.origin.x = 0.0f;
-                pageControllerFrame.origin.y = 1.0f;
-                self.pageController.view.frame = pageControllerFrame;
-                
-                if (is_saved) {
-                    self.labelNumberOfProperty.text = [NSString stringWithFormat:@"Saved POPs™ (%li)",(long)self.numberOfProperty];
-                }
-                else {
-                    self.labelNumberOfProperty.text = [NSString stringWithFormat:@"New POPs™ (%li)",(long)self.numberOfProperty];
-                }
-                
-                ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-                
-                NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-                
-                [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-                
-                [self addChildViewController:self.pageController];
-                [[self viewForPages] addSubview:[self.pageController view]];
-                [self.pageController didMoveToParentViewController:self];
-                //                self.buttonSave.hidden = NO;
     }
     
     [self dismissOverlay];
