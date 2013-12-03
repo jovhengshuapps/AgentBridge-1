@@ -15,10 +15,11 @@
 #import "LoginDetails.h"
 #import "Constants.h"
 
-@interface ABridge_ParentViewController : UIViewController
+@interface ABridge_ParentViewController : UIViewController <UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray *arrayOfURLConnection;
 @property (strong, nonatomic) IBOutlet UIView *imageViewTopBar;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewReload;
 
 - (IBAction)revealMenu:(id)sender;
 - (IBAction)revealSearch:(id)sender;

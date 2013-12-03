@@ -47,6 +47,11 @@
     self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     self.buttonRefer.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     self.labelNumberOfAgentNetwork.text = @"My Network";
+    [self.labelNumberOfAgentNetwork sizeToFit];
+    
+    CGRect frame = self.activityIndicator.frame;
+    frame.origin.x = self.labelNumberOfAgentNetwork.frame.origin.x + self.labelNumberOfAgentNetwork.frame.size.width + 10.0f;
+    self.activityIndicator.frame = frame;
     self.slidingViewController.underRightViewController = nil;
     
     // Add a topBorder.
@@ -223,6 +228,7 @@
                 self.pageController.view.frame = pageControllerFrame;
                 
                 self.labelNumberOfAgentNetwork.text = [NSString stringWithFormat:@"My Network (%li)",(long)self.numberOfAgentNetwork];
+                [self.labelNumberOfAgentNetwork sizeToFit];
                 
                 ABridge_AgentNetworkPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                 

@@ -76,6 +76,7 @@
         <attribute name="lot_size" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lot_sqft" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="new_pops" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="occupancy" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="parking_ratio" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pet" optional="YES" attributeType="String" syncable="YES"/>
@@ -86,6 +87,7 @@
         <attribute name="property_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="property_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="room_count" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="saved_pops" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="setting" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stories" optional="YES" attributeType="String" syncable="YES"/>
@@ -214,6 +216,18 @@
         <attribute name="state_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="RequestAccess" representedClassName="RequestAccess" syncable="YES">
+        <attribute name="permission" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="property_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_a" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_b" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="RequestNetwork" representedClassName="RequestNetwork" syncable="YES">
+        <attribute name="network_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="other_user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="State" representedClassName="State" syncable="YES">
         <attribute name="zone_code" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zone_country_id" optional="YES" attributeType="String" syncable="YES"/>
@@ -230,5 +244,7 @@
         <element name="PropertyImages" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Referral" positionX="0" positionY="0" width="0" height="0"/>
         <element name="State" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RequestNetwork" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RequestAccess" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

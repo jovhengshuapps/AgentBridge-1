@@ -2,7 +2,7 @@
 //  Buyer.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/15/13.
+//  Created by host24_iOS Dev on 12/2/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
@@ -66,5 +66,7 @@
 @dynamic year_built;
 @dynamic zip;
 @dynamic zoned;
+@dynamic saved_pops;
+@dynamic new_pops;
 
 @end

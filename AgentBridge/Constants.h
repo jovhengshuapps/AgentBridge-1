@@ -53,4 +53,10 @@
 #define FONT_SIZE_SMALL                                                             14.0f
 #define FONT_SIZE_FOR_PROFILE                                                       12.0f
 
+#define MODIFYVIEW_NORMAL                                                           0
+#define MODIFYVIEW_PENDINGREQUEST                                                   1
+#define MODIFYVIEW_REQUESTTOVIEW                                                    2
+#define MODIFYVIEW_CHECKSETTING                                                     3
+#define MODIFYVIEW_REQUESTVIEWPRICE                                                 4
+
 #endif

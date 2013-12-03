@@ -24,6 +24,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelPage;
 @property (weak, nonatomic) IBOutlet UIView *viewForScroll;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingImageIndicator;
+@property (weak, nonatomic) IBOutlet UIView *viewForDescription;
+@property (weak, nonatomic) IBOutlet UILabel *labelDescription;
+@property (weak, nonatomic) IBOutlet UIButton *buttonDescription;
 
 @property (strong, nonatomic) NSURLConnection *urlConnectionImages;
 @property (strong, nonatomic) NSMutableData *dataReceived;
@@ -34,7 +37,9 @@
 @synthesize index;
 @synthesize propertyDetails;
 @synthesize delegate;
-@synthesize disclose_price;
+@synthesize buyers_view;
+@synthesize modify_view_type;
+@synthesize user_has_permission;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,132 +55,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
-    
-    self.labelZip.text = self.propertyDetails.zip;
-    self.labelPropertyName.text = self.propertyDetails.property_name;
-    self.labelPropertyType.text = [NSString stringWithFormat:@"%@ - %@",self.propertyDetails.type_name, self.propertyDetails.sub_type_name];
-    
-    if (disclose_price) {
-        
-        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-        
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
-                                                  inManagedObjectContext:context];
-        [fetchRequest setEntity:entity];
-        NSError *error = nil;
-        LoginDetails *loginDetails = (LoginDetails*)[[context executeFetchRequest:fetchRequest error:&error] firstObject];
-        
-        if ([loginDetails.user_id integerValue] == [self.propertyDetails.user_id integerValue]) {
-            [self getPriceText];
-        }
-        else {
-            if ([self.propertyDetails.disclose boolValue]) {
-                [self getPriceText];
-            }
-            else {
-                self.labelPrice.text = @"Price Undisclosed.";
-            }
-        }
-    }
-    else {
-        [self getPriceText];
-    }
-    
-    
-    
-    
-    
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *date_tested = [dateFormatter dateFromString:self.propertyDetails.date_created];
-    NSDate *date_expired = [dateFormatter dateFromString:self.propertyDetails.date_expired];
-    NSDate *date_now = [NSDate date];
-    
-    if ([date_now compare:date_tested] == NSOrderedDescending || date_tested == nil) {
-        date_tested = date_now;
-    }
-    
-//    NSLog(@"%@ --- %@",date_expired,self.propertyDetails.date_expired);
-    NSTimeInterval interval = [date_expired timeIntervalSinceDate:date_tested];
-    
-    NSInteger remainingDays = (NSInteger)(interval/86400.0f);
-    
-    if (remainingDays > -1) {
-        remainingDays += 1;
-        
-        if (remainingDays == 1) {
-            self.labelExpiry.text = @"Expiry of 1 day";
-        }
-        else {
-            self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %li days",(long)remainingDays];
-        }
-    }
-    else {
-        
-        self.labelExpiry.text = [NSString stringWithFormat:@"Expired at %@",self.propertyDetails.date_expired];
-    }
-    
-    
-//    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//    NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
-//                                               fromDate:date_tested
-//                                                 toDate:date_expired
-//                                                options:0];
-//    
-//    NSLog(@"Difference in date components: %i/%i/%i", components.day, components.month, components.year);
-//    
-//    self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %i days",components.day];
-    /*
-    NSMutableString *featuresString = [NSMutableString stringWithFormat:@"%@\n\n",self.propertyDetails.desc];
-    NSEntityDescription *entity = [self.propertyDetails entity];
-    NSDictionary *attributes = [entity attributesByName];
-    int count = 0;
-    for (NSString *attribute in attributes) {
-        if([attribute isEqualToString:@"available_sqft"]||[attribute isEqualToString:@"bathroom"]||[attribute isEqualToString:@"bedroom"]||[attribute isEqualToString:@"bldg_sqft"]||[attribute isEqualToString:@"cap_rate"]||[attribute isEqualToString:@"ceiling_height"]||[attribute isEqualToString:@"condition"]||[attribute isEqualToString:@"furnished"]||[attribute isEqualToString:@"garage"]||[attribute isEqualToString:@"grm"]||[attribute isEqualToString:@"lot_size"]||[attribute isEqualToString:@"lot_sqft"]||[attribute isEqualToString:@"view"]||[attribute isEqualToString:@"year_built"]||[attribute isEqualToString:@"stories"]||[attribute isEqualToString:@"unit_sqft"]||[attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
-            
-            
-            if (count == 5) {
-                break;
-            }
-            else {
-                if (![self isNull:[self.propertyDetails valueForKey:attribute]]) {
-                    if([attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
-                        [featuresString appendFormat:@"%@, ", [self.propertyDetails valueForKey:attribute]];
-                    }
-                    else {
-                        NSMutableString *unit = [NSMutableString stringWithString:attribute];
-                        [unit replaceOccurrencesOfString:@"_sqft" withString:@" sq.ft." options:NSCaseInsensitiveSearch range:NSMakeRange(0, [unit length])];
-                        [unit replaceOccurrencesOfString:@"_" withString:@" " options:NSCaseInsensitiveSearch range:NSMakeRange(0, [unit length])];
-                        [featuresString appendFormat:@"%@",[NSString stringWithFormat:@"%@ %@, ",[self.propertyDetails valueForKey:attribute],unit]];
-                    }
-                    
-                    count++;
-                }
-            }
-            
-            
-        }
-//        else if([attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
-//            [featuresString appendFormat:@"%@, ", [self.propertyDetails valueForKey:attribute]];
-//        }
-    }
-    
-    if ([featuresString rangeOfString:@","].location != NSNotFound) {
-        NSString *removedLastComma = [featuresString substringToIndex:[featuresString length]-2];
-        
-        [featuresString setString:[NSString stringWithFormat:@"%@\n\n",removedLastComma]];
-    }
-    
-//    if (![self isNull:self.propertyDetails.desc]) {
-//        [featuresString appendFormat:@"Note: %@",self.propertyDetails.desc];
-//    }
-    
-    self.textFeatures.text = featuresString;
-    */
-    
     self.labelZip.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.labelPropertyName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -184,15 +63,91 @@
     self.labelExpiry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     self.textFeatures.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
+    self.buttonDescription.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.labelDescription.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    
+    self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
+    
+    self.labelZip.text = self.propertyDetails.zip;
+    self.labelPropertyName.text = self.propertyDetails.property_name;
+    self.labelPropertyType.text = [NSString stringWithFormat:@"%@ - %@",self.propertyDetails.type_name, self.propertyDetails.sub_type_name];
+    
+    if (buyers_view) {
+        
+        if (modify_view_type == MODIFYVIEW_CHECKSETTING) {
+            if ([self.propertyDetails.setting integerValue] == 1) {
+                [self checkSettingGetPrice];
+            }
+            else {
+                if (user_has_permission) {
+                    [self checkSettingGetPrice];
+                    self.viewForDescription.hidden = YES;
+                }
+                else {
+                    self.viewForDescription.hidden = NO;
+                    self.labelDescription.text = @"";
+                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                }
+            }
+        }
+        else if (modify_view_type == MODIFYVIEW_NORMAL) {
+            [self getPriceText];
+        }
+        
+    }
+    else {
+        [self getPriceText];
+    }
+    
+    
+    
+    
+    if (buyers_view) {
+        switch (modify_view_type) {
+            case MODIFYVIEW_NORMAL:
+                [self getExpiredText];
+                self.viewForDescription.hidden = YES;
+                break;
+            case MODIFYVIEW_PENDINGREQUEST:
+                self.labelExpiry.text = @"";
+                self.viewForDescription.hidden = NO;
+                self.labelDescription.text = @"";
+                [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                break;
+            case MODIFYVIEW_REQUESTTOVIEW:
+                self.labelExpiry.text = @"";
+                self.viewForDescription.hidden = NO;
+                self.labelDescription.text = [NSString stringWithFormat:@"This POPs is restricted to %@'s Network members only",@"username"];
+                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                break;
+                
+            default:
+                break;
+        }
+    }
+    else {
+        [self getExpiredText];
+    }
+    
+    CGSize constraint = CGSizeMake(309.0f, 20000.0f);
+    
+    CGSize size = [self.labelDescription.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    
+    CGFloat height = MAX(size.height, 20.0f);
+    CGRect frame = self.labelDescription.frame;
+    frame.size.height = height;
+    self.labelDescription.frame = frame;
+    
+    frame = self.buttonDescription.frame;
+    frame.origin.y = self.labelDescription.frame.origin.y + self.labelDescription.frame.size.height + 5.0f;
+    self.buttonDescription.frame = frame;
+    
+    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
     imageView.contentMode = UIViewContentModeCenter;
     imageView.image = [UIImage imageNamed:[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
     
-    UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
     
-    tapZoom.numberOfTapsRequired = 1;
-    tapZoom.numberOfTouchesRequired = 1;
-    [self.scrollImages addGestureRecognizer:tapZoom];
     
     [self.scrollImages addSubview:imageView];
     
@@ -205,7 +160,18 @@
     
     [self.viewForScroll.layer addSublayer:bottomBorder];
     
-    [self loadPOPsImages];
+    if (buyers_view) {
+        switch (modify_view_type) {
+            case MODIFYVIEW_NORMAL:
+                [self getImageReady];
+                break;
+            default:
+                break;
+        }
+    }
+    else {
+        [self getImageReady];
+    }
     
 }
 
@@ -332,6 +298,69 @@
     self.labelPrice.text = priceText;
 }
 
+- (void) getExpiredText {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date_tested = [dateFormatter dateFromString:self.propertyDetails.date_created];
+    NSDate *date_expired = [dateFormatter dateFromString:self.propertyDetails.date_expired];
+    NSDate *date_now = [NSDate date];
+    
+    if ([date_now compare:date_tested] == NSOrderedDescending || date_tested == nil) {
+        date_tested = date_now;
+    }
+    
+    NSTimeInterval interval = [date_expired timeIntervalSinceDate:date_tested];
+    
+    NSInteger remainingDays = (NSInteger)(interval/86400.0f);
+    
+    if (remainingDays > -1) {
+        remainingDays += 1;
+        
+        if (remainingDays == 1) {
+            self.labelExpiry.text = @"Expiry of 1 day";
+        }
+        else {
+            self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %li days",(long)remainingDays];
+        }
+    }
+    else {
+        
+        self.labelExpiry.text = [NSString stringWithFormat:@"Expired at %@",self.propertyDetails.date_expired];
+    }
+}
+
+- (void) getImageReady {
+    
+    UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
+    
+    tapZoom.numberOfTapsRequired = 1;
+    tapZoom.numberOfTouchesRequired = 1;
+    [self.scrollImages addGestureRecognizer:tapZoom];
+    [self loadPOPsImages];
+}
+
+- (void) checkSettingGetPrice {
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    LoginDetails *loginDetails = (LoginDetails*)[[context executeFetchRequest:fetchRequest error:&error] firstObject];
+    
+    if ([loginDetails.user_id integerValue] == [self.propertyDetails.user_id integerValue]) {
+        [self getPriceText];
+    }
+    else {
+        if ([self.propertyDetails.disclose boolValue]) {
+            [self getPriceText];
+        }
+        else {
+            self.labelPrice.text = @"Price Undisclosed";
+        }
+    }
+}
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {

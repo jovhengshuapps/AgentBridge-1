@@ -52,6 +52,11 @@
     self.labelNumberOfReferral.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     
     self.labelNumberOfReferral.text = @"My Referrals";
+    [self.labelNumberOfReferral sizeToFit];
+    
+    CGRect frame = self.activityIndicator.frame;
+    frame.origin.x = self.labelNumberOfReferral.frame.origin.x + self.labelNumberOfReferral.frame.size.width + 10.0f;
+    self.activityIndicator.frame = frame;
     [self defineSegmentControlStyle];
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
@@ -259,6 +264,7 @@
                 self.pageController.view.frame = pageControllerFrame;
                 
                 self.labelNumberOfReferral.text = [NSString stringWithFormat:@"My Referrals (%li)",(long)self.numberOfReferral];
+                [self.labelNumberOfReferral sizeToFit];
                 
                 ABridge_ReferralPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                 

@@ -2,7 +2,7 @@
 //  Buyer.h
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/15/13.
+//  Created by host24_iOS Dev on 12/2/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
@@ -67,5 +67,7 @@
 @property (nonatomic, retain) NSString * year_built;
 @property (nonatomic, retain) NSString * zip;
 @property (nonatomic, retain) NSString * zoned;
+@property (nonatomic, retain) NSString * saved_pops;
+@property (nonatomic, retain) NSString * new_pops;
 
 @end

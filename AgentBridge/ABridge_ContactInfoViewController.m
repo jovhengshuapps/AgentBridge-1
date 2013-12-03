@@ -38,6 +38,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.slidingViewController.underRightViewController = nil;
+    
     self.aboutMeTitle.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     self.mobileHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.workHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);

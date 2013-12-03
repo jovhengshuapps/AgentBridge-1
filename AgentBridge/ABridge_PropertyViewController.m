@@ -51,6 +51,12 @@
     
     self.labelNumberOfProperty.text = @"My POPs™";
     
+    [self.labelNumberOfProperty sizeToFit];
+    
+    CGRect frame = self.activityIndicator.frame;
+    frame.origin.x = self.labelNumberOfProperty.frame.origin.x + self.labelNumberOfProperty.frame.size.width + 10.0f;
+    self.activityIndicator.frame = frame;
+    
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
     
@@ -231,6 +237,8 @@
                 self.pageController.view.frame = pageControllerFrame;
                 
                 self.labelNumberOfProperty.text = [NSString stringWithFormat:@"My POPs™ (%li)",(long)self.numberOfProperty];
+                
+                [self.labelNumberOfProperty sizeToFit];
                 
                 ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                 

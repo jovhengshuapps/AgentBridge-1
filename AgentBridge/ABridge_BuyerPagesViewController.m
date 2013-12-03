@@ -2,33 +2,32 @@
 //  ABridge_BuyerPagesViewController.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/14/13.
+//  Created by host24_iOS Dev on 12/3/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
 #import "ABridge_BuyerPagesViewController.h"
+#import "ABridge_BuyerPopsViewController.h"
 #import "Constants.h"
 
 @interface ABridge_BuyerPagesViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *labelPage;
-@property (weak, nonatomic) IBOutlet UILabel *labelBuyerName;
-@property (weak, nonatomic) IBOutlet UILabel *labelBuyerType;
-@property (weak, nonatomic) IBOutlet UILabel *labelZipcode;
-@property (weak, nonatomic) IBOutlet UILabel *labelPrice;
-@property (weak, nonatomic) IBOutlet UILabel *labelExpiry;
-@property (weak, nonatomic) IBOutlet UIImageView *imageProperty;
-@property (weak, nonatomic) IBOutlet UITextView *textFeatures;
-@property (weak, nonatomic) IBOutlet UILabel *labelMatching;
-@property (weak, nonatomic) IBOutlet UIView *viewForTop;
-@property (weak, nonatomic) IBOutlet UIButton *buttonSave;
-@property (weak, nonatomic) IBOutlet UIButton *buttonNew;
 
 @end
 
 @implementation ABridge_BuyerPagesViewController
+@synthesize viewTop;
+@synthesize labelBuyerName;
+@synthesize labelBuyerType;
+@synthesize labelBuyerZip;
+@synthesize labelExpiry;
+@synthesize labelMatching;
+@synthesize labelPrice;
+@synthesize textViewDescription;
+@synthesize imageProperty;
+@synthesize buttonNew;
+@synthesize buttonSaved;
+@synthesize buyerDetail;
 @synthesize index;
-@synthesize buyerDetails;
-@synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,35 +41,76 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
+	// Do any additional setup after loading the view.
     
-    self.labelBuyerName.text = self.buyerDetails.name;
-    self.labelBuyerType.text = self.buyerDetails.buyer_type;
-    self.labelZipcode.text = [NSString stringWithFormat:@"%@",self.buyerDetails.zip];
+    self.labelExpiry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.textViewDescription.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelBuyerName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelBuyerType.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    
+    self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
+    self.labelBuyerZip.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonNew.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonSaved.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.labelMatching.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    
+    // Add a bottomBorder.
+    CALayer *bottomBorder = [CALayer layer];
+    
+    bottomBorder.frame = CGRectMake(0.0f, self.viewTop.frame.size.height - 1.0f, self.viewTop.frame.size.width, 1.0f);
+    
+    bottomBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.viewTop.layer addSublayer:bottomBorder];
+    
+    
+    NSString *numberSaved = [self.buyerDetail valueForKey:@"saved_pops"];
+    NSString *numberNew = [self.buyerDetail valueForKey:@"new_pops"];
+    if ([self isNull:numberSaved] && [self isNull:numberNew]) {
+        self.labelMatching.text = @"Matching POPs™ may be available on the website.";
+        self.labelMatching.hidden = NO;
+        self.buttonSaved.hidden = YES;
+        self.buttonNew.hidden = YES;
+
+    }
+    else {
+        self.labelMatching.hidden = YES;
+        self.buttonSaved.hidden = [self isNull:numberSaved];
+        self.buttonNew.hidden = [self isNull:numberNew];
+        if (self.buttonSaved.hidden == NO) {
+            [self.buttonSaved setTitle:[NSString stringWithFormat:@"Saved(%@)",numberSaved] forState:UIControlStateNormal];
+        }
+        if (self.buttonNew.hidden == NO) {
+            [self.buttonNew setTitle:[NSString stringWithFormat:@"New(%@)",numberNew] forState:UIControlStateNormal];
+        }
+    }
+    
+
+    
+    
+    self.labelBuyerName.text = self.buyerDetail.name;
+    self.labelBuyerType.text = self.buyerDetail.buyer_type;
+    self.labelBuyerZip.text = self.buyerDetail.zip;
     NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
     formatter.currencyCode = @"USD";
     
     NSMutableString *priceText = [NSMutableString stringWithString:@""];
     
-    if ([self.buyerDetails.price_value rangeOfString:@"-"].location != NSNotFound) {
-        NSString *price1 = [self.buyerDetails.price_value substringToIndex:[self.buyerDetails.price_value rangeOfString:@"-"].location];
-        NSString *price2 = [self.buyerDetails.price_value substringFromIndex:[self.buyerDetails.price_value rangeOfString:@"-"].location+1];
-        [priceText setString:[formatter stringFromNumber: [NSNumber numberWithDouble:[price1 doubleValue]]]];
+    if ([self.buyerDetail.price_value rangeOfString:@"-"].location != NSNotFound) {
+        [priceText setString:[formatter stringFromNumber: [NSNumber numberWithDouble:[[self.buyerDetail.price_value substringToIndex:[self.buyerDetail.price_value rangeOfString:@"-"].location] doubleValue]]]];
         [priceText appendString:@" - "];
-        [priceText appendString:[formatter stringFromNumber: [NSNumber numberWithDouble:[price2 doubleValue]]]];
+        [priceText appendString:[formatter stringFromNumber: [NSNumber numberWithDouble:[[self.buyerDetail.price_value substringFromIndex:[self.buyerDetail.price_value rangeOfString:@"-"].location+1] doubleValue]]]];
         
     }
     else {
-        [priceText setString:[formatter stringFromNumber: [NSNumber numberWithDouble:[self.buyerDetails.price_value doubleValue]]]];
+        [priceText setString:[formatter stringFromNumber: [NSNumber numberWithDouble:[self.buyerDetail.price_value doubleValue]]]];
     }
     
     self.labelPrice.text = priceText;
-    self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %@ days", self.buyerDetails.expiry];
     
     NSMutableString *featuresString = [NSMutableString stringWithFormat:@""];
-    NSEntityDescription *entity = [self.buyerDetails entity];
+    NSEntityDescription *entity = [self.buyerDetail entity];
     NSDictionary *attributes = [entity attributesByName];
     int count = 0;
     for (NSString *attribute in attributes) {
@@ -81,26 +121,23 @@
                 break;
             }
             else {
-                if (![self isNull:[self.buyerDetails valueForKey:attribute]]) {
+                if (![self isNull:[self.buyerDetail valueForKey:attribute]]) {
                     if([attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
-                        [featuresString appendFormat:@"%@, ", [self.buyerDetails valueForKey:attribute]];
+                        [featuresString appendFormat:@"%@, ", [self.buyerDetail valueForKey:attribute]];
                     }
                     else {
                         NSMutableString *unit = [NSMutableString stringWithString:attribute];
                         [unit replaceOccurrencesOfString:@"_sqft" withString:@" sq.ft." options:NSCaseInsensitiveSearch range:NSMakeRange(0, [unit length])];
                         [unit replaceOccurrencesOfString:@"_" withString:@" " options:NSCaseInsensitiveSearch range:NSMakeRange(0, [unit length])];
-                        [featuresString appendFormat:@"%@",[NSString stringWithFormat:@"%@ %@, ",[self.buyerDetails valueForKey:attribute],unit]];
+                        [featuresString appendFormat:@"%@",[NSString stringWithFormat:@"%@ %@, ",[self.buyerDetail valueForKey:attribute],unit]];
                     }
-
+                    
                     count++;
                 }
             }
             
             
         }
-//        else if([attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
-//            [featuresString appendFormat:@"%@, ", [self.buyerDetails valueForKey:attribute]];
-//        }
     }
     
     if ([featuresString rangeOfString:@","].location != NSNotFound) {
@@ -109,54 +146,13 @@
         [featuresString setString:[NSString stringWithFormat:@"%@\n\n",removedLastComma]];
     }
     
-//    if (![self isNull:self.buyerDetails.desc]) {
-//        [featuresString appendFormat:@"Note: %@",self.buyerDetails.desc];
-//    }
-    
-    self.textFeatures.text = featuresString;
-    
-    self.imageProperty.image = [UIImage imageNamed:[self imageStringForPropertyType:[self.buyerDetails.property_type integerValue] andSubType:[self.buyerDetails.sub_type integerValue]]];
-    
-    if ([self.buyerDetails.hasnew_2 integerValue] == 0 && [self.buyerDetails.hasnew integerValue] == 0) {
-        self.labelMatching.text = @"Matching POPs™ may be available on the website.";
-        self.labelMatching.hidden = NO;
-        self.buttonSave.hidden = YES;
-        self.buttonSave.hidden = YES;
-    }
-    else {
-        self.labelMatching.hidden = YES;
-        if ([self.buyerDetails.hasnew_2 integerValue] != 0) {
-            self.buttonSave.hidden = NO;
-            [self.buttonSave setTitle:[NSString stringWithFormat:@"Saved (%@)",self.buyerDetails.hasnew_2] forState:UIControlStateNormal];
-            [self.buttonSave addTarget:self action:@selector(showSavedPopsView) forControlEvents:UIControlEventTouchUpInside];
-        }
-        if ([self.buyerDetails.hasnew integerValue] != 0) {
-            self.buttonNew.hidden = NO;
-            [self.buttonNew setTitle:[NSString stringWithFormat:@"New (%@)",self.buyerDetails.hasnew] forState:UIControlStateNormal];
-            [self.buttonNew addTarget:self action:@selector(showNewPopsView) forControlEvents:UIControlEventTouchUpInside];
-        }
-    }
+    self.textViewDescription.text = featuresString;
     
     
-    self.labelExpiry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
-    self.textFeatures.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelBuyerName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelBuyerType.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %@ days", self.buyerDetail.expiry];
     
-    self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
-    self.labelZipcode.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.buttonNew.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
-    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
-    self.labelMatching.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     
-    // Add a bottomBorder.
-    CALayer *bottomBorder = [CALayer layer];
-    
-    bottomBorder.frame = CGRectMake(0.0f, self.viewForTop.frame.size.height - 1.0f, self.viewForTop.frame.size.width, 1.0f);
-    
-    bottomBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
-    
-    [self.viewForTop.layer addSublayer:bottomBorder];
+    self.imageProperty.image = [UIImage imageNamed:[self imageStringForPropertyType:[self.buyerDetail.property_type integerValue] andSubType:[self.buyerDetail.sub_type integerValue]]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -165,13 +161,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)showSavedPopsView {
-    [self.delegate viewSavedPopsWithBuyerId:[self.buyerDetails.buyer_id integerValue]];
-}
-
-- (void)showNewPopsView {
-    [self.delegate viewNewPopsWithBuyerId:[self.buyerDetails.buyer_id integerValue]];
-}
 
 -(BOOL)isNull:(id)value {
     return ((NSNull*)value == nil || [value isEqualToString:@""]);
@@ -209,18 +198,18 @@
         case RESIDENTIAL_PURCHASE_TOWNHOUSE: case RESIDENTIAL_LEASE_TOWNHOUSE:
             [imageString appendString:@"townhouse"];
             break;
-        /*case RESIDENTIAL_LEASE_SFR:
-            [imageString appendString:@"sfr"];
-            break;
-        case RESIDENTIAL_LEASE_CONDO:
-            [imageString appendString:@"condo"];
-            break;
-        case RESIDENTIAL_LEASE_LAND:
-            [imageString appendString:@"land"];
-            break;
-        case RESIDENTIAL_LEASE_TOWNHOUSE:
-            [imageString appendString:@"townhouse"];
-            break;*/
+            /*case RESIDENTIAL_LEASE_SFR:
+             [imageString appendString:@"sfr"];
+             break;
+             case RESIDENTIAL_LEASE_CONDO:
+             [imageString appendString:@"condo"];
+             break;
+             case RESIDENTIAL_LEASE_LAND:
+             [imageString appendString:@"land"];
+             break;
+             case RESIDENTIAL_LEASE_TOWNHOUSE:
+             [imageString appendString:@"townhouse"];
+             break;*/
         case COMMERCIAL_PURCHASE_ASSISTED_CARE:
             [imageString appendString:@"assist"];
             break;
@@ -242,20 +231,33 @@
         case COMMERCIAL_PURCHASE_SPECIAL_PURPOSE:
             [imageString appendString:@"special"];
             break;
-        /*case COMMERCIAL_LEASE_INDUSTRIAL:
-            [imageString appendString:@"industrial"];
-            break;
-        case COMMERCIAL_LEASE_OFFICE:
-            [imageString appendString:@"office"];
-            break;
-        case COMMERCIAL_LEASE_RETAIL:
-            [imageString appendString:@"retail"];
-            break;*/
+            /*case COMMERCIAL_LEASE_INDUSTRIAL:
+             [imageString appendString:@"industrial"];
+             break;
+             case COMMERCIAL_LEASE_OFFICE:
+             [imageString appendString:@"office"];
+             break;
+             case COMMERCIAL_LEASE_RETAIL:
+             [imageString appendString:@"retail"];
+             break;*/
         default:
             [imageString appendString:@"sfr"];
             break;
     }
     [imageString appendString:@".png"];
     return imageString;
+}
+
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"show_saved_pops"]) {
+        ((ABridge_BuyerPopsViewController*) segue.destinationViewController).is_saved = YES;
+        ((ABridge_BuyerPopsViewController*) segue.destinationViewController).buyer_id = [self.buyerDetail.buyer_id integerValue];
+    }
+    else if ([segue.identifier isEqualToString:@"show_new_pops"]) {
+        ((ABridge_BuyerPopsViewController*) segue.destinationViewController).is_saved = NO;
+        ((ABridge_BuyerPopsViewController*) segue.destinationViewController).buyer_id = [self.buyerDetail.buyer_id integerValue];
+    }
 }
 @end

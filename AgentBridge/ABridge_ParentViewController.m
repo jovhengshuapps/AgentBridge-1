@@ -167,4 +167,13 @@
     [self.viewOverlay removeFromSuperview];
     self.viewOverlay = nil;
 }
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.y < -30.0f) {
+        NSLog(@"Release to Reload");
+    }
+    else {
+        NSLog(@"Pull down to Reload");
+    }
+}
 @end

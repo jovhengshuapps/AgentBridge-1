@@ -26,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerCountry;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorState;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorCountry;
+@property (weak, nonatomic) IBOutlet UIView *viewPickerCountry;
+@property (weak, nonatomic) IBOutlet UIView *viewPickerState;
 - (IBAction)saveAddress:(id)sender;
 - (IBAction)backButton:(id)sender;
 - (IBAction)selectState:(id)sender;
@@ -70,6 +72,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.slidingViewController.underRightViewController = nil;
+    
     self.aboutMeTitle.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     self.addressHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldAddress1.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -170,12 +174,12 @@
 
 - (IBAction)selectState:(id)sender {
 //    [self.actionSheetState showFromRect:CGRectMake(0.0f, 200.0f, 320.0f, 150.0f) inView:self.view animated:YES];
-    self.pickerState.hidden = NO;
+    self.viewPickerState.hidden = NO;
 }
 
 - (IBAction)selectCountry:(id)sender {
 //    [self.actionSheetCountry showFromRect:CGRectMake(0.0f, 200.0f, 320.0f, 150.0f) inView:self.view animated:YES];
-    self.pickerCountry.hidden = NO;
+    self.viewPickerState.hidden = NO;
 }
 
 - (void) addPaddingAndBorder:(UITextField*)textField color:(UIColor*)color {
@@ -386,11 +390,12 @@
     if (pickerView == self.pickerCountry) {
         [self.buttonCountry setTitle:[self.arrayOfCountry objectAtIndex:row] forState:UIControlStateNormal];
         [self reloadStateValues:[self.arrayOfCountry_ID objectAtIndex:row]];
+        self.viewPickerCountry.hidden = YES;
     }
     else if (pickerView == self.pickerState) {
         [self.buttonState setTitle:[self.arrayOfState objectAtIndex:row] forState:UIControlStateNormal];
+        self.viewPickerState.hidden = YES;
     }
-    pickerView.hidden = YES;
 }
 
 - (void)reloadStateValues:(NSString*)country_id {

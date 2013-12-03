@@ -34,6 +34,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.slidingViewController.underRightViewController = nil;
+    
     self.aboutMeTitle.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     self.aboutHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textViewAbout.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);

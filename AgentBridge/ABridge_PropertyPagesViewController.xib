@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ABridge_PropertyPagesViewController">
             <connections>
+                <outlet property="buttonDescription" destination="f4t-qw-XtE" id="CWK-69-7Bo"/>
+                <outlet property="labelDescription" destination="gSq-Yq-EIk" id="cwq-G6-Kl1"/>
                 <outlet property="labelExpiry" destination="WEV-7q-7jJ" id="BMW-ea-JrT"/>
                 <outlet property="labelPage" destination="24L-qv-fHH" id="AhS-gN-OgR"/>
                 <outlet property="labelPrice" destination="B3b-FZ-fpc" id="sW1-g7-8TJ"/>
@@ -18,6 +20,7 @@
                 <outlet property="scrollImages" destination="9eB-MM-gC3" id="pvT-rM-xbn"/>
                 <outlet property="textFeatures" destination="oN0-eh-tMf" id="lnF-6X-lSs"/>
                 <outlet property="view" destination="gnT-xf-ja0" id="RbJ-O5-j0h"/>
+                <outlet property="viewForDescription" destination="76D-YA-Xm8" id="XS8-IZ-9NI"/>
                 <outlet property="viewForScroll" destination="Aqi-pn-Y45" id="KXs-IN-Cw2"/>
             </connections>
         </placeholder>
@@ -70,6 +73,29 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
+                <view hidden="YES" contentMode="scaleToFill" id="76D-YA-Xm8">
+                    <rect key="frame" x="6" y="196" width="309" height="190"/>
+                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This POPs is restricted to [user name]'s Network members only" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gSq-Yq-EIk">
+                            <rect key="frame" x="0.0" y="0.0" width="309" height="72"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="f4t-qw-XtE">
+                            <rect key="frame" x="87" y="80" width="135" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="Request to View">
+                                <color key="titleColor" red="0.17254901959999999" green="0.59999999999999998" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="B3b-FZ-fpc">
                     <rect key="frame" x="6" y="225" width="309" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>

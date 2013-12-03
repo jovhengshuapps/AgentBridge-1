@@ -10,6 +10,7 @@
 #import "ABridge_BuyerPagesViewController.h"
 #import "ABridge_BuyerPopsViewController.h"
 #import "Buyer.h"
+#import "RequestNetwork.h"
 
 @interface ABridge_BuyerViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfBuyers;
@@ -51,6 +52,11 @@
     self.labelNumberOfBuyers.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     
     self.labelNumberOfBuyers.text = @"My Buyers";
+    [self.labelNumberOfBuyers sizeToFit];
+    
+    CGRect frame = self.activityIndicator.frame;
+    frame.origin.x = self.labelNumberOfBuyers.frame.origin.x + self.labelNumberOfBuyers.frame.size.width + 10.0f;
+    self.activityIndicator.frame = frame;
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
     
@@ -101,10 +107,11 @@
 
 - (ABridge_BuyerPagesViewController *)viewControllerAtIndex:(NSUInteger)index {
     
-    ABridge_BuyerPagesViewController *pagesViewController = [[ABridge_BuyerPagesViewController alloc] initWithNibName:@"ABridge_BuyerPagesViewController" bundle:nil];
+    ABridge_BuyerPagesViewController *pagesViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BuyerPages"];
+    //[[ABridge_BuyerPagesViewController alloc] initWithNibName:@"ABridge_BuyerPagesViewController" bundle:nil];
     pagesViewController.index = index;
-    pagesViewController.buyerDetails = (Buyer*)[self.arrayOfBuyer objectAtIndex:index];
-    pagesViewController.delegate = self;
+    
+    pagesViewController.buyerDetail = (Buyer*)[self.arrayOfBuyer objectAtIndex:index];
     
     return pagesViewController;
     
@@ -185,73 +192,77 @@
     
 //    NSLog(@"Did Finish:%@", json);
     
-    if ([[json objectForKey:@"data"] count]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-            for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                Buyer *buyer = nil;
+    if (connection == self.urlConnectionBuyer) {
+        if ([[json objectForKey:@"data"] count]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"buyer_id == %@", [entry objectForKey:@"buyer_id"]];
-                NSArray *result = [self fetchObjectsWithEntityName:@"Buyer" andPredicate:predicate];
-                if ([result count]) {
-                    buyer = (Buyer*)[result firstObject];
-                }
-                else {
-                    buyer = [NSEntityDescription insertNewObjectForEntityForName: @"Buyer" inManagedObjectContext: context];
-                }
-                
-                [buyer setValuesForKeysWithDictionary:entry];
-                
-                NSError *error = nil;
-                if (![context save:&error]) {
-                    NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
-                }
-                else {
-                    if (self.arrayOfBuyer == nil) {
-                        self.arrayOfBuyer = [[NSMutableArray alloc] init];
+                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                    Buyer *buyer = nil;
+                    
+                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"buyer_id == %@", [entry objectForKey:@"buyer_id"]];
+                    NSArray *result = [self fetchObjectsWithEntityName:@"Buyer" andPredicate:predicate];
+                    if ([result count]) {
+                        buyer = (Buyer*)[result firstObject];
+                    }
+                    else {
+                        buyer = [NSEntityDescription insertNewObjectForEntityForName: @"Buyer" inManagedObjectContext: context];
                     }
                     
-                    [self.arrayOfBuyer addObject:buyer];
+                    [buyer setValuesForKeysWithDictionary:entry];
+                    
+                    NSError *error = nil;
+                    if (![context save:&error]) {
+                        NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                    }
+                    else {
+                        if (self.arrayOfBuyer == nil) {
+                            self.arrayOfBuyer = [[NSMutableArray alloc] init];
+                        }
+                        
+                        [self.arrayOfBuyer addObject:buyer];
+                    }
                 }
-            }
-            
-            self.numberOfBuyer = [self.arrayOfBuyer count];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
                 
-                self.pageController.dataSource = self;
-                CGRect pageControllerFrame = self.viewForPages.frame;
-                pageControllerFrame.origin.x = 0.0f;
-                pageControllerFrame.origin.y = 1.0f;
-                self.pageController.view.frame = pageControllerFrame;
+                self.numberOfBuyer = [self.arrayOfBuyer count];
                 
-                self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+                    
+                    self.pageController.dataSource = self;
+                    CGRect pageControllerFrame = self.viewForPages.frame;
+                    pageControllerFrame.origin.x = 0.0f;
+                    pageControllerFrame.origin.y = 1.0f;
+                    self.pageController.view.frame = pageControllerFrame;
+                    
+                    self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
+                    
+                    [self.labelNumberOfBuyers sizeToFit];
+                    
+                    ABridge_BuyerPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+                    
+                    NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+                    
+                    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+                    
+                    [self addChildViewController:self.pageController];
+                    [[self viewForPages] addSubview:[self.pageController view]];
+                    [self.pageController didMoveToParentViewController:self];
+                });
                 
-                ABridge_BuyerPagesViewController *initialViewController = [self viewControllerAtIndex:0];
-                
-                NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
-                
-                [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-                
-                [self addChildViewController:self.pageController];
-                [[self viewForPages] addSubview:[self.pageController view]];
-                [self.pageController didMoveToParentViewController:self];
             });
+        }
+        else {
+            [self.pageController.view removeFromSuperview];
+            [self.pageController removeFromParentViewController];
+            self.pageController = nil;
+            self.numberOfBuyer = 0;
+            self.labelNumberOfBuyers.text = @"My Buyers";
             
-        });
+            [self showOverlayWithMessage:@"You currently don't have any Buyers." withIndicator:NO];
+        }
     }
-    else {
-        [self.pageController.view removeFromSuperview];
-        [self.pageController removeFromParentViewController];
-        self.pageController = nil;
-        self.numberOfBuyer = 0;
-        self.labelNumberOfBuyers.text = @"My Buyers";
-        
-        [self showOverlayWithMessage:@"You currently don't have any Buyers." withIndicator:NO];
-    }
-    
     
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
