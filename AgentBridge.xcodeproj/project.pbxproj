@@ -467,7 +467,6 @@
 				6EEF582D18337E4000C3214E /* Sources */,
 				6EEF582E18337E4000C3214E /* Frameworks */,
 				6EEF582F18337E4000C3214E /* Resources */,
-				6E67D996184DB59600568C5F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -557,22 +556,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		6E67D996184DB59600568C5F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbuildPlist=${INFOPLIST_FILE}\nCFBundleVersion=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" $buildPlist)\nBuildNumber=$(/usr/libexec/PlistBuddy -c \"Print BuildNumber\" $buildPlist)\nBuildNumberINCR=$((BuildNumber + 1))\nCFBundleVersionINCR=$((majorVersion)). $((minorVersion)).$((revisionVersion))b$((BuildNumberINCR))\n/usr/libexec/PlistBuddy -c \"Set :BuildNumber $BuildNumberINCR\" $buildPlist\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $CFBundleVersionINCR\" $buildPlist\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $CFBundleVersionINCR\" $buildPlist";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6EEF582D18337E4000C3214E /* Sources */ = {
