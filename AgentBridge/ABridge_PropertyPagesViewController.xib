@@ -74,7 +74,7 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <view hidden="YES" contentMode="scaleToFill" id="76D-YA-Xm8">
-                    <rect key="frame" x="6" y="232" width="309" height="130"/>
+                    <rect key="frame" x="6" y="222" width="309" height="130"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This POPs is restricted to [user name]'s Network members only" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gSq-Yq-EIk">

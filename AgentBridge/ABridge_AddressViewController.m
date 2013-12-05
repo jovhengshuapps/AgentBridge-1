@@ -246,32 +246,40 @@
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
-                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+//                    State *state = nil;
+//                    
+//                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"zone_id == %@", [entry objectForKey:@"zone_id"]];
+//                    NSArray *result = [self fetchObjectsWithEntityName:@"State" andPredicate:predicate];
+//                    if ([result count]) {
+//                        state = (State*)[result firstObject];
+//                    }
+//                    else {
+//                        state = [NSEntityDescription insertNewObjectForEntityForName: @"State" inManagedObjectContext: context];
+//                    }
+//                    
+//                    [state setValuesForKeysWithDictionary:entry];
+//                    
+//                    NSError *error = nil;
+//                    if (![context save:&error]) {
+//                        NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+//                    }
+//                    else {
+//                        if (self.arrayOfState == nil) {
+//                            self.arrayOfState = [[NSMutableArray alloc] init];
+//                        }
+//
+//                        [self.arrayOfState addObject:state.zone_name];
+//                    }
+//                }
+                
+                if (self.arrayOfState == nil) {
+                    self.arrayOfState = [[NSMutableArray alloc] init];
+                }
+
                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                    State *state = nil;
-                    
-                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"zone_id == %@", [entry objectForKey:@"zone_id"]];
-                    NSArray *result = [self fetchObjectsWithEntityName:@"State" andPredicate:predicate];
-                    if ([result count]) {
-                        state = (State*)[result firstObject];
-                    }
-                    else {
-                        state = [NSEntityDescription insertNewObjectForEntityForName: @"State" inManagedObjectContext: context];
-                    }
-                    
-                    [state setValuesForKeysWithDictionary:entry];
-                    
-                    NSError *error = nil;
-                    if (![context save:&error]) {
-                        NSLog(@"Error on saving Property:%@",[error localizedDescription]);
-                    }
-                    else {
-                        if (self.arrayOfState == nil) {
-                            self.arrayOfState = [[NSMutableArray alloc] init];
-                        }
-                        
-                        [self.arrayOfState addObject:state.zone_name];
-                    }
+                    [self.self.arrayOfState addObject:[entry objectForKey:@"zone_name"]];
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -303,37 +311,54 @@
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
-                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+//                    Country *country = nil;
+//                    
+//                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"countries_id == %@", [entry objectForKey:@"countries_id"]];
+//                    NSArray *result = [self fetchObjectsWithEntityName:@"Country" andPredicate:predicate];
+//                    if ([result count]) {
+//                        country = (Country*)[result firstObject];
+//                    }
+//                    else {
+//                        country = [NSEntityDescription insertNewObjectForEntityForName: @"Country" inManagedObjectContext: context];
+//                    }
+//                    
+//                    [country setValuesForKeysWithDictionary:entry];
+//                    
+//                    NSError *error = nil;
+//                    if (![context save:&error]) {
+//                        NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+//                    }
+//                    else {
+//                        if (self.arrayOfCountry == nil) {
+//                            self.arrayOfCountry = [[NSMutableArray alloc] init];
+//                        }
+//
+//                        [self.arrayOfCountry addObject:country.countries_name];
+//                        if (self.arrayOfCountry_ID == nil) {
+//                            self.arrayOfCountry_ID = [[NSMutableArray alloc] init];
+//                        }
+//
+//                        [self.arrayOfCountry_ID addObject:country.countries_id];
+//                    }
+//                }
+                
+                if (self.arrayOfCountry == nil) {
+                    self.arrayOfCountry = [[NSMutableArray alloc] init];
+                }
+
                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                    Country *country = nil;
-                    
-                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"countries_id == %@", [entry objectForKey:@"countries_id"]];
-                    NSArray *result = [self fetchObjectsWithEntityName:@"Country" andPredicate:predicate];
-                    if ([result count]) {
-                        country = (Country*)[result firstObject];
-                    }
-                    else {
-                        country = [NSEntityDescription insertNewObjectForEntityForName: @"Country" inManagedObjectContext: context];
-                    }
-                    
-                    [country setValuesForKeysWithDictionary:entry];
-                    
-                    NSError *error = nil;
-                    if (![context save:&error]) {
-                        NSLog(@"Error on saving Property:%@",[error localizedDescription]);
-                    }
-                    else {
-                        if (self.arrayOfCountry == nil) {
-                            self.arrayOfCountry = [[NSMutableArray alloc] init];
-                        }
-                        
-                        [self.arrayOfCountry addObject:country.countries_name];
-                        if (self.arrayOfCountry_ID == nil) {
-                            self.arrayOfCountry_ID = [[NSMutableArray alloc] init];
-                        }
-                        
-                        [self.arrayOfCountry_ID addObject:country.countries_id];
-                    }
+                    [self.self.arrayOfCountry addObject:[entry objectForKey:@"countries_name"]];
+                }
+                
+                
+                if (self.arrayOfCountry_ID == nil) {
+                    self.arrayOfCountry_ID = [[NSMutableArray alloc] init];
+                }
+
+                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                    [self.self.arrayOfCountry_ID addObject:[entry objectForKey:@"countries_id"]];
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), ^{

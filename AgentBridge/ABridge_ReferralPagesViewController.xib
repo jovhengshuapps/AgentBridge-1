@@ -99,7 +99,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="left" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="h7S-hp-M7C">
-                    <rect key="frame" x="262" y="190" width="48" height="37"/>
+                    <rect key="frame" x="262" y="180" width="48" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                     <state key="normal" backgroundImage="vcard-icon">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

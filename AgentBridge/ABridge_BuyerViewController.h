@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 
+-(void) scrollToBuyer:(NSString*)buyer_id;
+
 @end

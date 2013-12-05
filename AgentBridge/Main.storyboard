@@ -882,6 +882,10 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="rEo-kw-LEQ">
+                                <rect key="frame" x="270" y="67" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                             <view contentMode="scaleToFill" id="jkf-vW-bTV">
                                 <rect key="frame" x="0.0" y="107" width="320" height="422"/>
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
@@ -892,6 +896,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Activity" image="activity_icon" id="3bD-C5-Dlc"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="rEo-kw-LEQ" id="cXq-K9-r70"/>
                         <outlet property="labelNumberOfActivity" destination="wYo-JN-xws" id="p3m-vi-XNt"/>
                         <outlet property="view" destination="vEm-wY-izn" id="eHo-d6-Rr8"/>
                         <outlet property="viewForPages" destination="jkf-vW-bTV" id="epR-sT-1Eb"/>
@@ -1773,18 +1778,13 @@
                                             <outlet property="delegate" destination="7KC-aH-8W6" id="Dtf-ku-r2n"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Designation 1" minimumFontSize="17" id="tcT-mh-JMh">
-                                        <rect key="frame" x="20" y="125" width="280" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Designation 2" minimumFontSize="17" id="Y1b-XW-EXU">
-                                        <rect key="frame" x="20" y="163" width="280" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="gQP-M3-HLe">
+                                        <rect key="frame" x="20" y="125" width="280" height="124"/>
+                                        <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="7KC-aH-8W6" id="6aI-fo-VWf"/>
+                                        </connections>
+                                    </scrollView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Designation:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ACZ-EB-K7D">
                                         <rect key="frame" x="20" y="96" width="280" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
@@ -1792,6 +1792,10 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="RGC-UC-ncN">
+                                        <rect key="frame" x="114" y="97" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -1812,13 +1816,13 @@
                     <navigationItem key="navigationItem" id="jWl-pI-0Jj"/>
                     <connections>
                         <outlet property="aboutMeTitle" destination="dJV-mb-wbN" id="ksw-8B-bQ5"/>
+                        <outlet property="activityIndicator" destination="RGC-UC-ncN" id="gk0-dW-rPh"/>
                         <outlet property="brokerageHeader" destination="zER-Nw-G8d" id="tdv-5V-s7J"/>
                         <outlet property="buttonSave" destination="Gij-wF-6sW" id="Ga8-la-e83"/>
                         <outlet property="designationHeader" destination="ACZ-EB-K7D" id="wpz-13-yWm"/>
                         <outlet property="imageViewTopBar" destination="Usx-G5-tqV" id="VSY-9j-y2Y"/>
+                        <outlet property="scrollViewDesignations" destination="gQP-M3-HLe" id="Rj1-UT-3dl"/>
                         <outlet property="textFieldBrokerage" destination="XPe-9U-WEQ" id="g3A-Y3-P0u"/>
-                        <outlet property="textFieldDesignation1" destination="tcT-mh-JMh" id="JD5-Gf-QBa"/>
-                        <outlet property="textFieldDesignation2" destination="Y1b-XW-EXU" id="h9P-m1-dbl"/>
                         <outlet property="view" destination="GKa-xk-Asj" id="7ju-bI-fof"/>
                     </connections>
                 </viewController>
@@ -2077,6 +2081,68 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1s6-oH-19s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="208" y="3692"/>
+        </scene>
+        <!--Bridge Activity Pages View Controller-->
+        <scene sceneID="2vt-Q8-pNR">
+            <objects>
+                <viewController storyboardIdentifier="ActivityPages" id="HAm-x8-uk0" customClass="ABridge_ActivityPagesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cfx-bA-hjn">
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="aTA-yL-ilO">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yR0-ws-aiS">
+                                <rect key="frame" x="98" y="10" width="208" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eTZ-h7-1pj">
+                                <rect key="frame" x="98" y="28" width="208" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" id="1op-W5-OZD">
+                                <rect key="frame" x="5" y="110" width="310" height="332"/>
+                                <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <webView contentMode="scaleToFill" allowsInlineMediaPlayback="NO" mediaPlaybackRequiresUserAction="NO" mediaPlaybackAllowsAirPlay="NO" keyboardDisplayRequiresUserAction="NO" id="Ox5-NF-wwq">
+                                <rect key="frame" x="5" y="110" width="310" height="332"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="HAm-x8-uk0" id="ndu-Bh-E7d"/>
+                                </connections>
+                            </webView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blank-image" id="Bbt-lB-lT1">
+                                <rect key="frame" x="10" y="11" width="78" height="78"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="imagePicture" destination="Bbt-lB-lT1" id="fYj-HC-1Vu"/>
+                        <outlet property="labelActivityName" destination="yR0-ws-aiS" id="mfr-V1-coX"/>
+                        <outlet property="labelDateTime" destination="eTZ-h7-1pj" id="QcL-f6-QBw"/>
+                        <outlet property="textViewMessage" destination="1op-W5-OZD" id="Hr3-sV-BdX"/>
+                        <outlet property="viewTop" destination="aTA-yL-ilO" id="sHy-d6-Ihv"/>
+                        <outlet property="webView" destination="Ox5-NF-wwq" id="QV3-Ns-h9L"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G86-td-kke" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1180" y="-1107"/>
         </scene>
     </scenes>
     <resources>

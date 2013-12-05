@@ -230,6 +230,10 @@
                 self.labelNumberOfAgentNetwork.text = [NSString stringWithFormat:@"My Network (%li)",(long)self.numberOfAgentNetwork];
                 [self.labelNumberOfAgentNetwork sizeToFit];
                 
+                CGRect frame = self.activityIndicator.frame;
+                frame.origin.x = self.labelNumberOfAgentNetwork.frame.origin.x + self.labelNumberOfAgentNetwork.frame.size.width + 10.0f;
+                self.activityIndicator.frame = frame;
+                
                 ABridge_AgentNetworkPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                 
                 NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];

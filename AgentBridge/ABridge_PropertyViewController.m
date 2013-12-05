@@ -240,6 +240,10 @@
                 
                 [self.labelNumberOfProperty sizeToFit];
                 
+                CGRect frame = self.activityIndicator.frame;
+                frame.origin.x = self.labelNumberOfProperty.frame.origin.x + self.labelNumberOfProperty.frame.size.width + 10.0f;
+                self.activityIndicator.frame = frame;
+                
                 ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                 
                 NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];

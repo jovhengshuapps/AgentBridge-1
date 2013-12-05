@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		6E0D48FE183B66FD000EEC9D /* ABridge_AgentNetworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0D48FD183B66FC000EEC9D /* ABridge_AgentNetworkViewController.m */; };
 		6E0D4902183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0D4900183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m */; };
-		6E28ACB81835ED2D007E0C63 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB31835ED2D007E0C63 /* Activity.m */; };
 		6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB71835ED2D007E0C63 /* LoginDetails.m */; };
 		6E5AEF8D184C7C2800FE7B9E /* RequestAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */; };
 		6E5AEF90184C7C2900FE7B9E /* RequestNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */; };
 		6E5AEF93184CA8AF00FE7B9E /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF92184CA8AF00FE7B9E /* Buyer.m */; };
 		6E67D995184D864200568C5F /* ABridge_BuyerPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */; };
 		6E791B49183CD28200BB76B3 /* Referral.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E791B48183CD28200BB76B3 /* Referral.m */; };
+		6E9237F1184F0FC400FF2883 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9237F0184F0FC400FF2883 /* Activity.m */; };
 		6EA551041844525E00702E94 /* OpenSans-Regular-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EA551031844525E00702E94 /* OpenSans-Regular-webfont.ttf */; };
 		6EB32BDE1848328C00F291AF /* HTTPURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB32BDD1848328C00F291AF /* HTTPURLConnection.m */; };
 		6EB6E35A183F134C00161E75 /* PropertyImages.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB6E359183F134C00161E75 /* PropertyImages.m */; };
@@ -27,7 +27,6 @@
 		6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD7661834A71D00166D63 /* ABridge_ReferralPagesViewController.xib */; };
 		6EBBD76C1834B1FE00166D63 /* ABridge_ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD76B1834B1FE00166D63 /* ABridge_ActivityViewController.m */; };
 		6EBBD7701834B48A00166D63 /* ABridge_ActivityPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD76E1834B48A00166D63 /* ABridge_ActivityPagesViewController.m */; };
-		6EBBD7711834B48A00166D63 /* ABridge_ActivityPagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */; };
 		6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */; };
 		6EDF11B61845A762001BFC6B /* OpenSans-Bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EDF11B51845A762001BFC6B /* OpenSans-Bold-webfont.ttf */; };
 		6EDF11B91845D5FA001BFC6B /* AgentProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EDF11B81845D5FA001BFC6B /* AgentProfile.m */; };
@@ -81,20 +80,20 @@
 		6E0D48FD183B66FC000EEC9D /* ABridge_AgentNetworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentNetworkViewController.m; sourceTree = "<group>"; };
 		6E0D48FF183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AgentNetworkPagesViewController.h; sourceTree = "<group>"; };
 		6E0D4900183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentNetworkPagesViewController.m; sourceTree = "<group>"; };
-		6E28ACB21835ED2D007E0C63 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
-		6E28ACB31835ED2D007E0C63 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		6E28ACB61835ED2D007E0C63 /* LoginDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDetails.h; sourceTree = "<group>"; };
 		6E28ACB71835ED2D007E0C63 /* LoginDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginDetails.m; sourceTree = "<group>"; };
-		6E5AEF8B184C7C2700FE7B9E /* RequestAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RequestAccess.h; path = "CoreData Objects/RequestAccess.h"; sourceTree = "<group>"; };
-		6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RequestAccess.m; path = "CoreData Objects/RequestAccess.m"; sourceTree = "<group>"; };
-		6E5AEF8E184C7C2900FE7B9E /* RequestNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RequestNetwork.h; path = "CoreData Objects/RequestNetwork.h"; sourceTree = "<group>"; };
-		6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RequestNetwork.m; path = "CoreData Objects/RequestNetwork.m"; sourceTree = "<group>"; };
-		6E5AEF91184CA8AF00FE7B9E /* Buyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Buyer.h; path = "CoreData Objects/Buyer.h"; sourceTree = "<group>"; };
-		6E5AEF92184CA8AF00FE7B9E /* Buyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Buyer.m; path = "CoreData Objects/Buyer.m"; sourceTree = "<group>"; };
+		6E5AEF8B184C7C2700FE7B9E /* RequestAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestAccess.h; sourceTree = "<group>"; };
+		6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestAccess.m; sourceTree = "<group>"; };
+		6E5AEF8E184C7C2900FE7B9E /* RequestNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestNetwork.h; sourceTree = "<group>"; };
+		6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestNetwork.m; sourceTree = "<group>"; };
+		6E5AEF91184CA8AF00FE7B9E /* Buyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Buyer.h; sourceTree = "<group>"; };
+		6E5AEF92184CA8AF00FE7B9E /* Buyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Buyer.m; sourceTree = "<group>"; };
 		6E67D993184D864200568C5F /* ABridge_BuyerPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPagesViewController.h; sourceTree = "<group>"; };
 		6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerPagesViewController.m; sourceTree = "<group>"; };
 		6E791B47183CD28200BB76B3 /* Referral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Referral.h; sourceTree = "<group>"; };
 		6E791B48183CD28200BB76B3 /* Referral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Referral.m; sourceTree = "<group>"; };
+		6E9237EF184F0FC400FF2883 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
+		6E9237F0184F0FC400FF2883 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		6EA551031844525E00702E94 /* OpenSans-Regular-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular-webfont.ttf"; sourceTree = "<group>"; };
 		6EB32BDC1848328C00F291AF /* HTTPURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPURLConnection.h; sourceTree = "<group>"; };
 		6EB32BDD1848328C00F291AF /* HTTPURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPURLConnection.m; sourceTree = "<group>"; };
@@ -114,7 +113,6 @@
 		6EBBD76B1834B1FE00166D63 /* ABridge_ActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ActivityViewController.m; sourceTree = "<group>"; };
 		6EBBD76D1834B48A00166D63 /* ABridge_ActivityPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ActivityPagesViewController.h; sourceTree = "<group>"; };
 		6EBBD76E1834B48A00166D63 /* ABridge_ActivityPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ActivityPagesViewController.m; sourceTree = "<group>"; };
-		6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ABridge_ActivityPagesViewController.xib; sourceTree = "<group>"; };
 		6EBBD7731834CA2100166D63 /* ABridge_AgentProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AgentProfileViewController.h; sourceTree = "<group>"; };
 		6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentProfileViewController.m; sourceTree = "<group>"; };
 		6EDF11B51845A762001BFC6B /* OpenSans-Bold-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold-webfont.ttf"; sourceTree = "<group>"; };
@@ -216,6 +214,14 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
+				6E9237EF184F0FC400FF2883 /* Activity.h */,
+				6E9237F0184F0FC400FF2883 /* Activity.m */,
+				6E5AEF91184CA8AF00FE7B9E /* Buyer.h */,
+				6E5AEF92184CA8AF00FE7B9E /* Buyer.m */,
+				6E5AEF8E184C7C2900FE7B9E /* RequestNetwork.h */,
+				6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */,
+				6E5AEF8B184C7C2700FE7B9E /* RequestAccess.h */,
+				6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */,
 				6EFCFC7918474D67004EB0B7 /* Property.h */,
 				6EFCFC7A18474D67004EB0B7 /* Property.m */,
 				6EFCFC721847183C004EB0B7 /* Country.h */,
@@ -228,8 +234,6 @@
 				6EB6E359183F134C00161E75 /* PropertyImages.m */,
 				6E791B47183CD28200BB76B3 /* Referral.h */,
 				6E791B48183CD28200BB76B3 /* Referral.m */,
-				6E28ACB21835ED2D007E0C63 /* Activity.h */,
-				6E28ACB31835ED2D007E0C63 /* Activity.m */,
 				6E28ACB61835ED2D007E0C63 /* LoginDetails.h */,
 				6E28ACB71835ED2D007E0C63 /* LoginDetails.m */,
 			);
@@ -268,7 +272,6 @@
 				6EBBD76B1834B1FE00166D63 /* ABridge_ActivityViewController.m */,
 				6EBBD76D1834B48A00166D63 /* ABridge_ActivityPagesViewController.h */,
 				6EBBD76E1834B48A00166D63 /* ABridge_ActivityPagesViewController.m */,
-				6EBBD76F1834B48A00166D63 /* ABridge_ActivityPagesViewController.xib */,
 			);
 			name = "Activity Controller";
 			sourceTree = "<group>";
@@ -335,12 +338,6 @@
 				6EEF586918337E6B00C3214E /* Main.storyboard */,
 				6EEF5883183396AB00C3214E /* Constants.h */,
 				6EEF584818337E4000C3214E /* AgentBridge.xcdatamodeld */,
-				6E5AEF91184CA8AF00FE7B9E /* Buyer.h */,
-				6E5AEF92184CA8AF00FE7B9E /* Buyer.m */,
-				6E5AEF8E184C7C2900FE7B9E /* RequestNetwork.h */,
-				6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */,
-				6E5AEF8B184C7C2700FE7B9E /* RequestAccess.h */,
-				6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */,
 				6EBBD7541834823F00166D63 /* CoreData Objects */,
 				6EEF586E18337F4000C3214E /* ECSlidingViewController */,
 				6EEF583D18337E4000C3214E /* Supporting Files */,
@@ -541,7 +538,6 @@
 				6EDF11B61845A762001BFC6B /* OpenSans-Bold-webfont.ttf in Resources */,
 				6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */,
 				6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */,
-				6EBBD7711834B48A00166D63 /* ABridge_ActivityPagesViewController.xib in Resources */,
 				6EEF584118337E4000C3214E /* InfoPlist.strings in Resources */,
 				6EEF584C18337E4000C3214E /* Images.xcassets in Resources */,
 			);
@@ -578,6 +574,7 @@
 				6EFCFC7B18474D67004EB0B7 /* Property.m in Sources */,
 				6E0D48FE183B66FD000EEC9D /* ABridge_AgentNetworkViewController.m in Sources */,
 				6EB32BDE1848328C00F291AF /* HTTPURLConnection.m in Sources */,
+				6E9237F1184F0FC400FF2883 /* Activity.m in Sources */,
 				6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */,
 				6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */,
 				6E791B49183CD28200BB76B3 /* Referral.m in Sources */,
@@ -589,7 +586,6 @@
 				6EFCFC6D184703A8004EB0B7 /* ABridge_ContactInfoViewController.m in Sources */,
 				6EEF584318337E4000C3214E /* main.m in Sources */,
 				6EEF584A18337E4000C3214E /* AgentBridge.xcdatamodeld in Sources */,
-				6E28ACB81835ED2D007E0C63 /* Activity.m in Sources */,
 				6EFCFC641846F8AD004EB0B7 /* ABridge_AboutMeViewController.m in Sources */,
 				6EEF58741833808400C3214E /* ABridge_MenuViewController.m in Sources */,
 				6EEF584718337E4000C3214E /* ABridge_AppDelegate.m in Sources */,
@@ -730,7 +726,7 @@
 				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1761CBF8-909C-436E-AEE3-65640094A91B";
+				PROVISIONING_PROFILE = "A0B45F01-E255-48AC-A173-070ED095A2FF";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -748,7 +744,7 @@
 				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1761CBF8-909C-436E-AEE3-65640094A91B";
+				PROVISIONING_PROFILE = "A0B45F01-E255-48AC-A173-070ED095A2FF";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

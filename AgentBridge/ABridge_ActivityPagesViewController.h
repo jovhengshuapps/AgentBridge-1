@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Activity.h"
 
-@interface ABridge_ActivityPagesViewController : UIViewController
+@interface ABridge_ActivityPagesViewController : UIViewController <UIWebViewDelegate>
 
 @property (assign, nonatomic) NSInteger index;
+@property (strong, nonatomic) Activity *activityDetail;
 @end

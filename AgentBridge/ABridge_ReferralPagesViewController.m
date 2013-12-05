@@ -178,34 +178,34 @@
                 lastName = [[self.referralDetails.client_name componentsSeparatedByString:@" "] objectAtIndex:1];
             }
             
-            ABRecordSetValue(newPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)(firstName), &error);
-            ABRecordSetValue(newPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)(lastName), &error);
+            ABRecordSetValue(newPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)([self stringTestNull:firstName]), &error);
+            ABRecordSetValue(newPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)([self stringTestNull:lastName]), &error);
             
             ABPersonSetImageData (newPerson,(__bridge CFDataRef)([NSData dataWithContentsOfFile:@"blank-image.png"]),&error);
             
             ABRecordSetValue(newPerson, kABPersonOrganizationProperty, @"Agent Bridge", &error);
-            ABRecordSetValue(newPerson, kABPersonJobTitleProperty, CLIENT_INTENTION([self.referralDetails.client_intention integerValue]), &error);
+            ABRecordSetValue(newPerson, kABPersonJobTitleProperty, CLIENT_INTENTION([[self stringTestNull:self.referralDetails.client_intention] integerValue]), &error);
             
             //Client Number
             ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(self.referralDetails.client_number), kABPersonPhoneMobileLabel, NULL);
+            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)([self stringTestNull:self.referralDetails.client_number]), kABPersonPhoneMobileLabel, NULL);
             ABRecordSetValue(newPerson, kABPersonPhoneProperty, multiPhone,nil);
             CFRelease(multiPhone);
             
             //Client Email
             ABMutableMultiValueRef multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-            ABMultiValueAddValueAndLabel(multiEmail, (__bridge CFTypeRef)(self.referralDetails.client_email), kABWorkLabel, NULL);
+            ABMultiValueAddValueAndLabel(multiEmail, (__bridge CFTypeRef)([self stringTestNull:self.referralDetails.client_email]), kABWorkLabel, NULL);
             ABRecordSetValue(newPerson, kABPersonEmailProperty, multiEmail, &error);
             CFRelease(multiEmail);
             
             //Client Address
             ABMutableMultiValueRef multiAddress = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
             NSMutableDictionary *addressDictionary = [[NSMutableDictionary alloc] init];
-            [addressDictionary setObject:self.referralDetails.client_address_1 forKey:(NSString *) kABPersonAddressStreetKey];
-            [addressDictionary setObject:self.referralDetails.client_city forKey:(NSString *)kABPersonAddressCityKey];
-            [addressDictionary setObject:self.referralDetails.client_state_name forKey:(NSString *)kABPersonAddressStateKey];
-            [addressDictionary setObject:self.referralDetails.client_zip forKey:(NSString *)kABPersonAddressZIPKey];
-            [addressDictionary setObject:self.referralDetails.client_country_name forKey:(NSString *)kABPersonAddressCountryKey];
+            [addressDictionary setObject:[self stringTestNull:self.referralDetails.client_address_1] forKey:(NSString *) kABPersonAddressStreetKey];
+            [addressDictionary setObject:[self stringTestNull:self.referralDetails.client_city] forKey:(NSString *)kABPersonAddressCityKey];
+            [addressDictionary setObject:[self stringTestNull:self.referralDetails.client_state_name] forKey:(NSString *)kABPersonAddressStateKey];
+            [addressDictionary setObject:[self stringTestNull:self.referralDetails.client_zip] forKey:(NSString *)kABPersonAddressZIPKey];
+            [addressDictionary setObject:[self stringTestNull:self.referralDetails.client_country_name] forKey:(NSString *)kABPersonAddressCountryKey];
             ABMultiValueAddValueAndLabel(multiAddress, (__bridge CFTypeRef)(addressDictionary), kABWorkLabel, NULL);
             ABRecordSetValue(newPerson, kABPersonAddressProperty, multiAddress,&error);
             CFRelease(multiAddress);
@@ -234,5 +234,17 @@
             });
         }
     });
+}
+
+-(NSString*)stringTestNull:(NSString*)string {
+    if ([self isNull:string]) {
+        return @"";
+    }
+    return string;
+}
+
+
+-(BOOL)isNull:(id)value {
+    return ((NSNull*)value == nil || [value isEqualToString:@""]);
 }
 @end

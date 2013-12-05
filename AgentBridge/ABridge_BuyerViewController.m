@@ -77,25 +77,26 @@
                                executeFetchRequest:fetchRequest error:&error];
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     
     self.urlConnectionBuyer = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers.php" andParameters:parameters];
     
     if (self.urlConnectionBuyer) {
-//        NSLog(@"Connection Successful");
+        //        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionBuyer];
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
-//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+        //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
-//        NSLog(@"Connection Failed");
+        //        NSLog(@"Connection Failed");
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -239,6 +240,10 @@
                     self.labelNumberOfBuyers.text = [NSString stringWithFormat:@"My Buyers (%li)",(long)self.numberOfBuyer];
                     
                     [self.labelNumberOfBuyers sizeToFit];
+                    CGRect frame = self.activityIndicator.frame;
+                    frame.origin.x = self.labelNumberOfBuyers.frame.origin.x + self.labelNumberOfBuyers.frame.size.width + 10.0f;
+                    self.activityIndicator.frame = frame;
+                    
                     
                     ABridge_BuyerPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                     
@@ -290,5 +295,26 @@
         ((ABridge_BuyerPopsViewController*) segue.destinationViewController).is_saved = self.saved_pressed;
         ((ABridge_BuyerPopsViewController*) segue.destinationViewController).buyer_id = self.buyer_id_pops;
     }
+}
+
+-(void) scrollToBuyer:(NSString*)buyer_id {
+    
+//    NSLog(@"array:%@",self.arrayOfBuyer);
+    
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"buyer_id == %@", buyer_id];
+        NSArray *result = [self fetchObjectsWithEntityName:@"Buyer" andPredicate:predicate];
+        if ([result count]) {
+            Buyer *buyer = (Buyer*)[result firstObject];
+            NSInteger index = [self.arrayOfBuyer indexOfObject:buyer];
+            
+            ABridge_BuyerPagesViewController *initialViewController = [self viewControllerAtIndex:index];
+            
+//            NSLog(@"index:%i",index);
+            
+            NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+            
+            [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+            
+        }
 }
 @end

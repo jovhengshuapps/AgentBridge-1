@@ -298,7 +298,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if ([indexPath row] == [self.arrayKTableKeys indexOfObject:@"mobile"]) {
+    if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] rangeOfString:@"mobile"].location != NSNotFound) {
         [self callMobileNumber:nil];
     }
     else if ([indexPath row] == [self.arrayKTableKeys indexOfObject:@"email"]) {
@@ -455,7 +455,7 @@
     [mobileNumber replaceOccurrencesOfString:@"(" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@")" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@" " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
-    //    NSLog(@"number:%@",mobileNumber);
+//    NSLog(@"number:[%@]",mobileNumber);
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",mobileNumber]];
     [[UIApplication sharedApplication] openURL:URL];
 }

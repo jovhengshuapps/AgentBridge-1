@@ -78,10 +78,10 @@
         self.buttonSaved.hidden = [self isNull:numberSaved];
         self.buttonNew.hidden = [self isNull:numberNew];
         if (self.buttonSaved.hidden == NO) {
-            [self.buttonSaved setTitle:[NSString stringWithFormat:@"Saved(%@)",numberSaved] forState:UIControlStateNormal];
+            [self.buttonSaved setTitle:[NSString stringWithFormat:@"Saved POPs™(%@)",numberSaved] forState:UIControlStateNormal];
         }
         if (self.buttonNew.hidden == NO) {
-            [self.buttonNew setTitle:[NSString stringWithFormat:@"New(%@)",numberNew] forState:UIControlStateNormal];
+            [self.buttonNew setTitle:[NSString stringWithFormat:@"New POPs™(%@)",numberNew] forState:UIControlStateNormal];
         }
     }
     

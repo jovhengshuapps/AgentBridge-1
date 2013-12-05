@@ -8,6 +8,6 @@
 
 #import "ABridge_ParentViewController.h"
 
-@interface ABridge_BrokerageViewController : ABridge_ParentViewController<UITextFieldDelegate>
+@interface ABridge_BrokerageViewController : ABridge_ParentViewController<UITextFieldDelegate, NSURLConnectionDelegate, UIScrollViewDelegate>
 
 @end

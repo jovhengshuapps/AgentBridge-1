@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Activity" representedClassName="Activity" syncable="YES">
-        <attribute name="activity_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="activity_type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="buyer_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="has_multiples" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="other_user_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="pkId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="user_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="activities_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="activity_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="activity_type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buyer_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buyer_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="listing_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="other_user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="other_user_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pops_user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pops_user_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="property_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="AgentProfile" representedClassName="AgentProfile" syncable="YES">
         <attribute name="about" optional="YES" attributeType="String" syncable="YES"/>

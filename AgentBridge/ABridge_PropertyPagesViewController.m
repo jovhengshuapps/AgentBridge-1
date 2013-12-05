@@ -303,15 +303,15 @@
         remainingDays += 1;
         
         if (remainingDays == 1) {
-            self.labelExpiry.text = @"Expiry of 1 day";
+            self.labelExpiry.text = @"Expires in 1 day";
         }
         else {
-            self.labelExpiry.text = [NSString stringWithFormat:@"Expiry of %li days",(long)remainingDays];
+            self.labelExpiry.text = [NSString stringWithFormat:@"Expires in %li days",(long)remainingDays];
         }
     }
     else {
         
-        self.labelExpiry.text = [NSString stringWithFormat:@"Expired at %@",self.propertyDetails.date_expired];
+        self.labelExpiry.text = [NSString stringWithFormat:@"Expired"];
     }
 }
 
