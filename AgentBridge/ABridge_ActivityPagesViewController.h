@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Activity.h"
 
-@interface ABridge_ActivityPagesViewController : UIViewController <UIWebViewDelegate>
+@interface ABridge_ActivityPagesViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate>
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) Activity *activityDetail;

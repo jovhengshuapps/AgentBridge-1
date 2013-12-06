@@ -72,28 +72,19 @@
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
-    
-    self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity.php" andParameters:parameters];
-    
-    if (self.urlConnectionActivity) {
-        [self addURLConnection:self.urlConnectionActivity];
-        //        NSLog(@"Connection Successful");
-        
-        //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
-        
-        self.activityIndicator.hidden = NO;
-        [self.activityIndicator startAnimating];
-    }
-    else {
-        //        NSLog(@"Connection Failed");
+    if ([fetchedObjects count] > 0) {
+        [self reloadData];
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    if (self.arrayOfActivity == nil) {
+        [self reloadData];
+    }
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -208,7 +199,7 @@
                 
                 [activity setValuesForKeysWithDictionary:entry];
                 
-                
+//                NSLog(@"activity:%@",activity);
                 NSError *error = nil;
                 if (![context save:&error]) {
                     NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
@@ -276,5 +267,36 @@
     // Do something with responseData
 }
 
+- (void) reloadData {
+    [self dismissOverlay];
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context
+                               executeFetchRequest:fetchRequest error:&error];
+    
+    self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
+//    NSLog(@"parameters:%@",parameters);
+    self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity.php" andParameters:parameters];
+    
+    if (self.urlConnectionActivity) {
+        [self addURLConnection:self.urlConnectionActivity];
+        //        NSLog(@"Connection Successful");
+        
+        //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+        
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
+    }
+    else {
+        //        NSLog(@"Connection Failed");
+    }
+}
 
 @end

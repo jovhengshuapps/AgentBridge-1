@@ -15,6 +15,8 @@
 @implementation ABridge_ParentViewController
 @synthesize arrayOfURLConnection;
 @synthesize imageViewTopBar;
+@synthesize scrollViewReload;
+@synthesize labelPull;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,6 +36,9 @@
     self.view.layer.shadowRadius = 10.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
     
+    self.scrollViewReload.contentSize = CGSizeMake(320.0f, self.scrollViewReload.frame.size.height - 45.0f);
+    self.labelPull.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPull.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"head_strip"]];
     
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[ABridge_MenuViewController class]]) {
         self.slidingViewController.underLeftViewController  = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
@@ -168,12 +173,35 @@
     self.viewOverlay = nil;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y < -30.0f) {
-        NSLog(@"Release to Reload");
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (scrollView.contentOffset.y < -25.0f) {
+        NSLog(@"Release to Refresh");
+        [self reloadData];
     }
     else {
-        NSLog(@"Pull down to Reload");
+        NSLog(@"Pull down to Refresh");
     }
+//    [scrollView setContentOffset:CGPointMake(0.0f, 0.0f) animated:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    NSLog(@"y:%f",(100.0f - (ABS(scrollView.contentOffset.y) * 5.0f))/100.0f);
+    if (scrollView.contentOffset.y < 0.0f) {
+        
+//        self.viewOverlay.alpha = (100.0f - (scrollView.contentOffset.y * 5.0f))/100.0f;
+        CGRect frame = self.labelPull.frame;
+        frame.origin.y = 32.0f + ABS(scrollView.contentOffset.y * 1.0f);
+        self.labelPull.frame = frame;
+        if (scrollView.contentOffset.y < -25.0f) {
+            self.labelPull.text = @"Release to Refresh";
+        }
+        else {
+            self.labelPull.text = @"Pull down to Refresh";
+        }
+    }
+}
+
+- (void) reloadData {
+    
 }
 @end

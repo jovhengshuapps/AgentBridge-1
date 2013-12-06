@@ -495,7 +495,7 @@
                         self.labelExpiry.text = @"";
                         self.labelExpiry.hidden = YES;
                         self.viewForDescription.hidden = NO;
-                        self.labelDescription.text = @"";
+                        self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
                         [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
                     }
                 }
@@ -560,7 +560,7 @@
                     self.labelExpiry.text = @"";
                     self.labelExpiry.hidden = YES;
                     self.viewForDescription.hidden = NO;
-                    self.labelDescription.text = @"";
+                    self.labelDescription.text = @"This POPs™ is restricted to private";
                     [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
                 }
                 

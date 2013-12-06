@@ -6,6 +6,7 @@
         <attribute name="activity_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="buyer_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="buyer_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="client_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -15,6 +16,15 @@
         <attribute name="pops_user_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pops_user_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="property_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referral_buyer_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referral_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referral_fee" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referral_from_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referral_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referral_response" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referral_status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referral_to_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="setting" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="AgentProfile" representedClassName="AgentProfile" syncable="YES">

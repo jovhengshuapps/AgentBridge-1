@@ -63,6 +63,9 @@
     
     self.shouldAddPanGestureRecognizerToTopViewSnapshot = NO;
     
+    
+    
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -97,18 +100,8 @@
         NSEntityDescription *entityProfile = [NSEntityDescription entityForName:@"AgentProfile" inManagedObjectContext:context];
         [fetchRequestProfile setEntity:entityProfile];
         
-//        LoginDetails *login = (LoginDetails*)[fetchedObjects firstObject];
-//        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == %@", login.user_id];
-//        [fetchRequestProfile setPredicate:predicate];
-        
-//        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"(user_id == '%@')", [[fetchedObjects firstObject] valueForKey:@"user_id"]];
-//        [fetchRequestProfile setPredicate:predicate];
-
-        
         NSError *error = nil;
         NSArray *fetchedProfile = [context executeFetchRequest:fetchRequestProfile error:&error];
-        
-//        NSLog(@"%@profile:%@",[[fetchedObjects firstObject] valueForKey:@"user_id"],fetchedProfile);
         
         BOOL found = NO;
         

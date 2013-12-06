@@ -20,12 +20,14 @@
 @property (strong, nonatomic) NSMutableArray *arrayOfURLConnection;
 @property (strong, nonatomic) IBOutlet UIView *imageViewTopBar;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewReload;
+@property (weak, nonatomic) IBOutlet UILabel *labelPull;
 
 - (IBAction)revealMenu:(id)sender;
 - (IBAction)revealSearch:(id)sender;
 - (IBAction)goBackToRoot:(id)sender;
 - (void) showOverlayWithMessage:(NSString*) message withIndicator:(BOOL) with_indicator;
 - (void) dismissOverlay;
+- (void) reloadData;
 
 - (NSURLConnection*)urlConnectionWithURLString:(NSString*)urlString andParameters:(NSString*)parameters;
 - (void)addURLConnection:(NSURLConnection*)urlConnection;

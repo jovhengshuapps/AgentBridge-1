@@ -15,7 +15,6 @@
 		6E5AEF93184CA8AF00FE7B9E /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF92184CA8AF00FE7B9E /* Buyer.m */; };
 		6E67D995184D864200568C5F /* ABridge_BuyerPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */; };
 		6E791B49183CD28200BB76B3 /* Referral.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E791B48183CD28200BB76B3 /* Referral.m */; };
-		6E9237F1184F0FC400FF2883 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9237F0184F0FC400FF2883 /* Activity.m */; };
 		6EA551041844525E00702E94 /* OpenSans-Regular-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EA551031844525E00702E94 /* OpenSans-Regular-webfont.ttf */; };
 		6EB32BDE1848328C00F291AF /* HTTPURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB32BDD1848328C00F291AF /* HTTPURLConnection.m */; };
 		6EB6E35A183F134C00161E75 /* PropertyImages.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EB6E359183F134C00161E75 /* PropertyImages.m */; };
@@ -53,6 +52,7 @@
 		6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */; };
 		6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF587E1833843000C3214E /* ABridge_PropertyViewController.m */; };
 		6EEF58821833857B00C3214E /* ABridge_LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF58811833857B00C3214E /* ABridge_LoginViewController.m */; };
+		6EF61754185054B900DC37F5 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF61753185054B900DC37F5 /* Activity.m */; };
 		6EF741181845FE910021603D /* ABridge_BuyerPopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF741171845FE910021603D /* ABridge_BuyerPopsViewController.m */; };
 		6EFCFC611846F053004EB0B7 /* ABridge_AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC601846F053004EB0B7 /* ABridge_AccountSettingsViewController.m */; };
 		6EFCFC641846F8AD004EB0B7 /* ABridge_AboutMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC631846F8AD004EB0B7 /* ABridge_AboutMeViewController.m */; };
@@ -92,8 +92,6 @@
 		6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerPagesViewController.m; sourceTree = "<group>"; };
 		6E791B47183CD28200BB76B3 /* Referral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Referral.h; sourceTree = "<group>"; };
 		6E791B48183CD28200BB76B3 /* Referral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Referral.m; sourceTree = "<group>"; };
-		6E9237EF184F0FC400FF2883 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
-		6E9237F0184F0FC400FF2883 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		6EA551031844525E00702E94 /* OpenSans-Regular-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular-webfont.ttf"; sourceTree = "<group>"; };
 		6EB32BDC1848328C00F291AF /* HTTPURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPURLConnection.h; sourceTree = "<group>"; };
 		6EB32BDD1848328C00F291AF /* HTTPURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPURLConnection.m; sourceTree = "<group>"; };
@@ -152,6 +150,8 @@
 		6EEF58801833857B00C3214E /* ABridge_LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_LoginViewController.h; sourceTree = "<group>"; };
 		6EEF58811833857B00C3214E /* ABridge_LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_LoginViewController.m; sourceTree = "<group>"; };
 		6EEF5883183396AB00C3214E /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		6EF61752185054B900DC37F5 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
+		6EF61753185054B900DC37F5 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		6EF741161845FE910021603D /* ABridge_BuyerPopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPopsViewController.h; sourceTree = "<group>"; };
 		6EF741171845FE910021603D /* ABridge_BuyerPopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerPopsViewController.m; sourceTree = "<group>"; };
 		6EFCFC5F1846F053004EB0B7 /* ABridge_AccountSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AccountSettingsViewController.h; sourceTree = "<group>"; };
@@ -214,8 +214,8 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
-				6E9237EF184F0FC400FF2883 /* Activity.h */,
-				6E9237F0184F0FC400FF2883 /* Activity.m */,
+				6EF61752185054B900DC37F5 /* Activity.h */,
+				6EF61753185054B900DC37F5 /* Activity.m */,
 				6E5AEF91184CA8AF00FE7B9E /* Buyer.h */,
 				6E5AEF92184CA8AF00FE7B9E /* Buyer.m */,
 				6E5AEF8E184C7C2900FE7B9E /* RequestNetwork.h */,
@@ -574,7 +574,7 @@
 				6EFCFC7B18474D67004EB0B7 /* Property.m in Sources */,
 				6E0D48FE183B66FD000EEC9D /* ABridge_AgentNetworkViewController.m in Sources */,
 				6EB32BDE1848328C00F291AF /* HTTPURLConnection.m in Sources */,
-				6E9237F1184F0FC400FF2883 /* Activity.m in Sources */,
+				6EF61754185054B900DC37F5 /* Activity.m in Sources */,
 				6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */,
 				6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */,
 				6E791B49183CD28200BB76B3 /* Referral.m in Sources */,

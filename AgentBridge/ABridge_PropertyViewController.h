@@ -13,4 +13,6 @@
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 
+-(void) scrollToPOPs:(NSString*)listing_id;
+
 @end

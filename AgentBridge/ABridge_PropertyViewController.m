@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) LoginDetails *loginDetail;
 @property (strong, nonatomic) NSMutableArray *arrayOfProperty;
+@property (strong, nonatomic) NSString *scrollToListingId;
 @end
 
 @implementation ABridge_PropertyViewController
@@ -31,6 +32,7 @@
 @synthesize dataReceived;
 @synthesize loginDetail;
 @synthesize arrayOfProperty;
+@synthesize scrollToListingId;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -77,25 +79,25 @@
                                executeFetchRequest:fetchRequest error:&error];
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+    
+    [self loadProperty];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
+- (void) loadProperty {
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     
     self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php" andParameters:parameters];
     
     if (self.urlConnectionProperty) {
-//        NSLog(@"Connection Successful");
+        //        NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProperty];
-//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+        //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
         
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
     }
     else {
-//        NSLog(@"Connection Failed");
+        //        NSLog(@"Connection Failed");
     }
 }
 
@@ -254,6 +256,11 @@
                 [[self viewForPages] addSubview:[self.pageController view]];
                 [self.pageController didMoveToParentViewController:self];
                 self.buttonSave.hidden = NO;
+                
+                if(self.scrollToListingId == nil) {
+                    [self scrollToPOPs:@"load"];
+                }
+                
             });
             
         });
@@ -301,6 +308,32 @@
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     if (scrollView.zoomScale < 0.75) {
         self.scrollViewZoom.hidden = YES;
+    }
+}
+
+-(void) scrollToPOPs:(NSString*)listing_id {
+    self.scrollToListingId = listing_id;
+    
+    if (self.arrayOfProperty == nil) {
+        [self loadProperty];
+    }
+    
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"listing_id == %@", listing_id];
+    NSArray *result = [self fetchObjectsWithEntityName:@"Property" andPredicate:predicate];
+    if ([result count]) {
+        Property *property = (Property*)[result firstObject];
+        NSInteger index = 0;
+        
+        if (![listing_id isEqualToString:@"load"]) {
+            index = [self.arrayOfProperty indexOfObject:property];
+        }
+        
+        ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:index];
+        
+        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+        
+        [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+        
     }
 }
 
