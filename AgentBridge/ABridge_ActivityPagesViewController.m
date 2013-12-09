@@ -94,19 +94,21 @@
                                executeFetchRequest:fetchRequest error:&error];
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
-    if ([self.loginDetail.user_id integerValue] != [self.activityDetail.pops_user_id integerValue]) {
-        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id];
-        
-        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php"];
-        [urlString_ appendString:parameters];
-        NSLog(@"url:%@",urlString_);
-        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
-        
-        self.urlConnectionRequestNetwork = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
-        
-        if (self.urlConnectionRequestNetwork) {
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    if ([self.activityDetail.activity_type integerValue] == 25) {
+        if ([self.loginDetail.user_id integerValue] != [self.activityDetail.pops_user_id integerValue]) {
+            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id];
+            
+            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php"];
+            [urlString_ appendString:parameters];
+            //        NSLog(@"url:%@",urlString_);
+            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+            
+            self.urlConnectionRequestNetwork = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+            
+            if (self.urlConnectionRequestNetwork) {
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+            }
         }
     }
     
@@ -120,17 +122,23 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.labelActivityName.text = @"Buyer Match";
                 self.labelDateTime.text = self.activityDetail.date;
+                self.viewForDescription.hidden = NO;
+                self.labelDescription.text = @"";
+                [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
             });
             
             if ([self.activityDetail.other_user_id integerValue] == [self.activityDetail.user_id integerValue]) {
                 
                 NSString *pops_link = [NSString stringWithFormat:@"<a href='http://pops/%@'>%@</a>",self.activityDetail.listing_id, self.activityDetail.property_name];
                 
+                NSLog(@"pops:%@",self.activityDetail.listing_id);
+                
                 message = [NSString stringWithFormat:@"Your POPs™, %@, is a match to your buyer, %@", pops_link, buyer_name];
             }
             else {
                 message = [NSString stringWithFormat:@"%@ POPs™, %@, is a match to your buyer, %@",self.activityDetail.other_user_name, self.activityDetail.property_name, buyer_name];
             }
+            
         }
         else if ([self.activityDetail.activity_type integerValue] == 11) {
             
@@ -146,22 +154,22 @@
                     message = [NSString stringWithFormat:@"%@ is now under contract.",buyer_name];
                     break;
                 case 4:
-                    message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee. ", self.activityDetail.referral_to_id,buyer_name];
+                    message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee. ", self.activityDetail.user_name,buyer_name];
                     break;
                 case 5:
-                    message = [NSString stringWithFormat:@"[%@] has declined the referral. ", self.activityDetail.referral_to_id];
+                    message = [NSString stringWithFormat:@"%@ has declined the referral. ", self.activityDetail.user_name];
                     break;
                 case 6:
-                    message = [NSString stringWithFormat:@"[%@] needs your help on referral %@ ", self.activityDetail.referral_to_id, buyer_name];
+                    message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", self.activityDetail.user_name, buyer_name];
                     break;
                 case 7:
-                    message = [NSString stringWithFormat:@"You have sent a referral to %@ with a %@ referral fee. ", self.activityDetail.referral_to_id, self.activityDetail.referral_fee];
+                    message = [NSString stringWithFormat:@"You have sent a referral to %@ with a %@ referral fee. ", self.activityDetail.user_name, self.activityDetail.referral_fee];
                     break;
                 case 8:
-                    message = [NSString stringWithFormat:@"%@ has now accepted your referral of %@ fee for client %@.\n\nSign the referral contract. ", self.activityDetail.referral_to_id, self.activityDetail.referral_fee, buyer_name];
+                    message = [NSString stringWithFormat:@"%@ has now accepted your referral of %@ fee for client %@.\n\nSign the referral contract. ", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_name];
                     break;
                 case 9:
-                    message = [NSString stringWithFormat:@"Congratulations. Referral %@ is now complete. ", self.activityDetail.referral_to_id];
+                    message = [NSString stringWithFormat:@"Congratulations. Referral %@ is now complete. ", self.activityDetail.user_name];
                     break;
                     
                     
@@ -177,19 +185,19 @@
             [self.webView loadHTMLString:htmlString baseURL:nil];
         });
         
-        if ([self.activityDetail.activity_type integerValue] == 25) {
+//        if ([self.activityDetail.activity_type integerValue] == 25) {
             if (self.activityDetail.image_data == nil) {
                 self.activityDetail.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.activityDetail.image]];
             }
-        }
+//        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            if ([self.activityDetail.activity_type integerValue] == 25) {
+//            if ([self.activityDetail.activity_type integerValue] == 25) {
                 if (self.activityDetail.image_data != nil) {
                     self.imagePicture.image = [UIImage imageWithData:self.activityDetail.image_data];
                 }
-            }
+//            }
         });
     });
     
@@ -227,6 +235,7 @@
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
+    [self.buttonDescription setTitle:@"" forState:UIControlStateNormal];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.dataReceived = nil;
@@ -291,7 +300,7 @@
                         
                         NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
                         [urlString_ appendString:parameters];
-                        NSLog(@"url:%@",urlString_);
+//                        NSLog(@"url:%@",urlString_);
                         NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
                         
                         self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
@@ -307,6 +316,11 @@
                     self.viewForDescription.hidden = NO;
                     self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
                     [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                }
+                else {
+                    self.viewForDescription.hidden = NO;
+                    self.labelDescription.text = @"";
+                    [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
                 }
             }
             else {
@@ -361,6 +375,10 @@
                 
                 if ([access.permission boolValue] == YES) {
 //                    [self getPriceText];
+                    
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = @"";
+                        [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
                 }
                 else if ([access.permission boolValue] == NO){
                     self.viewForDescription.hidden = NO;

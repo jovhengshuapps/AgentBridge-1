@@ -1479,6 +1479,7 @@
                     <navigationItem key="navigationItem" id="4yk-RK-soo"/>
                     <connections>
                         <outlet property="activityIndicator" destination="v92-ah-za4" id="IWx-kS-A6K"/>
+                        <outlet property="buttonSave" destination="wgb-Dy-b09" id="PgG-Wf-AFy"/>
                         <outlet property="imageView" destination="gfV-zn-Uv9" id="gf7-DF-bd2"/>
                         <outlet property="labelNumberOfProperty" destination="T8e-Z3-Af2" id="6ct-0r-wZq"/>
                         <outlet property="scrollViewZoom" destination="Otr-Rb-7cP" id="cqw-RM-pSJ"/>

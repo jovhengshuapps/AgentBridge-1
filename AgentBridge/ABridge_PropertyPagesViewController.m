@@ -72,7 +72,7 @@
                                executeFetchRequest:fetchRequest error:&error];
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
-    
+    [self.delegate hideSaveButton:NO];
     
     self.labelZip.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
@@ -497,6 +497,8 @@
                         self.viewForDescription.hidden = NO;
                         self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
                         [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                        
+                        [self.delegate hideSaveButton:YES];
                     }
                 }
                 else {
@@ -505,6 +507,8 @@
                     self.viewForDescription.hidden = NO;
                     self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
                     [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                    
+                    [self.delegate hideSaveButton:YES];
                 }
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -519,6 +523,8 @@
             [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+            
+            [self.delegate hideSaveButton:YES];
         }
         
     }
@@ -562,6 +568,8 @@
                     self.viewForDescription.hidden = NO;
                     self.labelDescription.text = @"This POPs™ is restricted to private";
                     [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                    
+                    [self.delegate hideSaveButton:YES];
                 }
                 
             }
@@ -571,6 +579,8 @@
                 self.viewForDescription.hidden = NO;
                 self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
                 [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                
+                [self.delegate hideSaveButton:YES];
             }
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -584,6 +594,8 @@
             [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+            
+            [self.delegate hideSaveButton:YES];
         }
     }
     // Do something with responseData

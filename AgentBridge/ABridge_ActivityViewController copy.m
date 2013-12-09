@@ -218,173 +218,73 @@
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
         
         if ([[json objectForKey:@"data"] count]) {
-//            NSLog(@"total:%i",[[json objectForKey:@"data"] count]);
+            NSLog(@"total:%i",[[json objectForKey:@"data"] count]);
             for (NSDictionary *entry in [json objectForKey:@"data"]) {
                 if ([[entry valueForKey:@"activity_type"] integerValue] == 25) {
                     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entry valueForKey:@"activities_id"]];
-//                    NSLog(@"(%i)parameters:%@",[[json objectForKey:@"data"] indexOfObject:entry],parameters);
+                    //    NSLog(@"parameters:%@",parameters);
                     NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-25.php%@",parameters];
+                    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+//                    NSLog(@"url:%@",urlString);
+                    HTTPURLConnection *HTTP_urlConnectionActivity25 = [[HTTPURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
                     
+                    if (self.arrayOfURL_25 == nil) {
+                        self.arrayOfURL_25 = [[NSMutableArray alloc] init];
+                    }
                     
-                    self.activityIndicator.hidden = NO;
-                    [self.activityIndicator startAnimating];
-                    __block NSError *errorData = nil;
-                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-                    [request setCompletionBlock:^{
-                        // Use when fetching text data
-//                        NSString *responseString = [request responseString];
-                        // Use when fetching binary data
-                        NSData *responseData = [request responseData];
-                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-                        if ([[json objectForKey:@"data"] count]) {
-                            
-//                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-                                //                for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                                NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
-                                Activity *activity = nil;
-                                
-                                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"activities_id == %@", [entry objectForKey:@"activities_id"]];
-                                NSArray *result = [self fetchObjectsWithEntityName:@"Activity" andPredicate:predicate];
-                                if ([result count]) {
-                                    activity = (Activity*)[result firstObject];
-                                }
-                                else {
-                                    activity = [NSEntityDescription insertNewObjectForEntityForName: @"Activity" inManagedObjectContext: context];
-                                }
-                                
-                                [activity setValuesForKeysWithDictionary:entry];
-                                
-                                //                NSLog(@"activity:%@",activity);
-                                NSError *error = nil;
-                                if (![context save:&error]) {
-                                    NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
-                                }
-                                else {
-                                    if (self.arrayOfActivity == nil) {
-                                        self.arrayOfActivity = [[NSMutableArray alloc] init];
-                                    }
-                                    
-                                    [self.arrayOfActivity addObject:activity];
-                                }
-                                
-                                //                                NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
-                                
-//                                dispatch_async(dispatch_get_main_queue(), ^{
-                                
-                                    self.numberOfActivity = [self.arrayOfActivity count];
-                                    self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
-                                    [self.labelNumberOfActivity sizeToFit];
-                                    
-                                    CGRect frame = self.activityIndicator.frame;
-                                    frame.origin.x = self.labelNumberOfActivity.frame.origin.x + self.labelNumberOfActivity.frame.size.width + 10.0f;
-                                    self.activityIndicator.frame = frame;
-                                    
-                                    if (self.pageController == nil) {
-                                        [self reloadPages];
-                                    }
-//                                });
-//                            });
-                        }
-                        
-                        [self.activityIndicator stopAnimating];
-                        self.activityIndicator.hidden = YES;
-
-                    }];
-                    [request setFailedBlock:^{
-                        NSError *error = [request error];
-                        NSLog(@"25 error:%@",error);
-                        [self.activityIndicator stopAnimating];
-                        self.activityIndicator.hidden = YES;
-                    }];
-                    [request startAsynchronous];
-
-                    
+                    [self.arrayOfURL_25 addObject:HTTP_urlConnectionActivity25];
                     
                 }
                 else if ([[entry valueForKey:@"activity_type"] integerValue] == 11) {
                     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entry valueForKey:@"activities_id"]];
-//                    NSLog(@"[%i]parameters:%@",[[json objectForKey:@"data"] indexOfObject:entry],parameters);
+                    //    NSLog(@"parameters:%@",parameters);
                     
                     NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-11.php%@",parameters];
+                    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+//                    NSLog(@"url 11:%@",urlString);
                     
-                    self.activityIndicator.hidden = NO;
-                    [self.activityIndicator startAnimating];
-                    __block NSError *errorData = nil;
-                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-                    [request setCompletionBlock:^{
-                        // Use when fetching text data
-                        //                        NSString *responseString = [request responseString];
-                        // Use when fetching binary data
-                        NSData *responseData = [request responseData];
-                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-                        if ([[json objectForKey:@"data"] count]) {
-                            
-//                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-                                //                for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                                NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
-                                Activity *activity = nil;
-                                
-                                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"activities_id == %@", [entry objectForKey:@"activities_id"]];
-                                NSArray *result = [self fetchObjectsWithEntityName:@"Activity" andPredicate:predicate];
-                                if ([result count]) {
-                                    activity = (Activity*)[result firstObject];
-                                }
-                                else {
-                                    activity = [NSEntityDescription insertNewObjectForEntityForName: @"Activity" inManagedObjectContext: context];
-                                }
-                                
-                                [activity setValuesForKeysWithDictionary:entry];
-                                
-                                //                NSLog(@"activity:%@",activity);
-                                NSError *error = nil;
-                                if (![context save:&error]) {
-                                    NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
-                                }
-                                else {
-                                    if (self.arrayOfActivity == nil) {
-                                        self.arrayOfActivity = [[NSMutableArray alloc] init];
-                                    }
-                                    
-                                    [self.arrayOfActivity addObject:activity];
-                                }
-                                
-//                                NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
-                                
-//                                dispatch_async(dispatch_get_main_queue(), ^{
-                                
-                                    self.numberOfActivity = [self.arrayOfActivity count];
-                                    self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
-                                    [self.labelNumberOfActivity sizeToFit];
-                                    
-                                    CGRect frame = self.activityIndicator.frame;
-                                    frame.origin.x = self.labelNumberOfActivity.frame.origin.x + self.labelNumberOfActivity.frame.size.width + 10.0f;
-                                    self.activityIndicator.frame = frame;
-                                    
-                                    if (self.pageController == nil) {
-                                        [self reloadPages];
-                                    }
-//                                });
-//                            });
-                        }
-                        
-                        
-                        [self.activityIndicator stopAnimating];
-                        self.activityIndicator.hidden = YES;
-                    }];
-                    [request setFailedBlock:^{
-                        NSError *error = [request error];
-                        NSLog(@"11 error:%@",error);
-                        [self.activityIndicator stopAnimating];
-                        self.activityIndicator.hidden = YES;
-                    }];
-                    [request startAsynchronous];
+                    HTTPURLConnection *HTTP_urlConnectionActivity11 = [[HTTPURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
                     
+                    if (self.arrayOfURL_11 == nil) {
+                        self.arrayOfURL_11 = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [self.arrayOfURL_11 addObject:HTTP_urlConnectionActivity11];
                     
                 }
             }
             
+            NSLog(@"25_:%i, 11_:%i",[self.arrayOfURL_25 count], [self.arrayOfURL_11 count]);
+            
+            self.index_25 = [self.arrayOfURL_25 count]-1;
+            self.urlConnectionActivity25 = [self.arrayOfURL_25 objectAtIndex:self.index_25];
+            
+            if (self.urlConnectionActivity25) {
+                [self.arrayOfURL_25 removeObjectAtIndex:self.index_25];
+                self.index_25--;
+                [self addURLConnection:self.urlConnectionActivity25];
+                //                        NSLog(@"Connection Successful");
+                
+                //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+                
+                self.activityIndicator.hidden = NO;
+                [self.activityIndicator startAnimating];
+            }
+            
+            self.index_11 = [self.arrayOfURL_11 count]-1;
+            self.urlConnectionActivity11 = [self.arrayOfURL_11 objectAtIndex:self.index_11];
+            
+            if (self.urlConnectionActivity11) {
+                [self.arrayOfURL_11 removeObjectAtIndex:self.index_11];
+                self.index_11--;
+                [self addURLConnection:self.urlConnectionActivity11];
+                //                         NSLog(@"Connection Successful");
+                
+                //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+                
+                self.activityIndicator.hidden = NO;
+                [self.activityIndicator startAnimating];
+            }
         }
         else {
             [self.pageController.view removeFromSuperview];
@@ -401,6 +301,155 @@
             [self showOverlayWithMessage:@"You currently don't have any Activities." withIndicator:NO];
         }
     }
+    else if(connection == self.urlConnectionActivity25) {
+        NSError *error = nil;
+        
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.urlConnectionActivity25.responseData options:NSJSONReadingAllowFragments error:&error];
+        
+        if ([[json objectForKey:@"data"] count]) {
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+                    Activity *activity = nil;
+                    
+                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"activities_id == %@", [entry objectForKey:@"activities_id"]];
+                    NSArray *result = [self fetchObjectsWithEntityName:@"Activity" andPredicate:predicate];
+                    if ([result count]) {
+                        activity = (Activity*)[result firstObject];
+                    }
+                    else {
+                        activity = [NSEntityDescription insertNewObjectForEntityForName: @"Activity" inManagedObjectContext: context];
+                    }
+                    
+                    [activity setValuesForKeysWithDictionary:entry];
+                    
+                    //                NSLog(@"activity:%@",activity);
+                    NSError *error = nil;
+                    if (![context save:&error]) {
+                        NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
+                    }
+                    else {
+                        if (self.arrayOfActivity == nil) {
+                            self.arrayOfActivity = [[NSMutableArray alloc] init];
+                        }
+                        
+                        [self.arrayOfActivity addObject:activity];
+                    }
+                    
+                    NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        self.numberOfActivity = [self.arrayOfActivity count];
+                        self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
+                        [self.labelNumberOfActivity sizeToFit];
+                        
+                        CGRect frame = self.activityIndicator.frame;
+                        frame.origin.x = self.labelNumberOfActivity.frame.origin.x + self.labelNumberOfActivity.frame.size.width + 10.0f;
+                        self.activityIndicator.frame = frame;
+                    });
+//                    if (self.pageController == nil && [self.arrayOfActivity count]) {
+//                        [self reloadPages];
+//                    }
+//                }
+                
+                
+                self.urlConnectionActivity25 = nil;
+                self.urlConnectionActivity25 = [self.arrayOfURL_25 objectAtIndex:self.index_25];
+                
+                if (self.urlConnectionActivity25) {
+                    [self.arrayOfURL_25 removeObjectAtIndex:self.index_25];
+                    self.index_25--;
+                    [self addURLConnection:self.urlConnectionActivity25];
+                    //                        NSLog(@"Connection Successful");
+                    
+                    //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+                    
+                    self.activityIndicator.hidden = NO;
+                    [self.activityIndicator startAnimating];
+                }
+            });
+        }
+        else {
+            NSLog(@"11 json:%@",json);
+        }
+    }
+    else if(connection == self.urlConnectionActivity11) {
+        NSError *error = nil;
+        
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.urlConnectionActivity11.responseData options:NSJSONReadingAllowFragments error:&error];
+        if ([[json objectForKey:@"data"] count]) {
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+                    Activity *activity = nil;
+                    
+                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"activities_id == %@", [entry objectForKey:@"activities_id"]];
+                    NSArray *result = [self fetchObjectsWithEntityName:@"Activity" andPredicate:predicate];
+                    if ([result count]) {
+                        activity = (Activity*)[result firstObject];
+                    }
+                    else {
+                        activity = [NSEntityDescription insertNewObjectForEntityForName: @"Activity" inManagedObjectContext: context];
+                    }
+                    
+                    [activity setValuesForKeysWithDictionary:entry];
+                    
+                    //                NSLog(@"activity:%@",activity);
+                    NSError *error = nil;
+                    if (![context save:&error]) {
+                        NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
+                    }
+                    else {
+                        if (self.arrayOfActivity == nil) {
+                            self.arrayOfActivity = [[NSMutableArray alloc] init];
+                        }
+                        
+                        [self.arrayOfActivity addObject:activity];
+                    }
+                    
+                    NSLog(@"11 Did Finish:%i   [%i]%i", [self.arrayOfURL_11 count], [self.arrayOfActivity count],self.index_11);
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        self.numberOfActivity = [self.arrayOfActivity count];
+                        self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
+                        [self.labelNumberOfActivity sizeToFit];
+                        
+                        CGRect frame = self.activityIndicator.frame;
+                        frame.origin.x = self.labelNumberOfActivity.frame.origin.x + self.labelNumberOfActivity.frame.size.width + 10.0f;
+                        self.activityIndicator.frame = frame;
+                    });
+//                    if (self.pageController == nil && [self.arrayOfActivity count]) {
+//                        [self reloadPages];
+//                    }
+//                }
+                
+                self.urlConnectionActivity11 = nil;
+                self.urlConnectionActivity11 = [self.arrayOfURL_11 objectAtIndex:self.index_11];
+                
+                if (self.urlConnectionActivity11) {
+                    [self.arrayOfURL_11 removeObjectAtIndex:self.index_11];
+                    self.index_11--;
+                    [self addURLConnection:self.urlConnectionActivity11];
+                    //                        NSLog(@"Connection Successful");
+                    
+                    //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+                    
+                    self.activityIndicator.hidden = NO;
+                    [self.activityIndicator startAnimating];
+                }
+            });
+        }
+        else {
+            NSLog(@"11 json:%@",json);
+        }
+    }
+    
     
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
@@ -465,6 +514,5 @@
         //        NSLog(@"Connection Failed");
     }
 }
-
 
 @end

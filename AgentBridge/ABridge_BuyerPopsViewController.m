@@ -15,7 +15,7 @@
 @interface ABridge_BuyerPopsViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfProperty;
 @property (weak, nonatomic) IBOutlet UIView *viewForPages;
-//@property (weak, nonatomic) IBOutlet UIButton *buttonSave;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSave;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewZoom;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -340,6 +340,10 @@
     self.scrollViewZoom.hidden = NO;
     
     
+}
+
+- (void)hideSaveButton:(BOOL)hide {
+    self.buttonSave.hidden = hide;
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {

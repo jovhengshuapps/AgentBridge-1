@@ -34,8 +34,7 @@
 @property (nonatomic, retain) NSString * client_id;
 @property (nonatomic, retain) NSString * referral_buyer_name;
 @property (nonatomic, retain) NSString * referral_date;
-@property (nonatomic, retain) NSString * referral_from_id;
-@property (nonatomic, retain) NSString * referral_to_id;
 @property (nonatomic, retain) NSString * setting;
+@property (nonatomic, retain) NSString * user_name;
 
 @end

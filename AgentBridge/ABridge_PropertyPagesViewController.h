@@ -12,6 +12,8 @@
 @protocol ABridge_PropertyPagesViewControllerDelegate <NSObject>
 
 - (void) zoomImage:(NSData*)image_data;
+@optional
+- (void) hideSaveButton:(BOOL)hide;
 
 @end
 

@@ -33,8 +33,7 @@
 @dynamic client_id;
 @dynamic referral_buyer_name;
 @dynamic referral_date;
-@dynamic referral_from_id;
-@dynamic referral_to_id;
 @dynamic setting;
+@dynamic user_name;
 
 @end

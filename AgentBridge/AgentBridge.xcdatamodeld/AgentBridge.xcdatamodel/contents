@@ -19,13 +19,12 @@
         <attribute name="referral_buyer_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="referral_date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="referral_fee" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="referral_from_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="referral_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="referral_response" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="referral_status" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="referral_to_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="setting" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="AgentProfile" representedClassName="AgentProfile" syncable="YES">
         <attribute name="about" optional="YES" attributeType="String" syncable="YES"/>

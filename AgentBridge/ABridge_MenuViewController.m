@@ -221,7 +221,24 @@
             NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
         }
         else {
-            [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"AgentProfile"
+                                                      inManagedObjectContext:context];
+            [fetchRequest setEntity:entity];
+            NSError *error = nil;
+            NSArray *fetchedObjects = [context
+                                       executeFetchRequest:fetchRequest error:&error];
+            for (NSManagedObject *obj in fetchedObjects) {
+                [context deleteObject:obj];
+            }
+            
+            NSError *errorSave = nil;
+            if (![context save:&errorSave]) {
+                NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
+            }
+            else {
+                [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
+            }
         }
     }
 }
