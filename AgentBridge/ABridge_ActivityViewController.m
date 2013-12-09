@@ -210,18 +210,19 @@
 {
 //    [self dismissOverlay];
     
-//    NSLog(@"Did Finish:%@", json);
     
     if(connection == self.urlConnectionActivity) {
         NSError *error = nil;
         
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
+        NSDictionary *jsonActivities = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
         
-        if ([[json objectForKey:@"data"] count]) {
+        if ([[jsonActivities objectForKey:@"data"] count]) {
+//            NSLog(@"Did Finish:%@", json);
 //            NSLog(@"total:%i",[[json objectForKey:@"data"] count]);
-            for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                if ([[entry valueForKey:@"activity_type"] integerValue] == 25) {
-                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entry valueForKey:@"activities_id"]];
+            for (NSDictionary *entryActivities in [jsonActivities objectForKey:@"data"]) {
+                
+                if ([[entryActivities valueForKey:@"activity_type"] integerValue] == 25) {
+                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
 //                    NSLog(@"(%i)parameters:%@",[[json objectForKey:@"data"] indexOfObject:entry],parameters);
                     NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-25.php%@",parameters];
                     
@@ -237,7 +238,7 @@
                         NSData *responseData = [request responseData];
                         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                         if ([[json objectForKey:@"data"] count]) {
-                            
+//                            NSLog(@"25 Did Finish:%@", json);
 //                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                 NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
                                 //                for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -262,16 +263,26 @@
                                 }
                                 else {
                                     if (self.arrayOfActivity == nil) {
-                                        self.arrayOfActivity = [[NSMutableArray alloc] init];
+                                        self.arrayOfActivity = [NSMutableArray array];
+                                        for(int i = 0; i<[[jsonActivities objectForKey:@"data"] count]; i++)
+                                            [self.arrayOfActivity addObject: [NSNull null]];
                                     }
                                     
-                                    [self.arrayOfActivity addObject:activity];
+//                                    [self.arrayOfActivity addObject:activity];
+                                    [self.arrayOfActivity replaceObjectAtIndex:[[jsonActivities objectForKey:@"data"] indexOfObject:entryActivities] withObject:activity];
                                 }
                                 
                                 //                                NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
                                 
 //                                dispatch_async(dispatch_get_main_queue(), ^{
-                                
+                            
+                            NSSortDescriptor *sortDescriptor;
+                            sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date"
+                                                                         ascending:NO];
+                            NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+                            NSArray *sortedArray;
+                            sortedArray = [self.arrayOfActivity sortedArrayUsingDescriptors:sortDescriptors];
+                            
                                     self.numberOfActivity = [self.arrayOfActivity count];
                                     self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
                                     [self.labelNumberOfActivity sizeToFit];
@@ -280,7 +291,7 @@
                                     frame.origin.x = self.labelNumberOfActivity.frame.origin.x + self.labelNumberOfActivity.frame.size.width + 10.0f;
                                     self.activityIndicator.frame = frame;
                                     
-                                    if (self.pageController == nil) {
+                                    if (self.pageController == nil && ![[self.arrayOfActivity objectAtIndex:0] isEqual:[NSNull null]]) {
                                         [self reloadPages];
                                     }
 //                                });
@@ -302,8 +313,8 @@
                     
                     
                 }
-                else if ([[entry valueForKey:@"activity_type"] integerValue] == 11) {
-                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entry valueForKey:@"activities_id"]];
+                else if ([[entryActivities valueForKey:@"activity_type"] integerValue] == 11) {
+                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
 //                    NSLog(@"[%i]parameters:%@",[[json objectForKey:@"data"] indexOfObject:entry],parameters);
                     
                     NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-11.php%@",parameters];
@@ -319,7 +330,7 @@
                         NSData *responseData = [request responseData];
                         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                         if ([[json objectForKey:@"data"] count]) {
-                            
+//                            NSLog(@"11 Did Finish:%@", json);
 //                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                 NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
                                 //                for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -342,18 +353,29 @@
                                 if (![context save:&error]) {
                                     NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
                                 }
-                                else {
-                                    if (self.arrayOfActivity == nil) {
-                                        self.arrayOfActivity = [[NSMutableArray alloc] init];
-                                    }
-                                    
-                                    [self.arrayOfActivity addObject:activity];
+                            else {
+                                if (self.arrayOfActivity == nil) {
+                                    self.arrayOfActivity = [NSMutableArray array];
+                                    for(int i = 0; i<[[jsonActivities objectForKey:@"data"] count]; i++)
+                                    [self.arrayOfActivity addObject: [NSNull null]];
+                                }
+                                
+//                                    [self.arrayOfActivity addObject:activity];
+                                
+                                [self.arrayOfActivity replaceObjectAtIndex:[[jsonActivities objectForKey:@"data"] indexOfObject:entryActivities] withObject:activity];
                                 }
                                 
 //                                NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
                                 
 //                                dispatch_async(dispatch_get_main_queue(), ^{
-                                
+                            
+                            NSSortDescriptor *sortDescriptor;
+                            sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date"
+                                                                         ascending:NO];
+                            NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+                            NSArray *sortedArray;
+                            sortedArray = [self.arrayOfActivity sortedArrayUsingDescriptors:sortDescriptors];
+                            
                                     self.numberOfActivity = [self.arrayOfActivity count];
                                     self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
                                     [self.labelNumberOfActivity sizeToFit];
@@ -362,7 +384,7 @@
                                     frame.origin.x = self.labelNumberOfActivity.frame.origin.x + self.labelNumberOfActivity.frame.size.width + 10.0f;
                                     self.activityIndicator.frame = frame;
                                     
-                                    if (self.pageController == nil) {
+                                    if (self.pageController == nil && ![[self.arrayOfActivity objectAtIndex:0] isEqual:[NSNull null]]) {
                                         [self reloadPages];
                                     }
 //                                });
@@ -400,6 +422,7 @@
             
             [self showOverlayWithMessage:@"You currently don't have any Activities." withIndicator:NO];
         }
+        
     }
     
     [self.activityIndicator stopAnimating];

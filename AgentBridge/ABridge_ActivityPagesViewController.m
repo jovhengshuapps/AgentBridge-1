@@ -235,7 +235,6 @@
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
-    [self.buttonDescription setTitle:@"" forState:UIControlStateNormal];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.dataReceived = nil;
@@ -403,6 +402,10 @@
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         }
+    }
+    else {
+        
+        [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
     }
     // Do something with responseData
 }
