@@ -50,7 +50,7 @@
 	// Do any additional setup after loading the view.
     
     self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
-//    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     if (is_saved) {
         self.labelNumberOfProperty.text = @"Saved POPs™";

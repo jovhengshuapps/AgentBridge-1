@@ -54,6 +54,7 @@
     // Do any additional setup after loading the view from its nib.
     
     self.labelActivityName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    
     self.labelDateTime.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     self.buttonDescription.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
@@ -73,6 +74,7 @@
             }
         }
     }
+    
     
     // Add a bottomBorder.
     CALayer *bottomBorder = [CALayer layer];
@@ -147,14 +149,22 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
                 self.labelDateTime.text = self.activityDetail.referral_date;
+                
+                self.labelDescription.text = @"";
+                self.viewForDescription.hidden = YES;
+                [self.buttonDescription setTitle:@"" forState:UIControlStateNormal];
             });
             
             switch ([self.activityDetail.referral_status integerValue]) {
                 case 1:
                     message = [NSString stringWithFormat:@"%@ is now under contract.",buyer_name];
                     break;
-                case 4:
-                    message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee. ", self.activityDetail.user_name,buyer_name];
+                case 4:{
+                    message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee.", self.activityDetail.user_name,buyer_name];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.viewForDescription.hidden = NO;
+                        [self.buttonDescription setTitle:@"Pay" forState:UIControlStateNormal];
+                    });}
                     break;
                 case 5:
                     message = [NSString stringWithFormat:@"%@ has declined the referral. ", self.activityDetail.user_name];
@@ -163,10 +173,19 @@
                     message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", self.activityDetail.user_name, buyer_name];
                     break;
                 case 7:
-                    message = [NSString stringWithFormat:@"You have sent a referral to %@ with a %@ referral fee. ", self.activityDetail.user_name, self.activityDetail.referral_fee];
+                    if ([self.activityDetail.referral_response integerValue]) {
+                        message = [NSString stringWithFormat:@"%@ has now accepted your referral of %@ fee for client %@.<br/><br/>Sign the referral contract. ", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_name];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.viewForDescription.hidden = NO;
+                            [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+                        });
+                    }
+                    else {
+                        message = [NSString stringWithFormat:@"You have sent a referral to %@ with a %@ referral fee. ", self.activityDetail.user_name, self.activityDetail.referral_fee];
+                    }
                     break;
                 case 8:
-                    message = [NSString stringWithFormat:@"%@ has now accepted your referral of %@ fee for client %@.\n\nSign the referral contract. ", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_name];
+                    message = [NSString stringWithFormat:@"%@ is actively working on your referral, %@. ", self.activityDetail.user_name, buyer_name];
                     break;
                 case 9:
                     message = [NSString stringWithFormat:@"Congratulations. Referral %@ is now complete. ", self.activityDetail.user_name];
@@ -178,6 +197,71 @@
                     break;
             }
         }
+        else if ([self.activityDetail.activity_type integerValue] == 6) {
+            //            NSLog(@"listing:%@",self.activityDetail.listing_id);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.labelActivityName.text = @"Request to View Private POPs";
+                self.labelDateTime.text = self.activityDetail.date;
+                if ([self.activityDetail.permission integerValue]) {
+                    self.labelDescription.text = @"";
+                    self.buttonDescription.hidden = NO;
+                    [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                }
+                else {
+                    self.labelDescription.text = @"You have accepted this request.";
+                    self.buttonDescription.hidden = YES;
+                }
+                self.viewForDescription.hidden = NO;
+            });
+            
+            
+                NSString *pops_link = [NSString stringWithFormat:@"<a href='http://pops/%@'>%@</a>",self.activityDetail.listing_id, self.activityDetail.property_name];
+                
+                message = [NSString stringWithFormat:@"%@ is requesting to view your private POPs(TM), %@.",self.activityDetail.user_name, pops_link];
+            
+        }
+        else if ([self.activityDetail.activity_type integerValue] == 28 || [self.activityDetail.activity_type integerValue] == 8) {
+            //            NSLog(@"listing:%@",self.activityDetail.listing_id);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.labelActivityName.text = @"Request Network Access";
+                self.labelDateTime.text = self.activityDetail.date;
+                NSLog(@"status:%@",self.activityDetail.network_status);
+                if (self.activityDetail.network_status == nil) {
+                    self.labelDescription.text = @"";
+                    self.buttonDescription.hidden = NO;
+                    [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                }
+                else {
+                    self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. %@ is now part of your Network.",self.activityDetail.user_name];
+                    self.buttonDescription.hidden = YES;
+                }
+                self.viewForDescription.hidden = NO;
+            });
+            
+            
+            message = [NSString stringWithFormat:@"%@ is requesting to join your Network. If you accept this request, %@ will be able to view your public POPs.",self.activityDetail.user_name,self.activityDetail.user_name];
+            
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            CGSize constraint = CGSizeMake(200.0f, 20000.0f);
+            
+            CGSize size = [self.labelActivityName.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height, 21.0f);
+            
+            CGRect frame = self.labelActivityName.frame;
+            frame.size.height = height;
+            self.labelActivityName.frame = frame;
+            
+            frame = self.labelDateTime.frame;
+            frame.origin.y = self.labelActivityName.frame.origin.y + self.labelActivityName.frame.size.height + 5.0f;
+            self.labelDateTime.frame = frame;
+        });
+        
+        
         
         NSString *htmlString = [NSString stringWithFormat:@"<html><head><style>body{font-family:'OpenSans'} a{text-decoration: none; color:#2C99CE;}</style></head><body>%@</body></html>", message];
         
@@ -225,7 +309,7 @@
             
             [self.tabBarController setSelectedIndex:1];
             ABridge_PropertyViewController *viewController = ((ABridge_PropertyViewController*)self.tabBarController.selectedViewController);
-            NSLog(@"newURL:%@",newURL);
+//            NSLog(@"newURL:%@",newURL);
             [viewController scrollToPOPs:[newURL substringFromIndex:12]];
         }
     }

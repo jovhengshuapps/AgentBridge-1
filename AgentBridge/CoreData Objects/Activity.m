@@ -35,5 +35,7 @@
 @dynamic referral_date;
 @dynamic setting;
 @dynamic user_name;
+@dynamic permission;
+@dynamic network_status;
 
 @end

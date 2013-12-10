@@ -468,6 +468,7 @@
         MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
         mailViewController.mailComposeDelegate = self;
         [mailViewController setSubject:[NSString stringWithFormat:@"Hello %@",self.profileData.firstname]];
+        [mailViewController setToRecipients:[NSArray arrayWithObjects:self.profileData.email, nil]];
         [mailViewController setMessageBody:@"Your message goes here." isHTML:NO];
         
         [self presentViewController:mailViewController animated:YES completion:^{

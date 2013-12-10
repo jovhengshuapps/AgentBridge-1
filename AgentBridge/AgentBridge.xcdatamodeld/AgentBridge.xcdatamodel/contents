@@ -11,8 +11,10 @@
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="listing_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="network_status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="other_user_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="other_user_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="permission" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pops_user_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pops_user_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="property_name" optional="YES" attributeType="String" syncable="YES"/>

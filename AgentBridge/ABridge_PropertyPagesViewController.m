@@ -85,7 +85,7 @@
     self.labelExpiry.hidden = NO;
     self.textFeatures.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
-    self.buttonDescription.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonDescription.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     self.labelDescription.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     
     self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];

@@ -248,6 +248,7 @@
             });
         
         });
+        [self dismissOverlay];
     }
     else {
         [self.pageController.view removeFromSuperview];
@@ -260,7 +261,6 @@
         [self showOverlayWithMessage:@"You currently have no members in your Network." withIndicator:NO];
     }
     
-    [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
