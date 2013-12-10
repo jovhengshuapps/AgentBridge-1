@@ -133,8 +133,6 @@
                 
                 NSString *pops_link = [NSString stringWithFormat:@"<a href='http://pops/%@'>%@</a>",self.activityDetail.listing_id, self.activityDetail.property_name];
                 
-                NSLog(@"pops:%@",self.activityDetail.listing_id);
-                
                 message = [NSString stringWithFormat:@"Your POPs™, %@, is a match to your buyer, %@", pops_link, buyer_name];
             }
             else {
@@ -221,27 +219,123 @@
                 message = [NSString stringWithFormat:@"%@ is requesting to view your private POPs™, %@.",self.activityDetail.user_name, pops_link];
             
         }
-        else if ([self.activityDetail.activity_type integerValue] == 28 || [self.activityDetail.activity_type integerValue] == 8) {
-            //            NSLog(@"listing:%@",self.activityDetail.listing_id);
+        else if ([self.activityDetail.activity_type integerValue] == 8) {
+            
+//            NSLog(@"[8]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
+            
+            if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                
+                message = [NSString stringWithFormat:@"%@ is requesting to view your public POPs™.",self.activityDetail.user_name];
+            }
+            else {
+                message = [NSString stringWithFormat:@"You have requested to view  %@'s  public POPs™.",self.activityDetail.user_name];
+            }
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.labelActivityName.text = @"Request Network Access";
                 self.labelDateTime.text = self.activityDetail.date;
-                NSLog(@"status:%@",self.activityDetail.network_status);
-                if (self.activityDetail.network_status == nil) {
+                
+                if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                    self.viewForDescription.hidden = NO;
                     self.labelDescription.text = @"";
                     self.buttonDescription.hidden = NO;
                     [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                    
+                    
+                    if ([self.activityDetail.network_status integerValue] == 1) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. %@ is now part of your Network.",self.activityDetail.user_name];
+                        self.buttonDescription.hidden = YES;
+                    }
+                    else if ([self.activityDetail.network_status integerValue] == 2) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = @"You have declined this request. ";
+                        self.buttonDescription.hidden = YES;
+                    }
                 }
                 else {
-                    self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. %@ is now part of your Network.",self.activityDetail.user_name];
-                    self.buttonDescription.hidden = YES;
+                    self.viewForDescription.hidden = YES;
+                    
+                    
+                    if ([self.activityDetail.network_status integerValue] == 1) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = [NSString stringWithFormat:@" %@ has accepted this request. You are now able to view %@'s POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
+                        self.buttonDescription.hidden = YES;
+                    }
+                    else if ([self.activityDetail.network_status integerValue] == 2) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = [NSString stringWithFormat:@"%@ has declined this request.",self.activityDetail.user_name];
+                        self.buttonDescription.hidden = NO;
+                        [self.buttonDescription setTitle:@"Request to View" forState:UIControlStateNormal];
+                    }
+                    else if ([self.activityDetail.network_status integerValue] == 0) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = @"Pending Approval";
+                        self.buttonDescription.hidden = YES;
+                    }
                 }
-                self.viewForDescription.hidden = NO;
+                
             });
             
             
-            message = [NSString stringWithFormat:@"%@ is requesting to join your Network. If you accept this request, %@ will be able to view your public POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
+            
+        }
+        else if ([self.activityDetail.activity_type integerValue] == 28) {
+            
+//            NSLog(@"[28]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
+            
+            if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                
+                message = [NSString stringWithFormat:@"You have been invited to join %@'s Network. If you accept this request, you will be able to view %@'s public POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
+            }
+            else {
+                message = [NSString stringWithFormat:@"%@ is now added to your Network and will be able to view your public POPs™.",self.activityDetail.user_name];
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.labelActivityName.text = @"Request Network Access";
+                self.labelDateTime.text = self.activityDetail.date;
+                
+                if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                    self.viewForDescription.hidden = NO;
+                    self.labelDescription.text = @"";
+                    self.buttonDescription.hidden = NO;
+                    [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                    
+                    if ([self.activityDetail.network_status integerValue] == 1) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. You are now part of %@'s Network.",self.activityDetail.user_name];
+                        self.buttonDescription.hidden = YES;
+                    }
+                    else if ([self.activityDetail.network_status integerValue] == 2) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = @"You have declined this request.";
+                        self.buttonDescription.hidden = YES;
+                    }
+                }
+                else {
+                    self.viewForDescription.hidden = YES;
+                    
+                    if ([self.activityDetail.network_status integerValue] == 1) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = [NSString stringWithFormat:@"%@ has accepted this request and is now part of your Network.",self.activityDetail.user_name];
+                        self.buttonDescription.hidden = YES;
+                    }
+                    else if ([self.activityDetail.network_status integerValue] == 2) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = [NSString stringWithFormat:@"%@ has declined this request.",self.activityDetail.user_name];
+                        self.buttonDescription.hidden = NO;
+                        [self.buttonDescription setTitle:@"Request to View" forState:UIControlStateNormal];
+                    }
+                    else if ([self.activityDetail.network_status integerValue] == 0) {
+                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.text = @"Pending Approval";
+                        self.buttonDescription.hidden = YES;
+                    }
+                }
+                
+                
+            });
             
         }
         
