@@ -114,6 +114,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     NSString *text = @"";
+    CGFloat decreaseHeight = 0.0f;
     if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"brokerage"]) {
         text = self.profileData.broker_name;
     }
@@ -156,6 +157,9 @@
             
             NSInteger array_index = [[key substringFromIndex:[key rangeOfString:@"mobile"].length] integerValue];
             text = [array objectAtIndex:array_index - 1];
+            if (array_index == 2) {
+                decreaseHeight = FONT_SIZE_FOR_PROFILE * array_index;
+            }
             if ([self isNull:text]) {
                 text = [array objectAtIndex:array_index];
             }
@@ -176,7 +180,7 @@
     
     CGFloat height = MAX(size.height, 44.0f);
     
-    return height + 5.0f;
+    return height + 5.0f - decreaseHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

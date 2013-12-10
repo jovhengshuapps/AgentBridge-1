@@ -281,9 +281,11 @@
                     
                     if (is_saved) {
                         self.labelNumberOfProperty.text = [NSString stringWithFormat:@"Saved POPs™ (%li)",(long)self.numberOfProperty];
+                        self.buttonSave.hidden = YES;
                     }
                     else {
                         self.labelNumberOfProperty.text = [NSString stringWithFormat:@"New POPs™ (%li)",(long)self.numberOfProperty];
+                        self.buttonSave.hidden = NO;
                     }
                     
                     ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];

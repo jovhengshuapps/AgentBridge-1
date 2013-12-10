@@ -49,7 +49,7 @@
     self.brokerageHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.designationHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldBrokerage.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     [self addPaddingAndBorder:self.textFieldBrokerage color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
     
@@ -187,6 +187,15 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 CGFloat yOffset = 0.0f;
+                if ([self.arrayOfDesignation count] > 2) {
+                    CGRect frame = self.scrollViewDesignations.frame;
+                    frame.size.height += 30.0f;
+                    self.scrollViewDesignations.frame = frame;
+                    
+                    frame = self.buttonSave.frame;
+                    frame.origin.y += 30.0f;
+                    self.buttonSave.frame = frame;
+                }
                 for (NSString *designation in self.arrayOfDesignation) {
                     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, yOffset, 280.0f, 30.0f)];
                     textField.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -217,6 +226,8 @@
                 
                 [self.scrollViewDesignations addSubview:textField];
                 
+                self.scrollViewDesignations.contentSize = CGSizeMake(self.scrollViewDesignations.contentSize.width, self.scrollViewDesignations.contentSize.height + 35.0f);
+                
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
             });
@@ -226,5 +237,8 @@
     
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 @end

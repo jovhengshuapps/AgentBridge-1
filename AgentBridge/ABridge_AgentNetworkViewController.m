@@ -45,7 +45,7 @@
 	// Do any additional setup after loading the view.
     
     self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
-    self.buttonRefer.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonRefer.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     self.labelNumberOfAgentNetwork.text = @"My Network";
     [self.labelNumberOfAgentNetwork sizeToFit];
     

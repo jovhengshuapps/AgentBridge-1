@@ -57,7 +57,7 @@
     
     self.labelDateTime.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
-    self.buttonDescription.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonDescription.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     self.labelDescription.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     
 //    self.textViewMessage.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -201,7 +201,7 @@
             //            NSLog(@"listing:%@",self.activityDetail.listing_id);
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.labelActivityName.text = @"Request to View Private POPs";
+                self.labelActivityName.text = @"Request to View Private POPs™";
                 self.labelDateTime.text = self.activityDetail.date;
                 if ([self.activityDetail.permission integerValue]) {
                     self.labelDescription.text = @"";
@@ -218,7 +218,7 @@
             
                 NSString *pops_link = [NSString stringWithFormat:@"<a href='http://pops/%@'>%@</a>",self.activityDetail.listing_id, self.activityDetail.property_name];
                 
-                message = [NSString stringWithFormat:@"%@ is requesting to view your private POPs(TM), %@.",self.activityDetail.user_name, pops_link];
+                message = [NSString stringWithFormat:@"%@ is requesting to view your private POPs™, %@.",self.activityDetail.user_name, pops_link];
             
         }
         else if ([self.activityDetail.activity_type integerValue] == 28 || [self.activityDetail.activity_type integerValue] == 8) {
@@ -241,7 +241,7 @@
             });
             
             
-            message = [NSString stringWithFormat:@"%@ is requesting to join your Network. If you accept this request, %@ will be able to view your public POPs.",self.activityDetail.user_name,self.activityDetail.user_name];
+            message = [NSString stringWithFormat:@"%@ is requesting to join your Network. If you accept this request, %@ will be able to view your public POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
             
         }
         

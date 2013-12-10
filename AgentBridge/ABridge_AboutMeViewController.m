@@ -39,7 +39,7 @@
     self.aboutMeTitle.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     self.aboutHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textViewAbout.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     self.textViewAbout.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
     self.textViewAbout.layer.borderWidth = 1.0f;

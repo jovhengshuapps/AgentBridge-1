@@ -99,7 +99,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" id="iv4-zy-xvO">
-                                        <rect key="frame" x="122" y="122" width="37" height="37"/>
+                                        <rect key="frame" x="220" y="122" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </activityIndicatorView>
                                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logging In..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hI0-Gj-qZV">
@@ -344,6 +344,23 @@
                                     <action selector="gotoNetwork:" destination="ms5-oB-1zM" eventType="touchUpInside" id="CxY-FQ-Wey"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ur2-4d-MRV">
+                                <rect key="frame" x="0.0" y="112" width="255" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="My Invites">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="gotoInvites:" destination="ms5-oB-1zM" eventType="touchUpInside" id="Vk4-YM-PM6"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LTh-MZ-Z7U">
                                 <rect key="frame" x="0.0" y="112" width="255" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
@@ -428,6 +445,7 @@
                     <connections>
                         <outlet property="buttonAboutMe" destination="dT7-Z5-W8w" id="obH-c5-Ph9"/>
                         <outlet property="buttonAccountSettings" destination="LTh-MZ-Z7U" id="xiD-DA-VJk"/>
+                        <outlet property="buttonInvites" destination="ur2-4d-MRV" id="dVg-Pu-CdA"/>
                         <outlet property="buttonLogOut" destination="kld-xE-5x8" id="JcA-Qs-3sK"/>
                         <outlet property="buttonNetwork" destination="kl0-dv-D51" id="HqA-n9-jTB"/>
                         <outlet property="buttonNotification" destination="P5K-xI-zNx" id="ZGi-jA-cuK"/>
@@ -1124,6 +1142,112 @@
             </objects>
             <point key="canvasLocation" x="604" y="2249"/>
         </scene>
+        <!--Bridge Agent Invites View Controller-->
+        <scene sceneID="ffL-9d-fGl">
+            <objects>
+                <viewController storyboardIdentifier="Invites" id="urL-ft-m1X" customClass="ABridge_AgentInvitesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GET-hN-5OB">
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="PZz-1D-NcJ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="head_strip" id="2Rk-v9-jHl">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" id="ysW-3r-MYT">
+                                        <rect key="frame" x="104" y="14" width="112" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dSs-hV-sgi">
+                                        <rect key="frame" x="10" y="14" width="22" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="menu-icon">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="revealMenu:" destination="Lw2-NS-qnm" eventType="touchUpInside" id="Eip-Ea-9BC"/>
+                                            <action selector="revealMenu:" destination="urL-ft-m1X" eventType="touchUpInside" id="WDZ-La-grp"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9ud-F9-yMQ">
+                                        <rect key="frame" x="289" y="14" width="21" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="home_icon">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="goBackToRoot:" destination="Lw2-NS-qnm" eventType="touchUpInside" id="8f3-TZ-Fpc"/>
+                                            <action selector="goBackToRoot:" destination="urL-ft-m1X" eventType="touchUpInside" id="ZpC-mZ-mgO"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Firstname" minimumFontSize="17" id="t22-Gv-DJ8">
+                                <rect key="frame" x="20" y="124" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Invites" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tdb-mo-Oa6">
+                                <rect key="frame" x="20" y="68" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Lastname" minimumFontSize="17" id="U9W-Yc-JAg">
+                                <rect key="frame" x="20" y="162" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" id="vTd-Ar-36N">
+                                <rect key="frame" x="20" y="200" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Zipcode" minimumFontSize="17" id="hPM-WY-Zkb">
+                                <rect key="frame" x="20" y="238" width="126" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ffI-71-v4J">
+                                <rect key="frame" x="210" y="275" width="90" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Send" backgroundImage="blue_small">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveAboutMe:" destination="H7F-b2-DvL" eventType="touchUpInside" id="0q1-Di-3Eo"/>
+                                    <action selector="sendInvite:" destination="urL-ft-m1X" eventType="touchUpInside" id="wrh-t2-TBC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="buttonSend" destination="ffI-71-v4J" id="fl8-tD-GgW"/>
+                        <outlet property="imageViewTopBar" destination="PZz-1D-NcJ" id="POF-jW-O1P"/>
+                        <outlet property="labelInviteTitle" destination="Tdb-mo-Oa6" id="Gor-Ve-gLR"/>
+                        <outlet property="textFieldEmail" destination="vTd-Ar-36N" id="bvg-wL-UD9"/>
+                        <outlet property="textFieldFirstname" destination="t22-Gv-DJ8" id="47o-Q0-1Tp"/>
+                        <outlet property="textFieldLastname" destination="U9W-Yc-JAg" id="bRv-5n-2Zc"/>
+                        <outlet property="textFieldZipcode" destination="hPM-WY-Zkb" id="kmO-hD-fbY"/>
+                        <outlet property="view" destination="GET-hN-5OB" id="TTV-Q9-bHq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lKH-2k-OQO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="208" y="2918"/>
+        </scene>
         <!--Bridge About Me View Controller-->
         <scene sceneID="9Ja-Fa-Nwg">
             <objects>
@@ -1236,7 +1360,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="60P-7K-EQf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1250" y="2536"/>
+            <point key="canvasLocation" x="1266" y="3176"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ovd-mh-dkK">
@@ -1251,7 +1375,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pkp-Ik-rVY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="208" y="2982"/>
+            <point key="canvasLocation" x="224" y="3622"/>
         </scene>
         <!--Bridge Account Settings View Controller-->
         <scene sceneID="F48-fR-21l">
@@ -1349,7 +1473,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Brokerage" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IW6-C9-TIg">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Brokerage &amp; Designation" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IW6-C9-TIg">
                                                     <rect key="frame" x="10" y="0.0" width="280" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -1400,7 +1524,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Olc-iE-f4g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="730" y="2982"/>
+            <point key="canvasLocation" x="746" y="3622"/>
         </scene>
         <!--Bridge Buyer Pops View Controller - POPs™-->
         <scene sceneID="dIb-rg-XFf">
@@ -1618,7 +1742,7 @@
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Zip code" minimumFontSize="17" id="LoC-k5-Aex">
-                                        <rect key="frame" x="20" y="125" width="280" height="30"/>
+                                        <rect key="frame" x="20" y="125" width="126" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
@@ -1739,7 +1863,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gw2-c7-rJs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1644" y="2832"/>
+            <point key="canvasLocation" x="1660" y="3472"/>
         </scene>
         <!--Bridge Brokerage View Controller-->
         <scene sceneID="ozX-ay-HnB">
@@ -1824,7 +1948,7 @@
                                     </textField>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="gQP-M3-HLe">
                                         <rect key="frame" x="20" y="125" width="280" height="124"/>
-                                        <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                         <connections>
                                             <outlet property="delegate" destination="7KC-aH-8W6" id="6aI-fo-VWf"/>
                                         </connections>
@@ -1872,7 +1996,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JvZ-SE-kk8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1250" y="3292"/>
+            <point key="canvasLocation" x="1266" y="3932"/>
         </scene>
         <!--Bridge Contact Info View Controller-->
         <scene sceneID="7fN-p9-fps">
@@ -2020,7 +2144,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ezb-rN-LEi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1632" y="3794"/>
+            <point key="canvasLocation" x="1648" y="4434"/>
         </scene>
         <!--Bridge Security View Controller-->
         <scene sceneID="IYL-0x-jyG">
@@ -2124,7 +2248,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1s6-oH-19s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="208" y="3692"/>
+            <point key="canvasLocation" x="224" y="4332"/>
         </scene>
         <!--Bridge Activity Pages View Controller-->
         <scene sceneID="2vt-Q8-pNR">

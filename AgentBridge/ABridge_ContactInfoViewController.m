@@ -47,7 +47,7 @@
     self.textFieldMobileNumber.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldWorkNumber.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldFaxNumber.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     [self addPaddingAndBorder:self.textFieldMobileNumber color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
     

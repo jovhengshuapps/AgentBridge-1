@@ -306,6 +306,7 @@
 
             });
         });
+        [self dismissOverlay];
     }
     else {
         [self.pageController.view removeFromSuperview];
@@ -326,7 +327,6 @@
         }
     }
     
-    [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

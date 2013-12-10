@@ -69,7 +69,7 @@
     
     self.textEmail.font = FONT_OPENSANS_REGULAR(15.0f);
     self.textPassword.font = FONT_OPENSANS_REGULAR(15.0f);
-    self.buttonSignIn.titleLabel.font = FONT_OPENSANS_REGULAR(19.0f);
+    self.buttonSignIn.titleLabel.font = FONT_OPENSANS_BOLD(17.0f);
     self.buttonForgot.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 20)];
     self.textEmail.leftView = paddingView;

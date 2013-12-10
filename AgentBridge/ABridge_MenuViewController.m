@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonNotification;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSecurity;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLogOut;
+@property (weak, nonatomic) IBOutlet UIButton *buttonInvites;
     
     
 - (IBAction)gotoMain:(id)sender;
@@ -28,6 +29,7 @@
 - (IBAction)gotoSetting:(id)sender;
 - (IBAction)gotoLogOut:(id)sender;
 - (IBAction)gotoSecurity:(id)sender;
+- (IBAction)gotoInvites:(id)sender;
 
 @end
 
@@ -62,6 +64,7 @@
     self.buttonNotification.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonSecurity.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonLogOut.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonInvites.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     
     // Add a bottomBorder.
@@ -129,6 +132,30 @@
         
         [self.buttonProfile addSubview:imageView];
         self.buttonProfile.tag = YES;
+        
+        if ([profileData.is_premium boolValue]) {
+            self.buttonInvites.hidden = NO;
+            
+            CGRect frame = self.buttonAccountSettings.frame;
+            frame.origin.y += 33.0f;
+            self.buttonAccountSettings.frame = frame;
+            
+            frame = self.buttonAboutMe.frame;
+            frame.origin.y += 33.0f;
+            self.buttonAboutMe.frame = frame;
+            
+            frame = self.buttonNotification.frame;
+            frame.origin.y += 33.0f;
+            self.buttonNotification.frame = frame;
+            
+            frame = self.buttonSecurity.frame;
+            frame.origin.y += 33.0f;
+            self.buttonSecurity.frame = frame;
+            
+            frame = self.buttonLogOut.frame;
+            frame.origin.y += 33.0f;
+            self.buttonLogOut.frame = frame;
+        }
     }
 }
 
@@ -189,6 +216,17 @@
 
 - (IBAction)gotoSecurity:(id)sender {
     UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Security"];
+    
+    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+        CGRect frame = self.slidingViewController.topViewController.view.frame;
+        self.slidingViewController.topViewController = newTopViewController;
+        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
+}
+
+- (IBAction)gotoInvites:(id)sender {
+    UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Invites"];
     
     [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
         CGRect frame = self.slidingViewController.topViewController.view.frame;

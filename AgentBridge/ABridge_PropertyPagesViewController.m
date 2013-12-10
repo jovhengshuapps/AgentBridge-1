@@ -72,9 +72,9 @@
                                executeFetchRequest:fetchRequest error:&error];
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
-    if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-        [self.delegate hideSaveButton:NO];
-    }
+//    if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+//        [self.delegate hideSaveButton:NO];
+//    }
     
     self.labelZip.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
@@ -153,13 +153,8 @@
     
     [self.viewForScroll.layer addSublayer:bottomBorder];
     
-//    if (buyers_view) {
-//        [self.loadingImageIndicator stopAnimating];
-//        self.loadingImageIndicator.hidden = YES;
-//    }
-//    else {
-        [self getImageReady];
-//    }
+    
+    [self loadPOPsImages];
     
 }
 
@@ -317,15 +312,6 @@
     }
 }
 
-- (void) getImageReady {
-    
-    UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
-    
-    tapZoom.numberOfTapsRequired = 1;
-    tapZoom.numberOfTouchesRequired = 1;
-    [self.scrollImages addGestureRecognizer:tapZoom];
-    [self loadPOPsImages];
-}
 
 - (void) checkSettingGetPrice {
     
@@ -430,6 +416,16 @@
                         
                     }
                 }
+                
+                
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
+                    
+                    tapZoom.numberOfTapsRequired = 1;
+                    tapZoom.numberOfTouchesRequired = 1;
+                    [self.scrollImages addGestureRecognizer:tapZoom];
+                });
             });
             
         }

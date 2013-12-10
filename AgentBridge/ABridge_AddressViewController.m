@@ -80,7 +80,7 @@
     self.textFieldAddress2.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldZipCode.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldCity.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.buttonSave.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     self.buttonState.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonCountry.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
