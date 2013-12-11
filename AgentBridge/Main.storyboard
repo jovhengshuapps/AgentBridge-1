@@ -1218,7 +1218,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ffI-71-v4J">
-                                <rect key="frame" x="210" y="275" width="90" height="35"/>
+                                <rect key="frame" x="115" y="285" width="90" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Send" backgroundImage="blue_small">
@@ -1320,7 +1320,7 @@
                                         </connections>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="csp-it-dQu">
-                                        <rect key="frame" x="210" y="257" width="90" height="35"/>
+                                        <rect key="frame" x="115" y="257" width="90" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Save" backgroundImage="blue_small">
@@ -1345,6 +1345,10 @@
                                     <action selector="backButton:" destination="H7F-b2-DvL" eventType="touchUpInside" id="DQQ-ML-o5e"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="0Ch-al-qAf">
+                                <rect key="frame" x="280" y="70" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1352,6 +1356,7 @@
                     <connections>
                         <outlet property="aboutHeader" destination="E9Z-w3-IfW" id="X0C-yp-gAV"/>
                         <outlet property="aboutMeTitle" destination="MLc-yH-qfe" id="H90-2o-NCT"/>
+                        <outlet property="activityIndicator" destination="0Ch-al-qAf" id="X6y-lP-13A"/>
                         <outlet property="buttonSave" destination="csp-it-dQu" id="SsE-WE-Iae"/>
                         <outlet property="imageViewTopBar" destination="Hey-bx-yRi" id="uAz-4Y-Ksb"/>
                         <outlet property="textViewAbout" destination="EcL-h8-4MI" id="3QA-gm-OSX"/>
@@ -1712,7 +1717,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Hma-NZ-Zt5">
-                                        <rect key="frame" x="210" y="277" width="90" height="35"/>
+                                        <rect key="frame" x="115" y="277" width="90" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Save" backgroundImage="blue_small">
@@ -1837,12 +1842,17 @@
                                     <action selector="backButton:" destination="ZfL-f1-eIb" eventType="touchUpInside" id="H4V-Qw-gYs"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="iZD-kv-cuf">
+                                <rect key="frame" x="280" y="70" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="qc1-ly-mWb"/>
                     <connections>
                         <outlet property="aboutMeTitle" destination="sya-1H-a7J" id="mvq-UK-Wfd"/>
+                        <outlet property="activityIndicator" destination="iZD-kv-cuf" id="koK-Ht-1ce"/>
                         <outlet property="activityIndicatorCountry" destination="gSa-CG-ycS" id="c6E-zH-6dY"/>
                         <outlet property="activityIndicatorState" destination="PUI-9c-vkF" id="nWX-5s-d1t"/>
                         <outlet property="addressHeader" destination="o3h-h3-Ix3" id="3HI-T9-ML0"/>
@@ -1914,6 +1924,10 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="48p-fp-3We">
+                                <rect key="frame" x="280" y="70" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                             <view contentMode="scaleToFill" id="Xef-2Y-xyc">
                                 <rect key="frame" x="0.0" y="107" width="320" height="471"/>
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
@@ -1926,7 +1940,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Gij-wF-6sW">
-                                        <rect key="frame" x="210" y="257" width="90" height="35"/>
+                                        <rect key="frame" x="115" y="257" width="90" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Save" backgroundImage="blue_small">
@@ -1985,6 +1999,7 @@
                     <connections>
                         <outlet property="aboutMeTitle" destination="dJV-mb-wbN" id="ksw-8B-bQ5"/>
                         <outlet property="activityIndicator" destination="RGC-UC-ncN" id="gk0-dW-rPh"/>
+                        <outlet property="activityIndicatorMain" destination="48p-fp-3We" id="H73-Ph-INK"/>
                         <outlet property="brokerageHeader" destination="zER-Nw-G8d" id="tdv-5V-s7J"/>
                         <outlet property="buttonSave" destination="Gij-wF-6sW" id="Ga8-la-e83"/>
                         <outlet property="designationHeader" destination="ACZ-EB-K7D" id="wpz-13-yWm"/>
@@ -2047,6 +2062,10 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="olW-97-W6b">
+                                <rect key="frame" x="280" y="70" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                             <view contentMode="scaleToFill" id="0q2-5R-h1n">
                                 <rect key="frame" x="0.0" y="107" width="320" height="471"/>
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
@@ -2059,7 +2078,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kNv-9m-dJE">
-                                        <rect key="frame" x="210" y="257" width="90" height="35"/>
+                                        <rect key="frame" x="115" y="257" width="90" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Save" backgroundImage="blue_small">
@@ -2131,6 +2150,7 @@
                     <navigationItem key="navigationItem" id="BL0-CH-bkt"/>
                     <connections>
                         <outlet property="aboutMeTitle" destination="7lz-xm-NxN" id="bZS-sa-TcM"/>
+                        <outlet property="activityIndicator" destination="olW-97-W6b" id="WDF-cF-Ovm"/>
                         <outlet property="buttonSave" destination="kNv-9m-dJE" id="RFW-Gy-L8O"/>
                         <outlet property="faxHeader" destination="Yba-jb-suB" id="Hct-wp-Rgf"/>
                         <outlet property="imageViewTopBar" destination="V8p-be-cwe" id="uQg-Hc-8fj"/>
@@ -2207,7 +2227,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wJf-jr-aw0">
-                                        <rect key="frame" x="210" y="257" width="90" height="35"/>
+                                        <rect key="frame" x="115" y="257" width="90" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Save" backgroundImage="blue_small">

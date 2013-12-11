@@ -9,6 +9,7 @@
 #import "ABridge_ActivityPagesViewController.h"
 #import "ABridge_BuyerViewController.h"
 #import "ABridge_PropertyViewController.h"
+#import "ABridge_ReferralViewController.h"
 #import "Constants.h"
 #import "LoginDetails.h"
 #import "RequestAccess.h"
@@ -142,7 +143,6 @@
         }
         else if ([self.activityDetail.activity_type integerValue] == 11) {
             
-            NSString *buyer_name = [NSString stringWithFormat:@"<a href='http://%@'>%@</a>",self.activityDetail.client_id, self.activityDetail.referral_buyer_name];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
@@ -153,46 +153,153 @@
                 [self.buttonDescription setTitle:@"" forState:UIControlStateNormal];
             });
             
-            switch ([self.activityDetail.referral_status integerValue]) {
-                case 1:
-                    message = [NSString stringWithFormat:@"%@ is now under contract.",buyer_name];
-                    break;
-                case 4:{
-                    message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee.", self.activityDetail.user_name,buyer_name];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        self.viewForDescription.hidden = NO;
-                        [self.buttonDescription setTitle:@"Pay" forState:UIControlStateNormal];
-                    });}
-                    break;
-                case 5:
-                    message = [NSString stringWithFormat:@"%@ has declined the referral. ", self.activityDetail.user_name];
-                    break;
-                case 6:
-                    message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", self.activityDetail.user_name, buyer_name];
-                    break;
-                case 7:
-                    if ([self.activityDetail.referral_response integerValue]) {
-                        message = [NSString stringWithFormat:@"%@ has now accepted your referral of %@ fee for client %@.<br/><br/>Sign the referral contract. ", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_name];
+//            NSLog(@"user:%@/%@ --- %@",self.activityDetail.user_id,self.activityDetail.other_user_id,self.loginDetail.user_id);
+            
+            if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                
+                NSString *buyer_name = [NSString stringWithFormat:@"<a href='http://client/in/%@'>%@</a>",self.activityDetail.client_id, self.activityDetail.referral_buyer_name];
+                
+                switch ([self.activityDetail.referral_status integerValue]) {
+                    case 1:
+                        message = [NSString stringWithFormat:@"%@ is now under contract.",buyer_name];
+                        break;
+                    case 4:{
+                        message = [NSString stringWithFormat:@"Congratulations for closing your referral %@.",buyer_name];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             self.viewForDescription.hidden = NO;
-                            [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
-                        });
+                            self.labelDescription.text = @"AgentBridge has successfully collected the referral service fee.";
+                            self.buttonDescription.hidden = YES;
+                        });}
+                        break;
+                    case 5:
+                        message = [NSString stringWithFormat:@"You have declined the referral from %@.", self.activityDetail.user_name];
+                        break;
+                    case 6:
+                        message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", self.activityDetail.user_name, buyer_name];
+                        break;
+                    case 7:{
+                        
+                        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&update_id=%@", self.loginDetail.user_id, self.activityDetail.referral_update_id];
+                        
+                        NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed.php%@", parameters];
+                        
+                        __block NSString *buyer_block = buyer_name;
+                        
+                        __block NSError *errorData = nil;
+                        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                        [request setCompletionBlock:^{
+                            // Use when fetching text data
+                            //                        NSString *responseString = [request responseString];
+                            // Use when fetching binary data
+                            NSData *responseData = [request responseData];
+                            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                            NSString *message_block = @"";
+                            if ([[json objectForKey:@"data"] count] == 0) {
+                                if ([self.activityDetail.referral_buyer_name length] > 4) {
+                                    NSMutableString *encryptBuyerName = [[NSMutableString alloc] initWithString:@""];
+                                    
+                                    [encryptBuyerName appendString:[self.activityDetail.referral_buyer_name substringToIndex:2]];
+                                    
+                                    for (int i = 0; i < [[self.activityDetail.referral_buyer_name substringWithRange:NSMakeRange(2, [self.activityDetail.referral_buyer_name length] - 2)] length]; i++) {
+                                        [encryptBuyerName appendString:@"x"];
+                                    }
+                                    
+                                    [encryptBuyerName appendString:[self.activityDetail.referral_buyer_name substringFromIndex:[self.activityDetail.referral_buyer_name length]-2]];
+                                    
+                                    buyer_block = [NSString stringWithFormat:@"<a href='http://client/in/%@'>%@</a>",self.activityDetail.client_id, encryptBuyerName];
+                                }
+                            }
+                            
+                            if ([self.activityDetail.referral_response integerValue]) {
+                                message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. %@'s contact will be released once you have signed the Referral Agreement.", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_block,buyer_block];
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    self.viewForDescription.hidden = NO;
+                                    [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+                                });
+                            }
+                            else {
+                                message_block = [NSString stringWithFormat:@"%@ has sent you referral %@ with a %@ referral fee.", self.activityDetail.user_name, buyer_block, self.activityDetail.referral_fee];
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    self.viewForDescription.hidden = NO;
+                                    [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                                });
+                            }
+                            
+                            
+                            NSString *htmlString = [NSString stringWithFormat:@"<html><head><style>body{font-family:'OpenSans'} a{text-decoration: none; color:#2C99CE;}</style></head><body>%@</body></html>", message_block];
+                            
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self.webView loadHTMLString:htmlString baseURL:nil];
+                            });
+                            
+                        }];
+                        [request setFailedBlock:^{
+                            NSError *error = [request error];
+                            NSLog(@"error:%@",error);
+                            
+                        }];
+                        [request startAsynchronous];
+                        
+                        break;
                     }
-                    else {
-                        message = [NSString stringWithFormat:@"You have sent a referral to %@ with a %@ referral fee. ", self.activityDetail.user_name, self.activityDetail.referral_fee];
-                    }
-                    break;
-                case 8:
-                    message = [NSString stringWithFormat:@"%@ is actively working on your referral, %@. ", self.activityDetail.user_name, buyer_name];
-                    break;
-                case 9:
-                    message = [NSString stringWithFormat:@"Congratulations. Referral %@ is now complete. ", self.activityDetail.user_name];
-                    break;
-                    
-                    
-                default:
-                    message = @"";
-                    break;
+                    case 8:
+                        message = [NSString stringWithFormat:@"You are actively working on referral, %@. ", buyer_name];
+                        break;
+                    case 9:
+                        message = @"This referral is now complete and parties have been fully paid.";
+                        break;
+                        
+                        
+                    default:
+                        message = @"";
+                        break;
+                }
+            }
+            else {
+                
+                NSString *buyer_name = [NSString stringWithFormat:@"<a href='http://client/out/%@'>%@</a>",self.activityDetail.client_id, self.activityDetail.referral_buyer_name];
+                
+                switch ([self.activityDetail.referral_status integerValue]) {
+                    case 1:
+                        message = [NSString stringWithFormat:@"%@ is now under contract.",buyer_name];
+                        break;
+                    case 4:{
+                        message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee.", self.activityDetail.user_name,buyer_name];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.viewForDescription.hidden = NO;
+                            [self.buttonDescription setTitle:@"Pay" forState:UIControlStateNormal];
+                        });}
+                        break;
+                    case 5:
+                        message = [NSString stringWithFormat:@"%@ has declined the referral. ", self.activityDetail.user_name];
+                        break;
+                    case 6:
+                        message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", self.activityDetail.user_name, buyer_name];
+                        break;
+                    case 7:
+                        if ([self.activityDetail.referral_response integerValue]) {
+                            message = [NSString stringWithFormat:@"%@ has now accepted your referral of %@ fee for client %@.<br/><br/>Sign the referral contract. ", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_name];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                self.viewForDescription.hidden = NO;
+                                [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+                            });
+                        }
+                        else {
+                            message = [NSString stringWithFormat:@"You have sent a referral to %@ with a %@ referral fee. ", self.activityDetail.user_name, self.activityDetail.referral_fee];
+                        }
+                        break;
+                    case 8:
+                        message = [NSString stringWithFormat:@"%@ is actively working on your referral, %@. ", self.activityDetail.user_name, buyer_name];
+                        break;
+                    case 9:
+                        message = [NSString stringWithFormat:@"Congratulations. Referral %@ is now complete. ", self.activityDetail.user_name];
+                        break;
+                        
+                        
+                    default:
+                        message = @"";
+                        break;
+                }
             }
         }
         else if ([self.activityDetail.activity_type integerValue] == 6) {
@@ -357,13 +464,14 @@
             self.labelDateTime.frame = frame;
         });
         
+        if (!([self.activityDetail.activity_type integerValue] == 11 && [self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue] && [self.activityDetail.referral_status integerValue] == 7)) {
+            NSString *htmlString = [NSString stringWithFormat:@"<html><head><style>body{font-family:'OpenSans'} a{text-decoration: none; color:#2C99CE;}</style></head><body>%@</body></html>", message];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.webView loadHTMLString:htmlString baseURL:nil];
+            });
+        }
         
-        
-        NSString *htmlString = [NSString stringWithFormat:@"<html><head><style>body{font-family:'OpenSans'} a{text-decoration: none; color:#2C99CE;}</style></head><body>%@</body></html>", message];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.webView loadHTMLString:htmlString baseURL:nil];
-        });
         
 //        if ([self.activityDetail.activity_type integerValue] == 25) {
             if (self.activityDetail.image_data == nil) {
@@ -394,19 +502,31 @@
     NSString* url = [[request URL] absoluteString];
     if (UIWebViewNavigationTypeLinkClicked == navigationType)
     {
-        NSString *newURL = [url substringToIndex:[url length]-1];
-        NSString *type = [newURL substringFromIndex:7];
+        NSString *type = [url substringFromIndex:7];
         if ([type rangeOfString:@"buyer"].location != NSNotFound) {
             [self.tabBarController setSelectedIndex:2];
             ABridge_BuyerViewController *viewController = ((ABridge_BuyerViewController*)((UINavigationController*)self.tabBarController.selectedViewController).viewControllers[0]);
-            [viewController scrollToBuyer:[newURL substringFromIndex:13]];
+            [viewController scrollToBuyer:[url substringFromIndex:13]];
         }
         else if ([type rangeOfString:@"pops"].location != NSNotFound) {
             
             [self.tabBarController setSelectedIndex:1];
             ABridge_PropertyViewController *viewController = ((ABridge_PropertyViewController*)self.tabBarController.selectedViewController);
-//            NSLog(@"newURL:%@",newURL);
-            [viewController scrollToPOPs:[newURL substringFromIndex:12]];
+            [viewController scrollToPOPs:[url substringFromIndex:12]];
+        }
+        else if ([type rangeOfString:@"client"].location != NSNotFound) {
+            
+            
+            [self.tabBarController setSelectedIndex:3];
+            ABridge_ReferralViewController *viewController = ((ABridge_ReferralViewController*)self.tabBarController.selectedViewController);
+            
+            if ([[url substringToIndex:17] rangeOfString:@"in"].location != NSNotFound) {
+                [viewController scrollToReferralIn:[url substringFromIndex:17]];
+            }
+            else {
+                [viewController scrollToReferralOut:[url substringFromIndex:18]];
+            }
+            
         }
     }
     return YES;

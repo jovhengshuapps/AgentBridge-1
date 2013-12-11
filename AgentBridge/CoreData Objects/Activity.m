@@ -37,5 +37,6 @@
 @dynamic user_name;
 @dynamic permission;
 @dynamic network_status;
+@dynamic referral_update_id;
 
 @end

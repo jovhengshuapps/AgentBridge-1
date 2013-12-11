@@ -7,6 +7,7 @@
 //
 
 #import "ABridge_ParentViewController.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_AddressViewController : ABridge_ParentViewController<UITextFieldDelegate, NSURLConnectionDelegate, /*UIActionSheetDelegate,*/ UIPickerViewDataSource, UIPickerViewDelegate>
 

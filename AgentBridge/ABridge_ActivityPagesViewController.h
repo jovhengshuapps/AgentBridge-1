@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Activity.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_ActivityPagesViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate>
 

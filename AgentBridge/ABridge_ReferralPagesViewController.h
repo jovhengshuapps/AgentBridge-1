@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
 #import "Referral.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_ReferralPagesViewController : UIViewController
 

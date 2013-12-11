@@ -329,8 +329,4 @@
         
     }
 }
-
-- (void) reloadData {
-    [self loadBuyers];
-}
 @end

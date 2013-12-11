@@ -8,6 +8,8 @@
 
 #import "ABridge_ReferralPagesViewController.h"
 #import "Constants.h"
+#import "ABridge_AppDelegate.h"
+#import "LoginDetails.h"
 
 @interface ABridge_ReferralPagesViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imagePicture;
@@ -22,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewForName;
 @property (weak, nonatomic) IBOutlet UILabel *labelInfo;
 @property (weak, nonatomic) IBOutlet UILabel *labelIntention;
+@property (weak, nonatomic) IBOutlet UIButton *buttonVCard;
 
 - (IBAction)saveBuyerVCard:(id)sender;
 @end
@@ -43,6 +46,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    self.labelAgentName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelAddress.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelStateCountry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelBuyerName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
+    self.labelReferralFee.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.labelInfo.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelIntention.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    
     // Add a bottomBorder.
     CALayer *bottomBorder = [CALayer layer];
     
@@ -56,16 +69,91 @@
     self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
     
     self.labelAgentName.text = self.referralDetails.agent_name;
-    self.labelAddress.text = self.referralDetails.city;
-    self.labelStateCountry.text = [NSString stringWithFormat:@"%@, %@",self.referralDetails.state_code,self.referralDetails.countries_iso_code_3];
+//    self.labelAddress.text = [self isNull:self.referralDetails.city]?@"":self.referralDetails.city;
+//    self.labelStateCountry.text = [NSString stringWithFormat:@"%@, %@",self.referralDetails.state_code,self.referralDetails.countries_iso_code_3];
     
-    self.labelAgentName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelAddress.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelStateCountry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    NSMutableString *address = [[NSMutableString alloc] initWithString:@""];
     
-    self.labelBuyerName.text = self.referralDetails.client_name;
+    if (![self isNull:self.referralDetails.city]) {
+        [address appendFormat:@"%@\n",self.referralDetails.city];
+        
+    }
+    
+    if (![self isNull:self.referralDetails.state_code]) {
+        [address appendFormat:@"%@, ",self.referralDetails.state_code];
+    }
+    
+    if (![self isNull:self.referralDetails.countries_iso_code_3]) {
+        [address appendFormat:@"%@",self.referralDetails.countries_iso_code_3];
+    }
+    
+    self.labelAddress.text = address;
+    
+    [self.labelAddress sizeToFit];
+    
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context
+                               executeFetchRequest:fetchRequest error:&error];
+    
+    LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@", loginDetail.user_id, self.referralDetails.referral_id];
+    
+    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed_referral.php%@", parameters];
+    
+    __block NSString *client_name = self.referralDetails.client_name;
+    
+    __block NSError *errorData = nil;
+    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [request setCompletionBlock:^{
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        NSData *responseData = [request responseData];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+        
+        
+        if ([[json objectForKey:@"data"] count] == 0 && [self.referralDetails.agent_b integerValue] == [loginDetail.user_id integerValue]) {
+            NSMutableString *encryptBuyerName = [[NSMutableString alloc] initWithString:@""];
+            if ([client_name length] > 4) {
+                
+                [encryptBuyerName appendString:[client_name substringToIndex:2]];
+                
+                for (int i = 0; i < [[client_name substringWithRange:NSMakeRange(2, [client_name length] - 2)] length]; i++) {
+                    [encryptBuyerName appendString:@"x"];
+                }
+                
+                [encryptBuyerName appendString:[client_name substringFromIndex:[client_name length]-2]];
+                
+            }
+            self.labelBuyerName.text = encryptBuyerName;
+            self.buttonVCard.hidden = YES;
+        }
+        else {
+            self.labelBuyerName.text = client_name;
+            self.buttonVCard.hidden = NO;
+        }
+        
+        
+    }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        NSLog(@"error:%@",error);
+        
+    }];
+    [request startAsynchronous];
+    
+    
+//    self.labelBuyerName.text = self.referralDetails.client_name;
     NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    [formatter setMaximumFractionDigits:0];
     formatter.currencyCode = @"USD";
     
     NSMutableString *priceText = [NSMutableString stringWithString:@""];
@@ -80,11 +168,6 @@
     
     self.imagePendingAccepted.image = [self imageForReferralStatus:[self.referralDetails.status integerValue]];
     
-    self.labelBuyerName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelPrice.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
-    self.labelReferralFee.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
-    self.labelInfo.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelIntention.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     
     if (self.referralDetails.image == nil || [self.referralDetails.image isEqualToString:@""]) {

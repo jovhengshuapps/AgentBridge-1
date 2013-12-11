@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonSave;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewDesignations;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorMain;
 @property (strong, nonatomic) NSURLConnection *urlConnectionDesignation;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSMutableArray *arrayOfDesignation;
@@ -50,6 +51,9 @@
     self.designationHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldBrokerage.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
+    
+    self.activityIndicator.hidden = YES;
+    self.activityIndicatorMain.hidden = YES;
     
     [self addPaddingAndBorder:self.textFieldBrokerage color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
     

@@ -12,4 +12,7 @@
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 
+-(void) scrollToReferralIn:(NSString*)client_id;
+-(void) scrollToReferralOut:(NSString*)client_id;
+
 @end

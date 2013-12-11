@@ -22,6 +22,8 @@
 @property (strong, nonatomic) LoginDetails *loginDetail;
 @property (strong, nonatomic) NSMutableArray *arrayOfReferralOut;
 @property (strong, nonatomic) NSMutableArray *arrayOfReferralIn;
+@property (strong, nonatomic) NSString *scrollToClientId;
+@property (assign, nonatomic) BOOL fromActivity;
 
 
 - (IBAction)segmentedControlChange:(id)sender;
@@ -79,10 +81,6 @@
                                executeFetchRequest:fetchRequest error:&error];
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     
     [self reloadPageController:@"In"];
 }
@@ -281,26 +279,12 @@
                 [self.pageController didMoveToParentViewController:self];
                 
                 
-                for (UIView *view in self.pageController.view.subviews) {
-                    if([view isKindOfClass:[UIScrollView class]]){
-                        ((UIScrollView*)view).contentSize = CGSizeMake(0.0f, 0.0f);
-//                        for (UIGestureRecognizer *gesture in view.gestureRecognizers) {
-//                            NSString *className = NSStringFromClass([gesture class]);
-//                            if ([className rangeOfString:@"Swipe"].location!=NSNotFound)
-//                            {
-//                                UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:nil action:nil];
-//                                swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-//                                
-//                                UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:nil action:nil];
-//                                swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
-//                                
-//                                if ( ((UISwipeGestureRecognizer*)gesture).direction == swipeLeft.direction )
-//                                    NSLog(@" *** SWIPE LEFT ***");
-//                                if ( ((UISwipeGestureRecognizer*)gesture).direction == swipeRight.direction )
-//                                    NSLog(@" *** SWIPE RIGHT ***");
-//                            }
-//                            
-//                        }
+                if(self.scrollToClientId == nil) {
+                    if (self.segmentedControl.selectedSegmentIndex == 0) {
+                        [self scrollToReferralIn:@"load"];
+                    }
+                    else {
+                        [self scrollToReferralOut:@"load"];
                     }
                 }
 
@@ -335,11 +319,15 @@
 }
 
 - (IBAction)segmentedControlChange:(id)sender {
-    [self.urlConnectionReferral cancel];
-    NSString *value = (((UISegmentedControl*)sender).selectedSegmentIndex)?@"Out":@"In";
-    self.arrayOfReferralIn = nil;
-    self.arrayOfReferralOut = nil;
-    [self reloadPageController:value];
+    NSLog(@"change");
+//    if (self.fromActivity == NO) {
+        [self.urlConnectionReferral cancel];
+        NSString *value = (((UISegmentedControl*)sender).selectedSegmentIndex)?@"Out":@"In";
+        self.arrayOfReferralIn = nil;
+        self.arrayOfReferralOut = nil;
+        [self reloadPageController:value];
+//    }
+//    self.fromActivity = NO;
 }
 
 -(void)defineSegmentControlStyle
@@ -347,7 +335,21 @@
     
     [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
+    [self.segmentedControl setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                  [UIColor colorWithWhite:1.0f alpha:1.0f], UITextAttributeTextColor,
+                                                  [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0], UITextAttributeTextShadowColor,
+                                                  [NSValue valueWithUIOffset:UIOffsetMake(0, 0.5f)], UITextAttributeTextShadowOffset,
+                                                  FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL), UITextAttributeFont,
+                                                   nil]  forState:UIControlStateNormal];
+    
     [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"nav_bg_hover_light.png"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    [self.segmentedControl setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                   [UIColor colorWithRed:44.0f/255.0f green:153.0f/255.0f blue:206.0f/255.0f alpha:1.0], UITextAttributeTextColor,
+                                                   [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0], UITextAttributeTextShadowColor,
+                                                   [NSValue valueWithUIOffset:UIOffsetMake(0, 0.5f)], UITextAttributeTextShadowOffset,
+                                                   FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL), UITextAttributeFont,
+                                                   nil]  forState:UIControlStateSelected];
     
     [self.segmentedControl setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor darkGrayColor],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
     
@@ -357,6 +359,74 @@
 //    CGRect frame = self.segmentedControl.frame;
 //    frame.size.height = 24.0f;
 //    self.segmentedControl.frame = frame;
+}
+
+
+-(void) scrollToReferralIn:(NSString *)client_id {
+    
+    [self dismissOverlay];
+    self.scrollToClientId = client_id;
+//    self.fromActivity = YES;
+    [self.segmentedControl setSelectedSegmentIndex:0];
+    
+    if (self.arrayOfReferralIn == nil) {
+        [self reloadPageController:@"In"];
+    }
+    
+    
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"client_id == %@ AND agent_b == %@", client_id, self.loginDetail.user_id];
+
+    NSArray *result = [self fetchObjectsWithEntityName:@"Referral" andPredicate:predicate];
+    if ([result count]) {
+        Referral *client = (Referral*)[result firstObject];
+        NSInteger index = 0;
+        
+        if (![client_id isEqualToString:@"load"]) {
+            index = [self.arrayOfReferralIn indexOfObject:client];
+        }
+        
+        ABridge_ReferralPagesViewController *initialViewController = [self viewControllerAtIndex:index];
+        
+        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+        
+        [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+        
+        
+    }
+}
+
+
+-(void) scrollToReferralOut:(NSString *)client_id {
+    
+    [self dismissOverlay];
+    self.scrollToClientId = client_id;
+//    self.fromActivity = YES;
+    [self.segmentedControl setSelectedSegmentIndex:1];
+    
+    if ([self.arrayOfReferralOut count] == 0) {
+        [self reloadPageController:@"Out"];
+    }
+    
+    
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"client_id == %@ AND agent_a == %@", client_id, self.loginDetail.user_id];
+    
+    NSArray *result = [self fetchObjectsWithEntityName:@"Referral" andPredicate:predicate];
+    if ([result count]) {
+        Referral *client = (Referral*)[result firstObject];
+        NSInteger index = 0;
+        
+        if (![client_id isEqualToString:@"load"]) {
+            index = [self.arrayOfReferralOut indexOfObject:client];
+        }
+        
+        
+        ABridge_ReferralPagesViewController *initialViewController = [self viewControllerAtIndex:index];
+        
+        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+        
+        [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+        
+    }
 }
 
 @end

@@ -93,6 +93,7 @@
     self.labelBuyerZip.text = self.buyerDetail.zip;
     NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    [formatter setMaximumFractionDigits:0];
     formatter.currencyCode = @"USD";
     
     NSMutableString *priceText = [NSMutableString stringWithString:@""];

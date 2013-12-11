@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorCountry;
 @property (weak, nonatomic) IBOutlet UIView *viewPickerCountry;
 @property (weak, nonatomic) IBOutlet UIView *viewPickerState;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 - (IBAction)saveAddress:(id)sender;
 - (IBAction)backButton:(id)sender;
 - (IBAction)selectState:(id)sender;
@@ -84,6 +85,8 @@
     self.buttonState.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonCountry.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
+    self.activityIndicator.hidden = YES;
+    
     [self addPaddingAndBorder:self.textFieldAddress1 color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
     
     [self addPaddingAndBorder:self.textFieldAddress2 color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
@@ -139,11 +142,92 @@
     self.activityIndicatorCountry.hidden = NO;
     NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getdb_country.php";
     
-    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-    
-    self.urlConnectionCountry = [[HTTPURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+//    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+//    
+//    self.urlConnectionCountry = [[HTTPURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
     
 //    self.actionSheetCountry = [[UIActionSheet alloc] initWithTitle:@"Country" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:nil];
+    
+    
+    __block NSError *errorData = nil;
+    __block ASIHTTPRequest *requestCountry = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [requestCountry setCompletionBlock:^{
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        NSData *responseData = [requestCountry responseData];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+        
+        if (self.arrayOfCountry == nil) {
+            self.arrayOfCountry = [[NSMutableArray alloc] init];
+        }
+        
+        for (NSDictionary *entry in [json objectForKey:@"data"]) {
+            [self.self.arrayOfCountry addObject:[entry objectForKey:@"countries_name"]];
+        }
+        
+        
+        if (self.arrayOfCountry_ID == nil) {
+            self.arrayOfCountry_ID = [[NSMutableArray alloc] init];
+        }
+        
+        for (NSDictionary *entry in [json objectForKey:@"data"]) {
+            [self.self.arrayOfCountry_ID addObject:[entry objectForKey:@"countries_id"]];
+        }
+        
+//        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//        for (NSDictionary *entry in [json objectForKey:@"data"]) {
+//            Country *country = nil;
+//            
+//            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"countries_id == %@", [entry objectForKey:@"countries_id"]];
+//            NSArray *result = [self fetchObjectsWithEntityName:@"Country" andPredicate:predicate];
+//            if ([result count]) {
+//                country = (Country*)[result firstObject];
+//            }
+//            else {
+//                country = [NSEntityDescription insertNewObjectForEntityForName: @"Country" inManagedObjectContext: context];
+//            }
+//            
+//            [country setValuesForKeysWithDictionary:entry];
+//            
+//            NSError *error = nil;
+//            if (![context save:&error]) {
+//                NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+//            }
+//            else {
+//                if (self.arrayOfCountry == nil) {
+//                    self.arrayOfCountry = [[NSMutableArray alloc] init];
+//                }
+//                
+//                [self.arrayOfCountry addObject:country.countries_name];
+//                if (self.arrayOfCountry_ID == nil) {
+//                    self.arrayOfCountry_ID = [[NSMutableArray alloc] init];
+//                }
+//                
+//                [self.arrayOfCountry_ID addObject:country.countries_id];
+//            }
+//        }
+
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.buttonCountry.enabled = YES;
+            self.buttonCountry.backgroundColor = [UIColor whiteColor];
+            self.activityIndicatorCountry.hidden = YES;
+            
+            [self.pickerCountry reloadAllComponents];
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+            
+        });
+        
+    }];
+    [requestCountry setFailedBlock:^{
+        NSError *error = [requestCountry error];
+        NSLog(@"error:%@",error);
+        
+    }];
+    [requestCountry startAsynchronous];
     
     //get States
     self.buttonState.enabled = NO;
@@ -151,11 +235,78 @@
     self.activityIndicatorState.hidden = NO;
     urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getdb_state.php";
     
-    urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-    
-    self.urlConnectionState = [[HTTPURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+//    urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+//    
+//    self.urlConnectionState = [[HTTPURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
     
 //    self.actionSheetState = [[UIActionSheet alloc] initWithTitle:@"State" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:nil];
+    
+    __block ASIHTTPRequest *requestState = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [requestState setCompletionBlock:^{
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        NSData *responseData = [requestState responseData];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+        
+        if (self.arrayOfState == nil) {
+            self.arrayOfState = [[NSMutableArray alloc] init];
+        }
+        
+        for (NSDictionary *entry in [json objectForKey:@"data"]) {
+            [self.self.arrayOfState addObject:[entry objectForKey:@"zone_name"]];
+        }
+        
+//        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//        for (NSDictionary *entry in [json objectForKey:@"data"]) {
+//            State *state = nil;
+//            
+//            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"zone_id == %@", [entry objectForKey:@"zone_id"]];
+//            NSArray *result = [self fetchObjectsWithEntityName:@"State" andPredicate:predicate];
+//            if ([result count]) {
+//                state = (State*)[result firstObject];
+//            }
+//            else {
+//                state = [NSEntityDescription insertNewObjectForEntityForName: @"State" inManagedObjectContext: context];
+//            }
+//            
+//            [state setValuesForKeysWithDictionary:entry];
+//            
+//            NSError *error = nil;
+//            if (![context save:&error]) {
+//                NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+//            }
+//            else {
+//                if (self.arrayOfState == nil) {
+//                    self.arrayOfState = [[NSMutableArray alloc] init];
+//                }
+//                
+//                [self.arrayOfState addObject:state.zone_name];
+//            }
+//        }
+
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.buttonState.enabled = YES;
+            self.buttonState.backgroundColor = [UIColor whiteColor];
+            self.activityIndicatorState.hidden = YES;
+            
+            [self.pickerState reloadAllComponents];
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        });
+        
+    }];
+    [requestState setFailedBlock:^{
+        NSError *error = [requestState error];
+        NSLog(@"error:%@",error);
+        
+    }];
+    [requestState startAsynchronous];
+    
+    
+    
     
 }
 
@@ -179,7 +330,7 @@
 
 - (IBAction)selectCountry:(id)sender {
 //    [self.actionSheetCountry showFromRect:CGRectMake(0.0f, 200.0f, 320.0f, 150.0f) inView:self.view animated:YES];
-    self.viewPickerState.hidden = NO;
+    self.viewPickerCountry.hidden = NO;
 }
 
 - (void) addPaddingAndBorder:(UITextField*)textField color:(UIColor*)color {
@@ -439,7 +590,11 @@
     
     if ([self.arrayOfState count] == 0) {
         self.buttonState.enabled = NO;
-        self.buttonCountry.backgroundColor = [UIColor lightGrayColor];
+        self.buttonState.backgroundColor = [UIColor lightGrayColor];
+    }
+    else {
+        self.buttonState.enabled = YES;
+        self.buttonState.backgroundColor = [UIColor whiteColor];
     }
     
     [self.pickerState reloadAllComponents];

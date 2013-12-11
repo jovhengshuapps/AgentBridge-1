@@ -38,5 +38,6 @@
 @property (nonatomic, retain) NSString * user_name;
 @property (nonatomic, retain) NSString * permission;
 @property (nonatomic, retain) NSString * network_status;
+@property (nonatomic, retain) NSString * referral_update_id;
 
 @end
