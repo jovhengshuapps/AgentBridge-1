@@ -284,19 +284,21 @@
             
 //            NSLog(@"[28]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
             
-            if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+            if ([self.activityDetail.other_user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
                 message = [NSString stringWithFormat:@"You have been invited to join %@'s Network. If you accept this request, you will be able to view %@'s public POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
+                
             }
             else {
-                message = [NSString stringWithFormat:@"%@ is now added to your Network and will be able to view your public POPs™.",self.activityDetail.user_name];
+                message = [NSString stringWithFormat:@"You requested to join %@'s Network.",self.activityDetail.user_name];
+//                message = [NSString stringWithFormat:@"%@ is now added to your Network and will be able to view your public POPs™.",self.activityDetail.user_name];
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.labelActivityName.text = @"Request Network Access";
                 self.labelDateTime.text = self.activityDetail.date;
                 
-                if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                if ([self.activityDetail.other_user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                     self.viewForDescription.hidden = NO;
                     self.labelDescription.text = @"";
                     self.buttonDescription.hidden = NO;
