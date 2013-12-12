@@ -25,6 +25,23 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelInfo;
 @property (weak, nonatomic) IBOutlet UILabel *labelIntention;
 @property (weak, nonatomic) IBOutlet UIButton *buttonVCard;
+@property (weak, nonatomic) IBOutlet UIButton *buttonChangeStatus;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerStatus;
+@property (weak, nonatomic) IBOutlet UIView *viewChangeStatus;
+@property (weak, nonatomic) IBOutlet UITextView *textViewNote;
+@property (weak, nonatomic) IBOutlet UILabel *labelNote;
+@property (weak, nonatomic) IBOutlet UIButton *buttonSubmit;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCancel;
+@property (strong, nonatomic) LoginDetails *loginDetail;
+@property (strong, nonatomic) NSArray *arrayOfStatus;
+@property (strong, nonatomic) NSString *urlStringStatusChange;
+@property (assign, nonatomic) NSInteger statusPicked;
+@property (assign, nonatomic) NSInteger statusPicked_test;
+@property (assign, nonatomic) BOOL pickerChanged;
+
+- (IBAction)changeStatus:(id)sender;
+- (IBAction)submitChange:(id)sender;
+- (IBAction)cancelChange:(id)sender;
 
 - (IBAction)saveBuyerVCard:(id)sender;
 @end
@@ -32,6 +49,12 @@
 @implementation ABridge_ReferralPagesViewController
 @synthesize index;
 @synthesize referralDetails;
+@synthesize loginDetail;
+@synthesize arrayOfStatus;
+@synthesize urlStringStatusChange;
+@synthesize statusPicked;
+@synthesize statusPicked_test;
+@synthesize pickerChanged;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,6 +78,15 @@
     self.labelReferralFee.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
     self.labelInfo.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelIntention.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    
+    self.labelNote.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.textViewNote.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    
+    self.textViewNote.layer.borderColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
+    self.textViewNote.layer.borderWidth = 1.0f;
+    
+    self.buttonSubmit.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
+    self.buttonCancel.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     // Add a bottomBorder.
     CALayer *bottomBorder = [CALayer layer];
@@ -101,11 +133,11 @@
     NSArray *fetchedObjects = [context
                                executeFetchRequest:fetchRequest error:&error];
     
-    LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+    self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@", loginDetail.user_id, self.referralDetails.referral_id];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&update_id=%@", self.loginDetail.user_id, self.referralDetails.referral_id];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed_referral.php%@", parameters];
+    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed.php%@", parameters];
     
     __block NSString *client_name = self.referralDetails.client_name;
     
@@ -119,7 +151,7 @@
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
         
         
-        if ([[json objectForKey:@"data"] count] == 0 && [self.referralDetails.agent_b integerValue] == [loginDetail.user_id integerValue]) {
+        if ([[json objectForKey:@"data"] count] == 0 && [self.referralDetails.agent_b integerValue] == [self.loginDetail.user_id integerValue]) {
             NSMutableString *encryptBuyerName = [[NSMutableString alloc] initWithString:@""];
             if ([client_name length] > 4) {
                 
@@ -149,6 +181,12 @@
     }];
     [request startAsynchronous];
     
+    if ([self.referralDetails.agent_b integerValue] == [self.loginDetail.user_id integerValue]) {
+        self.buttonChangeStatus.hidden = NO;
+    }
+    else {
+        self.buttonChangeStatus.hidden = YES;
+    }
     
 //    self.labelBuyerName.text = self.referralDetails.client_name;
     NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
@@ -168,7 +206,7 @@
     
     self.imagePendingAccepted.image = [self imageForReferralStatus:[self.referralDetails.status integerValue]];
     
-    
+    self.statusPicked_test = [self.referralDetails.status integerValue];
     
     if (self.referralDetails.image == nil || [self.referralDetails.image isEqualToString:@""]) {
         self.imagePicture.image = [UIImage imageNamed:@"blank-image"];
@@ -217,6 +255,84 @@
             break;
     }
     return image;
+}
+
+- (IBAction)changeStatus:(id)sender {
+    
+    switch (self.statusPicked_test) {
+        case REFERRAL_STATUS_UNDERCONTRACT:
+            self.arrayOfStatus = [NSArray arrayWithObjects: @"Active", @"Need Help", @"Closed", nil];
+            break;
+        case REFERRAL_STATUS_CLOSED:
+            self.arrayOfStatus = [NSArray arrayWithObjects: @"Completed", nil];
+            break;
+        case REFERRAL_STATUS_NOGO:
+            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
+            break;
+        case REFERRAL_STATUS_NEEDHELP:
+            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
+            break;
+        case REFERRAL_STATUS_PENDING:
+            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"No Go", @"Need Help", nil];
+            break;
+        case REFERRAL_STATUS_ACCEPTED:
+            self.arrayOfStatus = [NSArray arrayWithObjects: @"Under Contract", @"No Go", @"Need Help", nil];
+            break;
+        case REFERRAL_STATUS_COMMISSIONRECEIVED:
+            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
+            break;
+        default:
+            break;
+    }
+    
+    if ([self.arrayOfStatus count]) {
+        [self.pickerStatus reloadAllComponents];
+        [self.pickerStatus selectRow:0 inComponent:0 animated:YES];
+        self.pickerChanged = NO;
+        self.viewChangeStatus.hidden = NO;
+    }
+}
+
+- (IBAction)submitChange:(id)sender {
+    
+    if (self.pickerChanged == NO) {
+        [self generateURLString:0];
+    }
+    
+    
+//     NSLog(@"url:%@",self.urlStringStatusChange);
+    
+    __block NSError *errorData = nil;
+    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:self.urlStringStatusChange]];
+    [request setCompletionBlock:^{
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        NSData *responseData = [request responseData];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+        
+//        NSLog(@"json:%@",json);
+        if([[json objectForKey:@"status"] integerValue] == 1){
+            self.statusPicked_test = self.statusPicked;
+            self.imagePendingAccepted.image = [self imageForReferralStatus:self.statusPicked_test];
+        }
+        
+        
+    }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        NSLog(@"error:%@",error);
+        
+    }];
+    [request startAsynchronous];
+
+
+    
+    self.viewChangeStatus.hidden = YES;
+}
+
+- (IBAction)cancelChange:(id)sender {
+    self.viewChangeStatus.hidden = YES;
 }
 
 - (IBAction)saveBuyerVCard:(id)sender {
@@ -330,4 +446,72 @@
 -(BOOL)isNull:(id)value {
     return ((NSNull*)value == nil || [value isEqualToString:@""]);
 }
+
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (pickerView == self.pickerStatus) {
+        return [self.arrayOfStatus count];
+    }
+    return 0;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (pickerView == self.pickerStatus) {
+        return [self.arrayOfStatus objectAtIndex:row];
+    }
+    return @"";
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (pickerView == self.pickerStatus) {
+        self.pickerChanged = YES;
+        [self generateURLString:row];
+    }
+}
+
+- (void) generateURLString:(NSInteger)row {
+    NSString *status_type = @"";
+    NSString *note_text = @"";
+    if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"Need Help"]) {
+        self.labelNote.alpha = 1.0f;
+        self.textViewNote.alpha = 1.0f;
+        self.textViewNote.userInteractionEnabled = YES;
+        
+        status_type = @"6";
+        note_text = self.textViewNote.text;
+    }
+    else {
+        self.labelNote.alpha = 0.3f;
+        self.textViewNote.alpha = 0.3f;
+        self.textViewNote.userInteractionEnabled = NO;
+        note_text = @"";
+        
+        if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"Active"]) {
+            status_type = @"8";
+        }
+        else if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"Under Contract"]) {
+            status_type = @"1";
+        }
+        else if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"No Go"]) {
+            status_type = @"5";
+        }
+        else if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"Closed"]) {
+            status_type = @"4";
+        }
+        else if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"Completed"]) {
+            status_type = @"9";
+        }
+    }
+    
+    self.statusPicked = [status_type integerValue];
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&activity_type=%@note=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"17",note_text];
+    
+    self.urlStringStatusChange = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_status.php%@", parameters];
+}
+
 @end

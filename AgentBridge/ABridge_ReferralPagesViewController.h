@@ -11,7 +11,7 @@
 #import "Referral.h"
 #import "ASIHTTPRequest.h"
 
-@interface ABridge_ReferralPagesViewController : UIViewController
+@interface ABridge_ReferralPagesViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) Referral *referralDetails;

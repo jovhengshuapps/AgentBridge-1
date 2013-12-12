@@ -749,7 +749,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
 //    NSLog(@"parameters:%@",parameters);
-    self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-test.php" andParameters:parameters];
+    self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity.php" andParameters:parameters];
     
     if (self.urlConnectionActivity) {
         [self addURLConnection:self.urlConnectionActivity];
