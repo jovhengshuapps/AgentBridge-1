@@ -746,22 +746,23 @@
                                executeFetchRequest:fetchRequest error:&error];
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
-    
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
-//    NSLog(@"parameters:%@",parameters);
-    self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity.php" andParameters:parameters];
-    
-    if (self.urlConnectionActivity) {
-        [self addURLConnection:self.urlConnectionActivity];
-        //        NSLog(@"Connection Successful");
+    if ([fetchedObjects count]) {
+        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
+        //    NSLog(@"parameters:%@",parameters);
+        self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity.php" andParameters:parameters];
         
-        //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
-        
-        self.activityIndicator.hidden = NO;
-        [self.activityIndicator startAnimating];
-    }
-    else {
-        //        NSLog(@"Connection Failed");
+        if (self.urlConnectionActivity) {
+            [self addURLConnection:self.urlConnectionActivity];
+            //        NSLog(@"Connection Successful");
+            
+            //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+            
+            self.activityIndicator.hidden = NO;
+            [self.activityIndicator startAnimating];
+        }
+        else {
+            //        NSLog(@"Connection Failed");
+        }
     }
 }
 

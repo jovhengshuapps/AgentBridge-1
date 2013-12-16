@@ -7,6 +7,7 @@
 //
 
 #import "ABridge_ParentViewController.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_ReferralViewController : ABridge_ParentViewController <UIPageViewControllerDataSource, NSURLConnectionDelegate>
 

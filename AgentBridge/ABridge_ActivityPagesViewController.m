@@ -10,6 +10,8 @@
 #import "ABridge_BuyerViewController.h"
 #import "ABridge_PropertyViewController.h"
 #import "ABridge_ReferralViewController.h"
+#import "ABridge_ActivityAgentProfileViewController.h"
+#import "ABridge_ActivityAgentPOPsViewController.h"
 #import "Constants.h"
 #import "LoginDetails.h"
 #import "RequestAccess.h"
@@ -137,7 +139,10 @@
                 message = [NSString stringWithFormat:@"Your POPs™, %@, is a match to your buyer, %@", pops_link, buyer_name];
             }
             else {
-                message = [NSString stringWithFormat:@"%@ POPs™, %@, is a match to your buyer, %@",self.activityDetail.other_user_name, self.activityDetail.property_name, buyer_name];
+                
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.other_user_name];
+                
+                message = [NSString stringWithFormat:@"%@ POPs™, %@, is a match to your buyer, %@",user_name, self.activityDetail.property_name, buyer_name];
             }
             
         }
@@ -157,6 +162,7 @@
             
             if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
                 NSString *buyer_name = [NSString stringWithFormat:@"<a href='http://client/in/%@'>%@</a>",self.activityDetail.client_id, self.activityDetail.referral_buyer_name];
                 
                 switch ([self.activityDetail.referral_status integerValue]) {
@@ -171,11 +177,13 @@
                             self.buttonDescription.hidden = YES;
                         });}
                         break;
-                    case 5:
-                        message = [NSString stringWithFormat:@"You have declined the referral from %@.", self.activityDetail.user_name];
+                    case 5:{
+                        user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
+                        message = [NSString stringWithFormat:@"You have declined the referral from %@.", user_name];
                         break;
+                    }
                     case 6:
-                        message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", self.activityDetail.user_name, buyer_name];
+                        message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", user_name, buyer_name];
                         break;
                     case 7:{
                         
@@ -211,14 +219,14 @@
                             }
                             
                             if ([self.activityDetail.referral_response integerValue]) {
-                                message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. %@'s contact will be released once you have signed the Referral Agreement.", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_block,buyer_block];
+                                message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. %@'s contact will be released once you have signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block,buyer_block];
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     self.viewForDescription.hidden = NO;
                                     [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
                                 });
                             }
                             else {
-                                message_block = [NSString stringWithFormat:@"%@ has sent you referral %@ with a %@ referral fee.", self.activityDetail.user_name, buyer_block, self.activityDetail.referral_fee];
+                                message_block = [NSString stringWithFormat:@"%@ has sent you referral %@ with a %@ referral fee.", user_name, buyer_block, self.activityDetail.referral_fee];
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     self.viewForDescription.hidden = NO;
                                     [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
@@ -257,6 +265,7 @@
             }
             else {
                 
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
                 NSString *buyer_name = [NSString stringWithFormat:@"<a href='http://client/out/%@'>%@</a>",self.activityDetail.client_id, self.activityDetail.referral_buyer_name];
                 
                 switch ([self.activityDetail.referral_status integerValue]) {
@@ -264,35 +273,86 @@
                         message = [NSString stringWithFormat:@"%@ is now under contract.",buyer_name];
                         break;
                     case 4:{
-                        message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee.", self.activityDetail.user_name,buyer_name];
+                        message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee.", user_name,buyer_name];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             self.viewForDescription.hidden = NO;
                             [self.buttonDescription setTitle:@"Pay" forState:UIControlStateNormal];
                         });}
                         break;
                     case 5:
-                        message = [NSString stringWithFormat:@"%@ has declined the referral. ", self.activityDetail.user_name];
+                        message = [NSString stringWithFormat:@"%@ has declined the referral. ", user_name];
                         break;
                     case 6:
-                        message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", self.activityDetail.user_name, buyer_name];
+                        message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", user_name, buyer_name];
                         break;
                     case 7:
                         if ([self.activityDetail.referral_response integerValue]) {
-                            message = [NSString stringWithFormat:@"%@ has now accepted your referral of %@ fee for client %@.<br/><br/>Sign the referral contract. ", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_name];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                self.viewForDescription.hidden = NO;
-                                [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
-                            });
+                            
+                            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&update_id=%@", self.loginDetail.user_id, self.activityDetail.referral_update_id];
+                            
+                            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed.php%@", parameters];
+                            
+                            __block NSString *buyer_block = buyer_name;
+                            
+                            __block NSError *errorData = nil;
+                            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                            [request setCompletionBlock:^{
+                                // Use when fetching text data
+                                //                        NSString *responseString = [request responseString];
+                                // Use when fetching binary data
+                                NSData *responseData = [request responseData];
+                                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                                NSString *message_block = @"";
+                                if ([[json objectForKey:@"data"] count] == 0) {
+                                    
+                                    message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. You have signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block];
+                                }
+                                else {
+                                    
+                                    message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. You have not signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block];
+                                    
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        self.viewForDescription.hidden = NO;
+                                        [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+                                    });
+                                }
+                                
+//                                    dispatch_async(dispatch_get_main_queue(), ^{
+//                                        self.viewForDescription.hidden = NO;
+//                                        [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+//                                    });
+                                
+                                
+                                NSString *htmlString = [NSString stringWithFormat:@"<html><head><style>body{font-family:'OpenSans'} a{text-decoration: none; color:#2C99CE;}</style></head><body>%@</body></html>", message_block];
+                                
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    [self.webView loadHTMLString:htmlString baseURL:nil];
+                                });
+                                
+                            }];
+                            [request setFailedBlock:^{
+                                NSError *error = [request error];
+                                NSLog(@"error:%@",error);
+                                
+                            }];
+                            [request startAsynchronous];
+                            
+//                            message = [NSString stringWithFormat:@"%@ has now accepted your referral of %@ fee for client %@.<br/><br/>Sign the referral contract. ", self.activityDetail.user_name, self.activityDetail.referral_fee, buyer_name];
+//                            dispatch_async(dispatch_get_main_queue(), ^{
+//                                self.viewForDescription.hidden = NO;
+//                                [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+//                            });
                         }
                         else {
-                            message = [NSString stringWithFormat:@"You have sent a referral to %@ with a %@ referral fee. ", self.activityDetail.user_name, self.activityDetail.referral_fee];
+                            message = [NSString stringWithFormat:@"You have sent a referral to %@ with a %@ referral fee. ", user_name, self.activityDetail.referral_fee];
                         }
                         break;
-                    case 8:
-                        message = [NSString stringWithFormat:@"%@ is actively working on your referral, %@. ", self.activityDetail.user_name, buyer_name];
+                    case 8:{
+                        message = [NSString stringWithFormat:@"%@ is actively working on your referral, %@. ", user_name, buyer_name];
                         break;
+                    }
                     case 9:
-                        message = [NSString stringWithFormat:@"Congratulations. Referral %@ is now complete. ", self.activityDetail.user_name];
+                        message = [NSString stringWithFormat:@"Congratulations. Referral %@ is now complete. ", user_name];
                         break;
                         
                         
@@ -320,10 +380,20 @@
                 self.viewForDescription.hidden = NO;
             });
             
-            
+            if ([self.activityDetail.other_user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
+                
                 NSString *pops_link = [NSString stringWithFormat:@"<a href='http://pops/%@'>%@</a>",self.activityDetail.listing_id, self.activityDetail.property_name];
                 
-                message = [NSString stringWithFormat:@"%@ is requesting to view your private POPs™, %@.",self.activityDetail.user_name, pops_link];
+                message = [NSString stringWithFormat:@"%@ is requesting to view your private POPs™, %@.",user_name, pops_link];
+            }
+            else {
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
+                
+                NSString *pops_link = [NSString stringWithFormat:@"<a href='http://agent_pops/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.property_name];
+                
+                message = [NSString stringWithFormat:@"You are requesting to view %@ private POPs™, %@.",user_name, pops_link];
+            }
             
         }
         else if ([self.activityDetail.activity_type integerValue] == 8) {
@@ -332,10 +402,14 @@
             
             if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
-                message = [NSString stringWithFormat:@"%@ is requesting to view your public POPs™.",self.activityDetail.user_name];
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
+                
+                message = [NSString stringWithFormat:@"%@ is requesting to view your public POPs™.",user_name];
             }
             else {
-                message = [NSString stringWithFormat:@"You have requested to view  %@'s  public POPs™.",self.activityDetail.user_name];
+                
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
+                message = [NSString stringWithFormat:@"You have requested to view  %@'s  public POPs™.",user_name];
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -366,7 +440,7 @@
                     
                     if ([self.activityDetail.network_status integerValue] == 1) {
                         self.viewForDescription.hidden = NO;
-                        self.labelDescription.text = [NSString stringWithFormat:@" %@ has accepted this request. You are now able to view %@'s POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
+                        self.labelDescription.text = [NSString stringWithFormat:@"%@ has accepted this request. You are now able to view %@'s POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
                         self.buttonDescription.hidden = YES;
                     }
                     else if ([self.activityDetail.network_status integerValue] == 2) {
@@ -393,11 +467,15 @@
             
             if ([self.activityDetail.other_user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
-                message = [NSString stringWithFormat:@"You have been invited to join %@'s Network. If you accept this request, you will be able to view %@'s public POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
+                
+                message = [NSString stringWithFormat:@"You have been invited to join %@'s Network. If you accept this request, you will be able to view %@'s public POPs™.",user_name,user_name];
                 
             }
             else {
-                message = [NSString stringWithFormat:@"You requested to join %@'s Network.",self.activityDetail.user_name];
+                
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
+                message = [NSString stringWithFormat:@"You requested to join %@'s Network.",user_name];
 //                message = [NSString stringWithFormat:@"%@ is now added to your Network and will be able to view your public POPs™.",self.activityDetail.user_name];
             }
             
@@ -410,6 +488,8 @@
                     self.labelDescription.text = @"";
                     self.buttonDescription.hidden = NO;
                     [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                    
+                    NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.other_user_name];
                     
                     if ([self.activityDetail.network_status integerValue] == 1) {
                         self.viewForDescription.hidden = NO;
@@ -424,6 +504,8 @@
                 }
                 else {
                     self.viewForDescription.hidden = YES;
+                    
+                    NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
                     
                     if ([self.activityDetail.network_status integerValue] == 1) {
                         self.viewForDescription.hidden = NO;
@@ -500,6 +582,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSString* url = [[request URL] absoluteString];
+//    NSLog(@"url:%@",url);
     if (UIWebViewNavigationTypeLinkClicked == navigationType)
     {
         NSString *type = [url substringFromIndex:7];
@@ -527,6 +610,16 @@
                 [viewController scrollToReferralOut:[url substringFromIndex:18]];
             }
             
+        }
+        else if ([type rangeOfString:@"profile"].location != NSNotFound) {
+            ABridge_ActivityAgentProfileViewController *profileViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ActivityAgentProfile"];
+            profileViewController.user_id = [url substringFromIndex:15];
+            [self.navigationController pushViewController:profileViewController animated:YES];
+        }
+        else if ([type rangeOfString:@"agent_pops"].location != NSNotFound) {
+            ABridge_ActivityAgentPOPsViewController *popsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ActivityAgentPOPs"];
+            popsViewController.user_id = [url substringFromIndex:18];
+            [self.navigationController pushViewController:popsViewController animated:YES];
         }
     }
     return YES;

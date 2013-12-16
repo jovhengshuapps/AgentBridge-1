@@ -1,39 +1,35 @@
 //
-//  ABridge_AgentNetworkPagesViewController.m
+//  ABridge_ActivityAgentProfileViewController.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/19/13.
+//  Created by host24_iOS Dev on 12/13/13.
 //  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
 //
 
-#import "ABridge_AgentNetworkPagesViewController.h"
-#import "LoginDetails.h"
-#import "Constants.h"
+#import "ABridge_ActivityAgentProfileViewController.h"
+#import "AgentProfile.h"
 
-@interface ABridge_AgentNetworkPagesViewController ()
-    @property (weak, nonatomic) IBOutlet UIImageView *imagePicture;
-    @property (weak, nonatomic) IBOutlet UILabel *labelName;
-//    @property (weak, nonatomic) IBOutlet UILabel *labelBroker;
-//    @property (weak, nonatomic) IBOutlet UILabel *labelAddress;
-//    @property (weak, nonatomic) IBOutlet UIButton *buttonMobileNumber;
-//    @property (weak, nonatomic) IBOutlet UIButton *buttonEmailAddress;
-//    @property (weak, nonatomic) IBOutlet UILabel *labelMobile;
-//    @property (weak, nonatomic) IBOutlet UILabel *labelEmail;
-    @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface ABridge_ActivityAgentProfileViewController ()
+@property (weak, nonatomic) IBOutlet UIImageView *imagePicture;
+@property (weak, nonatomic) IBOutlet UILabel *labelName;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *viewContacts;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewVerified;
-@property (weak, nonatomic) IBOutlet UIView *viewForContacts;
 
-@property (weak, nonatomic) IBOutlet UILabel *labelPage;
-//- (IBAction)callMobileNumber:(id)sender;
-//- (IBAction)sendEmail:(id)sender;
-    @property (strong, nonatomic) NSMutableArray *arrayKTableKeys;
+- (IBAction)goBack:(id)sender;
+
+@property (strong, nonatomic) LoginDetails *loginDetail;
+@property (strong, nonatomic) AgentProfile *profileData;
+@property (strong, nonatomic) NSMutableArray *arrayKTableKeys;
 
 @end
 
-@implementation ABridge_AgentNetworkPagesViewController
-    @synthesize index;
-    @synthesize profileData;
-    @synthesize arrayKTableKeys;
+@implementation ABridge_ActivityAgentProfileViewController
+
+@synthesize loginDetail;
+@synthesize profileData;
+@synthesize arrayKTableKeys;
+@synthesize user_id;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,114 +43,155 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+	// Do any additional setup after loading the view.
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-    self.labelName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
-        });
+    self.slidingViewController.underRightViewController = nil;
     
-        self.arrayKTableKeys = [[NSMutableArray alloc] init];
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.user_id];
+    
+    __block NSError *errorData = nil;
+    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getprofile.php%@",parameters]]];
+    [request setCompletionBlock:^{
         
-        if (![self isNull:self.profileData.broker_name]) {
-            [self.arrayKTableKeys addObject:@"brokerage"];
-        }
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        NSData *responseData = [request responseData];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
         
-        if (![self isNull:self.profileData.street_address] || ![self isNull:self.profileData.suburb] || ![self isNull:self.profileData.city] || ![self isNull:self.profileData.state_code] || ![self isNull:self.profileData.zip] || ![self isNull:self.profileData.countries_iso_code_3]) {
-            [self.arrayKTableKeys addObject:@"address"];
-        }
-        
-        if (![self isNull:self.profileData.mobile_number]) {
-            if ([self.profileData.mobile_number rangeOfString:@","].location == NSNotFound) {
-                [self.arrayKTableKeys addObject:@"mobile1"];
-            }
-            else {
-                NSInteger counter = 1;
-                NSArray *array = [self.profileData.mobile_number componentsSeparatedByString:@","];
-                for (NSString *number in array) {
-                    if (![self isNull:number]) {
-                        [self.arrayKTableKeys addObject:[NSString stringWithFormat:@"mobile%li",(long)counter]];
-                        counter++;
+            if ([[json objectForKey:@"data"] count]) {
+                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                    self.profileData = nil;
+                    
+                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"user_id == %@", [entry objectForKey:@"user_id"]];
+                    NSArray *result = [self fetchObjectsWithEntityName:@"AgentProfile" andPredicate:predicate];
+                    if ([result count]) {
+                        self.profileData = (AgentProfile*)[result firstObject];
+                    }
+                    else {
+                        self.profileData = [NSEntityDescription insertNewObjectForEntityForName: @"AgentProfile" inManagedObjectContext: context];
+                    }
+                    
+                    [self.profileData setValuesForKeysWithDictionary:entry];
+                    
+                    NSError *error = nil;
+                    if (![context save:&error]) {
+                        NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                     }
                 }
+                
+                
+                self.arrayKTableKeys = [[NSMutableArray alloc] init];
+                
+                if (![self isNull:self.profileData.broker_name]) {
+                    [self.arrayKTableKeys addObject:@"brokerage"];
+                }
+                
+                if (![self isNull:self.profileData.street_address] || ![self isNull:self.profileData.suburb] || ![self isNull:self.profileData.city] || ![self isNull:self.profileData.state_code] || ![self isNull:self.profileData.zip] || ![self isNull:self.profileData.countries_iso_code_3]) {
+                    [self.arrayKTableKeys addObject:@"address"];
+                }
+                
+                if (![self isNull:self.profileData.mobile_number]) {
+                    if ([self.profileData.mobile_number rangeOfString:@","].location == NSNotFound) {
+                        [self.arrayKTableKeys addObject:@"mobile1"];
+                    }
+                    else {
+                        NSInteger counter = 1;
+                        NSArray *array = [self.profileData.mobile_number componentsSeparatedByString:@","];
+                        for (NSString *number in array) {
+                            if (![self isNull:number]) {
+                                [self.arrayKTableKeys addObject:[NSString stringWithFormat:@"mobile%li",(long)counter]];
+                                counter++;
+                            }
+                        }
+                    }
+                }
+                
+                if (![self isNull:self.profileData.email]) {
+                    [self.arrayKTableKeys addObject:@"email"];
+                }
+                
+                if (![self isNull:self.profileData.zipcodes]) {
+                    [self.arrayKTableKeys addObject:@"zipcodes"];
+                }
+                
+                if (![self isNull:self.profileData.average_price]) {
+                    [self.arrayKTableKeys addObject:@"average_price"];
+                }
+                
+                if (![self isNull:self.profileData.total_volume]) {
+                    [self.arrayKTableKeys addObject:@"total_volume"];
+                }
+                
+                if (![self isNull:self.profileData.total_sides]) {
+                    [self.arrayKTableKeys addObject:@"total_sides"];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    self.labelName.text = [NSString stringWithFormat:@"%@ %@",self.profileData.firstname, self.profileData.lastname];
+                    CGSize constraint = CGSizeMake(150.0f, 20000.0f);
+                    
+                    CGSize size = [self.labelName.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height, 27.0f);
+                    
+                    CGRect frame = self.viewContacts.frame;
+                    frame.size.height += (height - self.labelName.frame.size.height);
+                    self.viewContacts.frame = frame;
+                    
+                    frame = self.labelName.frame;
+                    frame.size.height = height;
+                    self.labelName.frame = frame;
+                    
+                    self.tableView.tableHeaderView = self.viewContacts;
+                    
+                    frame = self.imageViewVerified.frame;
+                    frame.origin.y = self.labelName.frame.origin.y + self.labelName.frame.size.height + 5.0f;
+                    self.imageViewVerified.frame = frame;
+                    
+                    if([self.profileData.activation_status integerValue])
+                        self.imageViewVerified.hidden = NO;
+                    else
+                        self.imageViewVerified.hidden = YES;
+                    
+                    [self.tableView reloadData];
+                });
+                
+                
+                if (self.profileData.image_data == nil && ![self isNull:self.profileData.image]) {
+                    self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.profileData.image_data != nil) {
+                        self.imagePicture.image = [UIImage imageWithData:self.profileData.image_data];
+                    }
+                });
+
+                
             }
-        }
-        
-        if (![self isNull:self.profileData.email]) {
-            [self.arrayKTableKeys addObject:@"email"];
-        }
-        
-        if (![self isNull:self.profileData.zipcodes]) {
-            [self.arrayKTableKeys addObject:@"zipcodes"];
-        }
-        
-        if (![self isNull:self.profileData.average_price]) {
-            [self.arrayKTableKeys addObject:@"average_price"];
-        }
-        
-        if (![self isNull:self.profileData.total_volume]) {
-            [self.arrayKTableKeys addObject:@"total_volume"];
-        }
-        
-        if (![self isNull:self.profileData.total_sides]) {
-            [self.arrayKTableKeys addObject:@"total_sides"];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.labelName.text = [NSString stringWithFormat:@"%@ %@",self.profileData.firstname, self.profileData.lastname];
-            CGSize constraint = CGSizeMake(150.0f, 20000.0f);
-            
-            CGSize size = [self.labelName.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height, 27.0f);
-            
-            CGRect frame = self.viewForContacts.frame;
-            frame.size.height += (height - self.labelName.frame.size.height);
-            self.viewForContacts.frame = frame;
-            
-            frame = self.labelName.frame;
-            frame.size.height = height;
-            self.labelName.frame = frame;
-            
-            self.tableView.tableHeaderView = self.viewForContacts;
-            
-            frame = self.imageViewVerified.frame;
-            frame.origin.y = self.labelName.frame.origin.y + self.labelName.frame.size.height + 5.0f;
-            self.imageViewVerified.frame = frame;
-            
-            if([self.profileData.is_term_accepted integerValue])
-                self.imageViewVerified.hidden = NO;
-            else
-                self.imageViewVerified.hidden = YES;
-            
-            
-            [self.tableView reloadData];
-        });
-        
-        if (self.profileData.image_data == nil && ![self isNull:self.profileData.image]) {
-            self.profileData.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.profileData.image]];
-        }
         
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.profileData.image_data != nil) {
-                self.imagePicture.image = [UIImage imageWithData:self.profileData.image_data];
-            }
-        });
-        
-    });
+    }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        NSLog(@" error:%@",error);
+    }];
+    
+    [request startAsynchronous];
+    
+    self.labelName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     // Add a bottomBorder.
     CALayer *bottomBorder = [CALayer layer];
     
-    bottomBorder.frame = CGRectMake(0.0f, self.viewForContacts.frame.size.height - 1.0f, self.viewForContacts.frame.size.width, 1.0f);
+    bottomBorder.frame = CGRectMake(0.0f, self.viewContacts.frame.size.height - 1.0f, self.viewContacts.frame.size.width, 1.0f);
     
     bottomBorder.backgroundColor = [UIColor colorWithRed:191.0f/255.0f green:191.0f/255.0f blue:191.0f/255.0f alpha:1.0f].CGColor;
     
-    [self.viewForContacts.layer addSublayer:bottomBorder];
+    [self.viewContacts.layer addSublayer:bottomBorder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -163,16 +200,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 -(BOOL)isNull:(id)value {
     return ((NSNull*)value == nil || [value isEqualToString:@""]);
 }
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
-    
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.arrayKTableKeys count];
 }
@@ -247,8 +282,7 @@
         text = self.profileData.total_sides;
     }
     
-    
-    CGSize constraint = CGSizeMake(320.0f - (5.0f * 2), 20000.0f);
+    CGSize constraint = CGSizeMake(320.0f - (10.0f * 2), 20000.0f);
     
     CGSize size = [text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
@@ -268,6 +302,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
+    NSInteger row = [indexPath row];
+    
     cell.textLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_FOR_PROFILE);
     cell.detailTextLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
@@ -284,6 +320,9 @@
         cell.detailTextLabel.text = @"";
     }
     else {
+        if(![self.profileData.activation_status integerValue]){
+            row += 1;
+        }
         if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"brokerage"]) {
             cell.textLabel.text = @"Brokerage";
             cell.detailTextLabel.text = self.profileData.broker_name;
@@ -377,11 +416,9 @@
         }
     }
     
-    
-    
     CGSize constraint = CGSizeMake(320.0f - (10.0f * 2), 20000.0f);
     
-    CGSize size = [cell.detailTextLabel.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [cell.detailTextLabel.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR)  constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     size.height += FONT_SIZE_REGULAR;
     
@@ -389,10 +426,9 @@
     frame.size.height = MAX(size.height, 44.0f);
     cell.detailTextLabel.frame = frame;
     
-    
-    
     return cell;
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -406,19 +442,22 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-    
+
+
+
 - (IBAction)callMobileNumber:(id)sender {
     NSMutableString *mobileNumber = [NSMutableString stringWithString:self.profileData.mobile_number];
     [mobileNumber replaceOccurrencesOfString:@"-" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@"(" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@")" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@" " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
-//    NSLog(@"number:[%@]",mobileNumber);
+    //    NSLog(@"number:[%@]",mobileNumber);
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",mobileNumber]];
     [[UIApplication sharedApplication] openURL:URL];
 }
-    
+
 - (IBAction)sendEmail:(id)sender {
+    
     
     if ([MFMailComposeViewController canSendMail]) {
         
@@ -436,12 +475,12 @@
     
     else {
         
-//        NSLog(@"Device is unable to send email in its current state.");
+        //        NSLog(@"Device is unable to send email in its current state.");
         
     }
     
 }
-    
+
 -(void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
     
     [self dismissViewControllerAnimated:YES completion:^{
@@ -450,5 +489,7 @@
     
 }
 
-
+- (IBAction)goBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end

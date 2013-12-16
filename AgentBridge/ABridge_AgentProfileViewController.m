@@ -171,6 +171,15 @@
     else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"zipcodes"]) {
         text = self.profileData.zipcodes;
     }
+    else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"average_price"]) {
+        text = self.profileData.average_price;
+    }
+    else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"total_volume"]) {
+        text = self.profileData.total_volume;
+    }
+    else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"total_sides"]) {
+        text = self.profileData.total_sides;
+    }
     
     CGSize constraint = CGSizeMake(320.0f - (10.0f * 2), 20000.0f);
     
@@ -279,6 +288,26 @@
         else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"zipcodes"]) {
             cell.textLabel.text = [NSString stringWithFormat:@"%@ works around zip codes",self.profileData.firstname];
             cell.detailTextLabel.text = self.profileData.zipcodes;
+        }
+        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"average_price"]) {
+            cell.textLabel.text = @"Average Sales Price";
+            NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            [formatter setMaximumFractionDigits:0];
+            formatter.currencyCode = @"USD";
+            cell.detailTextLabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[self.profileData.average_price doubleValue]]];
+        }
+        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"total_volume"]) {
+            cell.textLabel.text = @"Total Volume";
+            NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            [formatter setMaximumFractionDigits:0];
+            formatter.currencyCode = @"USD";
+            cell.detailTextLabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[self.profileData.total_volume doubleValue]]];
+        }
+        else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"total_sides"]) {
+            cell.textLabel.text = @"Total Sides";
+            cell.detailTextLabel.text = self.profileData.total_sides;
         }
         else {
             cell.textLabel.text = @"";
@@ -400,6 +429,18 @@
             
             if (![self isNull:self.profileData.zipcodes]) {
                 [self.arrayKTableKeys addObject:@"zipcodes"];
+            }
+            
+            if (![self isNull:self.profileData.average_price]) {
+                [self.arrayKTableKeys addObject:@"average_price"];
+            }
+            
+            if (![self isNull:self.profileData.total_volume]) {
+                [self.arrayKTableKeys addObject:@"total_volume"];
+            }
+            
+            if (![self isNull:self.profileData.total_sides]) {
+                [self.arrayKTableKeys addObject:@"total_sides"];
             }
             
         dispatch_async(dispatch_get_main_queue(), ^{

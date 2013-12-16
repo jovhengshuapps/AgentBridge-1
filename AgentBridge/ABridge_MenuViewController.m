@@ -16,7 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonProfile;
 @property (weak, nonatomic) IBOutlet UIButton *buttonNetwork;
 @property (weak, nonatomic) IBOutlet UIButton *buttonAccountSettings;
-@property (weak, nonatomic) IBOutlet UIButton *buttonAboutMe;
+@property (weak, nonatomic) IBOutlet UIButton *buttonContactInfo;
+@property (weak, nonatomic) IBOutlet UIButton *buttonBrokerage;
 @property (weak, nonatomic) IBOutlet UIButton *buttonNotification;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSecurity;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLogOut;
@@ -30,6 +31,8 @@
 - (IBAction)gotoLogOut:(id)sender;
 - (IBAction)gotoSecurity:(id)sender;
 - (IBAction)gotoInvites:(id)sender;
+- (IBAction)gotoContact:(id)sender;
+- (IBAction)gotoBrokerage:(id)sender;
 
 @end
 
@@ -60,7 +63,8 @@
     self.buttonProfile.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonNetwork.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonAccountSettings.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.buttonAboutMe.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonContactInfo.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonBrokerage.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonNotification.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonSecurity.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonLogOut.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -70,11 +74,20 @@
     // Add a bottomBorder.
     CALayer *bottomBorder = [CALayer layer];
     
-    bottomBorder.frame = CGRectMake(0.0f, self.buttonAboutMe.frame.size.height-1.0f, self.buttonAboutMe.frame.size.width, 1.0f);
+    bottomBorder.frame = CGRectMake(0.0f, self.buttonContactInfo.frame.size.height-1.0f, self.buttonContactInfo.frame.size.width, 1.0f);
     
     bottomBorder.backgroundColor = [UIColor colorWithRed:127.0f/255.0f green:127.0f/255.0f blue:127.0f/255.0f alpha:1.0f].CGColor;
     
-    [self.buttonAboutMe.layer addSublayer:bottomBorder];
+    [self.buttonContactInfo.layer addSublayer:bottomBorder];
+    
+    // Add a bottomBorder.
+    CALayer *bottomBorder1 = [CALayer layer];
+    
+    bottomBorder1.frame = CGRectMake(0.0f, self.buttonBrokerage.frame.size.height-1.0f, self.buttonBrokerage.frame.size.width, 1.0f);
+    
+    bottomBorder1.backgroundColor = [UIColor colorWithRed:127.0f/255.0f green:127.0f/255.0f blue:127.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.buttonBrokerage.layer addSublayer:bottomBorder1];
     
     
     // Add a bottomBorder.
@@ -140,9 +153,13 @@
             frame.origin.y += 33.0f;
             self.buttonAccountSettings.frame = frame;
             
-            frame = self.buttonAboutMe.frame;
+            frame = self.buttonContactInfo.frame;
             frame.origin.y += 33.0f;
-            self.buttonAboutMe.frame = frame;
+            self.buttonContactInfo.frame = frame;
+            
+            frame = self.buttonBrokerage.frame;
+            frame.origin.y += 33.0f;
+            self.buttonBrokerage.frame = frame;
             
             frame = self.buttonNotification.frame;
             frame.origin.y += 33.0f;
@@ -236,53 +253,70 @@
     }];
 }
 
+- (IBAction)gotoContact:(id)sender {
+    UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ContactInfo"];
+    
+    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+        CGRect frame = self.slidingViewController.topViewController.view.frame;
+        self.slidingViewController.topViewController = newTopViewController;
+        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
+}
+
+- (IBAction)gotoBrokerage:(id)sender {
+    UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Brokerage"];
+    
+    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+        CGRect frame = self.slidingViewController.topViewController.view.frame;
+        self.slidingViewController.topViewController = newTopViewController;
+        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
+}
+
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         
-        
-        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-        
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
-                                                  inManagedObjectContext:context];
-        [fetchRequest setEntity:entity];
-        NSError *error = nil;
-        NSArray *fetchedObjects = [context
-                                   executeFetchRequest:fetchRequest error:&error];
-        for (NSManagedObject *obj in fetchedObjects) {
-            [context deleteObject:obj];
-        }
-        
-        NSError *errorSave = nil;
-        if (![context save:&errorSave]) {
-            NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
+        if ([self deleteDataFromEntity:@"LoginDetails"] &&
+            [self deleteDataFromEntity:@"AgentProfile"] &&
+            [self deleteDataFromEntity:@"Activity"] &&
+            [self deleteDataFromEntity:@"Buyer"] &&
+            [self deleteDataFromEntity:@"Property"] &&
+            [self deleteDataFromEntity:@"Referral"] &&
+            [self deleteDataFromEntity:@"PropertyImages"] &&
+            [self deleteDataFromEntity:@"RequestNetwork"] &&
+            [self deleteDataFromEntity:@"RequestAccess"]) {
+
+            [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
         }
         else {
-            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"AgentProfile"
-                                                      inManagedObjectContext:context];
-            [fetchRequest setEntity:entity];
-            NSError *error = nil;
-            NSArray *fetchedObjects = [context
-                                       executeFetchRequest:fetchRequest error:&error];
-            for (NSManagedObject *obj in fetchedObjects) {
-                [context deleteObject:obj];
-            }
-            
-            NSError *errorSave = nil;
-            if (![context save:&errorSave]) {
-                NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
-            }
-            else {
-                [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
-            }
+            NSLog(@"error on deleting");
         }
+        
     }
 }
 
+- (BOOL) deleteDataFromEntity:(NSString*)entityString {
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:entityString
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context
+                               executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *obj in fetchedObjects) {
+        [context deleteObject:obj];
+    }
     
+    NSError *errorSave = nil;
+    return [context save:&errorSave];
+    
+}
+
 - (NSArray *)fetchObjectsWithEntityName:(NSString *)entity andPredicate:(NSPredicate *)predicate {
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
