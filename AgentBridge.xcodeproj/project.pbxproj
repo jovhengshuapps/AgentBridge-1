@@ -57,6 +57,8 @@
 		6EEF58821833857B00C3214E /* ABridge_LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF58811833857B00C3214E /* ABridge_LoginViewController.m */; };
 		6EF61754185054B900DC37F5 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF61753185054B900DC37F5 /* Activity.m */; };
 		6EF741181845FE910021603D /* ABridge_BuyerPopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF741171845FE910021603D /* ABridge_BuyerPopsViewController.m */; };
+		6EF948A4185ED7AF00460878 /* ABridge_TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF948A3185ED7AE00460878 /* ABridge_TabBarViewController.m */; };
+		6EF94F23185EDA9400460878 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E80BC41185EB145005F52C9 /* libxml2.dylib */; };
 		6EFCFC611846F053004EB0B7 /* ABridge_AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC601846F053004EB0B7 /* ABridge_AccountSettingsViewController.m */; };
 		6EFCFC641846F8AD004EB0B7 /* ABridge_AboutMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC631846F8AD004EB0B7 /* ABridge_AboutMeViewController.m */; };
 		6EFCFC671846FA26004EB0B7 /* ABridge_AddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC661846FA26004EB0B7 /* ABridge_AddressViewController.m */; };
@@ -112,6 +114,7 @@
 		6E6D0A77185AF5C400D02B92 /* ABridge_ActivityAgentPOPsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ActivityAgentPOPsViewController.m; sourceTree = "<group>"; };
 		6E791B47183CD28200BB76B3 /* Referral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Referral.h; sourceTree = "<group>"; };
 		6E791B48183CD28200BB76B3 /* Referral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Referral.m; sourceTree = "<group>"; };
+		6E80BC41185EB145005F52C9 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		6EA551031844525E00702E94 /* OpenSans-Regular-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular-webfont.ttf"; sourceTree = "<group>"; };
 		6EB327BD185ABDC700284E7E /* ABridge_ActivityAgentProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ActivityAgentProfileViewController.h; sourceTree = "<group>"; };
 		6EB327BE185ABDC700284E7E /* ABridge_ActivityAgentProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ActivityAgentProfileViewController.m; sourceTree = "<group>"; };
@@ -176,6 +179,9 @@
 		6EF61753185054B900DC37F5 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		6EF741161845FE910021603D /* ABridge_BuyerPopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPopsViewController.h; sourceTree = "<group>"; };
 		6EF741171845FE910021603D /* ABridge_BuyerPopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerPopsViewController.m; sourceTree = "<group>"; };
+		6EF948A2185ED7AE00460878 /* ABridge_TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_TabBarViewController.h; sourceTree = "<group>"; };
+		6EF948A3185ED7AE00460878 /* ABridge_TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_TabBarViewController.m; sourceTree = "<group>"; };
+		6EF94F24185EDEB900460878 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		6EFCFC5F1846F053004EB0B7 /* ABridge_AccountSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AccountSettingsViewController.h; sourceTree = "<group>"; };
 		6EFCFC601846F053004EB0B7 /* ABridge_AccountSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AccountSettingsViewController.m; sourceTree = "<group>"; };
 		6EFCFC621846F8AD004EB0B7 /* ABridge_AboutMeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AboutMeViewController.h; sourceTree = "<group>"; };
@@ -227,6 +233,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EF94F23185EDA9400460878 /* libxml2.dylib in Frameworks */,
 				6EFF61501851BBBC00A5A86A /* libz.dylib in Frameworks */,
 				6EFF614E1851BBAF00A5A86A /* MobileCoreServices.framework in Frameworks */,
 				6EFF614C1851BBA700A5A86A /* SystemConfiguration.framework in Frameworks */,
@@ -372,6 +379,8 @@
 		6EEF583318337E4000C3214E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6EF94F24185EDEB900460878 /* SenTestingKit.framework */,
+				6E80BC41185EB145005F52C9 /* libxml2.dylib */,
 				6EFF614F1851BBBC00A5A86A /* libz.dylib */,
 				6EFF614D1851BBAF00A5A86A /* MobileCoreServices.framework */,
 				6EFF614B1851BBA700A5A86A /* SystemConfiguration.framework */,
@@ -403,6 +412,8 @@
 				6EEF584B18337E4000C3214E /* Images.xcassets */,
 				6EEF587A1833837600C3214E /* ABridge_ParentViewController.h */,
 				6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */,
+				6EF948A2185ED7AE00460878 /* ABridge_TabBarViewController.h */,
+				6EF948A3185ED7AE00460878 /* ABridge_TabBarViewController.m */,
 				6EB32BDC1848328C00F291AF /* HTTPURLConnection.h */,
 				6EB32BDD1848328C00F291AF /* HTTPURLConnection.m */,
 				6EEF586918337E6B00C3214E /* Main.storyboard */,
@@ -667,6 +678,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EBBD7631834A56800166D63 /* ABridge_ReferralViewController.m in Sources */,
+				6EF948A4185ED7AF00460878 /* ABridge_TabBarViewController.m in Sources */,
 				6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */,
 				6EFF61421851BB5700A5A86A /* ASIHTTPRequest.m in Sources */,
 				6EEF5877183382BD00C3214E /* ABridge_SearchViewController.m in Sources */,
@@ -761,7 +773,7 @@
 		6EEF586118337E4000C3214E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -792,8 +804,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2/**",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/ANMobilePaymentLib";
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lxml2";
 				PROVISIONING_PROFILE = "1761CBF8-909C-436E-AEE3-65640094A91B";
 				SDKROOT = iphoneos;
 			};
@@ -802,7 +821,7 @@
 		6EEF586218337E4000C3214E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -827,7 +846,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2/**",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/ANMobilePaymentLib";
+				OTHER_LDFLAGS = "-lxml2";
 				PROVISIONING_PROFILE = "1761CBF8-909C-436E-AEE3-65640094A91B";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -841,10 +867,21 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Damian Want (H352635WJ8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Damian Want (H352635WJ8)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/ANMobilePaymentLib";
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "A0B45F01-E255-48AC-A173-070ED095A2FF";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -859,10 +896,21 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Damian Want (H352635WJ8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Damian Want (H352635WJ8)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/ANMobilePaymentLib";
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "A0B45F01-E255-48AC-A173-070ED095A2FF";
 				TARGETED_DEVICE_FAMILY = 1;

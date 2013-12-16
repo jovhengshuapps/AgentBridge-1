@@ -280,10 +280,10 @@
             </objects>
             <point key="canvasLocation" x="742" y="-399"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Bridge Tab Bar View Controller-->
         <scene sceneID="RwM-Tb-F4f">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarController" definesPresentationContext="YES" id="ZI0-Yt-RGG" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" definesPresentationContext="YES" id="ZI0-Yt-RGG" customClass="ABridge_TabBarViewController" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="cpc-CK-XV6">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
@@ -1969,7 +1969,7 @@
                                         </connections>
                                     </scrollView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Designation:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ACZ-EB-K7D">
-                                        <rect key="frame" x="20" y="96" width="280" height="21"/>
+                                        <rect key="frame" x="20" y="96" width="93" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1979,6 +1979,13 @@
                                         <rect key="frame" x="114" y="97" width="20" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </activityIndicatorView>
+                                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None Specified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pEu-GA-BWz">
+                                        <rect key="frame" x="121" y="96" width="112" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -1998,6 +2005,7 @@
                         <outlet property="buttonSave" destination="Gij-wF-6sW" id="Ga8-la-e83"/>
                         <outlet property="designationHeader" destination="ACZ-EB-K7D" id="wpz-13-yWm"/>
                         <outlet property="imageViewTopBar" destination="Usx-G5-tqV" id="VSY-9j-y2Y"/>
+                        <outlet property="labelNoneSpecified" destination="pEu-GA-BWz" id="0hU-ED-ow4"/>
                         <outlet property="scrollViewDesignations" destination="gQP-M3-HLe" id="Rj1-UT-3dl"/>
                         <outlet property="textFieldBrokerage" destination="XPe-9U-WEQ" id="g3A-Y3-P0u"/>
                         <outlet property="view" destination="GKa-xk-Asj" id="7ju-bI-fof"/>
@@ -2228,12 +2236,15 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="savePassword:" destination="VlS-n0-QjU" eventType="touchUpInside" id="630-VT-Klg"/>
+                                        </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="fjK-n6-YEf">
                                         <rect key="frame" x="20" y="49" width="280" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Password:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LSf-Kl-UZh">
                                         <rect key="frame" x="20" y="87" width="280" height="21"/>
@@ -2246,7 +2257,7 @@
                                         <rect key="frame" x="20" y="116" width="280" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -2256,7 +2267,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="QfI-Da-XjI"/>
                     <connections>
+                        <outlet property="buttonSave" destination="wJf-jr-aw0" id="cJ3-Dj-W31"/>
+                        <outlet property="confirmPasswordHeader" destination="LSf-Kl-UZh" id="1t2-QD-sLB"/>
                         <outlet property="imageViewTopBar" destination="MhX-5Q-vgr" id="nGo-iG-e5M"/>
+                        <outlet property="labelNewPassword" destination="Gor-m7-4wF" id="m9v-fb-0r5"/>
+                        <outlet property="securityTitle" destination="wjx-gj-ZNy" id="PlV-EE-cOg"/>
+                        <outlet property="textFieldConfirmPassword" destination="S5M-xY-lME" id="e9C-al-s5E"/>
+                        <outlet property="textFieldNewPassword" destination="fjK-n6-YEf" id="LkC-gE-Cd5"/>
                         <outlet property="view" destination="Q38-Kj-b5W" id="3XQ-f4-jTA"/>
                     </connections>
                 </viewController>
@@ -2325,6 +2342,9 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="buttonActionPressed:" destination="HAm-x8-uk0" eventType="touchUpInside" id="8ez-I0-3hi"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

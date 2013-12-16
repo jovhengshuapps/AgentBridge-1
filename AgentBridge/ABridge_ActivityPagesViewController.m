@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelDescription;
 @property (weak, nonatomic) IBOutlet UIButton *buttonDescription;
 @property (strong, nonatomic) LoginDetails * loginDetail;
+- (IBAction)buttonActionPressed:(id)sender;
 @end
 
 @implementation ABridge_ActivityPagesViewController
@@ -803,4 +804,14 @@
     // Do something with responseData
 }
 
+- (IBAction)buttonActionPressed:(id)sender {
+    switch ([((UIButton*)sender) tag]) {
+        case 1001:{
+        
+        break;
+        }
+        default:
+        break;
+    }
+}
 @end

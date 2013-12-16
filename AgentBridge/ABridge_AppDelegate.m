@@ -18,8 +18,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    _initalStoryboard = self.window.rootViewController.storyboard;
-    
     UIImage *tabBackground = [[UIImage imageNamed:@"nav_bg.png"]
                               resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     
@@ -28,6 +26,16 @@
     
     [[UITabBar appearance] setBackgroundImage:tabBackground];
     [[UITabBar appearance] setSelectionIndicatorImage:tabBackgroundSelected];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                       [UIColor whiteColor], UITextAttributeTextColor,
+                                                       nil] forState:UIControlStateNormal];
+    UIColor *titleHighlightedColor = [UIColor colorWithRed:44.0f/255.0 green:153.0f/255.0 blue:206.0f/255.0 alpha:1.0];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                       titleHighlightedColor, UITextAttributeTextColor,
+                                                       nil] forState:UIControlStateSelected];
+    
+    _initalStoryboard = self.window.rootViewController.storyboard;
     
     return YES;
 }

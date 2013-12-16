@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelNote;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSubmit;
 @property (weak, nonatomic) IBOutlet UIButton *buttonCancel;
+@property (weak, nonatomic) IBOutlet UIView *viewForButtons;
 @property (strong, nonatomic) LoginDetails *loginDetail;
 @property (strong, nonatomic) NSArray *arrayOfStatus;
 @property (strong, nonatomic) NSString *urlStringStatusChange;
@@ -221,6 +222,19 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+//    [UIView animateWithDuration:1 animations:^{
+//        [self.textViewNote resignFirstResponder];
+//        CGRect frame = self.viewChangeStatus.frame;
+//        frame.origin.y = 0.0f;
+//        self.viewChangeStatus.frame = frame;
+//    } completion:^(BOOL finished) {
+//        self.viewChangeStatus.hidden = YES;
+//    }];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -270,7 +284,7 @@
             self.arrayOfStatus = [NSArray arrayWithObjects:nil];
             break;
         case REFERRAL_STATUS_NEEDHELP:
-            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
+            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"Under Contract", @"No Go",nil];
             break;
         case REFERRAL_STATUS_PENDING:
             self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"No Go", @"Need Help", nil];
@@ -477,17 +491,39 @@
     NSString *status_type = @"";
     NSString *note_text = @"";
     if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"Need Help"]) {
-        self.labelNote.alpha = 1.0f;
-        self.textViewNote.alpha = 1.0f;
-        self.textViewNote.userInteractionEnabled = YES;
+        
+        [UIView animateWithDuration:1 animations:^{
+            CGRect frame = self.viewForButtons.frame;
+            frame.origin.y = 269.0f;
+            self.viewForButtons.frame = frame;
+            
+            frame = self.viewChangeStatus.frame;
+            frame.size.height = 331.0f;
+            self.viewChangeStatus.frame = frame;
+        } completion:^(BOOL finished) {
+            self.labelNote.alpha = 1.0f;
+            self.textViewNote.alpha = 1.0f;
+            self.textViewNote.userInteractionEnabled = YES;
+        }];
         
         status_type = @"6";
         note_text = self.textViewNote.text;
     }
     else {
-        self.labelNote.alpha = 0.3f;
-        self.textViewNote.alpha = 0.3f;
-        self.textViewNote.userInteractionEnabled = NO;
+        [UIView animateWithDuration:1 animations:^{
+            CGRect frame = self.viewForButtons.frame;
+            frame.origin.y = 162.0f;
+            self.viewForButtons.frame = frame;
+            
+            frame = self.viewChangeStatus.frame;
+            frame.size.height = 217.0f;
+            self.viewChangeStatus.frame = frame;
+        } completion:^(BOOL finished) {
+            self.labelNote.alpha = 0.3f;
+            self.textViewNote.alpha = 0.3f;
+            self.textViewNote.userInteractionEnabled = NO;
+        }];
+        
         note_text = @"";
         
         if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"Active"]) {
@@ -512,6 +548,30 @@
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&activity_type=%@note=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"17",note_text];
     
     self.urlStringStatusChange = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_status.php%@", parameters];
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = self.viewChangeStatus.frame;
+        frame.origin.y = -165.0f;
+        self.viewChangeStatus.frame = frame;
+    } completion:^(BOOL finished) {
+    }];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [UIView animateWithDuration:1 animations:^{
+            [textView resignFirstResponder];
+            CGRect frame = self.viewChangeStatus.frame;
+            frame.origin.y = 0.0f;
+            self.viewChangeStatus.frame = frame;
+        } completion:^(BOOL finished) {
+            
+        }];
+        return NO;
+    }
+    return YES;
 }
 
 @end

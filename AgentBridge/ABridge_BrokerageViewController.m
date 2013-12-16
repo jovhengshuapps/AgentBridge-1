@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewDesignations;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorMain;
+@property (weak, nonatomic) IBOutlet UILabel *labelNoneSpecified;
 @property (strong, nonatomic) NSURLConnection *urlConnectionDesignation;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSMutableArray *arrayOfDesignation;
@@ -216,6 +217,15 @@
                     yOffset += textField.frame.size.height + 10.0f;
                     
                     self.scrollViewDesignations.contentSize = CGSizeMake(0.0f, yOffset);
+                }
+                
+                if ([self.arrayOfDesignation count] == 0) {
+                    self.labelNoneSpecified.hidden = NO;
+                    [self.activityIndicator stopAnimating];
+                    self.activityIndicator.hidden = YES;
+                }
+                else {
+                    self.labelNoneSpecified.hidden = YES;
                 }
                 
                 UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, yOffset, 280.0f, 30.0f)];
