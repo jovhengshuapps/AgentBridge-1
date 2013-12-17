@@ -50,6 +50,7 @@
     self.aboutMeTitle.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     self.brokerageHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.designationHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelNoneSpecified.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldBrokerage.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
@@ -150,6 +151,7 @@
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
     NSLog(@"Did Finish:%@", json);
+    self.labelNoneSpecified.hidden = YES;
     
     if ([[json objectForKey:@"data"] count]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -247,6 +249,9 @@
             });
             
         });
+    }
+    else {
+        self.labelNoneSpecified.hidden = NO;
     }
     
     [self.activityIndicator stopAnimating];

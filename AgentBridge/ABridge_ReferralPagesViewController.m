@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "ABridge_AppDelegate.h"
 #import "LoginDetails.h"
+#import "ABridge_FeeCollectionViewController.h"
 
 @interface ABridge_ReferralPagesViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imagePicture;
@@ -309,40 +310,57 @@
 
 - (IBAction)submitChange:(id)sender {
     
-    if (self.pickerChanged == NO) {
-        [self generateURLString:0];
-    }
-    
-    
-//     NSLog(@"url:%@",self.urlStringStatusChange);
-    
-    __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:self.urlStringStatusChange]];
-    [request setCompletionBlock:^{
-        // Use when fetching text data
-        //                        NSString *responseString = [request responseString];
-        // Use when fetching binary data
-        NSData *responseData = [request responseData];
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+    if (self.statusPicked == REFERRAL_STATUS_CLOSED) {
         
-//        NSLog(@"json:%@",json);
-        if([[json objectForKey:@"status"] integerValue] == 1){
-            self.statusPicked_test = self.statusPicked;
-            self.imagePendingAccepted.image = [self imageForReferralStatus:self.statusPicked_test];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        ABridge_FeeCollectionViewController *viewController = (ABridge_FeeCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FeeCollection"];
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        viewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//        NSLog(@"view:%@",viewController);
+        [self presentViewController:viewController animated:YES completion:^{
+            
+        }];
+    }
+    else {
+        if (self.pickerChanged == NO) {
+            [self generateURLString:0];
         }
         
         
-    }];
-    [request setFailedBlock:^{
-        NSError *error = [request error];
-        NSLog(@"error:%@",error);
+        //     NSLog(@"url:%@",self.urlStringStatusChange);
         
-    }];
-    [request startAsynchronous];
+        __block NSError *errorData = nil;
+        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:self.urlStringStatusChange]];
+        [request setCompletionBlock:^{
+            // Use when fetching text data
+            //                        NSString *responseString = [request responseString];
+            // Use when fetching binary data
+            NSData *responseData = [request responseData];
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+            
+            //        NSLog(@"json:%@",json);
+            if([[json objectForKey:@"status"] integerValue] == 1){
+                self.statusPicked_test = self.statusPicked;
+                self.imagePendingAccepted.image = [self imageForReferralStatus:self.statusPicked_test];
+            }
+            
+            
+        }];
+        [request setFailedBlock:^{
+            NSError *error = [request error];
+            NSLog(@"error:%@",error);
+            
+        }];
+        [request startAsynchronous];
+        
+        self.viewChangeStatus.hidden = YES;
+    }
+    
+    
+    
 
 
     
-    self.viewChangeStatus.hidden = YES;
 }
 
 - (IBAction)cancelChange:(id)sender {
