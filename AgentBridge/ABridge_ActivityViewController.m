@@ -191,8 +191,8 @@
         
         NSDictionary *jsonActivities = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
         
+//        NSLog(@"Did Finish:%@", jsonActivities);
         if ([[jsonActivities objectForKey:@"data"] count]) {
-//            NSLog(@"Did Finish:%@", jsonActivities);
 //            NSLog(@"total:%i",[[json objectForKey:@"data"] count]);
             for (NSDictionary *entryActivities in [jsonActivities objectForKey:@"data"]) {
                 

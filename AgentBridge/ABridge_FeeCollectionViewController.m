@@ -9,6 +9,7 @@
 #import "ABridge_FeeCollectionViewController.h"
 #import "State.h"
 #import "Country.h"
+#import "ABridge_SendTransaction.h"
 
 @interface ABridge_FeeCollectionViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *buttonContinueComission;
@@ -61,6 +62,7 @@
 @property (strong, nonatomic) NSMutableArray *arrayOfCountry_ID;
 @property (strong, nonatomic) NSString *cardExpiry;
 
+@property (strong, nonatomic) NSString *sessionToken;
 
 - (IBAction)continuePressed:(id)sender;
 - (IBAction)cancelPressed:(id)sender;
@@ -82,6 +84,7 @@
 @synthesize arrayOfCountry_ID;
 @synthesize referral_id;
 @synthesize cardExpiry;
+@synthesize sessionToken;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -367,50 +370,91 @@
 }
 
 - (IBAction)submitTransaction:(id)sender {
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: [[NSURL alloc] initWithString:@"http://keydiscoveryinc.com/agent_bridge/components/com_propertylisting/controller.php"]];
-    [request setResponseEncoding:NSISOLatin1StringEncoding];
-    [request setPostFormat:ASIMultipartFormDataPostFormat];
-    [request setPostValue:self.textFieldGrossComission.text forKey:@"amount"];
-    [request setPostValue:[NSString stringWithFormat:@"%li",(long)referral_id] forKey:@"ref_id"];
-    [request setPostValue:self.textFieldEmail.text forKey:@"email"];
-    [request setPostValue:[NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text] forKey:@"address"];
-    [request setPostValue:@"223" forKey:@"city"];
-    [request setPostValue:@"12" forKey:@"state"];
-    [request setPostValue:self.textFieldZipcode.text forKey:@"zip"];
-    [request setPostValue:self.textFieldFirstname.text forKey:@"firstname"];
-    [request setPostValue:self.textFieldLastname.text forKey:@"lastname"];
-    [request setPostValue:self.textFieldPhoneNumber.text forKey:@"phone"];
-    [request setPostValue:@"BL29231" forKey:@"bslno"];
-    [request setPostValue:@"AB9301838" forKey:@"alslno"];
-    [request setPostValue:self.textFieldTaxId.text forKey:@"btino"];
-    [request setPostValue:self.cardExpiry forKey:@"card_expiry"];
-    [request setPostValue:self.textFieldCreditCard.text forKey:@"card_number"];
-    [request setPostValue:self.textFieldSecurityCode.text forKey:@"security_no"];
-    [request setPostValue:[NSString stringWithFormat:@"%i",self.switchAgree.isOn] forKey:@"agree_terms"];
-    [request setPostValue:@"0" forKey:@"save_trans"];
-    [request setPostValue:@"Submit" forKey:@"send"];
+//    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: [[NSURL alloc] initWithString:@"http://keydiscoveryinc.com/agent_bridge/components/com_propertylisting/controller.php"]];
+//    [request setResponseEncoding:NSISOLatin1StringEncoding];
+//    [request setPostFormat:ASIMultipartFormDataPostFormat];
+//    [request setPostValue:self.textFieldGrossComission.text forKey:@"amount"];
+//    [request setPostValue:[NSString stringWithFormat:@"%li",(long)referral_id] forKey:@"ref_id"];
+//    [request setPostValue:self.textFieldEmail.text forKey:@"email"];
+//    [request setPostValue:[NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text] forKey:@"address"];
+//    [request setPostValue:@"223" forKey:@"city"];
+//    [request setPostValue:@"12" forKey:@"state"];
+//    [request setPostValue:self.textFieldZipcode.text forKey:@"zip"];
+//    [request setPostValue:self.textFieldFirstname.text forKey:@"firstname"];
+//    [request setPostValue:self.textFieldLastname.text forKey:@"lastname"];
+//    [request setPostValue:self.textFieldPhoneNumber.text forKey:@"phone"];
+//    [request setPostValue:@"BL29231" forKey:@"bslno"];
+//    [request setPostValue:@"AB9301838" forKey:@"alslno"];
+//    [request setPostValue:self.textFieldTaxId.text forKey:@"btino"];
+//    [request setPostValue:self.cardExpiry forKey:@"card_expiry"];
+//    [request setPostValue:self.textFieldCreditCard.text forKey:@"card_number"];
+//    [request setPostValue:self.textFieldSecurityCode.text forKey:@"security_no"];
+//    [request setPostValue:[NSString stringWithFormat:@"%i",self.switchAgree.isOn] forKey:@"agree_terms"];
+//    [request setPostValue:@"0" forKey:@"save_trans"];
+//    [request setPostValue:@"Submit" forKey:@"send"];
+//    
+//    [request setCompletionBlock:^{
+//        // Use when fetching text data
+//        NSString *responseString = [request responseString];
+//        // Use when fetching binary data
+//        NSError *errorData = nil;
+//        NSData *responseData = [request responseData];
+//        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+//        
+////        NSLog(@"%@\njson,%@",responseString,json);
+//        
+//        [self dismissViewControllerAnimated:YES completion:^{
+//            
+//        }];
+//        
+//    }];
+//    [request setFailedBlock:^{
+//        NSError *error = [request error];
+//        NSLog(@"error:%@",error);
+//        
+//    }];
+//    [request startAsynchronous];
     
-    [request setCompletionBlock:^{
-        // Use when fetching text data
-        NSString *responseString = [request responseString];
-        // Use when fetching binary data
-        NSError *errorData = nil;
-        NSData *responseData = [request responseData];
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-        
-//        NSLog(@"%@\njson,%@",responseString,json);
-        
-        [self dismissViewControllerAnimated:YES completion:^{
-            
-        }];
-        
-    }];
-    [request setFailedBlock:^{
-        NSError *error = [request error];
-        NSLog(@"error:%@",error);
-        
-    }];
-    [request startAsynchronous];
+//    ABridge_SendTransaction *send = [[ABridge_SendTransaction alloc] init];
+//    [send loginToGateway];
+    
+    NSString *uuid = @"";
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"UUID_mobile"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:[[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@"_"] forKey:@"UUID_mobile"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    uuid = [[NSUserDefaults standardUserDefaults] objectForKey:@"UUID_mobile"];
+    
+//    MobileDeviceRegistrationRequest *registrationRequest=[MobileDeviceRegistrationRequest mobileDeviceRegistrationRequest];
+//    
+//    registrationRequest.anetApiRequest.merchantAuthentication.name=@"jovhenni19";
+//    
+//    registrationRequest.anetApiRequest.merchantAuthentication.password = @"Vhengshua19";
+//    
+//    registrationRequest.mobileDevice.mobileDescription=@"asd";
+//    registrationRequest.mobileDevice.mobileDeviceId= uuid;
+//    [AuthNet authNetWithEnvironment:ENV_TEST];
+//    AuthNet *an = [AuthNet getInstance];
+//    
+//    [an setDelegate:self];
+    
+//    [an mobileDeviceRegistrationRequest:registrationRequest];
+    
+    // Create our login request.
+//    MobileDeviceLoginRequest *mobileDeviceLoginRequest = [MobileDeviceLoginRequest mobileDeviceLoginRequest];
+//    mobileDeviceLoginRequest.anetApiRequest.merchantAuthentication.name = @"jovhenni19";
+//    mobileDeviceLoginRequest.anetApiRequest.merchantAuthentication.password = @"Vhengshua19";
+//    mobileDeviceLoginRequest.anetApiRequest.merchantAuthentication.mobileDeviceId = uuid;
+//    
+//    [AuthNet authNetWithEnvironment:ENV_TEST];
+//    AuthNet *an2 = [AuthNet getInstance];
+//    
+//    [an2 setDelegate:self];
+//    
+//    [an2 mobileDeviceLoginRequest:mobileDeviceLoginRequest];
+    
+//    [self createTransaction];
 }
 
 - (IBAction)resignKeyboards:(id)sender {
@@ -596,5 +640,83 @@
     self.viewPickerCountry.hidden = YES;
     self.viewPickerState.hidden = YES;
 }
+
+
+//- (void) requestFailed:(AuthNetResponse *)response {
+//    // Handle a failed request
+//    NSLog(@"failed request");
+//}
+//
+//- (void) connectionFailed:(AuthNetResponse *)response {
+//    // Handle a failed connection
+//    NSLog(@"failed connection");
+//}
+//
+//- (void) paymentSucceeded:(CreateTransactionResponse *) response {
+//    // Handle payment success
+//    NSLog(@"success");
+//}
+//
+//- (void) mobileDeviceRegistrationRequest:(MobileDeviceLoginResponse *)response {
+//    NSLog(@"success REGISTRATION");
+//    self.sessionToken = response.sessionToken;
+////    [self createTransaction];
+//};
+//
+//- (void) mobileDeviceLoginSucceeded:(MobileDeviceLoginResponse *)response {
+//    NSLog(@"success LOGIN");
+//    self.sessionToken = response.sessionToken;
+//    [self createTransaction];
+//};
+//
+//- (void) createTransaction {
+//    AuthNet *an = [[AuthNet alloc]init];
+//    
+//    [an setDelegate:self];
+//    NSLog(@"creating transaction");
+//    CreditCardType *creditCardType = [CreditCardType creditCardType];
+//    creditCardType.cardNumber = @"4111111111111111";
+//    creditCardType.cardCode = @"100";
+//    creditCardType.expirationDate = @"1212";
+//    
+//    PaymentType *paymentType = [PaymentType paymentType];
+//    paymentType.creditCard = creditCardType;
+//    
+//    ExtendedAmountType *extendedAmountTypeTax = [ExtendedAmountType extendedAmountType];
+//    extendedAmountTypeTax.amount = @"0";
+//    extendedAmountTypeTax.name = @"Tax";
+//    
+//    ExtendedAmountType *extendedAmountTypeShipping = [ExtendedAmountType extendedAmountType];
+//    extendedAmountTypeShipping.amount = @"0";
+//    extendedAmountTypeShipping.name = @"Shipping";
+//    
+//    LineItemType *lineItem = [LineItemType lineItem];
+//    lineItem.itemName = @"Soda";
+//    lineItem.itemDescription = @"Soda";
+//    lineItem.itemQuantity = @"1";
+//    lineItem.itemPrice = @"1.00";
+//    lineItem.itemID = @"1";
+//    
+//    TransactionRequestType *requestType = [TransactionRequestType transactionRequest];
+//    requestType.lineItems = [NSMutableArray arrayWithObject:lineItem];//[NSArray arrayWithObject:lineItem];
+//    requestType.amount = @"1.00";
+//    requestType.payment = paymentType;
+//    requestType.tax = extendedAmountTypeTax;
+//    requestType.shipping = extendedAmountTypeShipping;
+//    
+//    NSString* uuid = [[NSUserDefaults standardUserDefaults] objectForKey:@"UUID_mobile"];
+//    CreateTransactionRequest *request = [CreateTransactionRequest createTransactionRequest];
+//    request.transactionRequest = requestType;
+//    request.transactionType = AUTH_ONLY;
+//    request.anetApiRequest.merchantAuthentication.name=@"7fD6L6mV";
+//
+////    request.anetApiRequest.merchantAuthentication.password = @"Vhengshua19";
+//    
+//    request.anetApiRequest.merchantAuthentication.transactionKey = @"2nC2Y5q8LkM9526c";
+//    request.anetApiRequest.merchantAuthentication.mobileDeviceId = uuid;
+////    request.anetApiRequest.merchantAuthentication.sessionToken = self.sessionToken;
+//    NSLog(@"sending request");
+//    [an purchaseWithRequest:request];
+//}
 
 @end

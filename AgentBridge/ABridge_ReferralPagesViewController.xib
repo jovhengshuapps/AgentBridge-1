@@ -135,7 +135,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view hidden="YES" contentMode="scaleToFill" id="Tky-aX-PMI">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="217"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="331"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                     <subviews>
                         <pickerView contentMode="scaleToFill" id="8Ln-z2-Gm3">
@@ -146,7 +146,7 @@
                                 <outlet property="delegate" destination="-1" id="OHc-ex-yDg"/>
                             </connections>
                         </pickerView>
-                        <textView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleToFill" id="d0Z-74-Rzd">
+                        <textView clipsSubviews="YES" contentMode="scaleToFill" id="d0Z-74-Rzd">
                             <rect key="frame" x="10" y="188" width="301" height="73"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -156,7 +156,7 @@
                                 <outlet property="delegate" destination="-1" id="6u4-Ig-pwh"/>
                             </connections>
                         </textView>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fMV-6d-7GZ">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fMV-6d-7GZ">
                             <rect key="frame" x="10" y="170" width="42" height="16"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -164,7 +164,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" id="sQO-QI-xcf">
-                            <rect key="frame" x="0.0" y="162" width="320" height="55"/>
+                            <rect key="frame" x="0.0" y="269" width="320" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="U6v-H6-zCa">

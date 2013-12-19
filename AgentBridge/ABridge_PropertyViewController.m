@@ -264,6 +264,7 @@
             });
             
         });
+        [self dismissOverlay];
     }
     else {
         [self.pageController.view removeFromSuperview];
@@ -275,7 +276,6 @@
         [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
     }
     
-    [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

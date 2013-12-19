@@ -8,12 +8,18 @@
 
 #import "ABridge_BrokerageViewController.h"
 #import "AgentProfile.h"
+#import "HTAutocompleteTextField.h"
+#import "HTAutocompleteManager.h"
+#import "ASIHTTPRequest.h"
+#import "Brokerage.h"
+#import "Designation.h"
+#import "ABridge_AppDelegate.h"
 
 @interface ABridge_BrokerageViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *aboutMeTitle;
 @property (weak, nonatomic) IBOutlet UILabel *brokerageHeader;
 @property (weak, nonatomic) IBOutlet UILabel *designationHeader;
-@property (weak, nonatomic) IBOutlet UITextField *textFieldBrokerage;
+@property (weak, nonatomic) IBOutlet HTAutocompleteTextField *textFieldBrokerage;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSave;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewDesignations;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -22,6 +28,7 @@
 @property (strong, nonatomic) NSURLConnection *urlConnectionDesignation;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSMutableArray *arrayOfDesignation;
+@property (strong, nonatomic) NSMutableArray *arrayOfDesignationAutocomplete;
 - (IBAction)saveBrokerage:(id)sender;
 - (IBAction)backButton:(id)sender;
 
@@ -31,6 +38,7 @@
 @synthesize urlConnectionDesignation;
 @synthesize dataReceived;
 @synthesize arrayOfDesignation;
+@synthesize arrayOfDesignationAutocomplete;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,6 +66,71 @@
     self.activityIndicatorMain.hidden = YES;
     
     [self addPaddingAndBorder:self.textFieldBrokerage color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
+    
+    __block NSMutableArray *arrayOfBroker = nil;
+    
+    NSMutableString *urlStringBroker = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_broker_list.php"];
+    
+    __block NSError *errorDataBroker = nil;
+    __block ASIHTTPRequest *requestBroker = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringBroker]];
+    [requestBroker setCompletionBlock:
+     ^{
+         NSData *responseData = [requestBroker responseData];
+         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorDataBroker];
+         
+         if ([[json objectForKey:@"data"] count]) {
+             //                 NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+             for(NSDictionary *entry in [json objectForKey:@"data"]){
+                 //                     Brokerage *broker = nil;
+                 //
+                 //                     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"broker_id == %@", [entry objectForKey:@"broker_id"]];
+                 //
+                 //                     NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+                 //                     [fetchRequest setPredicate:predicate];
+                 //                     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Brokerage" inManagedObjectContext:context]];
+                 //                     NSError * error = nil;
+                 //                     NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+                 //                     if ([result count]) {
+                 //                         broker = (Brokerage*)[result firstObject];
+                 //                     }
+                 //                     else {
+                 //                         broker = [NSEntityDescription insertNewObjectForEntityForName: @"Brokerage" inManagedObjectContext: context];
+                 //
+                 //                         NSError *errorSave = nil;
+                 //                         if (![context save:&errorSave]) {
+                 //                             NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
+                 //                         }
+                 //                     }
+                 //
+                 //                     [broker setValuesForKeysWithDictionary:entry];
+                 
+                 if(arrayOfBroker == nil) {
+                     arrayOfBroker = [NSMutableArray array];
+                 }
+                 
+                 //                     [arrayOfBroker addObject:broker.broker_name];
+                 [arrayOfBroker addObject:[entry valueForKey:@"broker_name"]];
+             }
+             
+             // Set a default data source for all instances.  Otherwise, you can specify the data source on individual text fields via the autocompleteDataSource property
+             
+             HTAutocompleteManager *manager = [HTAutocompleteManager sharedManager];
+             manager.arrayOfBroker = arrayOfBroker;
+             [HTAutocompleteTextField setDefaultAutocompleteDataSource:manager];
+             
+             self.textFieldBrokerage.autocompleteType = HTAutocompleteTypeBrokerage;
+             
+         }
+         
+     }];
+    [requestBroker setFailedBlock:^{
+        NSError *error = [requestBroker error];
+        NSLog(@" error:%@",error);
+    }];
+    
+    [requestBroker startAsynchronous];
+    
+    
     
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
@@ -192,6 +265,40 @@
                 [self.arrayOfDesignation addObject:[entry objectForKey:@"designation_name"]];
             }
             
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_designation_list.php"];
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+                 if ([[json objectForKey:@"data"] count]) {
+                     
+                     for(NSDictionary *entry in [json objectForKey:@"data"]){
+                         
+                         if(self.arrayOfDesignationAutocomplete == nil) {
+                             self.arrayOfDesignationAutocomplete = [NSMutableArray array];
+                         }
+                         
+                         
+                         [self.arrayOfDesignationAutocomplete addObject:[entry valueForKey:@"designations"]];
+                     }
+                     
+                     // Set a default data source for all instances.  Otherwise, you can specify the data source on individual text fields via the autocompleteDataSource property
+                     
+                     
+                 }
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 CGFloat yOffset = 0.0f;
                 if ([self.arrayOfDesignation count] > 2) {
@@ -204,7 +311,7 @@
                     self.buttonSave.frame = frame;
                 }
                 for (NSString *designation in self.arrayOfDesignation) {
-                    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, yOffset, 280.0f, 30.0f)];
+                    HTAutocompleteTextField *textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(0.0f, yOffset, 280.0f, 30.0f)];
                     textField.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
                     [self addPaddingAndBorder:textField color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
                     textField.borderStyle = UITextBorderStyleNone;
@@ -219,6 +326,13 @@
                     yOffset += textField.frame.size.height + 10.0f;
                     
                     self.scrollViewDesignations.contentSize = CGSizeMake(0.0f, yOffset);
+                    
+                    
+                    HTAutocompleteManager *manager = [HTAutocompleteManager sharedManager];
+                    manager.arrayOfDesignation = self.arrayOfDesignation;
+                    [HTAutocompleteTextField setDefaultAutocompleteDataSource:manager];
+                    
+                    textField.autocompleteType = HTAutocompleteTypeDesignation;
                 }
                 
                 if ([self.arrayOfDesignation count] == 0) {
@@ -230,7 +344,7 @@
                     self.labelNoneSpecified.hidden = YES;
                 }
                 
-                UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, yOffset, 280.0f, 30.0f)];
+                HTAutocompleteTextField *textField = [[HTAutocompleteTextField alloc] initWithFrame:CGRectMake(0.0f, yOffset, 280.0f, 30.0f)];
                 textField.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
                 [self addPaddingAndBorder:textField color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
                 textField.borderStyle = UITextBorderStyleNone;
@@ -239,6 +353,12 @@
                 textField.minimumFontSize = 11.0f;
                 textField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                 textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                
+                HTAutocompleteManager *manager = [HTAutocompleteManager sharedManager];
+                manager.arrayOfDesignation = self.arrayOfDesignation;
+                [HTAutocompleteTextField setDefaultAutocompleteDataSource:manager];
+                
+                textField.autocompleteType = HTAutocompleteTypeDesignation;
                 
                 [self.scrollViewDesignations addSubview:textField];
                 

@@ -64,6 +64,21 @@
         <attribute name="zip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zipcodes" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Brokerage" representedClassName="Brokerage" syncable="YES">
+        <attribute name="address_line1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="address_line2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="broker_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="broker_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="country_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postal_code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="site" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tax_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zone_id" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Buyer" representedClassName="Buyer" syncable="YES">
         <attribute name="available_sqft" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bathroom" optional="YES" attributeType="String" syncable="YES"/>
@@ -123,12 +138,26 @@
         <attribute name="zip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoned" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="ContactInfoNumber" representedClassName="ContactInfoNumber" syncable="YES">
+        <attribute name="main" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pk_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="show" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Country" representedClassName="Country" syncable="YES">
         <attribute name="address_format_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countries_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countries_iso_code_2" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countries_iso_code_3" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countries_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Designation" representedClassName="Designation" syncable="YES">
+        <attribute name="country_available" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="designation_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="designations" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="LoginDetails" representedClassName="LoginDetails" syncable="YES">
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
@@ -267,5 +296,8 @@
         <element name="RequestAccess" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RequestNetwork" positionX="0" positionY="0" width="0" height="0"/>
         <element name="State" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ContactInfoNumber" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Brokerage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Designation" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

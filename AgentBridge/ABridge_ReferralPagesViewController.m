@@ -344,7 +344,14 @@
                 self.imagePendingAccepted.image = [self imageForReferralStatus:self.statusPicked_test];
             }
             
-            
+            [UIView animateWithDuration:0.2 animations:^{
+                CGRect frame = self.viewChangeStatus.frame;
+                frame.origin.y = 0.0f;
+                self.viewChangeStatus.frame = frame;
+                [self.textViewNote resignFirstResponder];
+            } completion:^(BOOL finished) {
+                self.viewChangeStatus.hidden = YES;
+            }];
         }];
         [request setFailedBlock:^{
             NSError *error = [request error];
@@ -364,7 +371,15 @@
 }
 
 - (IBAction)cancelChange:(id)sender {
-    self.viewChangeStatus.hidden = YES;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = self.viewChangeStatus.frame;
+        frame.origin.y = 0.0f;
+        self.viewChangeStatus.frame = frame;
+        [self.textViewNote resignFirstResponder];
+    } completion:^(BOOL finished) {
+        self.viewChangeStatus.hidden = YES;
+    }];
 }
 
 - (IBAction)saveBuyerVCard:(id)sender {
@@ -510,37 +525,37 @@
     NSString *note_text = @"";
     if ([[self.arrayOfStatus objectAtIndex:row] isEqualToString:@"Need Help"]) {
         
-        [UIView animateWithDuration:1 animations:^{
-            CGRect frame = self.viewForButtons.frame;
-            frame.origin.y = 269.0f;
-            self.viewForButtons.frame = frame;
-            
-            frame = self.viewChangeStatus.frame;
-            frame.size.height = 331.0f;
-            self.viewChangeStatus.frame = frame;
-        } completion:^(BOOL finished) {
-            self.labelNote.alpha = 1.0f;
-            self.textViewNote.alpha = 1.0f;
-            self.textViewNote.userInteractionEnabled = YES;
-        }];
+//        [UIView animateWithDuration:1 animations:^{
+//            CGRect frame = self.viewForButtons.frame;
+//            frame.origin.y = 269.0f;
+//            self.viewForButtons.frame = frame;
+//            
+//            frame = self.viewChangeStatus.frame;
+//            frame.size.height = 331.0f;
+//            self.viewChangeStatus.frame = frame;
+//        } completion:^(BOOL finished) {
+//            self.labelNote.alpha = 1.0f;
+//            self.textViewNote.alpha = 1.0f;
+//            self.textViewNote.userInteractionEnabled = YES;
+//        }];
         
         status_type = @"6";
         note_text = self.textViewNote.text;
     }
     else {
-        [UIView animateWithDuration:1 animations:^{
-            CGRect frame = self.viewForButtons.frame;
-            frame.origin.y = 162.0f;
-            self.viewForButtons.frame = frame;
-            
-            frame = self.viewChangeStatus.frame;
-            frame.size.height = 217.0f;
-            self.viewChangeStatus.frame = frame;
-        } completion:^(BOOL finished) {
-            self.labelNote.alpha = 0.3f;
-            self.textViewNote.alpha = 0.3f;
-            self.textViewNote.userInteractionEnabled = NO;
-        }];
+//        [UIView animateWithDuration:1 animations:^{
+//            CGRect frame = self.viewForButtons.frame;
+//            frame.origin.y = 162.0f;
+//            self.viewForButtons.frame = frame;
+//            
+//            frame = self.viewChangeStatus.frame;
+//            frame.size.height = 217.0f;
+//            self.viewChangeStatus.frame = frame;
+//        } completion:^(BOOL finished) {
+//            self.labelNote.alpha = 0.3f;
+//            self.textViewNote.alpha = 0.3f;
+//            self.textViewNote.userInteractionEnabled = NO;
+//        }];
         
         note_text = @"";
         

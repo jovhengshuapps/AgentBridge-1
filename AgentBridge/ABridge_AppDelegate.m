@@ -7,6 +7,7 @@
 //
 
 #import "ABridge_AppDelegate.h"
+#import "TestFlight.h"
 
 @implementation ABridge_AppDelegate
 
@@ -29,13 +30,15 @@
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                        [UIColor whiteColor], UITextAttributeTextColor,
-                                                       nil] forState:UIControlStateNormal];
-    UIColor *titleHighlightedColor = [UIColor colorWithRed:44.0f/255.0 green:153.0f/255.0 blue:206.0f/255.0 alpha:1.0];
+                                                       nil] forState:UIControlStateSelected];
+    UIColor *titleHighlightedColor = [UIColor whiteColor];//[UIColor colorWithRed:44.0f/255.0 green:153.0f/255.0 blue:206.0f/255.0 alpha:1.0];
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                        titleHighlightedColor, UITextAttributeTextColor,
-                                                       nil] forState:UIControlStateSelected];
-    
+                                                       nil] forState:UIControlStateNormal];
+    [self.window makeKeyAndVisible];
     _initalStoryboard = self.window.rootViewController.storyboard;
+    
+    [TestFlight takeOff:@"c6b4d58a-dd3a-4c8f-8b39-d76c46aaeeef"];
     
     return YES;
 }

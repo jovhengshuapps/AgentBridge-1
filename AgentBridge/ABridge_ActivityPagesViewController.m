@@ -805,6 +805,7 @@
 }
 
 - (IBAction)buttonActionPressed:(id)sender {
+    NSLog(@"pressed");
     switch ([((UIButton*)sender) tag]) {
         case 1001:{
         
