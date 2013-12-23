@@ -14,6 +14,7 @@
 - (void) zoomImage:(NSData*)image_data;
 @optional
 - (void) hideSaveButton:(BOOL)hide;
+- (void) replaceSaveWithText:(NSString*)string;
 
 @end
 
@@ -23,4 +24,6 @@
 @property (strong, nonatomic) Property *propertyDetails;
 @property (assign, nonatomic) id <ABridge_PropertyPagesViewControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL buyers_view;
+@property (assign, nonatomic) NSInteger buyer_id;
+@property (strong, nonatomic) NSString *buyer_name;
 @end

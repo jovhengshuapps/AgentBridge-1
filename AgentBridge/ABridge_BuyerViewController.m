@@ -84,6 +84,12 @@
     [self loadBuyers];
 }
 
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+//    
+//    [self loadBuyers];
+//}
+
 - (void)loadBuyers{
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     

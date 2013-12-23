@@ -154,6 +154,7 @@
          else {
              
          }
+         self.activityIndicator.hidden = YES;
          
      }];
     [request setFailedBlock:^{
@@ -219,6 +220,7 @@
          else {
              
          }
+         self.activityIndicator.hidden = YES;
          
      }];
     [request setFailedBlock:^{
@@ -284,6 +286,7 @@
          else {
              
          }
+         self.activityIndicator.hidden = YES;
          
      }];
     [request setFailedBlock:^{
@@ -301,47 +304,47 @@
 }
 
 - (IBAction)saveContacts:(id)sender {
-    if([self.textFieldMobileNumber.text isEqualToString:@""]) {
-        
-    }
-    else {
-        for (NSString *number in [self.textFieldMobileNumber.text componentsSeparatedByString:@","]) {
-            if(![number isEqualToString:@""]) {
-                
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"value == %@", number];
-                NSString *number_id = ((ContactInfoNumber*)[[self fetchObjectsWithEntityName:@"ContactInfoNumber" andPredicate:predicate] firstObject]).pk_id;
-                
-                NSString *parameters = [NSString stringWithFormat:@"?id=%@&user_id=%@value_number=%@",number_id,self.loginDetails.user_id,number];
-                
-                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_mobilenumber.php"];
-                [urlString appendString:parameters];
-                
-                self.activityIndicator.hidden = NO;
-                __block NSError *errorData = nil;
-                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-                
-                [request setCompletionBlock:
-                 ^{
-                     NSData *responseData = [request responseData];
-                     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-                     
-                     if ([[json objectForKey:@"status"] count]) {
-                         NSLog(@"successfully saved");
-                     }
-                     else {
-                         NSLog(@"failed to saved");
-                     }
-                     
-                 }];
-                [request setFailedBlock:^{
-                    NSError *error = [request error];
-                    NSLog(@" error:%@",error);
-                }];
-                
-                [request startAsynchronous];
-            }
-        }
-    }
+//    if([self.textFieldMobileNumber.text isEqualToString:@""]) {
+//        
+//    }
+//    else {
+//        for (NSString *number in [self.textFieldMobileNumber.text componentsSeparatedByString:@","]) {
+//            if(![number isEqualToString:@""]) {
+//                
+//                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"value == %@", number];
+//                NSString *number_id = ((ContactInfoNumber*)[[self fetchObjectsWithEntityName:@"ContactInfoNumber" andPredicate:predicate] firstObject]).pk_id;
+//                
+//                NSString *parameters = [NSString stringWithFormat:@"?id=%@&user_id=%@value_number=%@",number_id,self.loginDetails.user_id,number];
+//                
+//                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_mobilenumber.php"];
+//                [urlString appendString:parameters];
+//                
+//                self.activityIndicator.hidden = NO;
+//                __block NSError *errorData = nil;
+//                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+//                
+//                [request setCompletionBlock:
+//                 ^{
+//                     NSData *responseData = [request responseData];
+//                     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+//                     
+//                     if ([[json objectForKey:@"status"] count]) {
+//                         NSLog(@"successfully saved");
+//                     }
+//                     else {
+//                         NSLog(@"failed to saved");
+//                     }
+//                     
+//                 }];
+//                [request setFailedBlock:^{
+//                    NSError *error = [request error];
+//                    NSLog(@" error:%@",error);
+//                }];
+//                
+//                [request startAsynchronous];
+//            }
+//        }
+//    }
     
 }
 

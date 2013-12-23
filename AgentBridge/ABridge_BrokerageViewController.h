@@ -7,7 +7,8 @@
 //
 
 #import "ABridge_ParentViewController.h"
+#import "MLPAutoCompleteTextField.h"
 
-@interface ABridge_BrokerageViewController : ABridge_ParentViewController<UITextFieldDelegate, NSURLConnectionDelegate, UIScrollViewDelegate>
+@interface ABridge_BrokerageViewController : ABridge_ParentViewController<UITextFieldDelegate, NSURLConnectionDelegate, UIScrollViewDelegate, MLPAutoCompleteTextFieldDataSource, MLPAutoCompleteTextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end

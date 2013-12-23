@@ -100,23 +100,8 @@
                                executeFetchRequest:fetchRequest error:&error];
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
-    if ([self.activityDetail.activity_type integerValue] == 25) {
-        if ([self.loginDetail.user_id integerValue] != [self.activityDetail.pops_user_id integerValue]) {
-            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id];
-            
-            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php"];
-            [urlString_ appendString:parameters];
-            //        NSLog(@"url:%@",urlString_);
-            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
-            
-            self.urlConnectionRequestNetwork = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
-            
-            if (self.urlConnectionRequestNetwork) {
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-                [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-            }
-        }
-    }
+//    if ([self.activityDetail.activity_type integerValue] == 25) {
+//    }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
@@ -128,10 +113,276 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.labelActivityName.text = @"Buyer Match";
                 self.labelDateTime.text = self.activityDetail.date;
-                self.viewForDescription.hidden = NO;
-                self.labelDescription.text = @"";
-                [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
+//                self.viewForDescription.hidden = NO;
+                self.labelDescription.hidden = YES;
+                self.buttonDescription.hidden = YES;
+                
+                NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%@",self.loginDetail.user_id,self.activityDetail.listing_id, self.activityDetail.buyer_id];
+                
+                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_new_if_saved.php"];
+                [urlString appendString:parameters];
+//                NSLog(@"url:%@",urlString);
+                
+                
+                __block NSError *errorData = nil;
+                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                //            [self.activityIndicator startAnimating];
+                //            self.activityIndicator.hidden = NO;
+                [request setCompletionBlock:
+                 ^{
+                     NSData *responseData = [request responseData];
+                     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                     
+//                     NSLog(@"json:%@",json);
+                     if ([[json objectForKey:@"data"] count]) {
+                         
+//                         self.viewForDescription.hidden = NO;
+                         self.buttonDescription.hidden = YES;
+                         self.labelDescription.text = [NSString stringWithFormat:@"Saved to %@",self.activityDetail.buyer_name];
+                         self.labelDescription.hidden = NO;
+                     }
+                     else {
+//                         self.viewForDescription.hidden = NO;
+                         self.buttonDescription.hidden = NO;
+                         self.labelDescription.hidden = YES;
+                         self.labelDescription.text = @"";
+                         [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
+                         self.buttonDescription.tag = 2501;
+                     }
+                     
+                     
+                 }];
+                [request setFailedBlock:^{
+                    NSError *error = [request error];
+                    NSLog(@" error:%@",error);
+                }];
+                
+                [request startAsynchronous];
+                
             });
+            
+            
+            if ([self.loginDetail.user_id integerValue] != [self.activityDetail.pops_user_id integerValue]) {
+                NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id];
+                
+                NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php"];
+                [urlString_ appendString:parameters];
+                //        NSLog(@"url:%@",urlString_);
+//                NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+//                
+//                self.urlConnectionRequestNetwork = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+//                
+//                if (self.urlConnectionRequestNetwork) {
+//                    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//                    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//                }
+                
+                __block NSError *errorData = nil;
+                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString_]];
+                //            [self.activityIndicator startAnimating];
+                //            self.activityIndicator.hidden = NO;
+                [request setCompletionBlock:
+                 ^{
+                     NSData *responseData = [request responseData];
+                     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                     
+                     //                     NSLog(@"json:%@",json);
+                     
+                     if ([[json objectForKey:@"data"] count]) {
+                         NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                         
+                         NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+                         if ([[json objectForKey:@"data"] count]) {
+                             RequestNetwork *network = nil;
+                             
+                             NSPredicate * predicate = [NSPredicate predicateWithFormat:@"network_id == %@", [entry objectForKey:@"network_id"]];
+                             
+                             NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+                             [fetchRequest setPredicate:predicate];
+                             [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestNetwork" inManagedObjectContext:context]];
+                             NSError * error = nil;
+                             NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+                             if ([result count]) {
+                                 network = (RequestNetwork*)[result firstObject];
+                             }
+                             else {
+                                 network = [NSEntityDescription insertNewObjectForEntityForName: @"RequestNetwork" inManagedObjectContext: context];
+                             }
+                             
+                             [network setValuesForKeysWithDictionary:entry];
+                             
+                             NSError *errorSave = nil;
+                             if (![context save:&errorSave]) {
+                                 NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
+                             }
+                             
+                             if ([network.status integerValue] == 1) {
+                                 //                    NSLog(@"setting:%@",self.activityDetail.setting);
+                                 if ([self.activityDetail.setting integerValue] == 1) {
+                                     //                        [self checkSettingGetPrice];
+                                 }
+                                 else if ([self.activityDetail.setting integerValue] == 2) {
+                                     
+                                     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id, self.activityDetail.listing_id];
+                                     
+                                     NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
+                                     [urlString_ appendString:parameters];
+                                     //                        NSLog(@"url:%@",urlString_);
+                                     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+                                     
+//                                     self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+//                                     
+//                                     if (self.urlConnectionRequestAccess) {
+//                                         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//                                         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//                                     }
+                                     
+                                     __block NSError *errorDataA = nil;
+                                     __block ASIHTTPRequest *requestA = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString_]];
+                                     //            [self.activityIndicator startAnimating];
+                                     //            self.activityIndicator.hidden = NO;
+                                     [requestA setCompletionBlock:
+                                      ^{
+                                          NSData *responseData = [requestA responseData];
+                                          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorDataA];
+                                          
+                                          //                     NSLog(@"json:%@",json);
+                                          if ([[json objectForKey:@"data"] count]) {
+                                              NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                                              NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+                                              
+                                              if ([[json objectForKey:@"data"] count]) {
+                                                  RequestAccess *access = nil;
+                                                  
+                                                  NSPredicate * predicate = [NSPredicate predicateWithFormat:@"access_id == %@", [entry objectForKey:@"access_id"]];
+                                                  
+                                                  NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+                                                  [fetchRequest setPredicate:predicate];
+                                                  [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestAccess" inManagedObjectContext:context]];
+                                                  NSError * error = nil;
+                                                  NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+                                                  
+                                                  if ([result count]) {
+                                                      access = (RequestAccess*)[result firstObject];
+                                                  }
+                                                  else {
+                                                      access = [NSEntityDescription insertNewObjectForEntityForName: @"RequestAccess" inManagedObjectContext: context];
+                                                  }
+                                                  
+                                                  [access setValuesForKeysWithDictionary:entry];
+                                                  
+                                                  NSError *errorSave = nil;
+                                                  if (![context save:&errorSave]) {
+                                                      NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
+                                                  }
+                                                  
+                                                  if ([access.permission boolValue] == YES) {
+                                                      //                    [self getPriceText];
+                                                      
+                                                      //                        self.viewForDescription.hidden = NO;
+                                                      self.labelDescription.text = @"";
+                                                      self.labelDescription.hidden = YES;
+                                                      self.buttonDescription.hidden = NO;
+                                                      [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
+                                                      self.buttonDescription.tag = 0;
+                                                  }
+                                                  else if ([access.permission boolValue] == NO){
+                                                      //                    self.viewForDescription.hidden = NO;
+                                                      
+                                                      self.labelDescription.hidden = NO;
+                                                      self.buttonDescription.hidden = NO;
+                                                      self.labelDescription.text = @"This POPs™ is restricted to private";
+                                                      [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                                                      self.buttonDescription.tag = 0;
+                                                  }
+                                                  
+                                              }
+                                              else {
+                                                  //                self.viewForDescription.hidden = NO;
+                                                  self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+                                                  self.labelDescription.hidden = NO;
+                                                  self.buttonDescription.hidden = NO;
+                                                  [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                                                  self.buttonDescription.tag = 2510;
+                                              }
+                                              
+                                              [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                                              [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+                                          }
+                                          else {
+                                              //            self.viewForDescription.hidden = NO;
+                                              self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+                                              self.labelDescription.hidden = NO;
+                                              self.buttonDescription.hidden = NO;
+                                              [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                                              self.buttonDescription.tag = 2510;
+                                              
+                                              [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                                              [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+                                          }
+                                          
+                                          
+                                      }];
+                                     [requestA setFailedBlock:^{
+                                         NSError *error = [requestA error];
+                                         NSLog(@" error:%@",error);
+                                     }];
+                                     
+                                     [requestA startAsynchronous];
+                                 }
+                                 
+                             }
+                             else if ([network.status integerValue] == 1){
+                                 //                    self.viewForDescription.hidden = NO;
+                                 self.labelDescription.text = @"";
+                                 self.labelDescription.hidden = YES;
+                                 self.buttonDescription.hidden = NO;
+                                 [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
+                                 self.buttonDescription.tag = 0;
+                             }
+                             else {
+                                 //                    self.viewForDescription.hidden = NO;
+                                 self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+                                 self.labelDescription.hidden = NO;
+                                 self.buttonDescription.hidden = NO;
+                                 [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                                 self.buttonDescription.tag = 0;
+                             }
+                         }
+                         else {
+                             //                self.viewForDescription.hidden = NO;
+                             self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+                             self.labelDescription.hidden = NO;
+                             self.buttonDescription.hidden = NO;
+                             [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                             self.buttonDescription.tag = 2502;
+                         }
+                         
+                         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+                         
+                     }
+                     else {
+                         //            self.viewForDescription.hidden = NO;
+                         self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+                         self.labelDescription.hidden = NO;
+                         self.buttonDescription.hidden = NO;
+                         [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                         self.buttonDescription.tag = 2502;
+                         
+                         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+                     }
+                     
+                     
+                 }];
+                [request setFailedBlock:^{
+                    NSError *error = [request error];
+                    NSLog(@" error:%@",error);
+                }];
+                
+                [request startAsynchronous];
+            }
             
             if ([self.activityDetail.other_user_id integerValue] == [self.activityDetail.user_id integerValue]) {
                 
@@ -155,7 +406,10 @@
                 self.labelDateTime.text = self.activityDetail.referral_date;
                 
                 self.labelDescription.text = @"";
-                self.viewForDescription.hidden = YES;
+//                self.viewForDescription.hidden = YES;
+                
+                self.labelDescription.hidden = YES;
+                self.buttonDescription.hidden = YES;
                 [self.buttonDescription setTitle:@"" forState:UIControlStateNormal];
             });
             
@@ -173,7 +427,9 @@
                     case 4:{
                         message = [NSString stringWithFormat:@"Congratulations for closing your referral %@.",buyer_name];
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            self.viewForDescription.hidden = NO;
+//                            self.viewForDescription.hidden = NO;
+                            
+                            self.labelDescription.hidden = NO;
                             self.labelDescription.text = @"AgentBridge has successfully collected the referral service fee.";
                             self.buttonDescription.hidden = YES;
                         });}
@@ -222,15 +478,23 @@
                             if ([self.activityDetail.referral_response integerValue]) {
                                 message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. %@'s contact will be released once you have signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block,buyer_block];
                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                    self.viewForDescription.hidden = NO;
+//                                    self.viewForDescription.hidden = NO;
+                                    
+                                    self.labelDescription.hidden = YES;
+                                    self.buttonDescription.hidden = NO;
                                     [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+                                    self.buttonDescription.tag = 0;
                                 });
                             }
                             else {
                                 message_block = [NSString stringWithFormat:@"%@ has sent you referral %@ with a %@ referral fee.", user_name, buyer_block, self.activityDetail.referral_fee];
                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                    self.viewForDescription.hidden = NO;
+//                                    self.viewForDescription.hidden = NO;
+                                    
+                                    self.labelDescription.hidden = YES;
+                                    self.buttonDescription.hidden = NO;
                                     [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                                    self.buttonDescription.tag = 0;
                                 });
                             }
                             
@@ -276,7 +540,10 @@
                     case 4:{
                         message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee.", user_name,buyer_name];
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            self.viewForDescription.hidden = NO;
+//                            self.viewForDescription.hidden = NO;
+                            
+                            self.labelDescription.hidden = YES;
+                            self.buttonDescription.hidden = NO;
                             [self.buttonDescription setTitle:@"Pay" forState:UIControlStateNormal];
                         });}
                         break;
@@ -313,8 +580,12 @@
                                     message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. You have not signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block];
                                     
                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                        self.viewForDescription.hidden = NO;
+//                                        self.viewForDescription.hidden = NO;
+                                        
+                                        self.labelDescription.hidden = YES;
+                                        self.buttonDescription.hidden = NO;
                                         [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+                                        self.buttonDescription.tag = 0;
                                     });
                                 }
                                 
@@ -366,22 +637,42 @@
         else if ([self.activityDetail.activity_type integerValue] == 6) {
             //            NSLog(@"listing:%@",self.activityDetail.listing_id);
             
+//            NSLog(@"user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.labelActivityName.text = @"Request to View Private POPs™";
                 self.labelDateTime.text = self.activityDetail.date;
-                if ([self.activityDetail.permission integerValue]) {
-                    self.labelDescription.text = @"";
-                    self.buttonDescription.hidden = NO;
-                    [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                
+//                NSLog(@"permission:%@",self.activityDetail.permission);
+                if ([self.activityDetail.permission integerValue] == 0) {
+                    if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                        
+                        self.labelDescription.text = @"";
+                        self.labelDescription.hidden = YES;
+                        self.buttonDescription.hidden = NO;
+                        [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                        self.buttonDescription.tag = 601;
+                    }
+                    else {
+                        
+                        self.labelDescription.text = @"";
+                        self.labelDescription.hidden = YES;
+                        self.buttonDescription.hidden = YES;
+                    }
                 }
                 else {
-                    self.labelDescription.text = @"You have accepted this request.";
+                    if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                        self.labelDescription.text = @"You have accepted this request.";
+                    }
+                    else {
+                        self.labelDescription.text = [NSString stringWithFormat:@"%@ have accepted your request.",self.activityDetail.user_name];
+                    }
                     self.buttonDescription.hidden = YES;
+                    self.labelDescription.hidden = NO;
                 }
-                self.viewForDescription.hidden = NO;
+//                self.viewForDescription.hidden = NO;
             });
             
-            if ([self.activityDetail.other_user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+            if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
                 
                 NSString *pops_link = [NSString stringWithFormat:@"<a href='http://pops/%@'>%@</a>",self.activityDetail.listing_id, self.activityDetail.property_name];
@@ -401,6 +692,7 @@
             
 //            NSLog(@"[8]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
             
+//            NSLog(@"8 user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
             if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
                 NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
@@ -418,40 +710,48 @@
                 self.labelDateTime.text = self.activityDetail.date;
                 
                 if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
-                    self.viewForDescription.hidden = NO;
+//                    self.viewForDescription.hidden = NO;
                     self.labelDescription.text = @"";
+                    self.labelDescription.hidden = YES;
                     self.buttonDescription.hidden = NO;
                     [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                    self.buttonDescription.tag = 801;
                     
                     
                     if ([self.activityDetail.network_status integerValue] == 1) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
                         self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. %@ is now part of your Network.",self.activityDetail.user_name];
+                        self.labelDescription.hidden = NO;
                         self.buttonDescription.hidden = YES;
                     }
                     else if ([self.activityDetail.network_status integerValue] == 2) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
                         self.labelDescription.text = @"You have declined this request. ";
                         self.buttonDescription.hidden = YES;
+                        self.labelDescription.hidden = NO;
                     }
                 }
                 else {
-                    self.viewForDescription.hidden = YES;
+//                    self.viewForDescription.hidden = YES;
                     
                     
                     if ([self.activityDetail.network_status integerValue] == 1) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
                         self.labelDescription.text = [NSString stringWithFormat:@"%@ has accepted this request. You are now able to view %@'s POPs™.",self.activityDetail.user_name,self.activityDetail.user_name];
                         self.buttonDescription.hidden = YES;
+                        self.labelDescription.hidden = NO;
                     }
                     else if ([self.activityDetail.network_status integerValue] == 2) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
                         self.labelDescription.text = [NSString stringWithFormat:@"%@ has declined this request.",self.activityDetail.user_name];
                         self.buttonDescription.hidden = NO;
+                        self.labelDescription.hidden = NO;
                         [self.buttonDescription setTitle:@"Request to View" forState:UIControlStateNormal];
+                        self.buttonDescription.tag = 802;
                     }
                     else if ([self.activityDetail.network_status integerValue] == 0) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.hidden = NO;
                         self.labelDescription.text = @"Pending Approval";
                         self.buttonDescription.hidden = YES;
                     }
@@ -466,6 +766,7 @@
             
 //            NSLog(@"[28]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
             
+//            NSLog(@"28 user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
             if ([self.activityDetail.other_user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
                 NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
@@ -485,44 +786,52 @@
                 self.labelDateTime.text = self.activityDetail.date;
                 
                 if ([self.activityDetail.other_user_id integerValue] == [self.loginDetail.user_id integerValue]) {
-                    self.viewForDescription.hidden = NO;
+//                    self.viewForDescription.hidden = NO;
                     self.labelDescription.text = @"";
+                    self.labelDescription.hidden = NO;
                     self.buttonDescription.hidden = NO;
                     [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+                    self.buttonDescription.tag = 2801;
                     
-                    NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.other_user_name];
+//                    NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.other_user_name];
                     
                     if ([self.activityDetail.network_status integerValue] == 1) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
                         self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. You are now part of %@'s Network.",self.activityDetail.user_name];
+                        self.labelDescription.hidden = NO;
                         self.buttonDescription.hidden = YES;
                     }
                     else if ([self.activityDetail.network_status integerValue] == 2) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.hidden = NO;
                         self.labelDescription.text = @"You have declined this request.";
                         self.buttonDescription.hidden = YES;
                     }
                 }
                 else {
-                    self.viewForDescription.hidden = YES;
+//                    self.viewForDescription.hidden = YES;
                     
-                    NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
+//                    NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
                     
                     if ([self.activityDetail.network_status integerValue] == 1) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
                         self.labelDescription.text = [NSString stringWithFormat:@"%@ has accepted this request and is now part of your Network.",self.activityDetail.user_name];
+                        self.labelDescription.hidden = NO;
                         self.buttonDescription.hidden = YES;
                     }
                     else if ([self.activityDetail.network_status integerValue] == 2) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
                         self.labelDescription.text = [NSString stringWithFormat:@"%@ has declined this request.",self.activityDetail.user_name];
                         self.buttonDescription.hidden = NO;
+                        self.labelDescription.hidden = NO;
                         [self.buttonDescription setTitle:@"Request to View" forState:UIControlStateNormal];
+                        self.buttonDescription.tag = 2802;
                     }
                     else if ([self.activityDetail.network_status integerValue] == 0) {
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
                         self.labelDescription.text = @"Pending Approval";
                         self.buttonDescription.hidden = YES;
+                        self.labelDescription.hidden = NO;
                     }
                 }
                 
@@ -653,163 +962,438 @@
     
     //    NSLog(@"Did Finish:%@", json);
     if (connection == self.urlConnectionRequestNetwork) {
-//        NSLog(@"Did Finish:%@", json);
-        if ([[json objectForKey:@"data"] count]) {
-            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-            
-            NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
-            if ([[json objectForKey:@"data"] count]) {
-                RequestNetwork *network = nil;
-                
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"network_id == %@", [entry objectForKey:@"network_id"]];
-                
-                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-                [fetchRequest setPredicate:predicate];
-                [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestNetwork" inManagedObjectContext:context]];
-                NSError * error = nil;
-                NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
-                if ([result count]) {
-                    network = (RequestNetwork*)[result firstObject];
-                }
-                else {
-                    network = [NSEntityDescription insertNewObjectForEntityForName: @"RequestNetwork" inManagedObjectContext: context];
-                }
-                
-                [network setValuesForKeysWithDictionary:entry];
-                
-                NSError *errorSave = nil;
-                if (![context save:&errorSave]) {
-                    NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
-                }
-                
-                if ([network.status integerValue] == 1) {
-//                    NSLog(@"setting:%@",self.activityDetail.setting);
-                    if ([self.activityDetail.setting integerValue] == 1) {
-//                        [self checkSettingGetPrice];
-                    }
-                    else if ([self.activityDetail.setting integerValue] == 2) {
-                        
-                        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id, self.activityDetail.listing_id];
-                        
-                        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
-                        [urlString_ appendString:parameters];
-//                        NSLog(@"url:%@",urlString_);
-                        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
-                        
-                        self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
-                        
-                        if (self.urlConnectionRequestAccess) {
-                            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-                            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-                        }
-                    }
-                    
-                }
-                else if ([network.status integerValue] == 0){
-                    self.viewForDescription.hidden = NO;
-                    self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
-                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
-                }
-                else {
-                    self.viewForDescription.hidden = NO;
-                    self.labelDescription.text = @"";
-                    [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
-                }
-            }
-            else {
-                self.viewForDescription.hidden = NO;
-                self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
-                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-            }
-            
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-            
-        }
-        else {
-            self.viewForDescription.hidden = NO;
-            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
-            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-        }
+////        NSLog(@"Did Finish:%@", json);
+//        if ([[json objectForKey:@"data"] count]) {
+//            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//            
+//            NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+//            if ([[json objectForKey:@"data"] count]) {
+//                RequestNetwork *network = nil;
+//                
+//                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"network_id == %@", [entry objectForKey:@"network_id"]];
+//                
+//                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+//                [fetchRequest setPredicate:predicate];
+//                [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestNetwork" inManagedObjectContext:context]];
+//                NSError * error = nil;
+//                NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+//                if ([result count]) {
+//                    network = (RequestNetwork*)[result firstObject];
+//                }
+//                else {
+//                    network = [NSEntityDescription insertNewObjectForEntityForName: @"RequestNetwork" inManagedObjectContext: context];
+//                }
+//                
+//                [network setValuesForKeysWithDictionary:entry];
+//                
+//                NSError *errorSave = nil;
+//                if (![context save:&errorSave]) {
+//                    NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
+//                }
+//                
+//                if ([network.status integerValue] == 1) {
+////                    NSLog(@"setting:%@",self.activityDetail.setting);
+//                    if ([self.activityDetail.setting integerValue] == 1) {
+////                        [self checkSettingGetPrice];
+//                    }
+//                    else if ([self.activityDetail.setting integerValue] == 2) {
+//                        
+//                        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id, self.activityDetail.listing_id];
+//                        
+//                        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
+//                        [urlString_ appendString:parameters];
+////                        NSLog(@"url:%@",urlString_);
+//                        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+//                        
+//                        self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+//                        
+//                        if (self.urlConnectionRequestAccess) {
+//                            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//                            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//                        }
+//                    }
+//                    
+//                }
+//                else if ([network.status integerValue] == 1){
+//                    //                    self.viewForDescription.hidden = NO;
+//                    self.labelDescription.text = @"";
+//                    self.labelDescription.hidden = YES;
+//                    self.buttonDescription.hidden = NO;
+//                    [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
+//                    self.buttonDescription.tag = 0;
+//                }
+//                else {
+//                    //                    self.viewForDescription.hidden = NO;
+//                    self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+//                    self.labelDescription.hidden = NO;
+//                    self.buttonDescription.hidden = NO;
+//                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+//                    self.buttonDescription.tag = 0;
+//                }
+//            }
+//            else {
+////                self.viewForDescription.hidden = NO;
+//                self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+//                self.labelDescription.hidden = NO;
+//                self.buttonDescription.hidden = NO;
+//                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+//                self.buttonDescription.tag = 2502;
+//            }
+//            
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//            
+//        }
+//        else {
+////            self.viewForDescription.hidden = NO;
+//            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+//            self.labelDescription.hidden = NO;
+//            self.buttonDescription.hidden = NO;
+//            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+//            self.buttonDescription.tag = 2502;
+//            
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//        }
         
     }
     else if (connection == self.urlConnectionRequestAccess) {
 //        NSLog(@"Access Did Finish:%@", json);
-        if ([[json objectForKey:@"data"] count]) {
-            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-            NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
-            
-            if ([[json objectForKey:@"data"] count]) {
-                RequestAccess *access = nil;
-                
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"access_id == %@", [entry objectForKey:@"access_id"]];
-                
-                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-                [fetchRequest setPredicate:predicate];
-                [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestAccess" inManagedObjectContext:context]];
-                NSError * error = nil;
-                NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
-                
-                if ([result count]) {
-                    access = (RequestAccess*)[result firstObject];
-                }
-                else {
-                    access = [NSEntityDescription insertNewObjectForEntityForName: @"RequestAccess" inManagedObjectContext: context];
-                }
-                
-                [access setValuesForKeysWithDictionary:entry];
-                
-                NSError *errorSave = nil;
-                if (![context save:&errorSave]) {
-                    NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
-                }
-                
-                if ([access.permission boolValue] == YES) {
-//                    [self getPriceText];
-                    
-                        self.viewForDescription.hidden = NO;
-                        self.labelDescription.text = @"";
-                        [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
-                }
-                else if ([access.permission boolValue] == NO){
-                    self.viewForDescription.hidden = NO;
-                    self.labelDescription.text = @"This POPs™ is restricted to private";
-                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
-                }
-                
-            }
-            else {
-                self.viewForDescription.hidden = NO;
-                self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
-                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-            }
-            
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-        }
-        else {
-            self.viewForDescription.hidden = NO;
-            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
-            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-        }
+//        if ([[json objectForKey:@"data"] count]) {
+//            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//            NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+//            
+//            if ([[json objectForKey:@"data"] count]) {
+//                RequestAccess *access = nil;
+//                
+//                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"access_id == %@", [entry objectForKey:@"access_id"]];
+//                
+//                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+//                [fetchRequest setPredicate:predicate];
+//                [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestAccess" inManagedObjectContext:context]];
+//                NSError * error = nil;
+//                NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+//                
+//                if ([result count]) {
+//                    access = (RequestAccess*)[result firstObject];
+//                }
+//                else {
+//                    access = [NSEntityDescription insertNewObjectForEntityForName: @"RequestAccess" inManagedObjectContext: context];
+//                }
+//                
+//                [access setValuesForKeysWithDictionary:entry];
+//                
+//                NSError *errorSave = nil;
+//                if (![context save:&errorSave]) {
+//                    NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
+//                }
+//                
+//                if ([access.permission boolValue] == YES) {
+////                    [self getPriceText];
+//                    
+////                        self.viewForDescription.hidden = NO;
+//                    self.labelDescription.text = @"";
+//                    self.labelDescription.hidden = YES;
+//                    self.buttonDescription.hidden = NO;
+//                    [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
+//                    self.buttonDescription.tag = 0;
+//                }
+//                else if ([access.permission boolValue] == NO){
+////                    self.viewForDescription.hidden = NO;
+//                    
+//                    self.labelDescription.hidden = NO;
+//                    self.buttonDescription.hidden = NO;
+//                    self.labelDescription.text = @"This POPs™ is restricted to private";
+//                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+//                    self.buttonDescription.tag = 0;
+//                }
+//                
+//            }
+//            else {
+////                self.viewForDescription.hidden = NO;
+//                self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+//                self.labelDescription.hidden = NO;
+//                self.buttonDescription.hidden = NO;
+//                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+//                self.buttonDescription.tag = 2510;
+//            }
+//            
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//        }
+//        else {
+////            self.viewForDescription.hidden = NO;
+//            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.activityDetail.pops_user_name];
+//            self.labelDescription.hidden = NO;
+//            self.buttonDescription.hidden = NO;
+//            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+//            self.buttonDescription.tag = 2510;
+//            
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//        }
     }
-    else {
-        
-        [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
-    }
+//    else {
+//        
+//        [self.buttonDescription setTitle:@"Save" forState:UIControlStateNormal];
+//    }
     // Do something with responseData
 }
 
 - (IBAction)buttonActionPressed:(id)sender {
-    NSLog(@"pressed");
+    NSLog(@"pressed:%i",[((UIButton*)sender) tag]);
     switch ([((UIButton*)sender) tag]) {
-        case 1001:{
-        
+        case 2501:{
+            
+            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%@",self.loginDetail.user_id,self.activityDetail.listing_id, self.activityDetail.buyer_id];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
+            [urlString appendString:parameters];
+            //    NSLog(@"url:%@",urlString);
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+                 //         NSLog(@"json:%@",json);
+                 if ([json objectForKey:@"status"]) {
+                     NSLog(@"Success");
+//                     self.viewForDescription.hidden = NO;
+                     self.buttonDescription.hidden = YES;
+                     self.labelDescription.text = [NSString stringWithFormat:@"Saved to %@",self.activityDetail.buyer_name];
+                     self.labelDescription.hidden = NO;
+                 }
+                 else {
+                     NSLog(@"Failed");
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
         break;
+        }
+        case 601:{
+            
+            NSString *parameters = [NSString stringWithFormat:@"?access_id=%@&user_id=%@&other_user_id=%@",self.activityDetail.access_id, self.loginDetail.user_id, self.activityDetail.other_user_id];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_access.php"];
+            [urlString appendString:parameters];
+//             NSLog(@"url:%@",urlString);
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+//                 NSLog(@"json:%@",json);
+                 if ([json objectForKey:@"status"]) {
+                     NSLog(@"Success");
+                     
+//                     if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+                         self.labelDescription.text = @"You have accepted this request.";
+//                     }
+//                     else {
+//                         self.labelDescription.text = [NSString stringWithFormat:@"%@ have accepted your request.",self.activityDetail.user_name];
+//                     }
+                     self.buttonDescription.hidden = YES;
+                     self.labelDescription.hidden = NO;
+                 }
+                 else {
+                     NSLog(@"Failed");
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+            break;
+        }
+        case 801:{
+            
+            NSString *parameters = [NSString stringWithFormat:@"?network_id=%@&user_id=%@&other_user_id=%@&activity_type=%@",self.activityDetail.network_id, self.loginDetail.user_id, self.activityDetail.other_user_id,@"9"];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_network.php"];
+            [urlString appendString:parameters];
+//            NSLog(@"url:%@",urlString);
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+//                 NSLog(@"json:%@",json);
+                 if ([json objectForKey:@"status"]) {
+                     NSLog(@"Success");
+                     
+//                     if ([self.activityDetail.network_status integerValue] == 1) {
+                         //                        self.viewForDescription.hidden = NO;
+                         self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. %@ is now part of your Network.",self.activityDetail.user_name];
+                         self.labelDescription.hidden = NO;
+                         self.buttonDescription.hidden = YES;
+//                     }
+//                     else if ([self.activityDetail.network_status integerValue] == 2) {
+//                         //                        self.viewForDescription.hidden = NO;
+//                         self.labelDescription.text = @"You have declined this request. ";
+//                         self.buttonDescription.hidden = YES;
+//                         self.labelDescription.hidden = NO;
+//                     }
+                     
+                 }
+                 else {
+                     NSLog(@"Failed");
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+            break;
+        }
+        case 2801:{
+            
+            NSString *parameters = [NSString stringWithFormat:@"?network_id=%@&user_id=%@&other_user_id=%@&activity_type=%@",self.activityDetail.network_id,self.loginDetail.user_id, self.activityDetail.other_user_id,@"29"];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_network.php"];
+            [urlString appendString:parameters];
+//            NSLog(@"url:%@",urlString);
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+//                 NSLog(@"json:%@",json);
+                 if ([json objectForKey:@"status"]) {
+                     NSLog(@"Success");
+                     //                        self.viewForDescription.hidden = NO;
+                     self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. You are now part of %@'s Network.",self.activityDetail.user_name];
+                     self.labelDescription.hidden = NO;
+                     self.buttonDescription.hidden = YES;
+                 }
+                 else {
+                     NSLog(@"Failed");
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+            break;
+        }
+        case 2502:case 802:case 2802:{
+            
+            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.loginDetail.user_id, self.activityDetail.other_user_id];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_network.php"];
+            [urlString appendString:parameters];
+            //            NSLog(@"url:%@",urlString);
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+                 NSLog(@"json:%@",json);
+                 if ([json objectForKey:@"status"]) {
+                     NSLog(@"Success");
+                     //                        self.viewForDescription.hidden = NO;
+                     
+                     self.labelDescription.text = @"Pending Approval";
+                     self.buttonDescription.hidden = YES;
+                     self.labelDescription.hidden = NO;
+                 }
+                 else {
+                     NSLog(@"Failed");
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+            break;
+        }
+        case 2510:{
+            
+            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&listing_id=%@",self.loginDetail.user_id, self.activityDetail.other_user_id,self.activityDetail.listing_id];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_access.php"];
+            [urlString appendString:parameters];
+            //            NSLog(@"url:%@",urlString);
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+                 NSLog(@"json:%@",json);
+                 if ([json objectForKey:@"status"]) {
+                     NSLog(@"Success");
+                     //                        self.viewForDescription.hidden = NO;
+                     
+                     self.labelDescription.hidden = NO;
+                     self.buttonDescription.hidden = NO;
+                     self.labelDescription.text = @"This POPs™ is restricted to private";
+                     [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                 }
+                 else {
+                     NSLog(@"Failed");
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+            break;
         }
         default:
         break;

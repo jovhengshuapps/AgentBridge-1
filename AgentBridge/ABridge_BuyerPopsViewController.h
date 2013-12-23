@@ -14,5 +14,6 @@
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (assign, nonatomic) BOOL is_saved;
 @property (assign, nonatomic) NSInteger buyer_id;
+@property (strong, nonatomic) NSString *buyer_name;
 
 @end

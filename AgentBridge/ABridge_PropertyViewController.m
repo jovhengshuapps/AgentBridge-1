@@ -9,6 +9,7 @@
 #import "ABridge_PropertyViewController.h"
 #import "ABridge_PropertyPagesViewController.h"
 #import "Property.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_PropertyViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfProperty;
@@ -17,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewZoom;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+- (IBAction)savePopsToBuyer:(id)sender;
 
 @property (assign, nonatomic) NSInteger numberOfProperty;
 @property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
@@ -24,6 +26,8 @@
 @property (strong, nonatomic) LoginDetails *loginDetail;
 @property (strong, nonatomic) NSMutableArray *arrayOfProperty;
 @property (strong, nonatomic) NSString *scrollToListingId;
+@property (strong, nonatomic) NSString *currentListingId;
+@property (strong, nonatomic) NSMutableArray *arrayOfBuyerID;
 @end
 
 @implementation ABridge_PropertyViewController
@@ -33,6 +37,8 @@
 @synthesize loginDetail;
 @synthesize arrayOfProperty;
 @synthesize scrollToListingId;
+@synthesize currentListingId;
+@synthesize arrayOfBuyerID;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -83,6 +89,12 @@
     [self loadProperty];
 }
 
+//-(void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+//    
+//    [self loadProperty];
+//}
+
 - (void) loadProperty {
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     
@@ -114,6 +126,9 @@
     pagesViewController.index = index;
     pagesViewController.propertyDetails = (Property*)[self.arrayOfProperty objectAtIndex:index];
     pagesViewController.delegate = self;
+    
+    self.currentListingId = ((Property*)[self.arrayOfProperty objectAtIndex:index]).listing_id;
+    pagesViewController.buyers_view = NO;
     
     return pagesViewController;
     
@@ -337,4 +352,114 @@
     }
 }
 
+- (IBAction)savePopsToBuyer:(id)sender {
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@",self.loginDetail.user_id,self.currentListingId];
+    
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyer_list_pops.php"];
+    [urlString appendString:parameters];
+    
+    self.activityIndicator.hidden = NO;
+    __block NSError *errorData = nil;
+    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    //            [self.activityIndicator startAnimating];
+    //            self.activityIndicator.hidden = NO;
+    [request setCompletionBlock:
+     ^{
+         NSData *responseData = [request responseData];
+         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+         
+         NSMutableArray *arrayOfBuyers = nil;
+         if ([[json objectForKey:@"data"] count]) {
+             for (NSDictionary *entry in [json objectForKey:@"data"]) {
+//                 NSLog(@"buyer:%@",[entry valueForKey:@"name"]);
+                 
+                 if (arrayOfBuyers == nil) {
+                     arrayOfBuyers = [NSMutableArray array];
+                     
+                 }
+                 
+                 [arrayOfBuyers addObject:[entry valueForKey:@"name"]];
+                 
+                 if (self.arrayOfBuyerID == nil) {
+                     self.arrayOfBuyerID = [NSMutableArray array];
+                 }
+                 
+                 [self.arrayOfBuyerID addObject:[entry valueForKey:@"buyer_id"]];
+             }
+             
+         }
+         
+//         NSLog(@"json:%@",json);
+         
+         if (arrayOfBuyers == nil) {
+             
+             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have no Buyers" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"Cancel" otherButtonTitles:nil];
+             
+             [actionSheet showFromTabBar:self.tabBarController.tabBar];
+         }
+         else {
+             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Buyers" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"Cancel" otherButtonTitles:nil];
+             
+             for (NSString *name in arrayOfBuyers) {
+                 [actionSheet addButtonWithTitle:name];
+             }
+             
+             
+             [actionSheet showFromTabBar:self.tabBarController.tabBar];
+         }
+         
+         self.activityIndicator.hidden = YES;
+         
+     }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        NSLog(@" error:%@",error);
+    }];
+    
+    [request startAsynchronous];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"index:%i",buttonIndex);
+    if (buttonIndex != 0) {
+        NSString *buyer_id = [self.arrayOfBuyerID objectAtIndex:buttonIndex-1];
+        
+        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%@",self.loginDetail.user_id,self.currentListingId, buyer_id];
+        
+        NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
+        [urlString appendString:parameters];
+        //    NSLog(@"url:%@",urlString);
+        self.activityIndicator.hidden = NO;
+        __block NSError *errorData = nil;
+        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        //            [self.activityIndicator startAnimating];
+        //            self.activityIndicator.hidden = NO;
+        [request setCompletionBlock:
+         ^{
+             NSData *responseData = [request responseData];
+             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+             
+             //         NSLog(@"json:%@",json);
+             if ([json objectForKey:@"status"]) {
+                 NSLog(@"Success");
+                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"POPs™ Saved" message:[NSString stringWithFormat:@"This POPs™ is saved to %@",[actionSheet buttonTitleAtIndex:buttonIndex]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                 [av show];
+             }
+             else {
+                 NSLog(@"Failed");
+             }
+             
+             
+             self.activityIndicator.hidden = YES;
+             
+         }];
+        [request setFailedBlock:^{
+            NSError *error = [request error];
+            NSLog(@" error:%@",error);
+        }];
+        
+        [request startAsynchronous];
+    }
+}
 @end

@@ -255,10 +255,12 @@
     if ([segue.identifier isEqualToString:@"show_saved_pops"]) {
         ((ABridge_BuyerPopsViewController*) segue.destinationViewController).is_saved = YES;
         ((ABridge_BuyerPopsViewController*) segue.destinationViewController).buyer_id = [self.buyerDetail.buyer_id integerValue];
+        ((ABridge_BuyerPopsViewController*) segue.destinationViewController).buyer_name = self.buyerDetail.name;
     }
     else if ([segue.identifier isEqualToString:@"show_new_pops"]) {
         ((ABridge_BuyerPopsViewController*) segue.destinationViewController).is_saved = NO;
         ((ABridge_BuyerPopsViewController*) segue.destinationViewController).buyer_id = [self.buyerDetail.buyer_id integerValue];
+        ((ABridge_BuyerPopsViewController*) segue.destinationViewController).buyer_name = self.buyerDetail.name;
     }
 }
 @end

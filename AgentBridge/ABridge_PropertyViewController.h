@@ -9,7 +9,7 @@
 #import "ABridge_ParentViewController.h"
 #import "ABridge_PropertyPagesViewController.h"
 
-@interface ABridge_PropertyViewController : ABridge_ParentViewController <UIPageViewControllerDataSource, NSURLConnectionDelegate, ABridge_PropertyPagesViewControllerDelegate, UIScrollViewDelegate>
+@interface ABridge_PropertyViewController : ABridge_ParentViewController <UIPageViewControllerDataSource, NSURLConnectionDelegate, ABridge_PropertyPagesViewControllerDelegate, UIScrollViewDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 

@@ -11,6 +11,7 @@
 #import "Property.h"
 #import "RequestNetwork.h"
 #import "RequestAccess.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_BuyerPopsViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfProperty;
@@ -19,12 +20,15 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewZoom;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UILabel *labelSavedto;
 - (IBAction)backToBuyers:(id)sender;
+- (IBAction)saveButtonPressed:(id)sender;
 
 @property (assign, nonatomic) NSInteger numberOfProperty;
 @property (strong, nonatomic) NSURLConnection *urlConnectionProperty;
 @property (strong, nonatomic) NSMutableData *dataReceived;
 @property (strong, nonatomic) NSMutableArray *arrayOfProperty;
+@property (strong, nonatomic) NSString *currentListingId;
 @end
 
 @implementation ABridge_BuyerPopsViewController
@@ -34,6 +38,8 @@
 @synthesize arrayOfProperty;
 @synthesize is_saved;
 @synthesize buyer_id;
+@synthesize currentListingId;
+@synthesize buyer_name;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +57,7 @@
     
     self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
+    self.labelSavedto.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL-2.0f);
     
     if (is_saved) {
         self.labelNumberOfProperty.text = @"Saved POPs™";
@@ -59,6 +66,11 @@
         self.labelNumberOfProperty.text = @"New POPs™";
     }
     
+    [self.labelNumberOfProperty sizeToFit];
+    
+    CGRect frame = self.activityIndicator.frame;
+    frame.origin.x = self.labelNumberOfProperty.frame.origin.x + self.labelNumberOfProperty.frame.size.width + 10.0f;
+    self.activityIndicator.frame = frame;
     // Add a topBorder.
     CALayer *topBorder = [CALayer layer];
     
@@ -112,6 +124,11 @@
     pagesViewController.propertyDetails = property;
     pagesViewController.delegate = self;
     pagesViewController.buyers_view = YES;
+    pagesViewController.buyer_id = self.buyer_id;
+    pagesViewController.buyer_name = self.buyer_name;
+    
+    self.currentListingId = property.listing_id;
+    
 //    pagesViewController.modify_view_type = MODIFYVIEW_NORMAL;
 //    
 //    if ([self.loginDetail.user_id integerValue] != [property.user_id integerValue]) {
@@ -288,6 +305,12 @@
                         self.buttonSave.hidden = NO;
                     }
                     
+                    [self.labelNumberOfProperty sizeToFit];
+                    
+                    CGRect frame = self.activityIndicator.frame;
+                    frame.origin.x = self.labelNumberOfProperty.frame.origin.x + self.labelNumberOfProperty.frame.size.width + 10.0f;
+                    self.activityIndicator.frame = frame;
+                    
                     ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
                     
                     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
@@ -301,6 +324,8 @@
                 });
                 
             });
+            
+            [self dismissOverlay];
         }
         else {
             [self.pageController.view removeFromSuperview];
@@ -313,12 +338,15 @@
             else {
                 self.labelNumberOfProperty.text = @"New POPs™";
             }
+            [self.labelNumberOfProperty sizeToFit];
+            
+            CGRect frame = self.activityIndicator.frame;
+            frame.origin.x = self.labelNumberOfProperty.frame.origin.x + self.labelNumberOfProperty.frame.size.width + 10.0f;
+            self.activityIndicator.frame = frame;
             //        self.buttonSave.hidden = YES;
             [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
         }
     }
-    
-    [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -345,7 +373,15 @@
 }
 
 - (void)hideSaveButton:(BOOL)hide {
+    
     self.buttonSave.hidden = hide;
+    self.labelSavedto.hidden = YES;
+}
+
+- (void)replaceSaveWithText:(NSString *)string {
+    self.labelSavedto.text = string;
+    self.labelSavedto.hidden = NO;
+    self.buttonSave.hidden = YES;
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
@@ -360,5 +396,55 @@
 
 - (IBAction)backToBuyers:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)saveButtonPressed:(id)sender {
+    
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context
+                               executeFetchRequest:fetchRequest error:&error];
+    
+    LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%i",loginDetail.user_id,self.currentListingId, self.buyer_id];
+    
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
+    [urlString appendString:parameters];
+//    NSLog(@"url:%@",urlString);
+    self.activityIndicator.hidden = NO;
+    __block NSError *errorData = nil;
+    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    //            [self.activityIndicator startAnimating];
+    //            self.activityIndicator.hidden = NO;
+    [request setCompletionBlock:
+     ^{
+         NSData *responseData = [request responseData];
+         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+         
+//         NSLog(@"json:%@",json);
+         if ([json objectForKey:@"status"]) {
+             NSLog(@"Success");
+             [self replaceSaveWithText:[NSString stringWithFormat:@"Saved to %@",self.buyer_name]];
+         }
+         else {
+             NSLog(@"Failed");
+         }
+         
+         
+         self.activityIndicator.hidden = YES;
+         
+     }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        NSLog(@" error:%@",error);
+    }];
+    
+    [request startAsynchronous];
 }
 @end

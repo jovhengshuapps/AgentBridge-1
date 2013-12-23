@@ -14,14 +14,15 @@
 		6E3B3C80185EF8D80065B51C /* ABridge_SendTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E3B3C7F185EF8D80065B51C /* ABridge_SendTransaction.m */; };
 		6E3C54A41863144100147E0E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E483EEA1863031F0071691D /* libTestFlight.a */; };
 		6E40004F1856C8D6000B78E6 /* ABridge_AgentInvitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E40004E1856C8D5000B78E6 /* ABridge_AgentInvitesViewController.m */; };
+		6E47185D186456B60016B407 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E47185C186456B60016B407 /* Activity.m */; };
 		6E483ECE1862D0E80071691D /* ContactInfoNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483ECD1862D0E60071691D /* ContactInfoNumber.m */; };
 		6E483EDB1862EC370071691D /* Brokerage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483EDA1862EC370071691D /* Brokerage.m */; };
 		6E483EDE1862EC380071691D /* Designation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483EDD1862EC380071691D /* Designation.m */; };
-		6E483EE41862EC680071691D /* HTAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483EE11862EC680071691D /* HTAutocompleteTextField.m */; };
-		6E483EE51862EC680071691D /* HTEmailAutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483EE31862EC680071691D /* HTEmailAutocompleteTextField.m */; };
-		6E483EE81862ECBB0071691D /* HTAutocompleteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483EE71862ECBB0071691D /* HTAutocompleteManager.m */; };
 		6E483EF1186303200071691D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E483EEB1863031F0071691D /* README.md */; };
 		6E483EF2186303200071691D /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E483EEC1863031F0071691D /* release_notes.md */; };
+		6E5A0A2C1867EEC30030F2FF /* ABridge_AutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */; };
+		6E5A0A35186818490030F2FF /* MLPAutoCompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A2F186818490030F2FF /* MLPAutoCompleteTextField.m */; };
+		6E5A0A36186818490030F2FF /* NSString+Levenshtein.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A34186818490030F2FF /* NSString+Levenshtein.m */; };
 		6E5AEF8D184C7C2800FE7B9E /* RequestAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */; };
 		6E5AEF90184C7C2900FE7B9E /* RequestNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */; };
 		6E5AEF93184CA8AF00FE7B9E /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF92184CA8AF00FE7B9E /* Buyer.m */; };
@@ -67,7 +68,6 @@
 		6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */; };
 		6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF587E1833843000C3214E /* ABridge_PropertyViewController.m */; };
 		6EEF58821833857B00C3214E /* ABridge_LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEF58811833857B00C3214E /* ABridge_LoginViewController.m */; };
-		6EF61754185054B900DC37F5 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF61753185054B900DC37F5 /* Activity.m */; };
 		6EF741181845FE910021603D /* ABridge_BuyerPopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF741171845FE910021603D /* ABridge_BuyerPopsViewController.m */; };
 		6EF948A4185ED7AF00460878 /* ABridge_TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF948A3185ED7AE00460878 /* ABridge_TabBarViewController.m */; };
 		6EFCFC611846F053004EB0B7 /* ABridge_AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC601846F053004EB0B7 /* ABridge_AccountSettingsViewController.m */; };
@@ -115,24 +115,29 @@
 		6E3B3C7F185EF8D80065B51C /* ABridge_SendTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_SendTransaction.m; sourceTree = "<group>"; };
 		6E40004D1856C8D5000B78E6 /* ABridge_AgentInvitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AgentInvitesViewController.h; sourceTree = "<group>"; };
 		6E40004E1856C8D5000B78E6 /* ABridge_AgentInvitesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AgentInvitesViewController.m; sourceTree = "<group>"; };
+		6E47185B186456B60016B407 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
+		6E47185C186456B60016B407 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		6E483ECC1862D0E60071691D /* ContactInfoNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfoNumber.h; sourceTree = "<group>"; };
 		6E483ECD1862D0E60071691D /* ContactInfoNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfoNumber.m; sourceTree = "<group>"; };
 		6E483ED91862EC370071691D /* Brokerage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brokerage.h; sourceTree = "<group>"; };
 		6E483EDA1862EC370071691D /* Brokerage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brokerage.m; sourceTree = "<group>"; };
 		6E483EDC1862EC380071691D /* Designation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Designation.h; sourceTree = "<group>"; };
 		6E483EDD1862EC380071691D /* Designation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Designation.m; sourceTree = "<group>"; };
-		6E483EE01862EC680071691D /* HTAutocompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTAutocompleteTextField.h; sourceTree = "<group>"; };
-		6E483EE11862EC680071691D /* HTAutocompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTAutocompleteTextField.m; sourceTree = "<group>"; };
-		6E483EE21862EC680071691D /* HTEmailAutocompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTEmailAutocompleteTextField.h; sourceTree = "<group>"; };
-		6E483EE31862EC680071691D /* HTEmailAutocompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTEmailAutocompleteTextField.m; sourceTree = "<group>"; };
-		6E483EE61862ECBB0071691D /* HTAutocompleteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTAutocompleteManager.h; sourceTree = "<group>"; };
-		6E483EE71862ECBB0071691D /* HTAutocompleteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTAutocompleteManager.m; sourceTree = "<group>"; };
 		6E483EEA1863031F0071691D /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		6E483EEB1863031F0071691D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		6E483EEC1863031F0071691D /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
 		6E483EED1863031F0071691D /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		6E483EEE1863031F0071691D /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		6E483EEF1863031F0071691D /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		6E5A0A2A1867EEC30030F2FF /* ABridge_AutocompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AutocompleteTextField.h; sourceTree = "<group>"; };
+		6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AutocompleteTextField.m; sourceTree = "<group>"; };
+		6E5A0A2E186818490030F2FF /* MLPAutoCompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextField.h; sourceTree = "<group>"; };
+		6E5A0A2F186818490030F2FF /* MLPAutoCompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLPAutoCompleteTextField.m; sourceTree = "<group>"; };
+		6E5A0A30186818490030F2FF /* MLPAutoCompleteTextFieldDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextFieldDataSource.h; sourceTree = "<group>"; };
+		6E5A0A31186818490030F2FF /* MLPAutoCompleteTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextFieldDelegate.h; sourceTree = "<group>"; };
+		6E5A0A32186818490030F2FF /* MLPAutoCompletionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompletionObject.h; sourceTree = "<group>"; };
+		6E5A0A33186818490030F2FF /* NSString+Levenshtein.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Levenshtein.h"; sourceTree = "<group>"; };
+		6E5A0A34186818490030F2FF /* NSString+Levenshtein.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Levenshtein.m"; sourceTree = "<group>"; };
 		6E5AEF8B184C7C2700FE7B9E /* RequestAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestAccess.h; sourceTree = "<group>"; };
 		6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestAccess.m; sourceTree = "<group>"; };
 		6E5AEF8E184C7C2900FE7B9E /* RequestNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestNetwork.h; sourceTree = "<group>"; };
@@ -208,8 +213,6 @@
 		6EEF58801833857B00C3214E /* ABridge_LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_LoginViewController.h; sourceTree = "<group>"; };
 		6EEF58811833857B00C3214E /* ABridge_LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_LoginViewController.m; sourceTree = "<group>"; };
 		6EEF5883183396AB00C3214E /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		6EF61752185054B900DC37F5 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
-		6EF61753185054B900DC37F5 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		6EF741161845FE910021603D /* ABridge_BuyerPopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPopsViewController.h; sourceTree = "<group>"; };
 		6EF741171845FE910021603D /* ABridge_BuyerPopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerPopsViewController.m; sourceTree = "<group>"; };
 		6EF948A2185ED7AE00460878 /* ABridge_TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_TabBarViewController.h; sourceTree = "<group>"; };
@@ -313,19 +316,6 @@
 			name = "AgentInvites Controller";
 			sourceTree = "<group>";
 		};
-		6E483EDF1862EC670071691D /* HTAutocomplete */ = {
-			isa = PBXGroup;
-			children = (
-				6E483EE61862ECBB0071691D /* HTAutocompleteManager.h */,
-				6E483EE71862ECBB0071691D /* HTAutocompleteManager.m */,
-				6E483EE01862EC680071691D /* HTAutocompleteTextField.h */,
-				6E483EE11862EC680071691D /* HTAutocompleteTextField.m */,
-				6E483EE21862EC680071691D /* HTEmailAutocompleteTextField.h */,
-				6E483EE31862EC680071691D /* HTEmailAutocompleteTextField.m */,
-			);
-			path = HTAutocomplete;
-			sourceTree = "<group>";
-		};
 		6E483EE91863031F0071691D /* TestFlightSDK2.1.3 */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,6 +327,20 @@
 				6E483EEF1863031F0071691D /* TestFlight.h */,
 			);
 			path = TestFlightSDK2.1.3;
+			sourceTree = "<group>";
+		};
+		6E5A0A2D186818490030F2FF /* MLPAutoCompleteTextField */ = {
+			isa = PBXGroup;
+			children = (
+				6E5A0A2E186818490030F2FF /* MLPAutoCompleteTextField.h */,
+				6E5A0A2F186818490030F2FF /* MLPAutoCompleteTextField.m */,
+				6E5A0A30186818490030F2FF /* MLPAutoCompleteTextFieldDataSource.h */,
+				6E5A0A31186818490030F2FF /* MLPAutoCompleteTextFieldDelegate.h */,
+				6E5A0A32186818490030F2FF /* MLPAutoCompletionObject.h */,
+				6E5A0A33186818490030F2FF /* NSString+Levenshtein.h */,
+				6E5A0A34186818490030F2FF /* NSString+Levenshtein.m */,
+			);
+			path = MLPAutoCompleteTextField;
 			sourceTree = "<group>";
 		};
 		6E72F7A6185FF00E0082447B /* Service Fee Collection */ = {
@@ -351,14 +355,14 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
+				6E47185B186456B60016B407 /* Activity.h */,
+				6E47185C186456B60016B407 /* Activity.m */,
 				6E483EDC1862EC380071691D /* Designation.h */,
 				6E483EDD1862EC380071691D /* Designation.m */,
 				6E483ED91862EC370071691D /* Brokerage.h */,
 				6E483EDA1862EC370071691D /* Brokerage.m */,
 				6E483ECC1862D0E60071691D /* ContactInfoNumber.h */,
 				6E483ECD1862D0E60071691D /* ContactInfoNumber.m */,
-				6EF61752185054B900DC37F5 /* Activity.h */,
-				6EF61753185054B900DC37F5 /* Activity.m */,
 				6E5AEF91184CA8AF00FE7B9E /* Buyer.h */,
 				6E5AEF92184CA8AF00FE7B9E /* Buyer.m */,
 				6E5AEF8E184C7C2900FE7B9E /* RequestNetwork.h */,
@@ -488,12 +492,14 @@
 				6EEF584B18337E4000C3214E /* Images.xcassets */,
 				6E3B3C7E185EF8D80065B51C /* ABridge_SendTransaction.h */,
 				6E3B3C7F185EF8D80065B51C /* ABridge_SendTransaction.m */,
-				6E483EDF1862EC670071691D /* HTAutocomplete */,
 				6E483EE91863031F0071691D /* TestFlightSDK2.1.3 */,
 				6EEF587A1833837600C3214E /* ABridge_ParentViewController.h */,
 				6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */,
 				6EF948A2185ED7AE00460878 /* ABridge_TabBarViewController.h */,
 				6EF948A3185ED7AE00460878 /* ABridge_TabBarViewController.m */,
+				6E5A0A2D186818490030F2FF /* MLPAutoCompleteTextField */,
+				6E5A0A2A1867EEC30030F2FF /* ABridge_AutocompleteTextField.h */,
+				6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */,
 				6EB32BDC1848328C00F291AF /* HTTPURLConnection.h */,
 				6EB32BDD1848328C00F291AF /* HTTPURLConnection.m */,
 				6EEF586918337E6B00C3214E /* Main.storyboard */,
@@ -759,7 +765,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E483EE51862EC680071691D /* HTEmailAutocompleteTextField.m in Sources */,
 				6EBBD7631834A56800166D63 /* ABridge_ReferralViewController.m in Sources */,
 				6EF948A4185ED7AF00460878 /* ABridge_TabBarViewController.m in Sources */,
 				6EBBD75A183498CC00166D63 /* ABridge_BuyerViewController.m in Sources */,
@@ -780,20 +785,20 @@
 				6E3B3C80185EF8D80065B51C /* ABridge_SendTransaction.m in Sources */,
 				6EFF613F1851BB5700A5A86A /* ASIDataDecompressor.m in Sources */,
 				6EF741181845FE910021603D /* ABridge_BuyerPopsViewController.m in Sources */,
-				6E483EE81862ECBB0071691D /* HTAutocompleteManager.m in Sources */,
-				6E483EE41862EC680071691D /* HTAutocompleteTextField.m in Sources */,
 				6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */,
+				6E5A0A36186818490030F2FF /* NSString+Levenshtein.m in Sources */,
 				6EFF61441851BB5700A5A86A /* ASINetworkQueue.m in Sources */,
 				6EFCFC7B18474D67004EB0B7 /* Property.m in Sources */,
 				6E0D48FE183B66FD000EEC9D /* ABridge_AgentNetworkViewController.m in Sources */,
 				6EB32BDE1848328C00F291AF /* HTTPURLConnection.m in Sources */,
 				6E483EDE1862EC380071691D /* Designation.m in Sources */,
+				6E5A0A35186818490030F2FF /* MLPAutoCompleteTextField.m in Sources */,
 				6E6D0A78185AF5C500D02B92 /* ABridge_ActivityAgentPOPsViewController.m in Sources */,
-				6EF61754185054B900DC37F5 /* Activity.m in Sources */,
 				6EFF613D1851BB5700A5A86A /* ASIAuthenticationDialog.m in Sources */,
 				6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */,
 				6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */,
 				6E791B49183CD28200BB76B3 /* Referral.m in Sources */,
+				6E47185D186456B60016B407 /* Activity.m in Sources */,
 				6EFF61401851BB5700A5A86A /* ASIDownloadCache.m in Sources */,
 				6EFCFC611846F053004EB0B7 /* ABridge_AccountSettingsViewController.m in Sources */,
 				6E483ECE1862D0E80071691D /* ContactInfoNumber.m in Sources */,
@@ -810,6 +815,7 @@
 				6EEF584718337E4000C3214E /* ABridge_AppDelegate.m in Sources */,
 				6EFF61431851BB5700A5A86A /* ASIInputStream.m in Sources */,
 				6EEF587C1833837600C3214E /* ABridge_ParentViewController.m in Sources */,
+				6E5A0A2C1867EEC30030F2FF /* ABridge_AutocompleteTextField.m in Sources */,
 				6EEF587F1833843000C3214E /* ABridge_PropertyViewController.m in Sources */,
 				6E0D4902183B6731000EEC9D /* ABridge_AgentNetworkPagesViewController.m in Sources */,
 				6EFCFC741847183C004EB0B7 /* Country.m in Sources */,
@@ -979,7 +985,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A0B45F01-E255-48AC-A173-070ED095A2FF";
+				PROVISIONING_PROFILE = "F183930C-F746-40E3-9F82-6E540EA91501";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1006,7 +1012,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A0B45F01-E255-48AC-A173-070ED095A2FF";
+				PROVISIONING_PROFILE = "F183930C-F746-40E3-9F82-6E540EA91501";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

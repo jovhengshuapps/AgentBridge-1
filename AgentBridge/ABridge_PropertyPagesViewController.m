@@ -13,6 +13,7 @@
 #import "LoginDetails.h"
 #import "RequestNetwork.h"
 #import "RequestAccess.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_PropertyPagesViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollImages;
@@ -35,6 +36,7 @@
 @property (strong, nonatomic) NSMutableArray *arrayOfImageData;
 @property (strong, nonatomic) NSURLConnection * urlConnectionRequestNetwork;
 @property (strong, nonatomic) NSURLConnection * urlConnectionRequestAccess;
+- (IBAction)buttonDescriptionPressed:(id)sender;
 @property (strong, nonatomic) LoginDetails *loginDetail;
 @end
 
@@ -47,6 +49,8 @@
 @synthesize delegate;
 @synthesize buyers_view;
 @synthesize loginDetail;
+@synthesize buyer_id;
+@synthesize buyer_name;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -95,6 +99,48 @@
     self.labelPropertyType.text = [NSString stringWithFormat:@"%@ - %@",self.propertyDetails.type_name, self.propertyDetails.sub_type_name];
     
     if (buyers_view) {
+        
+        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%i",self.loginDetail.user_id,self.propertyDetails.listing_id, self.buyer_id];
+        
+        NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_new_if_saved.php"];
+        [urlString appendString:parameters];
+//        NSLog(@"url:%@",urlString);
+        
+        
+        if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+            [self.delegate hideSaveButton:YES];
+        }
+        __block NSError *errorData = nil;
+        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        //            [self.activityIndicator startAnimating];
+        //            self.activityIndicator.hidden = NO;
+        [request setCompletionBlock:
+         ^{
+             NSData *responseData = [request responseData];
+             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+             
+//              NSLog(@"json:%@",json);
+             if ([[json objectForKey:@"status"] integerValue] == 1) {
+                 if ([self.delegate respondsToSelector:@selector(replaceSaveWithText:)]) {
+                     [self.delegate replaceSaveWithText:[NSString stringWithFormat:@"Saved to %@",self.buyer_name]];
+                 }
+             }
+             else {
+                 NSLog(@"Failed");
+                 
+                 if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+                     [self.delegate hideSaveButton:NO];
+                 }
+             }
+             
+             
+         }];
+        [request setFailedBlock:^{
+            NSError *error = [request error];
+            NSLog(@" error:%@",error);
+        }];
+        
+        [request startAsynchronous];
         
         if ([self.loginDetail.user_id integerValue] != [self.propertyDetails.user_id integerValue]) {
             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.propertyDetails.user_id,self.loginDetail.user_id];
@@ -156,6 +202,23 @@
     
     [self loadPOPsImages];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (self.labelDescription.hidden == NO || self.buttonDescription.hidden == NO) {
+        
+        if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+            [self.delegate hideSaveButton:YES];
+        }
+    }
+    else {
+        
+        if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+            [self.delegate hideSaveButton:NO];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -257,15 +320,111 @@
 }
 
 - (void) loadPOPsImages {
-    self.loadingImageIndicator.hidden = NO;
-        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
-        [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
-//        NSLog(@"url:%@",urlString_);
-        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        self.urlConnectionImages = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+//    self.loadingImageIndicator.hidden = NO;
+//        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
+//        [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
+////        NSLog(@"url:%@",urlString_);
+//        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+//        
+//        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//        self.urlConnectionImages = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+    NSString *parameters = [NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id];
     
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
+    [urlString appendString:parameters];
+    
+    __block NSError *errorData = nil;
+    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    //            [self.activityIndicator startAnimating];
+    //            self.activityIndicator.hidden = NO;
+    [request setCompletionBlock:
+     ^{
+         NSData *responseData = [request responseData];
+         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+         
+         if ([[json objectForKey:@"data"] count]) {
+             
+                 __block CGFloat xOffset = 0.0f;
+                 __block NSInteger i = 0;
+                 
+//                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+//                 });
+                 
+                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                     PropertyImages *image = nil;
+                     
+                     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
+                     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                     NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+                     [fetchRequest setPredicate:predicate];
+                     [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
+                     NSError * error = nil;
+                     NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
+                     if ([results count]) {
+                         image = (PropertyImages*)[results firstObject];
+                     }
+                     else {
+                         image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
+                     }
+                     
+                     [image setValuesForKeysWithDictionary:entry];
+                     
+                     NSError *errorSave = nil;
+                     if (![context save:&errorSave]) {
+                         NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
+                     }
+                     else {
+                         
+//                         dispatch_async(dispatch_get_main_queue(), ^{
+                             // Update UI
+                             if (self.arrayOfImageData == nil) {
+                                 self.arrayOfImageData = [[NSMutableArray alloc] init];
+                             }
+                             
+                             if (image.image_data == nil) {
+                                 image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
+                             }
+                             
+                             UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+                             imageView.contentMode = UIViewContentModeScaleAspectFill;
+                             imageView.image = [UIImage imageWithData:image.image_data];
+                             
+                             [self.arrayOfImageData addObject:image.image_data];
+                             
+                             [self.scrollImages addSubview:imageView];
+                             
+                             xOffset += imageView.frame.size.width;
+                             i++;
+                             
+                             [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
+//                         });
+                         
+                     }
+                 }
+                 
+                 
+                 
+//                 dispatch_async(dispatch_get_main_queue(), ^{
+                     UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
+                     
+                     tapZoom.numberOfTapsRequired = 1;
+                     tapZoom.numberOfTouchesRequired = 1;
+                     [self.scrollImages addGestureRecognizer:tapZoom];
+                     self.loadingImageIndicator.hidden = YES;
+//                 });
+         }
+         else {
+             
+         }
+         
+     }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        NSLog(@" error:%@",error);
+    }];
+    
+    [request startAsynchronous];
 }
 
 - (void) getPriceText {
@@ -493,25 +652,32 @@
                     else if ([network.status integerValue] == 0){
                         self.labelExpiry.text = @"";
                         self.labelExpiry.hidden = YES;
-                        self.viewForDescription.hidden = NO;
+//                        self.viewForDescription.hidden = NO;
+                        self.labelDescription.hidden = NO;
+                        self.buttonDescription.hidden = NO;
                         self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
                         [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
                         
                         if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
                             [self.delegate hideSaveButton:YES];
                         }
+                        
+                        
                     }
                 }
                 else {
                     self.labelExpiry.text = @"";
                     self.labelExpiry.hidden = YES;
-                    self.viewForDescription.hidden = NO;
+//                    self.viewForDescription.hidden = NO;
+                    self.labelDescription.hidden = NO;
+                    self.buttonDescription.hidden = NO;
                     self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
                     [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                    self.buttonDescription.tag = 10001;
                     
-                    if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-                        [self.delegate hideSaveButton:YES];
-                    }
+//                    if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+//                        [self.delegate hideSaveButton:YES];
+//                    }
                 }
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -521,15 +687,18 @@
         else {
             self.labelExpiry.text = @"";
             self.labelExpiry.hidden = YES;
-            self.viewForDescription.hidden = NO;
+//            self.viewForDescription.hidden = NO;
+            self.labelDescription.hidden = NO;
+            self.buttonDescription.hidden = NO;
             self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
             [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+            self.buttonDescription.tag = 10001;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
             
-            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-                [self.delegate hideSaveButton:YES];
-            }
+//            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+//                [self.delegate hideSaveButton:YES];
+//            }
         }
         
     }
@@ -570,7 +739,9 @@
                 else if ([access.permission boolValue] == NO){
                     self.labelExpiry.text = @"";
                     self.labelExpiry.hidden = YES;
-                    self.viewForDescription.hidden = NO;
+//                    self.viewForDescription.hidden = NO;
+                    self.labelDescription.hidden = NO;
+                    self.buttonDescription.hidden = NO;
                     self.labelDescription.text = @"This POPs™ is restricted to private";
                     [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
                     
@@ -583,13 +754,16 @@
             else {
                 self.labelExpiry.text = @"";
                 self.labelExpiry.hidden = YES;
-                self.viewForDescription.hidden = NO;
+//                self.viewForDescription.hidden = NO;
+                self.labelDescription.hidden = NO;
+                self.buttonDescription.hidden = NO;
                 self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
                 [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+                self.buttonDescription.tag = 20002;
                 
-                if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-                    [self.delegate hideSaveButton:YES];
-                }
+//                if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+//                    [self.delegate hideSaveButton:YES];
+//                }
             }
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -598,15 +772,18 @@
         else {
             self.labelExpiry.text = @"";
             self.labelExpiry.hidden = YES;
-            self.viewForDescription.hidden = NO;
+//            self.viewForDescription.hidden = NO;
+            self.labelDescription.hidden = NO;
+            self.buttonDescription.hidden = NO;
             self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
             [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+            self.buttonDescription.tag = 20002;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
             
-            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-                [self.delegate hideSaveButton:YES];
-            }
+//            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+//                [self.delegate hideSaveButton:YES];
+//            }
         }
     }
     // Do something with responseData
@@ -621,4 +798,92 @@
     
 }
 
+- (IBAction)buttonDescriptionPressed:(id)sender {
+    switch ([((UIButton*)sender) tag]) {
+        case 10001:{
+            
+            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.loginDetail.user_id, self.propertyDetails.user_id];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_network.php"];
+            [urlString appendString:parameters];
+            //            NSLog(@"url:%@",urlString);
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+                 NSLog(@"json:%@",json);
+                 if ([json objectForKey:@"status"]) {
+                     NSLog(@"Success");
+                     //                        self.viewForDescription.hidden = NO;
+                     
+                     self.labelDescription.hidden = NO;
+                     self.buttonDescription.hidden = NO;
+                     self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+                     [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                 }
+                 else {
+                     NSLog(@"Failed");
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+            break;
+        }
+        case 20002:{
+            
+            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&listing_id=%@",self.loginDetail.user_id, self.propertyDetails.user_id,self.propertyDetails.listing_id];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_access.php"];
+            [urlString appendString:parameters];
+            //            NSLog(@"url:%@",urlString);
+            
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+                 NSLog(@"json:%@",json);
+                 if ([json objectForKey:@"status"]) {
+                     NSLog(@"Success");
+                     //                        self.viewForDescription.hidden = NO;
+                     
+                     self.labelDescription.hidden = NO;
+                     self.buttonDescription.hidden = NO;
+                     self.labelDescription.text = @"This POPs™ is restricted to private";
+                     [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+                 }
+                 else {
+                     NSLog(@"Failed");
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+            break;
+        }
+        default:
+            break;
+    }
+}
 @end

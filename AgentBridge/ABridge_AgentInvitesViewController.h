@@ -9,6 +9,6 @@
 #import "ABridge_ParentViewController.h"
 #import "ASIHTTPRequest.h"
 
-@interface ABridge_AgentInvitesViewController : ABridge_ParentViewController
+@interface ABridge_AgentInvitesViewController : ABridge_ParentViewController <UITextFieldDelegate>
 
 @end

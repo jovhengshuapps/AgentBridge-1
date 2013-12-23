@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Activity" representedClassName="Activity" syncable="YES">
+        <attribute name="access_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="activities_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="activity_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="activity_type" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,6 +12,7 @@
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="listing_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="network_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="network_status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="other_user_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="other_user_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -287,8 +289,11 @@
     <elements>
         <element name="Activity" positionX="0" positionY="0" width="0" height="0"/>
         <element name="AgentProfile" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Brokerage" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Buyer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ContactInfoNumber" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Country" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Designation" positionX="0" positionY="0" width="0" height="0"/>
         <element name="LoginDetails" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Property" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PropertyImages" positionX="0" positionY="0" width="0" height="0"/>
@@ -296,8 +301,5 @@
         <element name="RequestAccess" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RequestNetwork" positionX="0" positionY="0" width="0" height="0"/>
         <element name="State" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ContactInfoNumber" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Brokerage" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Designation" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
