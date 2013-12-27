@@ -420,6 +420,12 @@
                 NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
                 NSString *buyer_name = [NSString stringWithFormat:@"<a href='http://client/in/%@'>%@</a>",self.activityDetail.client_id, self.activityDetail.referral_buyer_name];
                 
+                if ([self.activityDetail.referral_status integerValue] == 7) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        self.labelActivityName.text = @"";
+                    });
+                }
+                
                 switch ([self.activityDetail.referral_status integerValue]) {
                     case 1:
                         message = [NSString stringWithFormat:@"%@ is now under contract.",buyer_name];
@@ -472,6 +478,8 @@
                                     [encryptBuyerName appendString:[self.activityDetail.referral_buyer_name substringFromIndex:[self.activityDetail.referral_buyer_name length]-2]];
                                     
                                     buyer_block = [NSString stringWithFormat:@"<a href='http://client/in/%@'>%@</a>",self.activityDetail.client_id, encryptBuyerName];
+                                    
+                                    self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",encryptBuyerName];
                                 }
                             }
                             
@@ -841,7 +849,7 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            CGSize constraint = CGSizeMake(200.0f, 20000.0f);
+            CGSize constraint = CGSizeMake(200.0f - 20.0f, 20000.0f);
             
             CGSize size = [self.labelActivityName.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
             

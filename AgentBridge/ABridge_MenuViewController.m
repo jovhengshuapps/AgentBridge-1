@@ -76,7 +76,7 @@
     
     bottomBorder.frame = CGRectMake(0.0f, self.buttonContactInfo.frame.size.height-1.0f, self.buttonContactInfo.frame.size.width, 1.0f);
     
-    bottomBorder.backgroundColor = [UIColor colorWithRed:127.0f/255.0f green:127.0f/255.0f blue:127.0f/255.0f alpha:1.0f].CGColor;
+    bottomBorder.backgroundColor = [UIColor colorWithRed:60.0f/255.0f green:60.0f/255.0f blue:60.0f/255.0f alpha:1.0f].CGColor;
     
     [self.buttonContactInfo.layer addSublayer:bottomBorder];
     
@@ -85,7 +85,7 @@
     
     bottomBorder1.frame = CGRectMake(0.0f, self.buttonBrokerage.frame.size.height-1.0f, self.buttonBrokerage.frame.size.width, 1.0f);
     
-    bottomBorder1.backgroundColor = [UIColor colorWithRed:127.0f/255.0f green:127.0f/255.0f blue:127.0f/255.0f alpha:1.0f].CGColor;
+    bottomBorder1.backgroundColor = [UIColor colorWithRed:60.0f/255.0f green:60.0f/255.0f blue:60.0f/255.0f alpha:1.0f].CGColor;
     
     [self.buttonBrokerage.layer addSublayer:bottomBorder1];
     
@@ -95,7 +95,7 @@
     
     bottomBorder2.frame = CGRectMake(0.0f, self.buttonNotification.frame.size.height-1.0f, self.buttonNotification.frame.size.width, 1.0f);
     
-    bottomBorder2.backgroundColor = [UIColor colorWithRed:127.0f/255.0f green:127.0f/255.0f blue:127.0f/255.0f alpha:1.0f].CGColor;
+    bottomBorder2.backgroundColor = [UIColor colorWithRed:60.0f/255.0f green:60.0f/255.0f blue:60.0f/255.0f alpha:1.0f].CGColor;
     
     [self.buttonNotification.layer addSublayer:bottomBorder2];
     

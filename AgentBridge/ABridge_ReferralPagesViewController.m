@@ -429,7 +429,7 @@
             
             ABPersonSetImageData (newPerson,(__bridge CFDataRef)([NSData dataWithContentsOfFile:@"blank-image.png"]),&error);
             
-            ABRecordSetValue(newPerson, kABPersonOrganizationProperty, @"Agent Bridge", &error);
+            ABRecordSetValue(newPerson, kABPersonOrganizationProperty, @"AgentBridge", &error);
             ABRecordSetValue(newPerson, kABPersonJobTitleProperty, CLIENT_INTENTION([[self stringTestNull:self.referralDetails.client_intention] integerValue]), &error);
             
             //Client Number

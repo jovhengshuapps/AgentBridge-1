@@ -8,6 +8,6 @@
 
 #import "ABridge_ParentViewController.h"
 
-@interface ABridge_SecurityViewController : ABridge_ParentViewController
+@interface ABridge_SecurityViewController : ABridge_ParentViewController <UITextFieldDelegate>
 
 @end

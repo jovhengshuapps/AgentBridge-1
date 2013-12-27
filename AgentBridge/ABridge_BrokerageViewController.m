@@ -12,6 +12,7 @@
 #import "Brokerage.h"
 #import "Designation.h"
 #import "ABridge_AppDelegate.h"
+#import "ABridge_UILabelInset.h"
 
 @interface ABridge_BrokerageViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *aboutMeTitle;
@@ -30,11 +31,16 @@
 @property (strong, nonatomic) NSMutableArray *arrayOfDesignationAutocomplete;
 @property (strong, nonatomic) NSMutableArray *arrayOfBroker;
 @property (strong, nonatomic) NSMutableArray *arrayOfBrokerAutocomplete;
+@property (strong, nonatomic) NSMutableArray *arrayOfBrokerIDAutocomplete;
+@property (strong, nonatomic) NSMutableArray *arrayOfDesignationDetails;
+@property (strong, nonatomic) NSMutableArray *arrayOfDesignationToRemove;
+@property (strong, nonatomic) NSString *selectedBrokerId;
 @property (weak, nonatomic) IBOutlet UILabel *labelBroker;
 @property (weak, nonatomic) IBOutlet UIButton *buttonDeleteBroker;
 @property (weak, nonatomic) IBOutlet MLPAutoCompleteTextField *textFieldDesignation;
 @property (weak, nonatomic) IBOutlet UIView *viewContent;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewDesignations;
+@property (strong, nonatomic) AgentProfile *profile;
 
 - (IBAction)saveBrokerage:(id)sender;
 - (IBAction)backButton:(id)sender;
@@ -50,7 +56,13 @@
 
 @synthesize arrayOfBroker;
 @synthesize arrayOfBrokerAutocomplete;
+@synthesize arrayOfBrokerIDAutocomplete;
+@synthesize arrayOfDesignationDetails;
 @synthesize arrayOfUserDesignation;
+@synthesize arrayOfDesignationToRemove;
+@synthesize selectedBrokerId;
+
+@synthesize profile;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -122,10 +134,13 @@
                  if(self.arrayOfBroker == nil) {
                      self.arrayOfBroker = [NSMutableArray array];
                      self.arrayOfBrokerAutocomplete = [NSMutableArray array];
+                     self.arrayOfBrokerIDAutocomplete = [NSMutableArray array];
                  }
                  
                  //                     [arrayOfBroker addObject:broker.broker_name];
-                 [self.arrayOfBroker addObject:[entry valueForKey:@"broker_name"]];
+//                 [self.arrayOfBroker addObject:[entry valueForKey:@"broker_name"]];
+                 
+                 [self.arrayOfBroker addObject:entry];
              }
              
              // Set a default data source for all instances.  Otherwise, you can specify the data source on individual text fields via the autocompleteDataSource property
@@ -171,10 +186,12 @@
                  if(self.arrayOfDesignation == nil) {
                      self.arrayOfDesignation = [NSMutableArray array];
                      self.arrayOfDesignationAutocomplete = [NSMutableArray array];
+                     self.arrayOfDesignationDetails = [NSMutableArray array];
                  }
                  
                  
-                 [self.arrayOfDesignation addObject:[entry valueForKey:@"designations"]];
+//                 [self.arrayOfDesignation addObject:[entry valueForKey:@"designations"]];
+                 [self.arrayOfDesignation addObject:entry];
              }
              
              // Set a default data source for all instances.  Otherwise, you can specify the data source on individual text fields via the autocompleteDataSource property
@@ -216,13 +233,13 @@
     [fetchRequestProfile setPredicate:predicate];
     
     NSError *errorProfile = nil;
-    AgentProfile *profile = (AgentProfile*)[[context executeFetchRequest:fetchRequestProfile error:&errorProfile] firstObject];
+    self.profile = (AgentProfile*)[[context executeFetchRequest:fetchRequestProfile error:&errorProfile] firstObject];
     
     
     
     self.textFieldBrokerage.text = @"";
-    self.textFieldBrokerage.text = profile.broker_name;
-    self.labelBroker.text = profile.broker_name;
+    self.textFieldBrokerage.text = self.profile.broker_name;
+    self.labelBroker.text = self.profile.broker_name;
     
 //    NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_designations.php";
 //    
@@ -249,7 +266,7 @@
          NSData *responseData = [requestUserDesignation responseData];
          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorDataUserDesignation];
          
-         NSLog(@"json:%@",json);
+//         NSLog(@"json:%@",json);
          if ([[json objectForKey:@"data"] count]) {
              
              for(NSDictionary *entry in [json objectForKey:@"data"]){
@@ -261,23 +278,24 @@
                  
 //                 [self.arrayOfUserDesignation addObject:[entry valueForKey:@"designation_name"]];
                  
-                 [self addDesignationLabel:[entry valueForKey:@"designation_name"]];
-                 NSLog(@"name:%@",[entry valueForKey:@"designation_name"]);
+//                 [self addDesignationLabel:[entry valueForKey:@"designation_name"]];
+                 [self addDesignationLabel:entry];
+//                 NSLog(@"name:%@",[entry valueForKey:@"designation_name"]);
              }
              
              // Set a default data source for all instances.  Otherwise, you can specify the data source on individual text fields via the autocompleteDataSource property
              
-             if ([self.arrayOfUserDesignation count] == 0) {
-                 self.labelNoneSpecified.hidden = NO;
-                 [self.activityIndicator stopAnimating];
-                 self.activityIndicator.hidden = YES;
-             }
-             else {
-                 self.labelNoneSpecified.hidden = YES;
-             }
              
-             
-             
+         }
+         
+         
+         if ([self.arrayOfUserDesignation count] == 0) {
+             self.labelNoneSpecified.hidden = NO;
+             [self.activityIndicator stopAnimating];
+             self.activityIndicator.hidden = YES;
+         }
+         else {
+             self.labelNoneSpecified.hidden = YES;
          }
          
      }];
@@ -301,6 +319,171 @@
 }
 
 - (IBAction)saveBrokerage:(id)sender {
+    if ([self.labelBroker.text isEqualToString:@""] == NO) {
+        
+        
+        __block BOOL brokerUpdated = NO;
+        __block BOOL designationDeleted = NO;
+        __block BOOL designationAdded = NO;
+        
+        if(self.selectedBrokerId == nil) {
+            
+            brokerUpdated = YES;
+        }
+        else {
+            NSString *parameters = [NSString stringWithFormat:@"?profile_id=%@&broker_id=%@",self.profile.profile_id,self.selectedBrokerId];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/update_broker.php"];
+            [urlString appendString:parameters];
+            
+            self.activityIndicator.hidden = NO;
+            __block NSError *errorData = nil;
+            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                 
+                 
+                 if ([[json objectForKey:@"status"] integerValue] == YES) {
+                     
+                     brokerUpdated = YES;
+                 }
+                 else {
+                     brokerUpdated = NO;
+                 }
+                 
+                 self.activityIndicator.hidden = YES;
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+        }
+            
+        
+        
+        if (self.arrayOfDesignationToRemove == nil) {
+            designationDeleted = YES;
+        }
+        else {
+            for (NSDictionary *entry in self.arrayOfDesignationToRemove) {
+//                designationDeleted = YES;
+                if ([entry objectForKey:@"user_id"] != nil && [entry objectForKey:@"designation_id"] != nil) {
+//                    designationDeleted = NO;
+                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&designation_id=%@",[entry objectForKey:@"user_id"],[entry objectForKey:@"designation_id"]];
+                    
+                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/delete_designation.php"];
+                    [urlString appendString:parameters];
+                    
+                    self.activityIndicator.hidden = NO;
+                    __block NSError *errorData = nil;
+                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                    //            [self.activityIndicator startAnimating];
+                    //            self.activityIndicator.hidden = NO;
+                    [request setCompletionBlock:
+                     ^{
+                         NSData *responseData = [request responseData];
+                         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                         
+                         if ([[json objectForKey:@"status"] integerValue] == YES) {
+                             
+                             designationDeleted = YES;
+                         }
+                         else {
+                             designationDeleted = NO;
+                         }
+                         
+                         self.activityIndicator.hidden = YES;
+                     }];
+                    [request setFailedBlock:^{
+                        NSError *error = [request error];
+                        NSLog(@" error:%@",error);
+                    }];
+                    
+                    [request startAsynchronous];
+                }
+                else {
+                    
+                    designationDeleted = YES;
+                }
+            }
+        }
+        
+        
+        if (self.arrayOfUserDesignation == nil) {
+            designationAdded = YES;
+        }
+        else {
+            
+            for (NSDictionary *entry in self.arrayOfUserDesignation) {
+//                designationAdded = YES;
+                if ([entry objectForKey:@"user_id"] == nil) {
+//                    designationAdded = NO;
+                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&designation_id=%@",self.profile.user_id,[entry objectForKey:@"designation_id"]];
+                    
+                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/add_designation.php"];
+                    [urlString appendString:parameters];
+                    
+                    self.activityIndicator.hidden = NO;
+                    __block NSError *errorData = nil;
+                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                    //            [self.activityIndicator startAnimating];
+                    //            self.activityIndicator.hidden = NO;
+                    [request setCompletionBlock:
+                     ^{
+                         NSData *responseData = [request responseData];
+                         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                         
+                         if ([[json objectForKey:@"status"] integerValue] == YES) {
+                             
+                             designationAdded = YES;
+                         }
+                         else {
+                             designationAdded = NO;
+                         }
+                         
+                         self.activityIndicator.hidden = YES;
+                     }];
+                    [request setFailedBlock:^{
+                        NSError *error = [request error];
+                        NSLog(@" error:%@",error);
+                    }];
+                    
+                    [request startAsynchronous];
+                }
+                else {
+                    
+                    designationAdded = YES;
+                }
+            }
+        }
+        
+        
+//        NSLog(@"%i %i %i",brokerUpdated, designationAdded, designationDeleted);
+        
+        self.activityIndicator.hidden = YES;
+        if (brokerUpdated && designationAdded && designationDeleted) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Saved" message:@"Successful in saving Broker and Designation Details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+            
+            [self.arrayOfDesignationToRemove removeAllObjects];
+            self.arrayOfDesignationToRemove = nil;
+        }
+        else {
+            
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Failed" message:@"Failed in saving Broker and Designation Details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        }
+    }
+    else {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please input your Broker Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+    }
 }
 
 - (IBAction)backButton:(id)sender {
@@ -322,223 +505,57 @@
     textField.layer.borderWidth = 1.0f;
 }
 
-- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
-{
-    self.arrayOfDesignation = nil;
-    self.dataReceived = nil;
-    self.dataReceived = [[NSMutableData alloc] init];
-    
-}
-- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
-{
-    //NSLog(@"Did Receive Data %@", data);
-    [self.dataReceived appendData:data];
-}
-- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
-{
-    //    NSLog(@"Did Fail");
-    
-    [self.activityIndicator stopAnimating];
-    self.activityIndicator.hidden = YES;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    
-    NSError *error = nil;
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
-    
-    NSLog(@"Did Finish:%@", json);
-    self.labelNoneSpecified.hidden = YES;
-    
-    if ([[json objectForKey:@"data"] count]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-//            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-//            for (NSDictionary *entry in [json objectForKey:@"data"]) {
-//                State *state = nil;
-//                
-//                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"zone_id == %@", [entry objectForKey:@"zone_id"]];
-//                NSArray *result = [self fetchObjectsWithEntityName:@"State" andPredicate:predicate];
-//                if ([result count]) {
-//                    state = (State*)[result firstObject];
-//                }
-//                else {
-//                    state = [NSEntityDescription insertNewObjectForEntityForName: @"State" inManagedObjectContext: context];
-//                }
-//                
-//                [state setValuesForKeysWithDictionary:entry];
-//                
-//                NSError *error = nil;
-//                if (![context save:&error]) {
-//                    NSLog(@"Error on saving Property:%@",[error localizedDescription]);
-//                }
-//                else {
-//                    if (self.arrayOfState == nil) {
-//                        self.arrayOfState = [[NSMutableArray alloc] init];
-//                    }
-//                    
-//                    [self.arrayOfState addObject:state.zone_name];
-//                }
-//            }
-            
-            if (self.arrayOfDesignation == nil) {
-                self.arrayOfDesignation = [[NSMutableArray alloc] init];
-            }
 
-            for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                [self.arrayOfDesignation addObject:[entry objectForKey:@"designation_name"]];
-            }
-            
-            
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                CGFloat yOffset = 0.0f;
-                if ([self.arrayOfDesignation count] > 2) {
-                    CGRect frame = self.scrollViewDesignations.frame;
-                    frame.size.height += 30.0f;
-                    self.scrollViewDesignations.frame = frame;
-                    
-                    frame = self.buttonSave.frame;
-                    frame.origin.y += 30.0f;
-                    self.buttonSave.frame = frame;
-                }
-                
-                
-                for (NSString *designation in self.arrayOfDesignation) {
-                    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, yOffset, 280.0f, 30.0f)];
-                    textField.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-                    [self addPaddingAndBorder:textField color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
-                    textField.borderStyle = UITextBorderStyleNone;
-                    textField.placeholder = [NSString stringWithFormat:@"Designation %i",[self.arrayOfDesignation indexOfObject:designation]];
-                    textField.adjustsFontSizeToFitWidth = YES;
-                    textField.minimumFontSize = 11.0f;
-                    textField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-                    textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                    textField.text = designation;
-                    
-                    [self.scrollViewDesignations addSubview:textField];
-                    yOffset += textField.frame.size.height + 10.0f;
-                    
-                    self.scrollViewDesignations.contentSize = CGSizeMake(0.0f, yOffset);
-                    
-                    
-                }
-                
-                
-                UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, yOffset, 280.0f, 30.0f)];
-                textField.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-                [self addPaddingAndBorder:textField color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
-                textField.borderStyle = UITextBorderStyleNone;
-                textField.placeholder = [NSString stringWithFormat:@"Designation %i",[self.arrayOfDesignation count]+1];
-                textField.adjustsFontSizeToFitWidth = YES;
-                textField.minimumFontSize = 11.0f;
-                textField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-                textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                
-                [self.scrollViewDesignations addSubview:textField];
-                
-                
-                self.scrollViewDesignations.contentSize = CGSizeMake(self.scrollViewDesignations.contentSize.width, self.scrollViewDesignations.contentSize.height + 35.0f);
-                
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-            });
-            
-        });
-    }
-    else {
-        self.labelNoneSpecified.hidden = NO;
-    }
-    
-    [self.activityIndicator stopAnimating];
-    self.activityIndicator.hidden = YES;
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-}
-
-- (void) addDesignationLabel:(NSString*)name {
+- (void) addDesignationLabel:(NSDictionary*)entry{//(NSString*)name {
     
     if(self.arrayOfUserDesignation == nil) {
         self.arrayOfUserDesignation = [NSMutableArray array];
     }
     
-    [self.arrayOfUserDesignation addObject:name];
+    [self.arrayOfUserDesignation addObject:entry];
     
-    if ([self.arrayOfUserDesignation count] > 2) {
-        CGRect frame = self.tableViewDesignations.frame;
-        frame.size.height += 30.0f;
-        self.tableViewDesignations.frame = frame;
-        
-        frame = self.buttonSave.frame;
-        frame.origin.y += 30.0f;
-        self.buttonSave.frame = frame;
-    }
-
-    
-    [self.tableViewDesignations reloadData];
-    [self.tableViewDesignations setEditing:YES animated:YES];
-    
-//    CGFloat yOffset = self.scrollViewDesignations.contentSize.height;
 //    if ([self.arrayOfUserDesignation count] > 2) {
-//        CGRect frame = self.scrollViewDesignations.frame;
+//        CGRect frame = self.tableViewDesignations.frame;
 //        frame.size.height += 30.0f;
-//        self.scrollViewDesignations.frame = frame;
+//        self.tableViewDesignations.frame = frame;
 //        
 //        frame = self.buttonSave.frame;
 //        frame.origin.y += 30.0f;
 //        self.buttonSave.frame = frame;
 //    }
-//
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(35.0f, yOffset + 5.0f, self.scrollViewDesignations.frame.size.width-35.0f, 30.0f)];
-//    label.text = name;
-//    label.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-//    label.numberOfLines = 0;
-//    label.lineBreakMode = NSLineBreakByWordWrapping;
-//    [self.scrollViewDesignations addSubview:label];
-//    label.tag = yOffset;
-//    
-//    [label sizeToFit];
-//    
-//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//    button.frame = CGRectMake(0.0f, label.frame.origin.y, 30.0f, 30.0f);
-//    [button setTitle:@"x" forState:UIControlStateNormal];
-//    button.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
-//    button.titleLabel.textColor = [UIColor redColor];
-//    [self.scrollViewDesignations addSubview:button];
-//    button.tag = yOffset;
-//    
-//    [button addTarget:self action:@selector(removeDesignationLabel:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    [self.scrollViewDesignations setContentSize:CGSizeMake(0.0f, yOffset + label.frame.size.height + 5.0f + 5.0f)];
-//    
-//    [self.scrollViewDesignations scrollRectToVisible:label.frame animated:YES];
-}
 
-- (void) removeDesignationLabel:(id)sender {
-    NSInteger tag = [sender tag];
     
-    for (int index = 0; index < [[self.scrollViewDesignations subviews] count]; index++) {
-        UIView *view = [[self.scrollViewDesignations subviews] objectAtIndex:index];
-        if ([view tag] == tag) {
-            [view removeFromSuperview];
+    if (self.tableViewDesignations.frame.size.height + self.tableViewDesignations.frame.origin.y + 10.0f < self.viewContent.frame.size.height - 140.0f) {
+        if (self.tableViewDesignations.contentSize.height > self.tableViewDesignations.frame.size.height) {
+            CGRect frame = self.tableViewDesignations.frame;
+            frame.size.height = self.tableViewDesignations.contentSize.height;
+            self.tableViewDesignations.frame = frame;
+            
+            frame = self.buttonSave.frame;
+            frame.origin.y = self.tableViewDesignations.frame.size.height + self.tableViewDesignations.frame.origin.y + 10.0f;
+            self.buttonSave.frame = frame;
+            
         }
     }
+    
+    
+    [self.tableViewDesignations reloadData];
 }
 
 - (NSArray *)autoCompleteTextField:(MLPAutoCompleteTextField *)textField possibleCompletionsForString:(NSString *)string {
     if (textField == self.textFieldBrokerage) {
         
         [self.arrayOfBrokerAutocomplete removeAllObjects];
-        for(NSString *curString in self.arrayOfBroker) {
+        [self.arrayOfBrokerIDAutocomplete removeAllObjects];
+        for(NSDictionary *entry in self.arrayOfBroker) {
+            NSString *curString = [entry objectForKey:@"broker_name"];
+            NSString *currentID = [entry objectForKey:@"broker_id"];
             NSRange substringRangeLowerCase = [[curString lowercaseString] rangeOfString:[string lowercaseString]];
             NSRange substringRangeUpperCase = [[curString uppercaseString] rangeOfString:[string uppercaseString]];
             
             if (substringRangeLowerCase.location == 0 || substringRangeUpperCase.location == 0) {
                 [self.arrayOfBrokerAutocomplete addObject:curString];
+                [self.arrayOfBrokerIDAutocomplete addObject:currentID];
             }
         }
         
@@ -548,13 +565,16 @@
     }
     else {
         [self.arrayOfDesignationAutocomplete removeAllObjects];
-        for(NSString *curString in self.arrayOfDesignation) {
+        [self.arrayOfDesignationDetails removeAllObjects];
+        for(NSDictionary *entry in self.arrayOfDesignation) {
+            NSString *curString = [entry objectForKey:@"designations"];
             NSRange substringRangeLowerCase = [[curString lowercaseString] rangeOfString:[string lowercaseString]];
             NSRange substringRangeUpperCase = [[curString uppercaseString] rangeOfString:[string uppercaseString]];
             
             if (substringRangeLowerCase.location == 0 || substringRangeUpperCase.location == 0) {
-                if (![self.arrayOfUserDesignation containsObject:curString]) {
+                if (![self.arrayOfUserDesignation containsObject:entry]) {
                     [self.arrayOfDesignationAutocomplete addObject:curString];
+                    [self.arrayOfDesignationDetails addObject:entry];
                 }
             }
         }
@@ -572,10 +592,13 @@
         self.textFieldBrokerage.hidden = YES;
         self.labelBroker.hidden = NO;
         self.buttonDeleteBroker.hidden = NO;
+        
+        self.selectedBrokerId = [self.arrayOfBrokerIDAutocomplete objectAtIndex:[indexPath row]];
     }
     else {
+        
         self.textFieldDesignation.text = @"";
-        [self addDesignationLabel:selectedString];
+        [self addDesignationLabel:[self.arrayOfDesignationDetails objectAtIndex:[indexPath row]]];
 //        [self.arrayOfUserDesignation addObject:selectedString];
     }
 }
@@ -591,13 +614,14 @@
         self.labelBroker.hidden = NO;
         self.buttonDeleteBroker.hidden = NO;
         
+        self.selectedBrokerId = [self.arrayOfBrokerIDAutocomplete objectAtIndex:0];
         [self.textFieldBrokerage resignFirstResponder];
     }
     else {
         
-        NSString *selectedString = [self.arrayOfDesignationAutocomplete firstObject];
+//        NSString *selectedString = [self.arrayOfDesignationAutocomplete firstObject];
         self.textFieldDesignation.text = @"";
-        [self addDesignationLabel:selectedString];
+        [self addDesignationLabel:[self.arrayOfDesignationDetails objectAtIndex:0]];
 //        [self.arrayOfUserDesignation addObject:selectedString];
         
         [self.textFieldDesignation resignFirstResponder];
@@ -640,16 +664,23 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize constraint = CGSizeMake(self.tableViewDesignations.frame.size.width - (10.0f * 2), 20000.0f);
+    CGSize constraint = CGSizeMake(250.0f - (10.0f * 2) - 50.0f, 20000.0f);
     
-    CGSize size = [[self.arrayOfUserDesignation objectAtIndex:[indexPath row]] sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR)  constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    
+    NSString *designation_name = [[self.arrayOfUserDesignation objectAtIndex:[indexPath row]] objectForKey:@"designation_name"];
+    
+    if (designation_name == nil) {
+        designation_name = [[self.arrayOfUserDesignation objectAtIndex:[indexPath row]] objectForKey:@"designations"];
+    }
+    
+    CGSize size = [designation_name sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR)  constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     size.height += FONT_SIZE_REGULAR;
     
-    CGFloat height = MAX(size.height, 44.0f);
+    CGFloat height = MAX(size.height, 30.0f);
     
     
-    return height;
+    return height + 10.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -659,38 +690,102 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        
+        ABridge_UILabelInset *label = [[ABridge_UILabelInset alloc] initWithFrame:CGRectMake(0.0f, 5.0f, 250.0f, 30.0f)];
+        
+        label.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
+        label.layer.borderWidth = 1.0f;
+        label.backgroundColor = [UIColor colorWithRed:53.0f/255.0f green:156.0f/255.0f blue:206.0f/255.0f alpha:0.7f];
+        label.layer.masksToBounds = YES;
+        label.layer.cornerRadius = 20.0f;
+        
+        label.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+        label.lineBreakMode = NSLineBreakByWordWrapping;
+        label.numberOfLines = 0;
+        label.tag = 1;
+        
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [button setImage:[UIImage imageNamed:@"delete-blue.png"] forState:UIControlStateNormal];
+        
+        button.frame = CGRectMake(label.frame.origin.x + label.frame.size.width + 5.0f, 5.0f, 30.0f, 30.0f);
+        button.tag = 2;
+        
+        [button addTarget:self action:@selector(removeDesignation:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell.contentView addSubview:label];
+        [cell.contentView addSubview:button];
+        
     }
     
-    cell.textLabel.text = [self.arrayOfUserDesignation objectAtIndex:[indexPath row]];
-    cell.textLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.numberOfLines = 0;
+    ABridge_UILabelInset *label = (ABridge_UILabelInset*)[cell viewWithTag:1];
+    UIButton *button = (UIButton*)[cell viewWithTag:2];
     
-    CGSize constraint = CGSizeMake(self.tableViewDesignations.frame.size.width - (10.0f * 2) - 50.0f, 20000.0f);
+    NSString *designation_name = [[self.arrayOfUserDesignation objectAtIndex:[indexPath row]] objectForKey:@"designation_name"];
+    if (designation_name == nil) {
+        designation_name = [[self.arrayOfUserDesignation objectAtIndex:[indexPath row]] objectForKey:@"designations"];
+    }
     
-    CGSize size = [cell.detailTextLabel.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR)  constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    label.text = designation_name;
+    
+    CGSize constraint = CGSizeMake(250.0f - (10.0f * 2) - 50.0f, 20000.0f);
+    
+    CGSize size = [label.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR)  constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     size.height += FONT_SIZE_REGULAR;
     
-    CGRect frame = cell.textLabel.frame;
-    frame.size.height = MAX(size.height, 44.0f);
-    cell.textLabel.frame = frame;
+    CGRect frame = label.frame;
+    frame.size.height = MAX(size.height, 30.0f);
+    label.frame = frame;
+    
+    CGPoint center = button.center;
+    center.y = label.frame.size.height/2.0f;
+    button.center = center;
     
     return cell;
 }
 
-- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    
+//    [tableView beginUpdates];
+//    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//    [self.arrayOfUserDesignation removeObjectAtIndex:[indexPath row]];
+//    [tableView endUpdates];
+//    [tableView reloadData];
+//}
+
+- (void) removeDesignation:(id)sender {
+    UITableViewCell *cell = (UITableViewCell*)[[sender superview] superview];
+    NSIndexPath *indexPath = [self.tableViewDesignations indexPathForCell:cell];
+    if (self.arrayOfDesignationToRemove == nil) {
+        self.arrayOfDesignationToRemove = [NSMutableArray array];
+    }
     
-    [tableView beginUpdates];
-    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    [self.tableViewDesignations beginUpdates];
+    [self.tableViewDesignations deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    
+    [self.arrayOfDesignationToRemove addObject:[self.arrayOfUserDesignation objectAtIndex:[indexPath row]]];
+    
     [self.arrayOfUserDesignation removeObjectAtIndex:[indexPath row]];
-    [tableView endUpdates];
-    [tableView reloadData];
+    [self.tableViewDesignations endUpdates];
+    [self.tableViewDesignations reloadData];
+
+    
+    if (self.tableViewDesignations.frame.size.height > 30.0f) {
+        if (self.tableViewDesignations.contentSize.height < self.tableViewDesignations.frame.size.height) {
+            CGRect frame = self.tableViewDesignations.frame;
+            frame.size.height = self.tableViewDesignations.contentSize.height;
+            self.tableViewDesignations.frame = frame;
+            
+            frame = self.buttonSave.frame;
+            frame.origin.y = self.tableViewDesignations.frame.size.height + self.tableViewDesignations.frame.origin.y + 10.0f;
+            self.buttonSave.frame = frame;
+            
+            
+        }
+    }
 }
 
 @end

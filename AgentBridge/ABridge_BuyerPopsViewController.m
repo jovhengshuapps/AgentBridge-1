@@ -87,7 +87,7 @@
     NSString *parameters = [NSString stringWithFormat:@"?buyer_id=%li",(long)self.buyer_id];
     
     if (is_saved) {
-        
+        self.buttonSave.hidden = YES;
         self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers_saved.php" andParameters:parameters];
     }
     else {
@@ -375,6 +375,10 @@
 - (void)hideSaveButton:(BOOL)hide {
     
     self.buttonSave.hidden = hide;
+    
+    if (is_saved) {
+        self.buttonSave.hidden = YES;
+    }
     self.labelSavedto.hidden = YES;
 }
 

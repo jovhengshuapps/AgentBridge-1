@@ -8,6 +8,6 @@
 
 #import "ABridge_ParentViewController.h"
 
-@interface ABridge_ContactInfoViewController : ABridge_ParentViewController<UITextFieldDelegate>
+@interface ABridge_ContactInfoViewController : ABridge_ParentViewController<UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end

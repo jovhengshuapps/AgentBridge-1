@@ -20,6 +20,7 @@
 		6E483EDE1862EC380071691D /* Designation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483EDD1862EC380071691D /* Designation.m */; };
 		6E483EF1186303200071691D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E483EEB1863031F0071691D /* README.md */; };
 		6E483EF2186303200071691D /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E483EEC1863031F0071691D /* release_notes.md */; };
+		6E503B94186BE88D00E0F329 /* ABridge_UILabelInset.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E503B93186BE88D00E0F329 /* ABridge_UILabelInset.m */; };
 		6E5A0A2C1867EEC30030F2FF /* ABridge_AutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */; };
 		6E5A0A35186818490030F2FF /* MLPAutoCompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A2F186818490030F2FF /* MLPAutoCompleteTextField.m */; };
 		6E5A0A36186818490030F2FF /* NSString+Levenshtein.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A34186818490030F2FF /* NSString+Levenshtein.m */; };
@@ -129,6 +130,8 @@
 		6E483EED1863031F0071691D /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		6E483EEE1863031F0071691D /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		6E483EEF1863031F0071691D /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		6E503B92186BE88C00E0F329 /* ABridge_UILabelInset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_UILabelInset.h; sourceTree = "<group>"; };
+		6E503B93186BE88D00E0F329 /* ABridge_UILabelInset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_UILabelInset.m; sourceTree = "<group>"; };
 		6E5A0A2A1867EEC30030F2FF /* ABridge_AutocompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AutocompleteTextField.h; sourceTree = "<group>"; };
 		6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_AutocompleteTextField.m; sourceTree = "<group>"; };
 		6E5A0A2E186818490030F2FF /* MLPAutoCompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextField.h; sourceTree = "<group>"; };
@@ -500,6 +503,8 @@
 				6E5A0A2D186818490030F2FF /* MLPAutoCompleteTextField */,
 				6E5A0A2A1867EEC30030F2FF /* ABridge_AutocompleteTextField.h */,
 				6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */,
+				6E503B92186BE88C00E0F329 /* ABridge_UILabelInset.h */,
+				6E503B93186BE88D00E0F329 /* ABridge_UILabelInset.m */,
 				6EB32BDC1848328C00F291AF /* HTTPURLConnection.h */,
 				6EB32BDD1848328C00F291AF /* HTTPURLConnection.m */,
 				6EEF586918337E6B00C3214E /* Main.storyboard */,
@@ -804,6 +809,7 @@
 				6E483ECE1862D0E80071691D /* ContactInfoNumber.m in Sources */,
 				6EFCFC7718474997004EB0B7 /* ABridge_SecurityViewController.m in Sources */,
 				6EEF587118337F4000C3214E /* ECSlidingViewController.m in Sources */,
+				6E503B94186BE88D00E0F329 /* ABridge_UILabelInset.m in Sources */,
 				6EBBD76C1834B1FE00166D63 /* ABridge_ActivityViewController.m in Sources */,
 				6EEF58821833857B00C3214E /* ABridge_LoginViewController.m in Sources */,
 				6EFCFC6D184703A8004EB0B7 /* ABridge_ContactInfoViewController.m in Sources */,
