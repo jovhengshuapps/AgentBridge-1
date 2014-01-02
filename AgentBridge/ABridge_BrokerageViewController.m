@@ -101,10 +101,13 @@
     
     [self addPaddingAndBorder:self.textFieldDesignation color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
     
-    self.buttonDeleteBroker.layer.shadowOpacity = 0.75f;
-    self.buttonDeleteBroker.layer.shadowRadius = 2.0f;
-    self.buttonDeleteBroker.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    self.buttonDeleteBroker.layer.shadowColor = [UIColor blackColor].CGColor;
+    
+    self.buttonDeleteBroker.transform = CGAffineTransformMakeRotation(M_PI_4);
+    
+//    self.buttonDeleteBroker.layer.shadowOpacity = 0.75f;
+//    self.buttonDeleteBroker.layer.shadowRadius = 2.0f;
+//    self.buttonDeleteBroker.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
+//    self.buttonDeleteBroker.layer.shadowColor = [UIColor blackColor].CGColor;
     
     NSMutableString *urlStringBroker = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_broker_list.php"];
     
@@ -728,19 +731,27 @@
         label.tag = 1;
         
         
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
         
-        [button setImage:[UIImage imageNamed:@"delete-blue.png"] forState:UIControlStateNormal];
+//        [button setImage:[UIImage imageNamed:@"delete-blue.png"] forState:UIControlStateNormal];
         
-        button.frame = CGRectMake(label.frame.origin.x + label.frame.size.width + 2.0f, 5.0f, 30.0f, 30.0f);
+//        button.frame = CGRectMake(label.frame.origin.x + label.frame.size.width + 2.0f, 5.0f, 30.0f, 30.0f);
+        button.frame = CGRectMake(label.frame.origin.x + label.frame.size.width + 2.0f, 5.0f, 20.0f, 20.0f);
         button.tag = 2;
+        
+        self.buttonDeleteBroker.transform = CGAffineTransformMakeRotation(M_PI_4);
         
         [button addTarget:self action:@selector(removeDesignation:) forControlEvents:UIControlEventTouchUpInside];
         
-        button.layer.shadowOpacity = 0.75f;
-        button.layer.shadowRadius = 2.0f;
-        button.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
-        button.layer.shadowColor = [UIColor blackColor].CGColor;
+//        button.layer.shadowOpacity = 0.75f;
+//        button.layer.shadowRadius = 2.0f;
+//        button.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
+//        button.layer.shadowColor = [UIColor blackColor].CGColor;
+        
+        CGPoint center = button.center;
+        center.y = cell.contentView.center.y;
+        button.center = center;
         
         [cell.contentView addSubview:label];
         [cell.contentView addSubview:button];

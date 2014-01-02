@@ -2474,11 +2474,11 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3lI-Jn-pm6">
-                                        <rect key="frame" x="270" y="52" width="30" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" id="3lI-Jn-pm6">
+                                        <rect key="frame" x="271" y="52" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                        <state key="normal" image="delete-blue">
+                                        <state key="normal">
                                             <color key="titleColor" red="1" green="0.0" blue="0.07060657998" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -3149,7 +3149,6 @@
         <image name="blue_small" width="50" height="25"/>
         <image name="button-long" width="225" height="30"/>
         <image name="buyers_icon" width="22" height="21"/>
-        <image name="delete-blue" width="20" height="20"/>
         <image name="head_strip" width="1" height="52"/>
         <image name="home_icon" width="23" height="21"/>
         <image name="logo" width="112" height="27"/>
