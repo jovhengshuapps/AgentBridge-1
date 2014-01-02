@@ -2,8 +2,8 @@
 //  Property.m
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/28/13.
-//  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
+//  Created by host24_iOS Dev on 1/2/14.
+//  Copyright (c) 2014 host24_iOS Dev. All rights reserved.
 //
 
 #import "Property.h"
@@ -21,6 +21,8 @@
 @dynamic city;
 @dynamic closed;
 @dynamic condition;
+@dynamic date_created;
+@dynamic date_expired;
 @dynamic desc;
 @dynamic disclose;
 @dynamic expiry;
@@ -34,9 +36,11 @@
 @dynamic listing_id;
 @dynamic lot_size;
 @dynamic lot_sqft;
+@dynamic name;
 @dynamic occupancy;
 @dynamic parking_ratio;
 @dynamic pet;
+@dynamic pocket_id;
 @dynamic pool_spa;
 @dynamic possession;
 @dynamic price_type;
@@ -63,9 +67,7 @@
 @dynamic year_built;
 @dynamic zip;
 @dynamic zoned;
-@dynamic date_expired;
-@dynamic date_created;
-@dynamic pocket_id;
-@dynamic name;
+@dynamic images;
+@dynamic images_data;
 
 @end

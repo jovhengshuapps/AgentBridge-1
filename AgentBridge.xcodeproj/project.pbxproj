@@ -28,6 +28,7 @@
 		6E5AEF90184C7C2900FE7B9E /* RequestNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */; };
 		6E5AEF93184CA8AF00FE7B9E /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF92184CA8AF00FE7B9E /* Buyer.m */; };
 		6E67D995184D864200568C5F /* ABridge_BuyerPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */; };
+		6E697995187541DF0037F564 /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E697994187541DF0037F564 /* Property.m */; };
 		6E6D0A78185AF5C500D02B92 /* ABridge_ActivityAgentPOPsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D0A77185AF5C400D02B92 /* ABridge_ActivityAgentPOPsViewController.m */; };
 		6E72F7A3185FEFF30082447B /* ABridge_FeeCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E72F7A2185FEFF30082447B /* ABridge_FeeCollectionViewController.m */; };
 		6E791B49183CD28200BB76B3 /* Referral.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E791B48183CD28200BB76B3 /* Referral.m */; };
@@ -79,7 +80,6 @@
 		6EFCFC711847183B004EB0B7 /* State.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC701847183A004EB0B7 /* State.m */; };
 		6EFCFC741847183C004EB0B7 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC731847183C004EB0B7 /* Country.m */; };
 		6EFCFC7718474997004EB0B7 /* ABridge_SecurityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC7618474997004EB0B7 /* ABridge_SecurityViewController.m */; };
-		6EFCFC7B18474D67004EB0B7 /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFCFC7A18474D67004EB0B7 /* Property.m */; };
 		6EFF613D1851BB5700A5A86A /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFF612A1851BB5700A5A86A /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		6EFF613E1851BB5700A5A86A /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFF612D1851BB5700A5A86A /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		6EFF613F1851BB5700A5A86A /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFF612F1851BB5700A5A86A /* ASIDataDecompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -149,6 +149,8 @@
 		6E5AEF92184CA8AF00FE7B9E /* Buyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Buyer.m; sourceTree = "<group>"; };
 		6E67D993184D864200568C5F /* ABridge_BuyerPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPagesViewController.h; sourceTree = "<group>"; };
 		6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerPagesViewController.m; sourceTree = "<group>"; };
+		6E697993187541DF0037F564 /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Property.h; sourceTree = "<group>"; };
+		6E697994187541DF0037F564 /* Property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Property.m; sourceTree = "<group>"; };
 		6E6D0A76185AF5C400D02B92 /* ABridge_ActivityAgentPOPsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_ActivityAgentPOPsViewController.h; sourceTree = "<group>"; };
 		6E6D0A77185AF5C400D02B92 /* ABridge_ActivityAgentPOPsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_ActivityAgentPOPsViewController.m; sourceTree = "<group>"; };
 		6E72F7A1185FEFF30082447B /* ABridge_FeeCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_FeeCollectionViewController.h; sourceTree = "<group>"; };
@@ -237,8 +239,6 @@
 		6EFCFC731847183C004EB0B7 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; };
 		6EFCFC7518474997004EB0B7 /* ABridge_SecurityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_SecurityViewController.h; sourceTree = "<group>"; };
 		6EFCFC7618474997004EB0B7 /* ABridge_SecurityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_SecurityViewController.m; sourceTree = "<group>"; };
-		6EFCFC7918474D67004EB0B7 /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Property.h; sourceTree = "<group>"; };
-		6EFCFC7A18474D67004EB0B7 /* Property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Property.m; sourceTree = "<group>"; };
 		6EFF61291851BB5700A5A86A /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		6EFF612A1851BB5700A5A86A /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		6EFF612B1851BB5700A5A86A /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -358,6 +358,8 @@
 		6EBBD7541834823F00166D63 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
+				6E697993187541DF0037F564 /* Property.h */,
+				6E697994187541DF0037F564 /* Property.m */,
 				6E47185B186456B60016B407 /* Activity.h */,
 				6E47185C186456B60016B407 /* Activity.m */,
 				6E483EDC1862EC380071691D /* Designation.h */,
@@ -372,8 +374,6 @@
 				6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */,
 				6E5AEF8B184C7C2700FE7B9E /* RequestAccess.h */,
 				6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */,
-				6EFCFC7918474D67004EB0B7 /* Property.h */,
-				6EFCFC7A18474D67004EB0B7 /* Property.m */,
 				6EFCFC721847183C004EB0B7 /* Country.h */,
 				6EFCFC731847183C004EB0B7 /* Country.m */,
 				6EFCFC6F1847183A004EB0B7 /* State.h */,
@@ -793,7 +793,6 @@
 				6EBBD74F183473B200166D63 /* ABridge_PropertyPagesViewController.m in Sources */,
 				6E5A0A36186818490030F2FF /* NSString+Levenshtein.m in Sources */,
 				6EFF61441851BB5700A5A86A /* ASINetworkQueue.m in Sources */,
-				6EFCFC7B18474D67004EB0B7 /* Property.m in Sources */,
 				6E0D48FE183B66FD000EEC9D /* ABridge_AgentNetworkViewController.m in Sources */,
 				6EB32BDE1848328C00F291AF /* HTTPURLConnection.m in Sources */,
 				6E483EDE1862EC380071691D /* Designation.m in Sources */,
@@ -805,6 +804,7 @@
 				6E791B49183CD28200BB76B3 /* Referral.m in Sources */,
 				6E47185D186456B60016B407 /* Activity.m in Sources */,
 				6EFF61401851BB5700A5A86A /* ASIDownloadCache.m in Sources */,
+				6E697995187541DF0037F564 /* Property.m in Sources */,
 				6EFCFC611846F053004EB0B7 /* ABridge_AccountSettingsViewController.m in Sources */,
 				6E483ECE1862D0E80071691D /* ContactInfoNumber.m in Sources */,
 				6EFCFC7718474997004EB0B7 /* ABridge_SecurityViewController.m in Sources */,

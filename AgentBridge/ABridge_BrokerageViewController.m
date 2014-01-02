@@ -41,6 +41,9 @@
 @property (weak, nonatomic) IBOutlet UIView *viewContent;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewDesignations;
 @property (strong, nonatomic) AgentProfile *profile;
+@property (assign, nonatomic) BOOL brokerUpdatedFlag;
+@property (assign, nonatomic) BOOL designationDeletedFlag;
+@property (assign, nonatomic) BOOL designationAddedFlag;
 
 - (IBAction)saveBrokerage:(id)sender;
 - (IBAction)backButton:(id)sender;
@@ -63,6 +66,9 @@
 @synthesize selectedBrokerId;
 
 @synthesize profile;
+@synthesize brokerUpdatedFlag;
+@synthesize designationDeletedFlag;
+@synthesize designationAddedFlag;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -95,6 +101,10 @@
     
     [self addPaddingAndBorder:self.textFieldDesignation color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
     
+    self.buttonDeleteBroker.layer.shadowOpacity = 0.75f;
+    self.buttonDeleteBroker.layer.shadowRadius = 2.0f;
+    self.buttonDeleteBroker.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    self.buttonDeleteBroker.layer.shadowColor = [UIColor blackColor].CGColor;
     
     NSMutableString *urlStringBroker = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_broker_list.php"];
     
@@ -321,14 +331,13 @@
 - (IBAction)saveBrokerage:(id)sender {
     if ([self.labelBroker.text isEqualToString:@""] == NO) {
         
-        
-        __block BOOL brokerUpdated = NO;
-        __block BOOL designationDeleted = NO;
-        __block BOOL designationAdded = NO;
+        self.brokerUpdatedFlag = 1;
+        self.designationDeletedFlag = 1;
+        self.designationAddedFlag = 1;
         
         if(self.selectedBrokerId == nil) {
             
-            brokerUpdated = YES;
+            self.brokerUpdatedFlag = 2;
         }
         else {
             NSString *parameters = [NSString stringWithFormat:@"?profile_id=%@&broker_id=%@",self.profile.profile_id,self.selectedBrokerId];
@@ -349,13 +358,15 @@
                  
                  if ([[json objectForKey:@"status"] integerValue] == YES) {
                      
-                     brokerUpdated = YES;
+                     self.brokerUpdatedFlag = 2;
                  }
                  else {
-                     brokerUpdated = NO;
+                     self.brokerUpdatedFlag = 0;
                  }
                  
-                 self.activityIndicator.hidden = YES;
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [self showSuccessAlert];
+                 });
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
@@ -368,7 +379,7 @@
         
         
         if (self.arrayOfDesignationToRemove == nil) {
-            designationDeleted = YES;
+            self.designationDeletedFlag = 2;
         }
         else {
             for (NSDictionary *entry in self.arrayOfDesignationToRemove) {
@@ -392,13 +403,15 @@
                          
                          if ([[json objectForKey:@"status"] integerValue] == YES) {
                              
-                             designationDeleted = YES;
+                             self.designationDeletedFlag = 2;
                          }
                          else {
-                             designationDeleted = NO;
+                             self.designationDeletedFlag = 0;
                          }
                          
-                         self.activityIndicator.hidden = YES;
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             [self showSuccessAlert];
+                         });
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
@@ -409,14 +422,15 @@
                 }
                 else {
                     
-                    designationDeleted = YES;
+                    self.designationDeletedFlag = 2;
                 }
+                
             }
         }
         
         
         if (self.arrayOfUserDesignation == nil) {
-            designationAdded = YES;
+            self.designationAddedFlag = 2;
         }
         else {
             
@@ -441,13 +455,15 @@
                          
                          if ([[json objectForKey:@"status"] integerValue] == YES) {
                              
-                             designationAdded = YES;
+                             self.designationAddedFlag = 2;
                          }
                          else {
-                             designationAdded = NO;
+                             self.designationAddedFlag = 0;
                          }
                          
-                         self.activityIndicator.hidden = YES;
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             [self showSuccessAlert];
+                         });
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
@@ -458,31 +474,38 @@
                 }
                 else {
                     
-                    designationAdded = YES;
+                    self.designationAddedFlag = 2;
                 }
+                
             }
         }
         
-        
-//        NSLog(@"%i %i %i",brokerUpdated, designationAdded, designationDeleted);
-        
-        self.activityIndicator.hidden = YES;
-        if (brokerUpdated && designationAdded && designationDeleted) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Saved" message:@"Successful in saving Broker and Designation Details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
-            
-            [self.arrayOfDesignationToRemove removeAllObjects];
-            self.arrayOfDesignationToRemove = nil;
-        }
-        else {
-            
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Failed" message:@"Failed in saving Broker and Designation Details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
-        }
     }
     else {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please input your Broker Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
+    }
+}
+
+-(void) showSuccessAlert {
+    
+//    NSLog(@"%i, %i, %i",self.brokerUpdatedFlag, self.designationAddedFlag, self.designationDeletedFlag);
+    
+    if ((self.brokerUpdatedFlag + self.designationAddedFlag + self.designationDeletedFlag) == 6) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Saved" message:@"Successful in saving Broker and Designation Details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        
+        self.activityIndicator.hidden = YES;
+        [self.arrayOfDesignationToRemove removeAllObjects];
+        self.arrayOfDesignationToRemove = nil;
+    }
+    else if ((self.brokerUpdatedFlag + self.designationAddedFlag + self.designationDeletedFlag) == 0){
+        
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Failed" message:@"Failed in saving Broker and Designation Details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+    }
+    else {
+        //do nothing
     }
 }
 
@@ -709,10 +732,15 @@
         
         [button setImage:[UIImage imageNamed:@"delete-blue.png"] forState:UIControlStateNormal];
         
-        button.frame = CGRectMake(label.frame.origin.x + label.frame.size.width + 5.0f, 5.0f, 30.0f, 30.0f);
+        button.frame = CGRectMake(label.frame.origin.x + label.frame.size.width + 2.0f, 5.0f, 30.0f, 30.0f);
         button.tag = 2;
         
         [button addTarget:self action:@selector(removeDesignation:) forControlEvents:UIControlEventTouchUpInside];
+        
+        button.layer.shadowOpacity = 0.75f;
+        button.layer.shadowRadius = 2.0f;
+        button.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
+        button.layer.shadowColor = [UIColor blackColor].CGColor;
         
         [cell.contentView addSubview:label];
         [cell.contentView addSubview:button];

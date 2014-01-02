@@ -2,8 +2,8 @@
 //  Property.h
 //  AgentBridge
 //
-//  Created by host24_iOS Dev on 11/28/13.
-//  Copyright (c) 2013 host24_iOS Dev. All rights reserved.
+//  Created by host24_iOS Dev on 1/2/14.
+//  Copyright (c) 2014 host24_iOS Dev. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -22,6 +22,8 @@
 @property (nonatomic, retain) NSString * city;
 @property (nonatomic, retain) NSString * closed;
 @property (nonatomic, retain) NSString * condition;
+@property (nonatomic, retain) NSString * date_created;
+@property (nonatomic, retain) NSString * date_expired;
 @property (nonatomic, retain) NSString * desc;
 @property (nonatomic, retain) NSString * disclose;
 @property (nonatomic, retain) NSString * expiry;
@@ -35,9 +37,11 @@
 @property (nonatomic, retain) NSString * listing_id;
 @property (nonatomic, retain) NSString * lot_size;
 @property (nonatomic, retain) NSString * lot_sqft;
+@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * occupancy;
 @property (nonatomic, retain) NSString * parking_ratio;
 @property (nonatomic, retain) NSString * pet;
+@property (nonatomic, retain) NSString * pocket_id;
 @property (nonatomic, retain) NSString * pool_spa;
 @property (nonatomic, retain) NSString * possession;
 @property (nonatomic, retain) NSString * price_type;
@@ -64,9 +68,7 @@
 @property (nonatomic, retain) NSString * year_built;
 @property (nonatomic, retain) NSString * zip;
 @property (nonatomic, retain) NSString * zoned;
-@property (nonatomic, retain) NSString * date_expired;
-@property (nonatomic, retain) NSString * date_created;
-@property (nonatomic, retain) NSString * pocket_id;
-@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * images;
+@property (nonatomic, retain) NSData * images_data;
 
 @end

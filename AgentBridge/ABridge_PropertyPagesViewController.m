@@ -320,111 +320,177 @@
 }
 
 - (void) loadPOPsImages {
-//    self.loadingImageIndicator.hidden = NO;
-//        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
-//        [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
-////        NSLog(@"url:%@",urlString_);
-//        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
-//        
-//        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//        self.urlConnectionImages = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
-    NSString *parameters = [NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id];
     
-    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
-    [urlString appendString:parameters];
     
-    __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-    //            [self.activityIndicator startAnimating];
-    //            self.activityIndicator.hidden = NO;
-    [request setCompletionBlock:
-     ^{
-         NSData *responseData = [request responseData];
-         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-         
-         if ([[json objectForKey:@"data"] count]) {
-             
-                 __block CGFloat xOffset = 0.0f;
-                 __block NSInteger i = 0;
-                 
-//                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-//                 });
-                 
-                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                     PropertyImages *image = nil;
-                     
-                     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
-                     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-                     NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-                     [fetchRequest setPredicate:predicate];
-                     [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
-                     NSError * error = nil;
-                     NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
-                     if ([results count]) {
-                         image = (PropertyImages*)[results firstObject];
-                     }
-                     else {
-                         image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
-                     }
-                     
-                     [image setValuesForKeysWithDictionary:entry];
-                     
-                     NSError *errorSave = nil;
-                     if (![context save:&errorSave]) {
-                         NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
-                     }
-                     else {
-                         
-//                         dispatch_async(dispatch_get_main_queue(), ^{
-                             // Update UI
-                             if (self.arrayOfImageData == nil) {
-                                 self.arrayOfImageData = [[NSMutableArray alloc] init];
-                             }
-                             
-                             if (image.image_data == nil) {
-                                 image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
-                             }
-                             
-                             UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-                             imageView.contentMode = UIViewContentModeScaleAspectFill;
-                             imageView.image = [UIImage imageWithData:image.image_data];
-                             
-                             [self.arrayOfImageData addObject:image.image_data];
-                             
-                             [self.scrollImages addSubview:imageView];
-                             
-                             xOffset += imageView.frame.size.width;
-                             i++;
-                             
-                             [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
-//                         });
-                         
-                     }
-                 }
-                 
-                 
-                 
-//                 dispatch_async(dispatch_get_main_queue(), ^{
-                     UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
-                     
-                     tapZoom.numberOfTapsRequired = 1;
-                     tapZoom.numberOfTouchesRequired = 1;
-                     [self.scrollImages addGestureRecognizer:tapZoom];
-                     self.loadingImageIndicator.hidden = YES;
-//                 });
-         }
-         else {
-             
-         }
-         
-     }];
-    [request setFailedBlock:^{
-        NSError *error = [request error];
-        NSLog(@" error:%@",error);
-    }];
+    self.loadingImageIndicator.hidden = NO;
     
-    [request startAsynchronous];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        __block CGFloat xOffset = 0.0f;
+        __block NSInteger i = 0;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+        });
+        
+        
+        // Update UI
+        if (self.arrayOfImageData == nil) {
+            self.arrayOfImageData = [[NSMutableArray alloc] init];
+        }
+        
+        if (self.propertyDetails.images_data == nil) {
+            
+            NSArray *arrayOfImageURLs = [self.propertyDetails.images componentsSeparatedByString:@","];
+            
+            //            NSLog(@"array:%@",arrayOfImageURLs);
+            
+            NSMutableArray *arrayOfImageData_coreData = [[NSMutableArray alloc] init];
+            
+            for (NSString *URLstring in arrayOfImageURLs) {
+                [arrayOfImageData_coreData addObject:[NSData dataWithContentsOfURL:[NSURL URLWithString:URLstring]]];
+            }
+            
+            self.propertyDetails.images_data = [NSKeyedArchiver archivedDataWithRootObject:arrayOfImageData_coreData];
+        }
+        
+        
+        NSArray* arrayDataImages = [NSKeyedUnarchiver unarchiveObjectWithData:self.propertyDetails.images_data];
+        
+        for (NSData *imageData in arrayDataImages) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.loadingImageIndicator.hidden = NO;
+                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+                imageView.contentMode = UIViewContentModeScaleAspectFill;
+                imageView.image = [UIImage imageWithData:imageData];
+                
+                [self.arrayOfImageData addObject:imageData];
+                
+                
+                [self.scrollImages addSubview:imageView];
+                
+                xOffset += imageView.frame.size.width;
+                i++;
+                
+                [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
+                
+                UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
+                
+                tapZoom.numberOfTapsRequired = 1;
+                tapZoom.numberOfTouchesRequired = 1;
+                [self.scrollImages addGestureRecognizer:tapZoom];
+                self.loadingImageIndicator.hidden = YES;
+            });
+        }
+        
+        
+    });
+    
+////    self.loadingImageIndicator.hidden = NO;
+////        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
+////        [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
+//////        NSLog(@"url:%@",urlString_);
+////        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+////        
+////        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+////        self.urlConnectionImages = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+//    NSString *parameters = [NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id];
+//    
+//    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
+//    [urlString appendString:parameters];
+//    
+//    __block NSError *errorData = nil;
+//    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+//    //            [self.activityIndicator startAnimating];
+//    //            self.activityIndicator.hidden = NO;
+//    [request setCompletionBlock:
+//     ^{
+//         NSData *responseData = [request responseData];
+//         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+//         
+//         if ([[json objectForKey:@"data"] count]) {
+//             
+//                 __block CGFloat xOffset = 0.0f;
+//                 __block NSInteger i = 0;
+//                 
+////                 dispatch_async(dispatch_get_main_queue(), ^{
+//                     [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+////                 });
+//                 
+//                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
+//                     PropertyImages *image = nil;
+//                     
+//                     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
+//                     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                     NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+//                     [fetchRequest setPredicate:predicate];
+//                     [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
+//                     NSError * error = nil;
+//                     NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
+//                     if ([results count]) {
+//                         image = (PropertyImages*)[results firstObject];
+//                     }
+//                     else {
+//                         image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
+//                     }
+//                     
+//                     [image setValuesForKeysWithDictionary:entry];
+//                     
+//                     NSError *errorSave = nil;
+//                     if (![context save:&errorSave]) {
+//                         NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
+//                     }
+//                     else {
+//                         
+////                         dispatch_async(dispatch_get_main_queue(), ^{
+//                             // Update UI
+//                             if (self.arrayOfImageData == nil) {
+//                                 self.arrayOfImageData = [[NSMutableArray alloc] init];
+//                             }
+//                             
+//                             if (image.image_data == nil) {
+//                                 image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
+//                             }
+//                             
+//                             UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+//                             imageView.contentMode = UIViewContentModeScaleAspectFill;
+//                             imageView.image = [UIImage imageWithData:image.image_data];
+//                             
+//                             [self.arrayOfImageData addObject:image.image_data];
+//                             
+//                             [self.scrollImages addSubview:imageView];
+//                             
+//                             xOffset += imageView.frame.size.width;
+//                             i++;
+//                             
+//                             [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
+////                         });
+//                         
+//                     }
+//                 }
+//                 
+//                 
+//                 
+////                 dispatch_async(dispatch_get_main_queue(), ^{
+//                     UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
+//                     
+//                     tapZoom.numberOfTapsRequired = 1;
+//                     tapZoom.numberOfTouchesRequired = 1;
+//                     [self.scrollImages addGestureRecognizer:tapZoom];
+//                     self.loadingImageIndicator.hidden = YES;
+////                 });
+//         }
+//         else {
+//             
+//         }
+//         
+//     }];
+//    [request setFailedBlock:^{
+//        NSError *error = [request error];
+//        NSLog(@" error:%@",error);
+//    }];
+//    
+//    [request startAsynchronous];
 }
 
 - (void) getPriceText {

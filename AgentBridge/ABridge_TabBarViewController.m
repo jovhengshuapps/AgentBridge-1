@@ -28,13 +28,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    [((UITabBarItem*)[self.tabBar.items objectAtIndex:0]) setFinishedSelectedImage:[UIImage imageNamed:@"activity_icon"] withFinishedUnselectedImage:[UIImage imageNamed:@"activity_icon_selected"]];
+    [((UITabBarItem*)[self.tabBar.items objectAtIndex:0]) setFinishedSelectedImage:[UIImage imageNamed:@"activity_icon_selected"] withFinishedUnselectedImage:[UIImage imageNamed:@"activity_icon"]];
     
-    [((UITabBarItem*)[self.tabBar.items objectAtIndex:1]) setFinishedSelectedImage:[UIImage imageNamed:@"pops_icon"] withFinishedUnselectedImage:[UIImage imageNamed:@"pops_icon_selected"]];
+    [((UITabBarItem*)[self.tabBar.items objectAtIndex:1]) setFinishedSelectedImage:[UIImage imageNamed:@"pops_icon_selected"] withFinishedUnselectedImage:[UIImage imageNamed:@"pops_icon"]];
     
-    [((UITabBarItem*)[self.tabBar.items objectAtIndex:2]) setFinishedSelectedImage:[UIImage imageNamed:@"buyers_icon"] withFinishedUnselectedImage:[UIImage imageNamed:@"buyers_icon_selected"]];
+    [((UITabBarItem*)[self.tabBar.items objectAtIndex:2]) setFinishedSelectedImage:[UIImage imageNamed:@"buyers_icon_selected"] withFinishedUnselectedImage:[UIImage imageNamed:@"buyers_icon"]];
     
-    [((UITabBarItem*)[self.tabBar.items objectAtIndex:3]) setFinishedSelectedImage:[UIImage imageNamed:@"referral_icon"] withFinishedUnselectedImage:[UIImage imageNamed:@"referral_icon_selected"]];
+    [((UITabBarItem*)[self.tabBar.items objectAtIndex:3]) setFinishedSelectedImage:[UIImage imageNamed:@"referral_icon_selected"] withFinishedUnselectedImage:[UIImage imageNamed:@"referral_icon"]];
     
 }
 

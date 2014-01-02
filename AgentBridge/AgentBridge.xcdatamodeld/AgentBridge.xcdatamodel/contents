@@ -190,6 +190,8 @@
         <attribute name="furnished" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="garage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="grm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="images" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="images_data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="listing_class" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="listing_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lot_size" optional="YES" attributeType="String" syncable="YES"/>

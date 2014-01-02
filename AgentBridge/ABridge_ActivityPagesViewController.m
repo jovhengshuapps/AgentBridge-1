@@ -681,16 +681,16 @@
             });
             
             if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
-                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
                 
                 NSString *pops_link = [NSString stringWithFormat:@"<a href='http://pops/%@'>%@</a>",self.activityDetail.listing_id, self.activityDetail.property_name];
                 
                 message = [NSString stringWithFormat:@"%@ is requesting to view your private POPs™, %@.",user_name, pops_link];
             }
             else {
-                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
+                NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
                 
-                NSString *pops_link = [NSString stringWithFormat:@"<a href='http://agent_pops/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.property_name];
+                NSString *pops_link = [NSString stringWithFormat:@"<a href='http://agent_pops/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.property_name];
                 
                 message = [NSString stringWithFormat:@"You are requesting to view %@ private POPs™, %@.",user_name, pops_link];
             }
@@ -1157,7 +1157,7 @@
             
             NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
             [urlString appendString:parameters];
-            //    NSLog(@"url:%@",urlString);
+//             NSLog(@"url:%@",urlString);
             
             __block NSError *errorData = nil;
             __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
