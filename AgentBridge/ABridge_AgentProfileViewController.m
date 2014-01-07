@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *viewContacts;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewVerified;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 //- (IBAction)callMobileNumber:(id)sender;
 //- (IBAction)sendEmail:(id)sender;
@@ -73,13 +74,15 @@
     self.urlConnectionProfile = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php" andParameters:parameters];
     
     if (self.urlConnectionProfile) {
-//        NSLog(@"Connection Successful");
+//        //NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProfile];
-        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
+//        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
-//        NSLog(@"Connection Failed");
+//        //NSLog(@"Connection Failed");
     }
+    
+    self.activityIndicator.hidden = NO;
     
     self.labelName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
@@ -119,7 +122,7 @@
         text = self.profileData.broker_name;
     }
     else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"address"]) {
-        text = @"";
+//        text = @"";
         NSMutableString *string = [NSMutableString stringWithString:@""];
         if (![self isNull:self.profileData.street_address]) {
             [string appendFormat:@"%@\n",self.profileData.street_address];
@@ -157,8 +160,8 @@
             
             NSInteger array_index = [[key substringFromIndex:[key rangeOfString:@"mobile"].length] integerValue];
             text = [array objectAtIndex:array_index - 1];
-            if (array_index == 2) {
-                decreaseHeight = FONT_SIZE_FOR_PROFILE * array_index;
+            if (array_index > 1) {
+                decreaseHeight = FONT_SIZE_FOR_PROFILE * 2;
             }
             if ([self isNull:text]) {
                 text = [array objectAtIndex:array_index];
@@ -201,7 +204,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    NSInteger row = [indexPath row];
+//    NSInteger row = [indexPath row];
     
     cell.textLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_FOR_PROFILE);
     cell.detailTextLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -220,7 +223,7 @@
     }
     else {
         if(![self.profileData.activation_status integerValue]){
-            row += 1;
+//            row += 1;
         }
         if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"brokerage"]) {
             cell.textLabel.text = @"Brokerage";
@@ -352,13 +355,14 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     [self.dataReceived appendData:data];
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-//    NSLog(@"Did Fail");
+//    //NSLog(@"Did Fail");
     [self dismissOverlay];
+    self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -367,12 +371,14 @@
 {
     NSError *error = nil;
     [self dismissOverlay];
+    self.activityIndicator.hidden = YES;
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"Did Finish:%@", json);
+//    //NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
         
+        self.activityIndicator.hidden = NO;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
         NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
@@ -392,7 +398,7 @@
             
             NSError *error = nil;
             if (![context save:&error]) {
-                NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
             }
         }
         
@@ -480,6 +486,7 @@
             }
         
             dispatch_async(dispatch_get_main_queue(), ^{
+                self.activityIndicator.hidden = YES;
                 if (self.profileData.image_data != nil) {
                     self.imagePicture.image = [UIImage imageWithData:self.profileData.image_data];
                 }
@@ -489,7 +496,7 @@
     }
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 
@@ -500,7 +507,7 @@
     [mobileNumber replaceOccurrencesOfString:@"(" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@")" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@" " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
-//    NSLog(@"number:[%@]",mobileNumber);
+//    //NSLog(@"number:[%@]",mobileNumber);
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",mobileNumber]];
     [[UIApplication sharedApplication] openURL:URL];
 }
@@ -524,7 +531,7 @@
     
     else {
         
-//        NSLog(@"Device is unable to send email in its current state.");
+//        //NSLog(@"Device is unable to send email in its current state.");
         
     }
     

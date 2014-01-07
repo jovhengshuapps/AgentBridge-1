@@ -201,14 +201,14 @@ An uncaught exception means that your application is in an unknown state and the
        My Apps Custom uncaught exception catcher, we do special stuff here, and TestFlight takes care of the rest
       */
       void HandleExceptions(NSException *exception) {
-        NSLog(@"This is where we save the application data during a exception");
+        //NSLog(@"This is where we save the application data during a exception");
         // Save application data on crash
       }
       /*
        My Apps Custom signal catcher, we do special stuff here, and TestFlight takes care of the rest
       */
       void SignalHandler(int sig) {
-        NSLog(@"This is where we save the application data during a signal");
+        //NSLog(@"This is where we save the application data during a signal");
         // Save application data on crash
       }
 

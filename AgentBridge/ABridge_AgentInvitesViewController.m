@@ -45,7 +45,7 @@
     
     self.slidingViewController.underRightViewController = nil;
     
-    self.labelInviteTitle.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelInviteTitle.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldFirstname.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldLastname.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldEmail.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -60,6 +60,8 @@
     
     [self addPaddingAndBorder:self.textFieldZipcode color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
     
+    self.activityIndicator.hidden = NO;
+    self.buttonSend.enabled = NO;
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -101,7 +103,7 @@
     NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getinvites.php%@",parameters];
     
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setCompletionBlock:^{
         NSData *responseData = [request responseData];
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
@@ -109,7 +111,7 @@
         self.numberOfInvites = 10 - [[json objectForKey:@"data"] count];
         
         if (self.numberOfInvites < 1) {
-            self.labelInviteTitle.text = [NSString stringWithFormat:@"You have used up all your invite credits.",self.numberOfInvites];
+            self.labelInviteTitle.text = @"You have used up all your invite credits.";
             [self.labelInviteTitle sizeToFit];
             
             self.textFieldEmail.hidden = YES;
@@ -120,7 +122,7 @@
         }
         else {
             
-            self.labelInviteTitle.text = [NSString stringWithFormat:@"You may sponsor %i agents for membership.",self.numberOfInvites];
+            self.labelInviteTitle.text = [NSString stringWithFormat:@"You may sponsor %li agents for membership.",(long)self.numberOfInvites];
             [self.labelInviteTitle sizeToFit];
             
             self.textFieldEmail.text = @"";
@@ -130,10 +132,12 @@
             self.buttonSend.enabled = YES;
         }
         
+        self.activityIndicator.hidden = YES;
+        self.buttonSend.enabled = YES;
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@"25 error:%@",error);
+        //NSLog(@"25 error:%@",error);
         
     }];
     [request startAsynchronous];
@@ -163,7 +167,7 @@
         NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/validate_invite.php%@",parameters];
         
         __block NSError *errorData = nil;
-        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
         [request setCompletionBlock:^{
             NSData *responseData = [request responseData];
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
@@ -187,7 +191,7 @@
         }];
         [request setFailedBlock:^{
             NSError *error = [request error];
-            NSLog(@"25 error:%@",error);
+            //NSLog(@"25 error:%@",error);
             
         }];
         [request startAsynchronous];
@@ -205,23 +209,23 @@
     NSString *parametersSend = [NSString stringWithFormat:@"?firstname=%@&lastname=%@&email=%@&zip=%@&user_id=%@&profile_id=%@", self.textFieldFirstname.text, self.textFieldLastname.text, self.textFieldEmail.text, self.textFieldZipcode.text, self.profileData.user_id, self.profileData.profile_id];
     
     NSString *urlStringSend = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/send_invite.php%@",parametersSend];
-//    NSLog(@"url:%@",urlStringSend);
+//    //NSLog(@"url:%@",urlStringSend);
     __block NSError *errorDataSend = nil;
-    __block ASIHTTPRequest *requestSend = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringSend]];
+    __weak ASIHTTPRequest *requestSend = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringSend]];
     [requestSend setCompletionBlock:^{
         NSData *responseDataSend = [requestSend responseData];
         NSDictionary *jsonSend = [NSJSONSerialization JSONObjectWithData:responseDataSend options:NSJSONReadingAllowFragments error:&errorDataSend];
-//        NSLog(@"%@json:%@",[requestSend responseString],jsonSend);
+//        //NSLog(@"%@json:%@",[requestSend responseString],jsonSend);
         if ([[jsonSend objectForKey:@"status"] integerValue] == 1) {
             
-            NSLog(@"Successful");
+            //NSLog(@"Successful");
         
                                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:@"Invitation Sent." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                   [alert show];
             [self checkInvites];
         }
         else {
-            NSLog(@"Failed");
+            //NSLog(@"Failed");
         }
         self.buttonSend.enabled = YES;
         self.activityIndicator.hidden = YES;
@@ -229,7 +233,7 @@
     }];
     [requestSend setFailedBlock:^{
         NSError *error = [requestSend error];
-        NSLog(@"25 error:%@",error);
+        //NSLog(@"25 error:%@",error);
         
     }];
     [requestSend startAsynchronous];

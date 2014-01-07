@@ -51,7 +51,7 @@
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.user_id];
     
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getprofile.php%@",parameters]]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getprofile.php%@",parameters]]];
     [request setCompletionBlock:^{
         
         // Use when fetching text data
@@ -78,7 +78,7 @@
                     
                     NSError *error = nil;
                     if (![context save:&error]) {
-                        NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                        //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                     }
                 }
                 
@@ -177,7 +177,7 @@
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];
@@ -220,7 +220,7 @@
         text = self.profileData.broker_name;
     }
     else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"address"]) {
-        text = @"";
+//        text = @"";
         NSMutableString *string = [NSMutableString stringWithString:@""];
         if (![self isNull:self.profileData.street_address]) {
             [string appendFormat:@"%@\n",self.profileData.street_address];
@@ -302,7 +302,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    NSInteger row = [indexPath row];
+//    NSInteger row = [indexPath row];
     
     cell.textLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_FOR_PROFILE);
     cell.detailTextLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -321,7 +321,7 @@
     }
     else {
         if(![self.profileData.activation_status integerValue]){
-            row += 1;
+//            row += 1;
         }
         if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"brokerage"]) {
             cell.textLabel.text = @"Brokerage";
@@ -451,7 +451,7 @@
     [mobileNumber replaceOccurrencesOfString:@"(" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@")" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@" " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
-    //    NSLog(@"number:[%@]",mobileNumber);
+    //    //NSLog(@"number:[%@]",mobileNumber);
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",mobileNumber]];
     [[UIApplication sharedApplication] openURL:URL];
 }
@@ -475,7 +475,7 @@
     
     else {
         
-        //        NSLog(@"Device is unable to send email in its current state.");
+        //        //NSLog(@"Device is unable to send email in its current state.");
         
     }
     

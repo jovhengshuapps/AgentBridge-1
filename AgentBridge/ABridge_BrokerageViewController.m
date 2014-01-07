@@ -35,7 +35,8 @@
 @property (strong, nonatomic) NSMutableArray *arrayOfDesignationDetails;
 @property (strong, nonatomic) NSMutableArray *arrayOfDesignationToRemove;
 @property (strong, nonatomic) NSString *selectedBrokerId;
-@property (weak, nonatomic) IBOutlet UILabel *labelBroker;
+
+@property (weak, nonatomic) IBOutlet UITextField *textFieldBroker_label;
 @property (weak, nonatomic) IBOutlet UIButton *buttonDeleteBroker;
 @property (weak, nonatomic) IBOutlet MLPAutoCompleteTextField *textFieldDesignation;
 @property (weak, nonatomic) IBOutlet UIView *viewContent;
@@ -86,11 +87,12 @@
     self.slidingViewController.underRightViewController = nil;
     
     self.aboutMeTitle.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
-    self.brokerageHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.designationHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.brokerageHeader.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
+    self.designationHeader.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.labelNoneSpecified.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldBrokerage.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelBroker.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    
+    self.textFieldBroker_label.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     self.textFieldDesignation.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -102,7 +104,17 @@
     [self addPaddingAndBorder:self.textFieldDesignation color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
     
     
+    [self addPaddingAndBorder:self.textFieldBroker_label color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
+    CGRect frame = self.buttonDeleteBroker.frame;
+    frame.size.height = 20.0f;
+    frame.size.width = 20.0f;
+    self.buttonDeleteBroker.frame = frame;
+
     self.buttonDeleteBroker.transform = CGAffineTransformMakeRotation(M_PI_4);
+    
+    
+//    self.labelBroker.layer.borderWidth = 1.0f;
+//    self.labelBroker.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
     
 //    self.buttonDeleteBroker.layer.shadowOpacity = 0.75f;
 //    self.buttonDeleteBroker.layer.shadowRadius = 2.0f;
@@ -112,7 +124,7 @@
     NSMutableString *urlStringBroker = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_broker_list.php"];
     
     __block NSError *errorDataBroker = nil;
-    __block ASIHTTPRequest *requestBroker = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringBroker]];
+    __weak ASIHTTPRequest *requestBroker = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringBroker]];
     [requestBroker setCompletionBlock:
      ^{
          NSData *responseData = [requestBroker responseData];
@@ -138,7 +150,7 @@
                  //
                  //                         NSError *errorSave = nil;
                  //                         if (![context save:&errorSave]) {
-                 //                             NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
+                 //                             //NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
                  //                         }
                  //                     }
                  //
@@ -170,7 +182,7 @@
      }];
     [requestBroker setFailedBlock:^{
         NSError *error = [requestBroker error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [requestBroker startAsynchronous];
@@ -186,7 +198,7 @@
     NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_designation_list.php"];
     
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setCompletionBlock:
      ^{
          NSData *responseData = [request responseData];
@@ -215,7 +227,7 @@
      }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];
@@ -252,7 +264,8 @@
     
     self.textFieldBrokerage.text = @"";
     self.textFieldBrokerage.text = self.profile.broker_name;
-    self.labelBroker.text = self.profile.broker_name;
+    
+    self.textFieldBroker_label.text = self.profile.broker_name;
     
 //    NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_designations.php";
 //    
@@ -273,13 +286,13 @@
     [urlStringUserDesignation appendFormat:@"?user_id=%@", loginDetails.user_id];
     
     __block NSError *errorDataUserDesignation = nil;
-    __block ASIHTTPRequest *requestUserDesignation = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringUserDesignation]];
+    __weak ASIHTTPRequest *requestUserDesignation = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringUserDesignation]];
     [requestUserDesignation setCompletionBlock:
      ^{
          NSData *responseData = [requestUserDesignation responseData];
          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorDataUserDesignation];
          
-//         NSLog(@"json:%@",json);
+//         //NSLog(@"json:%@",json);
          if ([[json objectForKey:@"data"] count]) {
              
              for(NSDictionary *entry in [json objectForKey:@"data"]){
@@ -293,7 +306,7 @@
                  
 //                 [self addDesignationLabel:[entry valueForKey:@"designation_name"]];
                  [self addDesignationLabel:entry];
-//                 NSLog(@"name:%@",[entry valueForKey:@"designation_name"]);
+//                 //NSLog(@"name:%@",[entry valueForKey:@"designation_name"]);
              }
              
              // Set a default data source for all instances.  Otherwise, you can specify the data source on individual text fields via the autocompleteDataSource property
@@ -314,7 +327,7 @@
      }];
     [requestUserDesignation setFailedBlock:^{
         NSError *error = [requestUserDesignation error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [requestUserDesignation startAsynchronous];
@@ -332,7 +345,7 @@
 }
 
 - (IBAction)saveBrokerage:(id)sender {
-    if ([self.labelBroker.text isEqualToString:@""] == NO) {
+    if ([self.textFieldBroker_label.text isEqualToString:@""] == NO) {
         
         self.brokerUpdatedFlag = 1;
         self.designationDeletedFlag = 1;
@@ -350,7 +363,7 @@
             
             self.activityIndicator.hidden = NO;
             __block NSError *errorData = nil;
-            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
             //            [self.activityIndicator startAnimating];
             //            self.activityIndicator.hidden = NO;
             [request setCompletionBlock:
@@ -373,7 +386,7 @@
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                NSLog(@" error:%@",error);
+                //NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -396,7 +409,7 @@
                     
                     self.activityIndicator.hidden = NO;
                     __block NSError *errorData = nil;
-                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                     //            [self.activityIndicator startAnimating];
                     //            self.activityIndicator.hidden = NO;
                     [request setCompletionBlock:
@@ -418,7 +431,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        NSLog(@" error:%@",error);
+                        //NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -448,7 +461,7 @@
                     
                     self.activityIndicator.hidden = NO;
                     __block NSError *errorData = nil;
-                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                     //            [self.activityIndicator startAnimating];
                     //            self.activityIndicator.hidden = NO;
                     [request setCompletionBlock:
@@ -470,7 +483,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        NSLog(@" error:%@",error);
+                        //NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -492,7 +505,7 @@
 
 -(void) showSuccessAlert {
     
-//    NSLog(@"%i, %i, %i",self.brokerUpdatedFlag, self.designationAddedFlag, self.designationDeletedFlag);
+//    //NSLog(@"%i, %i, %i",self.brokerUpdatedFlag, self.designationAddedFlag, self.designationDeletedFlag);
     
     if ((self.brokerUpdatedFlag + self.designationAddedFlag + self.designationDeletedFlag) == 6) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Saved" message:@"Successful in saving Broker and Designation Details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -517,7 +530,8 @@
 }
 
 - (IBAction)deleteBroker:(id)sender {
-    self.labelBroker.hidden = YES;
+    
+    self.textFieldBroker_label.hidden = YES;
     self.textFieldBrokerage.hidden = NO;
     self.buttonDeleteBroker.hidden = YES;
 }
@@ -614,9 +628,11 @@
     
     textField.text = selectedString;
     if (textField == self.textFieldBrokerage) {
-        self.labelBroker.text = selectedString;
+        
+        self.textFieldBroker_label.text = selectedString;
         self.textFieldBrokerage.hidden = YES;
-        self.labelBroker.hidden = NO;
+        
+        self.textFieldBroker_label.hidden = NO;
         self.buttonDeleteBroker.hidden = NO;
         
         self.selectedBrokerId = [self.arrayOfBrokerIDAutocomplete objectAtIndex:[indexPath row]];
@@ -635,9 +651,11 @@
         
         NSString *selectedString = [self.arrayOfBrokerAutocomplete firstObject];
         self.textFieldBrokerage.text = selectedString;
-        self.labelBroker.text = selectedString;
+        
+        self.textFieldBroker_label.text = selectedString;
         self.textFieldBrokerage.hidden = YES;
-        self.labelBroker.hidden = NO;
+        
+        self.textFieldBroker_label.hidden = NO;
         self.buttonDeleteBroker.hidden = NO;
         
         self.selectedBrokerId = [self.arrayOfBrokerIDAutocomplete objectAtIndex:0];
@@ -748,6 +766,8 @@
 //        button.layer.shadowRadius = 2.0f;
 //        button.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
 //        button.layer.shadowColor = [UIColor blackColor].CGColor;
+        
+        button.transform = CGAffineTransformMakeRotation(M_PI_4);
         
         CGPoint center = button.center;
         center.y = cell.contentView.center.y;

@@ -34,11 +34,11 @@
     //[FONT NAME TEST]
 //    for (NSString* family in [UIFont familyNames])
 //    {
-//        NSLog(@"%@", family);
+//        //NSLog(@"%@", family);
 //        
 //        for (NSString* name in [UIFont fontNamesForFamilyName: family])
 //        {
-//            NSLog(@"  %@", name);
+//            //NSLog(@"  %@", name);
 //        }
 //    }
     
@@ -46,20 +46,34 @@
         self.shouldAdjustChildViewHeightForStatusBar = YES;
         self.statusBarBackgroundView.backgroundColor = [UIColor blackColor];
     }
-    else {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    }
+//    else {
+//        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//    }
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     
     self.topViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
     
-    CGRect viewFrame=((UITabBarController*)self.topViewController).tabBar.frame;
-    viewFrame.origin.y += 5.0f;
-    viewFrame.size.height=44.0f;
-    ((UITabBarController*)self.topViewController).tabBar.frame=viewFrame;
+//    CGRect viewFrame=((UITabBarController*)self.topViewController).tabBar.frame;
+//    viewFrame.origin.y += 5.0f;
+//    viewFrame.size.height=44.0f;
+//    ((UITabBarController*)self.topViewController).tabBar.frame=viewFrame;
     
+    
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        CGRect viewFrame=((UITabBarController*)self.topViewController).tabBar.frame;
+        viewFrame.origin.y += 5.0f;
+        viewFrame.size.height=44.0f;
+        ((UITabBarController*)self.topViewController).tabBar.frame=viewFrame;
+    }
+    else {
+        CGRect viewFrame=((UITabBarController*)self.topViewController).tabBar.frame;
+        viewFrame.origin.y -= 15.0f;
+        viewFrame.size.height=44.0f;
+        ((UITabBarController*)self.topViewController).tabBar.frame=viewFrame;
+    }
+
     
     self.shouldAddPanGestureRecognizerToTopViewSnapshot = NO;
     
@@ -127,7 +141,7 @@
             
             NSError *errorSave = nil;
             if (![context save:&errorSave]) {
-                NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
+                //NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
             }
             else {
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];

@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonForgot;
 @property (weak, nonatomic) IBOutlet UIView *viewOverlay;
 @property (weak, nonatomic) IBOutlet UILabel *labelLoading;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 
 @property (strong, nonatomic) NSURLConnection *urlConnectionLogin;
@@ -71,19 +72,50 @@
     self.textPassword.font = FONT_OPENSANS_REGULAR(15.0f);
     self.buttonSignIn.titleLabel.font = FONT_OPENSANS_BOLD(17.0f);
     self.buttonForgot.titleLabel.font = FONT_OPENSANS_REGULAR(15.0f);
-    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 20)];
-    self.textEmail.leftView = paddingView;
-    self.textEmail.leftViewMode = UITextFieldViewModeAlways;
-    UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 20)];
-    self.textPassword.leftView = paddingView2;
-    self.textPassword.leftViewMode = UITextFieldViewModeAlways;
+//    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 20)];
+//    self.textEmail.leftView = paddingView;
+//    self.textEmail.leftViewMode = UITextFieldViewModeAlways;
+//    UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 20)];
+//    self.textPassword.leftView = paddingView2;
+//    self.textPassword.leftViewMode = UITextFieldViewModeAlways;
     
-    self.textEmail.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
-    self.textEmail.layer.borderWidth = 1.0f;
-    self.textPassword.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
-    self.textPassword.layer.borderWidth = 1.0f;
+//    self.textEmail.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
+//    self.textEmail.layer.borderWidth = 1.0f;
+//    self.textPassword.layer.borderColor = [UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f].CGColor;
+//    self.textPassword.layer.borderWidth = 1.0f;
     
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//    UIBezierPath *emailMaskPathWithRadiusTop = [UIBezierPath bezierPathWithRoundedRect:self.textEmail.bounds
+//                                                                        byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight)
+//                                                                              cornerRadii:CGSizeMake(8.0, 8.0)];
+//    
+//    UIBezierPath *passwordMaskPathWithRadiusBottom = [UIBezierPath bezierPathWithRoundedRect:self.textPassword.bounds
+//                                                                           byRoundingCorners:(UIRectCornerBottomLeft | UIRectCornerBottomRight)
+//                                                                                 cornerRadii:CGSizeMake(8.0, 8.0)];
+//    
+//    CAShapeLayer *emailMaskLayer = [[CAShapeLayer alloc] init];
+//    emailMaskLayer.frame = self.textEmail.bounds;
+//    emailMaskLayer.path = emailMaskPathWithRadiusTop.CGPath;
+//    
+//    CAShapeLayer *passwordMaskLayer = [[CAShapeLayer alloc] init];
+//    passwordMaskLayer.frame = self.textPassword.bounds;
+//    passwordMaskLayer.path = passwordMaskPathWithRadiusBottom.CGPath;
+//
+//    self.textEmail.layer.mask = emailMaskLayer;
+//    self.textPassword.layer.mask = passwordMaskLayer;
+    
+    self.textEmail.backgroundColor = [UIColor clearColor];
+    self.textPassword.backgroundColor = [UIColor clearColor];
+    
+    self.tableView.layer.borderColor = [UIColor colorWithRed:25.0f/255.0f green:25.0f/255.0f blue:25.0f/255.0f alpha:1.0f].CGColor;
+    self.tableView.layer.borderWidth = 1.0f;
+    self.tableView.layer.cornerRadius = 4.0f;
+    self.tableView.layer.masksToBounds = YES;
+//    self.tableView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
+    
+    self.tableView.separatorColor = [UIColor colorWithRed:25.0f/255.0f green:25.0f/255.0f blue:25.0f/255.0f alpha:1.0f];
+    
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     self.labelLoading.font = FONT_OPENSANS_REGULAR(15.0f);
     
@@ -169,17 +201,17 @@
             NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/login.php"];
             NSString *parameters = [NSString stringWithFormat:@"?email=%@&password=%@",self.textEmail.text,self.textPassword.text];
             [urlString appendString:parameters];
-//            NSLog(@"url:%@",urlString);
+//            //NSLog(@"url:%@",urlString);
             NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
             
             self.urlConnectionLogin = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
             
             
 //            if (urlConnectionLogin) {
-//                NSLog(@"Connection Successful");
+//                //NSLog(@"Connection Successful");
 //            }
 //            else {
-//                NSLog(@"Connection Failed");
+//                //NSLog(@"Connection Failed");
 //            }
             
         }
@@ -203,7 +235,7 @@
     [UIView setAnimationDelay:0.2f];
     
     CGRect frame = self.viewBox.frame;
-    frame.origin.y = (isiPhone5)?100.0f:60.0f;
+    frame.origin.y = (isiPhone5)?110.0f:70.0f;
     self.viewBox.frame = frame;
     
     [UIView commitAnimations];
@@ -224,12 +256,12 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     [self.dataReceived appendData:data];
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-//    NSLog(@"Did Fail");
+//    //NSLog(@"Did Fail");
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
@@ -241,7 +273,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"Did Finish:%@", json);
+//    //NSLog(@"Did Finish:%@", json);
     
     if (connection == self.urlConnectionLogin) {
         
@@ -262,7 +294,7 @@
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             NSError *errorSave = nil;
             if (![context save:&errorSave]) {
-                NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
+                //NSLog(@"Error occurred in saving Login Details:%@",[errorSave localizedDescription]);
             }
             else {
                 
@@ -270,7 +302,7 @@
                 
                 NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php"];
                 [urlString appendString:parameters];
-                //            NSLog(@"url:%@",urlString);
+                //            //NSLog(@"url:%@",urlString);
                 NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
                 
                 self.urlConnectionProfile = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
@@ -278,10 +310,10 @@
                 
                 if (self.urlConnectionProfile) {
                     self.labelLoading.text = @"Retrieving Profile.";
-                    //                NSLog(@"Connection Successful");
+                    //                //NSLog(@"Connection Successful");
                 }
                 else {
-                    //                NSLog(@"Connection Failed");
+                    //                //NSLog(@"Connection Failed");
                 }
                 
             }
@@ -313,7 +345,7 @@
                 
                 NSError *error = nil;
                 if (![context save:&error]) {
-                    NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                    //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                 }
                 else {
 //                    NSFetchRequest *fetchRequestProfile = [[NSFetchRequest alloc] init];
@@ -327,10 +359,10 @@
 //                    NSError *error = nil;
 //                    NSArray *fetchedProfile = [context executeFetchRequest:fetchRequestProfile error:&error];
 //                    
-//                    NSLog(@"%@\nprofile:%@",self.item.user_id,fetchedProfile);
+//                    //NSLog(@"%@\nprofile:%@",self.item.user_id,fetchedProfile);
 //                    if ([fetchedProfile count] == 0) {
 //                        if (![context save:&error]) {
-//                            NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+//                            //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
 //                        }
 //                        else {
                             [self performSelector:@selector(proceedToMainApp) withObject:nil afterDelay:1];
@@ -360,7 +392,7 @@
     self.labelLoading.text = @"Done!";
     [self dismissViewControllerAnimated:YES completion:^{
         [self.timer invalidate];
-        //                NSLog(@"Successfully saved Login Details");
+        //                //NSLog(@"Successfully saved Login Details");
     }];
 }
 
@@ -386,4 +418,76 @@
     NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
     return results;
 }
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *CellIdentifier = @"CellIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+    }
+    
+    
+    
+    if ([indexPath row] == 0) {
+        CGRect frame = self.textEmail.frame;
+        frame.origin.x = 15.0f;
+        frame.origin.y = 2.0f;
+        frame.size.width = cell.frame.size.width - 20.0f;
+        frame.size.height = cell.frame.size.height - 4.0f;
+        self.textEmail.frame = frame;
+        
+        [cell.contentView addSubview:self.textEmail];
+    }
+    else if ([indexPath row] == 1) {
+        CGRect frame = self.textPassword.frame;
+        frame.origin.x = 15.0f;
+        frame.origin.y = 2.0f;
+        frame.size.width = cell.frame.size.width - 20.0f;
+        frame.size.height = cell.frame.size.height - 4.0f;
+        self.textPassword.frame = frame;
+        
+        [cell.contentView addSubview:self.textPassword];
+    }
+    
+    UIView *viewCell = [[UIView alloc] initWithFrame:cell.bounds];
+    viewCell.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
+    
+    
+//    if ([indexPath row] == 0) {
+//    UIBezierPath *emailMaskPathWithRadiusTop = [UIBezierPath bezierPathWithRoundedRect:self.textEmail.bounds
+//                                                                     byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight)
+//                                                                           cornerRadii:CGSizeMake(4.0, 4.0)];
+//        CAShapeLayer *emailMaskLayer = [[CAShapeLayer alloc] init];
+//        emailMaskLayer.frame = viewCell.bounds;
+//        emailMaskLayer.path = emailMaskPathWithRadiusTop.CGPath;
+//        
+//        viewCell.layer.mask = emailMaskLayer;
+//    }
+//    else if ([indexPath row] == 1) {
+//        UIBezierPath *passwordMaskPathWithRadiusBottom = [UIBezierPath bezierPathWithRoundedRect:self.textPassword.bounds
+//                                                                               byRoundingCorners:(UIRectCornerBottomLeft | UIRectCornerBottomRight)
+//                                                                                     cornerRadii:CGSizeMake(4.0, 4.0)];
+//        CAShapeLayer *passwordMaskLayer = [[CAShapeLayer alloc] init];
+//        passwordMaskLayer.frame = viewCell.bounds;
+//        passwordMaskLayer.path = passwordMaskPathWithRadiusBottom.CGPath;
+//        
+//        viewCell.layer.mask = passwordMaskLayer;
+//    }
+    
+    cell.backgroundView = viewCell;
+    
+    return cell;
+}
+
 @end

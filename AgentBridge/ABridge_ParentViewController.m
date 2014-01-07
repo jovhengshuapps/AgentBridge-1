@@ -72,21 +72,21 @@
 - (IBAction)revealMenu:(id)sender
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 
 - (IBAction)revealSearch:(id)sender
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [self.slidingViewController anchorTopViewTo:ECLeft];
 }
 
 - (NSURLConnection *)urlConnectionWithURLString:(NSString *)urlString andParameters:(NSString *)parameters {
     NSMutableString *urlString_ = [NSMutableString stringWithString:urlString];
     [urlString_ appendString:parameters];
-//    NSLog(@"url:%@",urlString);
+//    //NSLog(@"url:%@",urlString);
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
     
 //    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
@@ -115,7 +115,7 @@
 -(IBAction)goBackToRoot:(id)sender {
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     [self.slidingViewController anchorTopViewOffScreenTo:ECLeft animations:nil onComplete:^{
         [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
@@ -175,17 +175,17 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (scrollView.contentOffset.y < -25.0f) {
-        NSLog(@"Release to Refresh");
+        //NSLog(@"Release to Refresh");
         [self reloadData];
     }
     else {
-        NSLog(@"Pull down to Refresh");
+        //NSLog(@"Pull down to Refresh");
     }
 //    [scrollView setContentOffset:CGPointMake(0.0f, 0.0f) animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    NSLog(@"y:%f",(100.0f - (ABS(scrollView.contentOffset.y) * 5.0f))/100.0f);
+//    //NSLog(@"y:%f",(100.0f - (ABS(scrollView.contentOffset.y) * 5.0f))/100.0f);
     if (scrollView.contentOffset.y < 0.0f) {
         
 //        self.viewOverlay.alpha = (100.0f - (scrollView.contentOffset.y * 5.0f))/100.0f;

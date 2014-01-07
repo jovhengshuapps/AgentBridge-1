@@ -45,7 +45,7 @@
 	// Do any additional setup after loading the view.
     
     
-    self.labelNumberOfActivity.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelNumberOfActivity.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     self.labelNumberOfActivity.text = @"My Activity";
     [self.labelNumberOfActivity sizeToFit];
     
@@ -165,21 +165,21 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     if (connection == self.urlConnectionActivity) {
         [self.dataReceived appendData:data];
     }
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-//    NSLog(@"Did Fail");
+//    //NSLog(@"Did Fail");
 //    [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -191,9 +191,9 @@
         
         NSDictionary *jsonActivities = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
         
-//        NSLog(@"Did Finish:%@", jsonActivities);
+//        //NSLog(@"Did Finish:%@", jsonActivities);
         if ([[jsonActivities objectForKey:@"data"] count]) {
-//            NSLog(@"total:%i",[[json objectForKey:@"data"] count]);
+//            //NSLog(@"total:%i",[[json objectForKey:@"data"] count]);
             for (NSDictionary *entryActivities in [jsonActivities objectForKey:@"data"]) {
                 
                 
@@ -204,7 +204,7 @@
                 self.activityIndicator.hidden = NO;
                 [self.activityIndicator startAnimating];
                 __block NSError *errorData = nil;
-                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                 [request setCompletionBlock:^{
                     // Use when fetching text data
                     //                        NSString *responseString = [request responseString];
@@ -240,7 +240,7 @@
                             
                             NSError *error = nil;
                             if (![context save:&error]) {
-                                NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
+                                //NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
                             }
                             else {
                                 if (self.arrayOfActivity == nil) {
@@ -279,7 +279,7 @@
                 }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    NSLog(@"11 error:%@",error);
+                    //NSLog(@"11 error:%@",error);
                     [self.activityIndicator stopAnimating];
                     self.activityIndicator.hidden = YES;
                 }];
@@ -292,14 +292,14 @@
                 
 //                if ([[entryActivities valueForKey:@"activity_type"] integerValue] == 25) {
 //                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
-////                    NSLog(@"25 parameters:%@",parameters);
+////                    //NSLog(@"25 parameters:%@",parameters);
 //                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-25.php%@",parameters];
 //                    
 //                    
 //                    self.activityIndicator.hidden = NO;
 //                    [self.activityIndicator startAnimating];
 //                    __block NSError *errorData = nil;
-//                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+//                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
 //                    [request setCompletionBlock:^{
 //                        // Use when fetching text data
 ////                        NSString *responseString = [request responseString];
@@ -307,7 +307,7 @@
 //                        NSData *responseData = [request responseData];
 //                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
 //                        if ([[json objectForKey:@"data"] count]) {
-////                            NSLog(@"25 Did Finish:%i", [[json objectForKey:@"data"] count]);
+////                            //NSLog(@"25 Did Finish:%i", [[json objectForKey:@"data"] count]);
 ////                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //                                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
 //                                //                for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -325,10 +325,10 @@
 //                                
 //                                [activity setValuesForKeysWithDictionary:entry];
 //                                
-//                                //                NSLog(@"activity:%@",activity);
+//                                //                //NSLog(@"activity:%@",activity);
 //                                NSError *error = nil;
 //                                if (![context save:&error]) {
-//                                    NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
+//                                    //NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
 //                                }
 //                                else {
 //                                    if (self.arrayOfActivity == nil) {
@@ -341,7 +341,7 @@
 //                                    [self.arrayOfActivity replaceObjectAtIndex:[[jsonActivities objectForKey:@"data"] indexOfObject:entryActivities] withObject:activity];
 //                                }
 //                                
-//                                //                                NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
+//                                //                                //NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
 //                                
 ////                                dispatch_async(dispatch_get_main_queue(), ^{
 //                            
@@ -373,7 +373,7 @@
 //                    }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        NSLog(@"25 error:%@",error);
+//                        //NSLog(@"25 error:%@",error);
 //                        [self.activityIndicator stopAnimating];
 //                        self.activityIndicator.hidden = YES;
 //                    }];
@@ -384,14 +384,14 @@
 //                }
 //                else if ([[entryActivities valueForKey:@"activity_type"] integerValue] == 11) {
 //                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
-////                    NSLog(@"11 parameters:%@",parameters);
+////                    //NSLog(@"11 parameters:%@",parameters);
 //                    
 //                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-11.php%@",parameters];
 //                    
 //                    self.activityIndicator.hidden = NO;
 //                    [self.activityIndicator startAnimating];
 //                    __block NSError *errorData = nil;
-//                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+//                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
 //                    [request setCompletionBlock:^{
 //                        // Use when fetching text data
 //                        //                        NSString *responseString = [request responseString];
@@ -402,7 +402,7 @@
 //                        for (NSDictionary *entry in [json objectForKey:@"data"]) {
 //                            
 //                            if ([[json objectForKey:@"data"] count]) {
-////                                NSLog(@"11 Did Finish:%i", [[json objectForKey:@"data"] count]);
+////                                //NSLog(@"11 Did Finish:%i", [[json objectForKey:@"data"] count]);
 //                                //                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //                                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
 //                                //                for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -418,7 +418,7 @@
 //                                    activity = [NSEntityDescription insertNewObjectForEntityForName: @"Activity" inManagedObjectContext: context];
 //                                }
 //                                
-////                                NSLog(@"status:%@ -- %@",[entry valueForKey:@"referral_status"], [activity valueForKey:@"referral_status"]);
+////                                //NSLog(@"status:%@ -- %@",[entry valueForKey:@"referral_status"], [activity valueForKey:@"referral_status"]);
 //                                if ([result count]) {
 //                                    
 //                                    if (![self compareLatestStatusFrom:[entry valueForKey:@"referral_status"] To:[activity valueForKey:@"referral_status"]]) {
@@ -431,10 +431,10 @@
 //                                
 //                                
 //                                
-////                                NSLog(@"%i activity:%@",[result count],activity);
+////                                //NSLog(@"%i activity:%@",[result count],activity);
 //                                NSError *error = nil;
 //                                if (![context save:&error]) {
-//                                    NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
+//                                    //NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
 //                                }
 //                                else {
 //                                    if (self.arrayOfActivity == nil) {
@@ -448,7 +448,7 @@
 //                                    [self.arrayOfActivity replaceObjectAtIndex:[[jsonActivities objectForKey:@"data"] indexOfObject:entryActivities] withObject:activity];
 //                                }
 //                                
-//                                //                                NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
+//                                //                                //NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
 //                                
 //                                //                                dispatch_async(dispatch_get_main_queue(), ^{
 //                                
@@ -481,7 +481,7 @@
 //                    }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        NSLog(@"11 error:%@",error);
+//                        //NSLog(@"11 error:%@",error);
 //                        [self.activityIndicator stopAnimating];
 //                        self.activityIndicator.hidden = YES;
 //                    }];
@@ -498,7 +498,7 @@
 //                    self.activityIndicator.hidden = NO;
 //                    [self.activityIndicator startAnimating];
 //                    __block NSError *errorData = nil;
-//                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+//                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
 //                    [request setCompletionBlock:^{
 //                        // Use when fetching text data
 //                        //                        NSString *responseString = [request responseString];
@@ -506,7 +506,7 @@
 //                        NSData *responseData = [request responseData];
 //                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
 //                        if ([[json objectForKey:@"data"] count]) {
-//                            //                            NSLog(@"25 Did Finish:%i", [[json objectForKey:@"data"] count]);
+//                            //                            //NSLog(@"25 Did Finish:%i", [[json objectForKey:@"data"] count]);
 //                            //                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //                            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
 //                            //                for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -524,10 +524,10 @@
 //                            
 //                            [activity setValuesForKeysWithDictionary:entry];
 //                            
-//                            //                NSLog(@"activity:%@",activity);
+//                            //                //NSLog(@"activity:%@",activity);
 //                            NSError *error = nil;
 //                            if (![context save:&error]) {
-//                                NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
+//                                //NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
 //                            }
 //                            else {
 //                                if (self.arrayOfActivity == nil) {
@@ -540,7 +540,7 @@
 //                                [self.arrayOfActivity replaceObjectAtIndex:[[jsonActivities objectForKey:@"data"] indexOfObject:entryActivities] withObject:activity];
 //                            }
 //                            
-//                            //                                NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
+//                            //                                //NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
 //                            
 //                            //                                dispatch_async(dispatch_get_main_queue(), ^{
 //                            
@@ -572,7 +572,7 @@
 //                    }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        NSLog(@"25 error:%@",error);
+//                        //NSLog(@"25 error:%@",error);
 //                        [self.activityIndicator stopAnimating];
 //                        self.activityIndicator.hidden = YES;
 //                    }];
@@ -586,11 +586,11 @@
 //                    
 //                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-%@.php%@",[entryActivities valueForKey:@"activity_type"],parameters];
 //                    
-////                    NSLog(@"url:%@",urlString);
+////                    //NSLog(@"url:%@",urlString);
 //                    self.activityIndicator.hidden = NO;
 //                    [self.activityIndicator startAnimating];
 //                    __block NSError *errorData = nil;
-//                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+//                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
 //                    [request setCompletionBlock:^{
 //                        // Use when fetching text data
 //                        //                        NSString *responseString = [request responseString];
@@ -598,7 +598,7 @@
 //                        NSData *responseData = [request responseData];
 //                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
 //                        if ([[json objectForKey:@"data"] count]) {
-//                            //                            NSLog(@"25 Did Finish:%i", [[json objectForKey:@"data"] count]);
+//                            //                            //NSLog(@"25 Did Finish:%i", [[json objectForKey:@"data"] count]);
 //                            //                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //                            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
 //                            //                for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -616,10 +616,10 @@
 //                            
 //                            [activity setValuesForKeysWithDictionary:entry];
 //                            
-//                            //                NSLog(@"activity:%@",activity);
+//                            //                //NSLog(@"activity:%@",activity);
 //                            NSError *error = nil;
 //                            if (![context save:&error]) {
-//                                NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
+//                                //NSLog(@"Error on saving Activity:%@",[error localizedDescription]);
 //                            }
 //                            else {
 //                                if (self.arrayOfActivity == nil) {
@@ -632,7 +632,7 @@
 //                                [self.arrayOfActivity replaceObjectAtIndex:[[jsonActivities objectForKey:@"data"] indexOfObject:entryActivities] withObject:activity];
 //                            }
 //                            
-//                            //                                NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
+//                            //                                //NSLog(@"25 Did Finish:%i   [%i] %i", [self.arrayOfURL_25 count], [self.arrayOfActivity count], self.index_25);
 //                            
 //                            //                                dispatch_async(dispatch_get_main_queue(), ^{
 //                            
@@ -664,7 +664,7 @@
 //                    }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        NSLog(@"25 error:%@",error);
+//                        //NSLog(@"25 error:%@",error);
 //                        [self.activityIndicator stopAnimating];
 //                        self.activityIndicator.hidden = YES;
 //                    }];
@@ -698,7 +698,7 @@
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 
@@ -749,12 +749,12 @@
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
     if ([fetchedObjects count]) {
         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
-        //    NSLog(@"parameters:%@",parameters);
+        //    //NSLog(@"parameters:%@",parameters);
         self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity.php" andParameters:parameters];
         
         if (self.urlConnectionActivity) {
             [self addURLConnection:self.urlConnectionActivity];
-            //        NSLog(@"Connection Successful");
+            //        //NSLog(@"Connection Successful");
             
             //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
             
@@ -762,7 +762,7 @@
             [self.activityIndicator startAnimating];
         }
         else {
-            //        NSLog(@"Connection Failed");
+            //        //NSLog(@"Connection Failed");
         }
     }
 }

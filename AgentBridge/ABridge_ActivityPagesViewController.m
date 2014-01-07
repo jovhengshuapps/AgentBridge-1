@@ -107,7 +107,7 @@
         
         NSString *message = @"";
         if ([self.activityDetail.activity_type integerValue] == 25) {
-//            NSLog(@"listing:%@",self.activityDetail.listing_id);
+//            //NSLog(@"listing:%@",self.activityDetail.listing_id);
             NSString *buyer_name = [NSString stringWithFormat:@"<a href='http://buyer/%@'>%@</a>",self.activityDetail.buyer_id, self.activityDetail.buyer_name];
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -121,11 +121,11 @@
                 
                 NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_new_if_saved.php"];
                 [urlString appendString:parameters];
-//                NSLog(@"url:%@",urlString);
+//                //NSLog(@"url:%@",urlString);
                 
                 
                 __block NSError *errorData = nil;
-                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                 //            [self.activityIndicator startAnimating];
                 //            self.activityIndicator.hidden = NO;
                 [request setCompletionBlock:
@@ -133,7 +133,7 @@
                      NSData *responseData = [request responseData];
                      NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                      
-//                     NSLog(@"json:%@",json);
+//                     //NSLog(@"json:%@",json);
                      if ([[json objectForKey:@"data"] count]) {
                          
 //                         self.viewForDescription.hidden = NO;
@@ -154,7 +154,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    NSLog(@" error:%@",error);
+                    //NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -167,7 +167,7 @@
                 
                 NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php"];
                 [urlString_ appendString:parameters];
-                //        NSLog(@"url:%@",urlString_);
+                //        //NSLog(@"url:%@",urlString_);
 //                NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
 //                
 //                self.urlConnectionRequestNetwork = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
@@ -178,7 +178,7 @@
 //                }
                 
                 __block NSError *errorData = nil;
-                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString_]];
+                __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString_]];
                 //            [self.activityIndicator startAnimating];
                 //            self.activityIndicator.hidden = NO;
                 [request setCompletionBlock:
@@ -186,7 +186,7 @@
                      NSData *responseData = [request responseData];
                      NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                      
-                     //                     NSLog(@"json:%@",json);
+                     //                     //NSLog(@"json:%@",json);
                      
                      if ([[json objectForKey:@"data"] count]) {
                          NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
@@ -213,11 +213,11 @@
                              
                              NSError *errorSave = nil;
                              if (![context save:&errorSave]) {
-                                 NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
+                                 //NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
                              }
                              
                              if ([network.status integerValue] == 1) {
-                                 //                    NSLog(@"setting:%@",self.activityDetail.setting);
+                                 //                    //NSLog(@"setting:%@",self.activityDetail.setting);
                                  if ([self.activityDetail.setting integerValue] == 1) {
                                      //                        [self checkSettingGetPrice];
                                  }
@@ -227,8 +227,8 @@
                                      
                                      NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
                                      [urlString_ appendString:parameters];
-                                     //                        NSLog(@"url:%@",urlString_);
-                                     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+                                     //                        //NSLog(@"url:%@",urlString_);
+//                                     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
                                      
 //                                     self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
 //                                     
@@ -238,7 +238,7 @@
 //                                     }
                                      
                                      __block NSError *errorDataA = nil;
-                                     __block ASIHTTPRequest *requestA = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString_]];
+                                     __weak ASIHTTPRequest *requestA = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString_]];
                                      //            [self.activityIndicator startAnimating];
                                      //            self.activityIndicator.hidden = NO;
                                      [requestA setCompletionBlock:
@@ -246,7 +246,7 @@
                                           NSData *responseData = [requestA responseData];
                                           NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorDataA];
                                           
-                                          //                     NSLog(@"json:%@",json);
+                                          //                     //NSLog(@"json:%@",json);
                                           if ([[json objectForKey:@"data"] count]) {
                                               NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
                                               NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
@@ -273,7 +273,7 @@
                                                   
                                                   NSError *errorSave = nil;
                                                   if (![context save:&errorSave]) {
-                                                      NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
+                                                      //NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
                                                   }
                                                   
                                                   if ([access.permission boolValue] == YES) {
@@ -307,7 +307,7 @@
                                               }
                                               
                                               [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                                              [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+                                              [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
                                           }
                                           else {
                                               //            self.viewForDescription.hidden = NO;
@@ -318,14 +318,14 @@
                                               self.buttonDescription.tag = 2510;
                                               
                                               [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                                              [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+                                              [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
                                           }
                                           
                                           
                                       }];
                                      [requestA setFailedBlock:^{
                                          NSError *error = [requestA error];
-                                         NSLog(@" error:%@",error);
+                                         //NSLog(@" error:%@",error);
                                      }];
                                      
                                      [requestA startAsynchronous];
@@ -359,7 +359,7 @@
                          }
                          
                          [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+                         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
                          
                      }
                      else {
@@ -371,14 +371,14 @@
                          self.buttonDescription.tag = 2502;
                          
                          [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+                         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
                      }
                      
                      
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    NSLog(@" error:%@",error);
+                    //NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -402,7 +402,16 @@
             
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+//                NSString *activityName = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+//            
+//                NSMutableString *spaces = [[NSMutableString alloc] initWithString:@" "];
+//                
+//                while(index < [activityName length]) {
+//                    [spaces appendString:@"  "];
+//                    index++;
+//                }
+//                
+                self.labelActivityName.text = @"";//[NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
                 self.labelDateTime.text = self.activityDetail.referral_date;
                 
                 self.labelDescription.text = @"";
@@ -413,7 +422,7 @@
                 [self.buttonDescription setTitle:@"" forState:UIControlStateNormal];
             });
             
-//            NSLog(@"user:%@/%@ --- %@",self.activityDetail.user_id,self.activityDetail.other_user_id,self.loginDetail.user_id);
+//            //NSLog(@"user:%@/%@ --- %@",self.activityDetail.user_id,self.activityDetail.other_user_id,self.loginDetail.user_id);
             
             if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
@@ -427,9 +436,13 @@
                 }
                 
                 switch ([self.activityDetail.referral_status integerValue]) {
-                    case 1:
+                    case 1:{
                         message = [NSString stringWithFormat:@"%@ is now under contract.",buyer_name];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+                        });
                         break;
+                    }
                     case 4:{
                         message = [NSString stringWithFormat:@"Congratulations for closing your referral %@.",buyer_name];
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -438,16 +451,26 @@
                             self.labelDescription.hidden = NO;
                             self.labelDescription.text = @"AgentBridge has successfully collected the referral service fee.";
                             self.buttonDescription.hidden = YES;
+                            
+                            self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
                         });}
                         break;
                     case 5:{
                         user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
                         message = [NSString stringWithFormat:@"You have declined the referral from %@.", user_name];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+                        });
                         break;
                     }
-                    case 6:
+                    case 6:{
                         message = [NSString stringWithFormat:@"%@ needs your help on referral %@ ", user_name, buyer_name];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+                        });
                         break;
+                    }
                     case 7:{
                         
                         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&update_id=%@", self.loginDetail.user_id, self.activityDetail.referral_update_id];
@@ -457,7 +480,7 @@
                         __block NSString *buyer_block = buyer_name;
                         
                         __block NSError *errorData = nil;
-                        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                         [request setCompletionBlock:^{
                             // Use when fetching text data
                             //                        NSString *responseString = [request responseString];
@@ -509,27 +532,50 @@
                             
                             NSString *htmlString = [NSString stringWithFormat:@"<html><head><style>body{font-family:'OpenSans'} a{text-decoration: none; color:#2C99CE;}</style></head><body>%@</body></html>", message_block];
                             
-                            dispatch_async(dispatch_get_main_queue(), ^{
+//                            dispatch_async(dispatch_get_main_queue(), ^{
+                                CGSize constraint = CGSizeMake(200.0f - 20.0f, 20000.0f);
+                                
+                                CGSize size = [self.labelActivityName.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                                
+                                CGFloat height = MAX(size.height, 21.0f);
+                                
+                                CGRect frame = self.labelActivityName.frame;
+                                frame.size.height = height;
+                                self.labelActivityName.frame = frame;
+                                
+                                frame = self.labelDateTime.frame;
+                                frame.origin.y = self.labelActivityName.frame.origin.y + self.labelActivityName.frame.size.height + 5.0f;
+                                self.labelDateTime.frame = frame;
+//                            });
+//                            
+//                            dispatch_async(dispatch_get_main_queue(), ^{
                                 [self.webView loadHTMLString:htmlString baseURL:nil];
-                            });
+//                            });
                             
                         }];
                         [request setFailedBlock:^{
                             NSError *error = [request error];
-                            NSLog(@"error:%@",error);
+                            //NSLog(@"error:%@",error);
                             
                         }];
                         [request startAsynchronous];
                         
                         break;
                     }
-                    case 8:
+                    case 8:{
                         message = [NSString stringWithFormat:@"You are actively working on referral, %@. ", buyer_name];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+                        });
                         break;
-                    case 9:
+                    }
+                    case 9:{
                         message = @"This referral is now complete and parties have been fully paid.";
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+                        });
                         break;
-                        
+                    }
                         
                     default:
                         message = @"";
@@ -537,6 +583,10 @@
                 }
             }
             else {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+                });
                 
                 NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
                 NSString *buyer_name = [NSString stringWithFormat:@"<a href='http://client/out/%@'>%@</a>",self.activityDetail.client_id, self.activityDetail.referral_buyer_name];
@@ -553,6 +603,7 @@
                             self.labelDescription.hidden = YES;
                             self.buttonDescription.hidden = NO;
                             [self.buttonDescription setTitle:@"Pay" forState:UIControlStateNormal];
+                            self.buttonDescription.tag = 1901;
                         });}
                         break;
                     case 5:
@@ -571,7 +622,7 @@
                             __block NSString *buyer_block = buyer_name;
                             
                             __block NSError *errorData = nil;
-                            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                             [request setCompletionBlock:^{
                                 // Use when fetching text data
                                 //                        NSString *responseString = [request responseString];
@@ -612,7 +663,7 @@
                             }];
                             [request setFailedBlock:^{
                                 NSError *error = [request error];
-                                NSLog(@"error:%@",error);
+                                //NSLog(@"error:%@",error);
                                 
                             }];
                             [request startAsynchronous];
@@ -641,16 +692,18 @@
                         break;
                 }
             }
+            
+            
         }
         else if ([self.activityDetail.activity_type integerValue] == 6) {
-            //            NSLog(@"listing:%@",self.activityDetail.listing_id);
+            //            //NSLog(@"listing:%@",self.activityDetail.listing_id);
             
-//            NSLog(@"user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
+//            //NSLog(@"user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.labelActivityName.text = @"Request to View Private POPs™";
                 self.labelDateTime.text = self.activityDetail.date;
                 
-//                NSLog(@"permission:%@",self.activityDetail.permission);
+//                //NSLog(@"permission:%@",self.activityDetail.permission);
                 if ([self.activityDetail.permission integerValue] == 0) {
                     if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                         
@@ -698,9 +751,9 @@
         }
         else if ([self.activityDetail.activity_type integerValue] == 8) {
             
-//            NSLog(@"[8]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
+//            //NSLog(@"[8]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
             
-//            NSLog(@"8 user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
+//            //NSLog(@"8 user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
             if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
                 NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.other_user_id, self.activityDetail.user_name];
@@ -772,9 +825,9 @@
         }
         else if ([self.activityDetail.activity_type integerValue] == 28) {
             
-//            NSLog(@"[28]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
+//            //NSLog(@"[28]%@ user:%@ - %@ --- %@",self.loginDetail.user_id,self.activityDetail.user_id, self.activityDetail.other_user_id, self.activityDetail.user_name);
             
-//            NSLog(@"28 user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
+//            //NSLog(@"28 user:%@, other:%@",self.activityDetail.user_id, self.activityDetail.other_user_id);
             if ([self.activityDetail.other_user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                 
                 NSString *user_name = [NSString stringWithFormat:@"<a href='http://profile/%@'>%@</a>",self.activityDetail.user_id, self.activityDetail.user_name];
@@ -900,7 +953,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSString* url = [[request URL] absoluteString];
-//    NSLog(@"url:%@",url);
+//    //NSLog(@"url:%@",url);
     if (UIWebViewNavigationTypeLinkClicked == navigationType)
     {
         NSString *type = [url substringFromIndex:7];
@@ -953,24 +1006,24 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     [self.dataReceived appendData:data];
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-     NSLog(@"Did Fail");
+     //NSLog(@"Did Fail");
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NSError *error = nil;
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
+//    NSError *error = nil;
+//    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-    //    NSLog(@"Did Finish:%@", json);
+    //    //NSLog(@"Did Finish:%@", json);
     if (connection == self.urlConnectionRequestNetwork) {
-////        NSLog(@"Did Finish:%@", json);
+////        //NSLog(@"Did Finish:%@", json);
 //        if ([[json objectForKey:@"data"] count]) {
 //            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
 //            
@@ -996,11 +1049,11 @@
 //                
 //                NSError *errorSave = nil;
 //                if (![context save:&errorSave]) {
-//                    NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
+//                    //NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
 //                }
 //                
 //                if ([network.status integerValue] == 1) {
-////                    NSLog(@"setting:%@",self.activityDetail.setting);
+////                    //NSLog(@"setting:%@",self.activityDetail.setting);
 //                    if ([self.activityDetail.setting integerValue] == 1) {
 ////                        [self checkSettingGetPrice];
 //                    }
@@ -1010,7 +1063,7 @@
 //                        
 //                        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
 //                        [urlString_ appendString:parameters];
-////                        NSLog(@"url:%@",urlString_);
+////                        //NSLog(@"url:%@",urlString_);
 //                        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
 //                        
 //                        self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
@@ -1049,7 +1102,7 @@
 //            }
 //            
 //            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 //            
 //        }
 //        else {
@@ -1061,12 +1114,12 @@
 //            self.buttonDescription.tag = 2502;
 //            
 //            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 //        }
         
     }
     else if (connection == self.urlConnectionRequestAccess) {
-//        NSLog(@"Access Did Finish:%@", json);
+//        //NSLog(@"Access Did Finish:%@", json);
 //        if ([[json objectForKey:@"data"] count]) {
 //            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
 //            NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
@@ -1093,7 +1146,7 @@
 //                
 //                NSError *errorSave = nil;
 //                if (![context save:&errorSave]) {
-//                    NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
+//                    //NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
 //                }
 //                
 //                if ([access.permission boolValue] == YES) {
@@ -1127,7 +1180,7 @@
 //            }
 //            
 //            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 //        }
 //        else {
 ////            self.viewForDescription.hidden = NO;
@@ -1138,7 +1191,7 @@
 //            self.buttonDescription.tag = 2510;
 //            
 //            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 //        }
     }
 //    else {
@@ -1149,7 +1202,7 @@
 }
 
 - (IBAction)buttonActionPressed:(id)sender {
-    NSLog(@"pressed:%i",[((UIButton*)sender) tag]);
+//    //NSLog(@"pressed:%i",[((UIButton*)sender) tag]);
     switch ([((UIButton*)sender) tag]) {
         case 2501:{
             
@@ -1157,10 +1210,10 @@
             
             NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
             [urlString appendString:parameters];
-//             NSLog(@"url:%@",urlString);
+//             //NSLog(@"url:%@",urlString);
             
             __block NSError *errorData = nil;
-            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
             //            [self.activityIndicator startAnimating];
             //            self.activityIndicator.hidden = NO;
             [request setCompletionBlock:
@@ -1168,23 +1221,23 @@
                  NSData *responseData = [request responseData];
                  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                  
-                 //         NSLog(@"json:%@",json);
+                 //         //NSLog(@"json:%@",json);
                  if ([json objectForKey:@"status"]) {
-                     NSLog(@"Success");
+//                     //NSLog(@"Success");
 //                     self.viewForDescription.hidden = NO;
                      self.buttonDescription.hidden = YES;
                      self.labelDescription.text = [NSString stringWithFormat:@"Saved to %@",self.activityDetail.buyer_name];
                      self.labelDescription.hidden = NO;
                  }
                  else {
-                     NSLog(@"Failed");
+//                     //NSLog(@"Failed");
                  }
                  
                  
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                NSLog(@" error:%@",error);
+                //NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1196,10 +1249,10 @@
             
             NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_access.php"];
             [urlString appendString:parameters];
-//             NSLog(@"url:%@",urlString);
+//             //NSLog(@"url:%@",urlString);
             
             __block NSError *errorData = nil;
-            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
             //            [self.activityIndicator startAnimating];
             //            self.activityIndicator.hidden = NO;
             [request setCompletionBlock:
@@ -1207,9 +1260,9 @@
                  NSData *responseData = [request responseData];
                  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                  
-//                 NSLog(@"json:%@",json);
+//                 //NSLog(@"json:%@",json);
                  if ([json objectForKey:@"status"]) {
-                     NSLog(@"Success");
+//                     //NSLog(@"Success");
                      
 //                     if ([self.activityDetail.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
                          self.labelDescription.text = @"You have accepted this request.";
@@ -1221,14 +1274,14 @@
                      self.labelDescription.hidden = NO;
                  }
                  else {
-                     NSLog(@"Failed");
+//                     //NSLog(@"Failed");
                  }
                  
                  
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                NSLog(@" error:%@",error);
+                //NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1240,10 +1293,10 @@
             
             NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_network.php"];
             [urlString appendString:parameters];
-//            NSLog(@"url:%@",urlString);
+//            //NSLog(@"url:%@",urlString);
             
             __block NSError *errorData = nil;
-            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
             //            [self.activityIndicator startAnimating];
             //            self.activityIndicator.hidden = NO;
             [request setCompletionBlock:
@@ -1251,9 +1304,9 @@
                  NSData *responseData = [request responseData];
                  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                  
-//                 NSLog(@"json:%@",json);
+//                 //NSLog(@"json:%@",json);
                  if ([json objectForKey:@"status"]) {
-                     NSLog(@"Success");
+//                     //NSLog(@"Success");
                      
 //                     if ([self.activityDetail.network_status integerValue] == 1) {
                          //                        self.viewForDescription.hidden = NO;
@@ -1270,14 +1323,14 @@
                      
                  }
                  else {
-                     NSLog(@"Failed");
+//                     //NSLog(@"Failed");
                  }
                  
                  
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                NSLog(@" error:%@",error);
+                //NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1289,10 +1342,10 @@
             
             NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_network.php"];
             [urlString appendString:parameters];
-//            NSLog(@"url:%@",urlString);
+//            //NSLog(@"url:%@",urlString);
             
             __block NSError *errorData = nil;
-            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
             //            [self.activityIndicator startAnimating];
             //            self.activityIndicator.hidden = NO;
             [request setCompletionBlock:
@@ -1300,23 +1353,23 @@
                  NSData *responseData = [request responseData];
                  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                  
-//                 NSLog(@"json:%@",json);
+//                 //NSLog(@"json:%@",json);
                  if ([json objectForKey:@"status"]) {
-                     NSLog(@"Success");
+//                     //NSLog(@"Success");
                      //                        self.viewForDescription.hidden = NO;
                      self.labelDescription.text = [NSString stringWithFormat:@"You have accepted this request. You are now part of %@'s Network.",self.activityDetail.user_name];
                      self.labelDescription.hidden = NO;
                      self.buttonDescription.hidden = YES;
                  }
                  else {
-                     NSLog(@"Failed");
+//                     //NSLog(@"Failed");
                  }
                  
                  
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                NSLog(@" error:%@",error);
+                //NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1328,10 +1381,10 @@
             
             NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_network.php"];
             [urlString appendString:parameters];
-            //            NSLog(@"url:%@",urlString);
+            //            //NSLog(@"url:%@",urlString);
             
             __block NSError *errorData = nil;
-            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
             //            [self.activityIndicator startAnimating];
             //            self.activityIndicator.hidden = NO;
             [request setCompletionBlock:
@@ -1339,9 +1392,9 @@
                  NSData *responseData = [request responseData];
                  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                  
-                 NSLog(@"json:%@",json);
+//                 //NSLog(@"json:%@",json);
                  if ([json objectForKey:@"status"]) {
-                     NSLog(@"Success");
+//                     //NSLog(@"Success");
                      //                        self.viewForDescription.hidden = NO;
                      
                      self.labelDescription.text = @"Pending Approval";
@@ -1349,14 +1402,14 @@
                      self.labelDescription.hidden = NO;
                  }
                  else {
-                     NSLog(@"Failed");
+//                     //NSLog(@"Failed");
                  }
                  
                  
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                NSLog(@" error:%@",error);
+                //NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1368,10 +1421,10 @@
             
             NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_access.php"];
             [urlString appendString:parameters];
-            //            NSLog(@"url:%@",urlString);
+            //            //NSLog(@"url:%@",urlString);
             
             __block NSError *errorData = nil;
-            __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
             //            [self.activityIndicator startAnimating];
             //            self.activityIndicator.hidden = NO;
             [request setCompletionBlock:
@@ -1379,9 +1432,9 @@
                  NSData *responseData = [request responseData];
                  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                  
-                 NSLog(@"json:%@",json);
+                 //NSLog(@"json:%@",json);
                  if ([json objectForKey:@"status"]) {
-                     NSLog(@"Success");
+                     //NSLog(@"Success");
                      //                        self.viewForDescription.hidden = NO;
                      
                      self.labelDescription.hidden = NO;
@@ -1390,21 +1443,120 @@
                      [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
                  }
                  else {
-                     NSLog(@"Failed");
+                     //NSLog(@"Failed");
                  }
                  
                  
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                NSLog(@" error:%@",error);
+                //NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
+            break;
+        }
+        case 1901:{
+            
+            
+            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@", self.activityDetail.referral_id];
+            
+            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_closed_referral.php%@", parameters];
+            
+            
+//            //NSLog(@"urlString:%@",urlString);
+            __block NSError *errorData = nil;
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            [request setCompletionBlock:^{
+                // Use when fetching text data
+                //                        NSString *responseString = [request responseString];
+                // Use when fetching binary data
+                NSData *responseData = [request responseData];
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                
+//                //NSLog(@"json:%@",json);
+                if([[json objectForKey:@"data"] count]){
+                    
+                    if ([[[[json objectForKey:@"data"] firstObject] valueForKey:@"r2_paid"] boolValue] == YES) {
+                        
+                        self.labelDescription.hidden = NO;
+                        self.buttonDescription.hidden = YES;
+                        
+                        self.labelDescription.text = @"Thank you for the payment. You may now change the status of the Referral to Completed.";
+                    }
+                    else {
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        ABridge_FeeCollectionViewController *viewController = (ABridge_FeeCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FeeCollection"];
+                        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+                        viewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                        
+                        viewController.referral_id = self.activityDetail.referral_id;
+                        viewController.referral_name = self.activityDetail.referral_buyer_name;
+                        viewController.user_id = self.loginDetail.user_id;
+                        viewController.delegate = self;
+                        viewController.referral_fee = [self.activityDetail.referral_fee floatValue]/100.0f;
+                        viewController.grossCommissionValue = [[[json objectForKey:@"data"] firstObject] valueForKey:@"price_paid"];
+                        
+                        //                    //NSLog(@"gross:%@",[[[json objectForKey:@"data"] firstObject] valueForKey:@"price_paid"]);
+                        [self presentViewController:viewController animated:YES completion:^{
+                            
+                        }];
+                    }
+                    
+                }
+                
+            }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                //NSLog(@"error:%@",error);
+                
+            }];
+            [request startAsynchronous];
+            
+            
             break;
         }
         default:
         break;
     }
 }
+
+
+#pragma mark ABridge_FeeCollectionViewControllerDelegate
+- (void)transactionCompletedSuccessfully {
+    
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&agent_a=%@&activity_type=%@&update_id=%@", self.loginDetail.user_id, self.activityDetail.user_id,@"22",self.activityDetail.referral_update_id];
+    
+    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/paid_service_fee.php%@", parameters];
+    
+    
+    __block NSError *errorData = nil;
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [request setCompletionBlock:^{
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        NSData *responseData = [request responseData];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+        
+//        //NSLog(@"json:%@",json);
+        if([[json objectForKey:@"status"] integerValue] == 1){
+            
+            self.labelDescription.hidden = NO;
+            self.buttonDescription.hidden = YES;
+            
+            self.labelDescription.text = @"Thank you for the payment. You may now change the status of the Referral to Completed.";
+        }
+        
+    }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        //NSLog(@"error:%@",error);
+        
+    }];
+    [request startAsynchronous];
+    
+}
+
 @end

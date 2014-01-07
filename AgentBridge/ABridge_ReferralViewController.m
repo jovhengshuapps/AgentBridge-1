@@ -51,7 +51,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfReferral.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelNumberOfReferral.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     
     self.labelNumberOfReferral.text = @"My Referrals";
     [self.labelNumberOfReferral sizeToFit];
@@ -98,7 +98,7 @@
     
     
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:([value isEqualToString:@"In"])?@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_in.php%@":@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_out.php%@",parameters]]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:([value isEqualToString:@"In"])?@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_in.php%@":@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_out.php%@",parameters]]];
     [self.activityIndicator startAnimating];
     self.activityIndicator.hidden = NO;
     [self.pageController.view removeFromSuperview];
@@ -144,7 +144,7 @@
                     
                     NSError *error = nil;
                     if (![context save:&error]) {
-                        NSLog(@"Error on saving Referral:%@",[error localizedDescription]);
+                        //NSLog(@"Error on saving Referral:%@",[error localizedDescription]);
                     }
                     else {
                         if (self.segmentedControl.selectedSegmentIndex) {
@@ -245,7 +245,7 @@
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];
@@ -253,14 +253,14 @@
 //    self.urlConnectionReferral = [self urlConnectionWithURLString:([value isEqualToString:@"In"])?@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_in.php":@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_out.php" andParameters:parameters];
 //
 //    if (self.urlConnectionReferral) {
-////        NSLog(@"Connection Successful");
+////        //NSLog(@"Connection Successful");
 //        [self addURLConnection:self.urlConnectionReferral];
 ////        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
 //        self.activityIndicator.hidden = NO;
 //        [self.activityIndicator startAnimating];
 //    }
 //    else {
-////        NSLog(@"Connection Failed");
+////        //NSLog(@"Connection Failed");
 //    }
 }
 
@@ -349,26 +349,26 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     [self.dataReceived appendData:data];
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-//    NSLog(@"Did Fail");
+//    //NSLog(@"Did Fail");
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 //    NSError *error = nil;
 //    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
 //    
-//    NSLog(@"Did Finish:%@", json);
+//    //NSLog(@"Did Finish:%@", json);
     
 //    if ([[json objectForKey:@"data"] count]) {
 //    
@@ -391,7 +391,7 @@
 //                
 //                NSError *error = nil;
 //                if (![context save:&error]) {
-//                    NSLog(@"Error on saving Referral:%@",[error localizedDescription]);
+//                    //NSLog(@"Error on saving Referral:%@",[error localizedDescription]);
 //                }
 //                else {
 //                    if (self.segmentedControl.selectedSegmentIndex) {
@@ -483,12 +483,12 @@
 //    [self.activityIndicator stopAnimating];
 //    self.activityIndicator.hidden = YES;
 //    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 
 - (IBAction)segmentedControlChange:(id)sender {
-    NSLog(@"change");
+    //NSLog(@"change");
 //    if (self.fromActivity == NO) {
         [self.urlConnectionReferral cancel];
         NSString *value = (((UISegmentedControl*)sender).selectedSegmentIndex)?@"Out":@"In";

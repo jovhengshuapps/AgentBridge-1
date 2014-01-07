@@ -9,10 +9,23 @@
 #import "ABridge_ParentViewController.h"
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
-//#import "AuthNet.h"
 
-@interface ABridge_FeeCollectionViewController : ABridge_ParentViewController <UITextFieldDelegate, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate/*, AuthNetDelegate*/>
+@protocol ABridge_FeeCollectionViewControllerDelegate <NSObject>
 
-@property (assign, nonatomic) NSInteger referral_id;
+-(void) transactionCompletedSuccessfully;
+
+@end
+
+@interface ABridge_FeeCollectionViewController : ABridge_ParentViewController <UITextFieldDelegate, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate, UIWebViewDelegate>
+
+@property (strong, nonatomic) NSString *referral_id;
+@property (strong, nonatomic) NSString *referral_name;
+@property (assign, nonatomic) CGFloat referral_fee;
+
+@property (strong, nonatomic) NSNumber *user_id;
+
+@property (assign, nonatomic) id<ABridge_FeeCollectionViewControllerDelegate> delegate;
+
+@property (strong, nonatomic) NSString *grossCommissionValue;
 
 @end

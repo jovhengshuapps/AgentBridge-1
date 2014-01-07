@@ -10,7 +10,6 @@
 #import "Constants.h"
 #import "ABridge_AppDelegate.h"
 #import "LoginDetails.h"
-#import "ABridge_FeeCollectionViewController.h"
 
 @interface ABridge_ReferralPagesViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imagePicture;
@@ -144,7 +143,7 @@
     __block NSString *client_name = self.referralDetails.client_name;
     
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setCompletionBlock:^{
         // Use when fetching text data
         //                        NSString *responseString = [request responseString];
@@ -178,12 +177,15 @@
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@"error:%@",error);
+        //NSLog(@"error:%@",error);
         
     }];
     [request startAsynchronous];
     
-    if ([self.referralDetails.agent_b integerValue] == [self.loginDetail.user_id integerValue]) {
+    if ([self.referralDetails.agent_b integerValue] == [self.loginDetail.user_id integerValue] && [self.referralDetails.status integerValue] != REFERRAL_STATUS_CLOSED) {
+        self.buttonChangeStatus.hidden = NO;
+    }
+    else if ([self.referralDetails.agent_a integerValue] == [self.loginDetail.user_id integerValue] && [self.referralDetails.status integerValue] == REFERRAL_STATUS_CLOSED) {
         self.buttonChangeStatus.hidden = NO;
     }
     else {
@@ -316,7 +318,15 @@
         ABridge_FeeCollectionViewController *viewController = (ABridge_FeeCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FeeCollection"];
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         viewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//        NSLog(@"view:%@",viewController);
+        
+        viewController.referral_id = self.referralDetails.referral_id;
+        viewController.referral_name = self.referralDetails.client_name;
+        viewController.user_id = self.loginDetail.user_id;
+        viewController.delegate = self;
+        
+        viewController.referral_fee = [self.referralDetails.referral_fee floatValue]/100.0f;
+        
+//        //NSLog(@"view:%@",viewController);
         [self presentViewController:viewController animated:YES completion:^{
             
         }];
@@ -327,10 +337,10 @@
         }
         
         
-        //     NSLog(@"url:%@",self.urlStringStatusChange);
+        //     //NSLog(@"url:%@",self.urlStringStatusChange);
         
         __block NSError *errorData = nil;
-        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:self.urlStringStatusChange]];
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:self.urlStringStatusChange]];
         [request setCompletionBlock:^{
             // Use when fetching text data
             //                        NSString *responseString = [request responseString];
@@ -338,7 +348,7 @@
             NSData *responseData = [request responseData];
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
             
-            //        NSLog(@"json:%@",json);
+            //        //NSLog(@"json:%@",json);
             if([[json objectForKey:@"status"] integerValue] == 1){
                 self.statusPicked_test = self.statusPicked;
                 self.imagePendingAccepted.image = [self imageForReferralStatus:self.statusPicked_test];
@@ -355,7 +365,7 @@
         }];
         [request setFailedBlock:^{
             NSError *error = [request error];
-            NSLog(@"error:%@",error);
+            //NSLog(@"error:%@",error);
             
         }];
         [request startAsynchronous];
@@ -372,7 +382,7 @@
 
 - (IBAction)cancelChange:(id)sender {
     
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.6 animations:^{
         CGRect frame = self.viewChangeStatus.frame;
         frame.origin.y = 0.0f;
         self.viewChangeStatus.frame = frame;
@@ -383,7 +393,7 @@
 }
 
 - (IBAction)saveBuyerVCard:(id)sender {
-//    NSLog(@"name:%@",self.referralDetails.client_name);
+//    //NSLog(@"name:%@",self.referralDetails.client_name);
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         __block CFErrorRef error = NULL;
@@ -584,27 +594,73 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    [UIView animateWithDuration:0.2 animations:^{
-        CGRect frame = self.viewChangeStatus.frame;
-        frame.origin.y = -165.0f;
-        self.viewChangeStatus.frame = frame;
-    } completion:^(BOOL finished) {
-    }];
+//    [UIView animateWithDuration:0.2 animations:^{
+//        CGRect frame = self.viewChangeStatus.frame;
+//        frame.origin.y = -165.0f;
+//        self.viewChangeStatus.frame = frame;
+//    } completion:^(BOOL finished) {
+//    }];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if ([text isEqualToString:@"\n"]) {
-        [UIView animateWithDuration:1 animations:^{
-            [textView resignFirstResponder];
-            CGRect frame = self.viewChangeStatus.frame;
-            frame.origin.y = 0.0f;
-            self.viewChangeStatus.frame = frame;
-        } completion:^(BOOL finished) {
-            
-        }];
+//        [UIView animateWithDuration:1 animations:^{
+//            [textView resignFirstResponder];
+//            CGRect frame = self.viewChangeStatus.frame;
+//            frame.origin.y = 0.0f;
+//            self.viewChangeStatus.frame = frame;
+//        } completion:^(BOOL finished) {
+//            
+//        }];
         return NO;
     }
     return YES;
+}
+
+#pragma mark ABridge_FeeCollectionViewControllerDelegate
+- (void)transactionCompletedSuccessfully {
+    
+    self.statusPicked = REFERRAL_STATUS_CLOSED;
+    
+    NSString *status_type = [NSString stringWithFormat:@"%i",REFERRAL_STATUS_CLOSED];
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&activity_type=%@note=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"19",@""];
+    
+    self.urlStringStatusChange = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_status.php%@", parameters];
+    
+    
+    __block NSError *errorData = nil;
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:self.urlStringStatusChange]];
+    [request setCompletionBlock:^{
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        NSData *responseData = [request responseData];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+        
+        //        //NSLog(@"json:%@",json);
+        if([[json objectForKey:@"status"] integerValue] == 1){
+            self.statusPicked_test = self.statusPicked;
+            self.imagePendingAccepted.image = [self imageForReferralStatus:self.statusPicked_test];
+        }
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            CGRect frame = self.viewChangeStatus.frame;
+            frame.origin.y = 0.0f;
+            self.viewChangeStatus.frame = frame;
+            [self.textViewNote resignFirstResponder];
+        } completion:^(BOOL finished) {
+            self.viewChangeStatus.hidden = YES;
+        }];
+    }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        //NSLog(@"error:%@",error);
+        
+    }];
+    [request startAsynchronous];
+    
+    self.viewChangeStatus.hidden = YES;
 }
 
 @end

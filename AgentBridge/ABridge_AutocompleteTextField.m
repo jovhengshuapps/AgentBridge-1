@@ -89,7 +89,7 @@
 // Take string from Search Textfield and compare it with autocomplete array
 - (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring {
 	
-    NSLog(@"reload:%@",NSStringFromCGRect(autoCompleteTableView.frame));
+    //NSLog(@"reload:%@",NSStringFromCGRect(autoCompleteTableView.frame));
 	// Put anything that starts with this substring into the autoCompleteArray
 	// The items in this array is what will show up in the table view
 	
@@ -110,7 +110,7 @@
 
 //// Close keyboard if the Background is touched
 //- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//    NSLog(@"touches");
+//    //NSLog(@"touches");
 //	[self.superview endEditing:YES];
 //	[super touchesBegan:touches withEvent:event];
 //	[self finishedSearching];
@@ -132,7 +132,7 @@
 
 //// String in Search textfield
 //- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-//    NSLog(@"string:%@",string);
+//    //NSLog(@"string:%@",string);
 //	return YES;
 //}
 
@@ -182,7 +182,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"selected");
+    //NSLog(@"selected");
 	UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
 	self.text = selectedCell.textLabel.text;
 	[self finishedSearching];

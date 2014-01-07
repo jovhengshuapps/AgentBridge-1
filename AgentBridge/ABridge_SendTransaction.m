@@ -50,7 +50,7 @@
 //    // Process a mobile device registration request.
 //    [an mobileDeviceRegistrationRequest:mobileDeviceRegistrationRequest];
 //    
-//    NSLog(@"make request:%@",MOBILE_DEVICE_ID);
+//    //NSLog(@"make request:%@",MOBILE_DEVICE_ID);
 //    // Process a mobile device login request.
 //    [an mobileDeviceLoginRequest:mobileDeviceLoginRequest];
 }
@@ -59,7 +59,7 @@
 //    AuthNet *an = [[AuthNet alloc]init];
 //    
 //    [an setDelegate:self];
-//    NSLog(@"creating transaction");
+//    //NSLog(@"creating transaction");
 //    CreditCardType *creditCardType = [CreditCardType creditCardType];
 //    creditCardType.cardNumber = @"4111111111111111";
 //    creditCardType.cardCode = @"100";
@@ -95,23 +95,23 @@
 //    request.transactionType = AUTH_ONLY;
 //    request.anetApiRequest.merchantAuthentication.mobileDeviceId = MOBILE_DEVICE_ID;
 //    request.anetApiRequest.merchantAuthentication.sessionToken = sessionToken;
-//    NSLog(@"sending request");
+//    //NSLog(@"sending request");
 //    [an purchaseWithRequest:request];
 //}
 //
 //- (void) requestFailed:(AuthNetResponse *)response {
 //    // Handle a failed request
-//    NSLog(@"failed request");
+//    //NSLog(@"failed request");
 //}
 //
 //- (void) connectionFailed:(AuthNetResponse *)response {
 //    // Handle a failed connection
-//    NSLog(@"failed connection");
+//    //NSLog(@"failed connection");
 //}
 //
 //- (void) paymentSucceeded:(CreateTransactionResponse *) response {
 //    // Handle payment success
-//    NSLog(@"success");
+//    //NSLog(@"success");
 //}
 //
 //- (void) mobileDeviceLoginSucceeded:(MobileDeviceLoginResponse *)response {

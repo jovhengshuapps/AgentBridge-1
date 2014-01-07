@@ -109,8 +109,7 @@
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails" inManagedObjectContext:context];
         [fetchRequest setEntity:entity];
         NSError *error = nil;
-        NSArray *fetchedObjects = [context
-                                   executeFetchRequest:fetchRequest error:&error];
+        NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
         
 //        LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
         
@@ -292,7 +291,7 @@
             [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
         }
         else {
-            NSLog(@"error on deleting");
+            //NSLog(@"error on deleting");
         }
         
     }

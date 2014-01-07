@@ -143,7 +143,7 @@
     NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getdb_country.php";
     
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *requestCountry = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *requestCountry = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     [requestCountry setCompletionBlock:^{
         // Use when fetching text data
         //                        NSString *responseString = [request responseString];
@@ -177,14 +177,14 @@
             [self.pickerCountry reloadAllComponents];
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
             
         });
         
     }];
     [requestCountry setFailedBlock:^{
         NSError *error = [requestCountry error];
-        NSLog(@"error:%@",error);
+        //NSLog(@"error:%@",error);
         
     }];
     [requestCountry startAsynchronous];
@@ -195,7 +195,7 @@
     self.activityIndicatorState.hidden = NO;
     urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getdb_state.php";
     
-    __block ASIHTTPRequest *requestState = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *requestState = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     [requestState setCompletionBlock:^{
         // Use when fetching text data
         //                        NSString *responseString = [request responseString];
@@ -219,13 +219,13 @@
             [self.pickerState reloadAllComponents];
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
         });
         
     }];
     [requestState setFailedBlock:^{
         NSError *error = [requestState error];
-        NSLog(@"error:%@",error);
+        //NSLog(@"error:%@",error);
         
     }];
     [requestState startAsynchronous];

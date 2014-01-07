@@ -54,7 +54,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelNumberOfProperty.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     self.labelNumberOfProperty.text = @"My POPs™";
@@ -101,7 +101,7 @@
     self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php" andParameters:parameters];
     
     if (self.urlConnectionProperty) {
-        //        NSLog(@"Connection Successful");
+        //        //NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProperty];
         //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
         
@@ -109,7 +109,7 @@
         [self.activityIndicator startAnimating];
     }
     else {
-        //        NSLog(@"Connection Failed");
+        //        //NSLog(@"Connection Failed");
     }
 }
 
@@ -187,19 +187,19 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     [self.dataReceived appendData:data];
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-//    NSLog(@"Did Fail");
+//    //NSLog(@"Did Fail");
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -208,7 +208,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"Did Finish:%@", json);
+//    //NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
         
@@ -231,7 +231,7 @@
                 
                 NSError *error = nil;
                 if (![context save:&error]) {
-                    NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+                    //NSLog(@"Error on saving Property:%@",[error localizedDescription]);
                 }
                 else {
                     if (self.arrayOfProperty == nil) {
@@ -294,7 +294,7 @@
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 
@@ -361,7 +361,7 @@
     
     self.activityIndicator.hidden = NO;
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     //            [self.activityIndicator startAnimating];
     //            self.activityIndicator.hidden = NO;
     [request setCompletionBlock:
@@ -372,7 +372,7 @@
          NSMutableArray *arrayOfBuyers = nil;
          if ([[json objectForKey:@"data"] count]) {
              for (NSDictionary *entry in [json objectForKey:@"data"]) {
-//                 NSLog(@"buyer:%@",[entry valueForKey:@"name"]);
+//                 //NSLog(@"buyer:%@",[entry valueForKey:@"name"]);
                  
                  if (arrayOfBuyers == nil) {
                      arrayOfBuyers = [NSMutableArray array];
@@ -390,7 +390,7 @@
              
          }
          
-//         NSLog(@"json:%@",json);
+//         //NSLog(@"json:%@",json);
          
          if (arrayOfBuyers == nil) {
              
@@ -414,14 +414,14 @@
      }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSLog(@"index:%i",buttonIndex);
+//    //NSLog(@"index:%i",buttonIndex);
     if (buttonIndex != 0) {
         NSString *buyer_id = [self.arrayOfBuyerID objectAtIndex:buttonIndex-1];
         
@@ -429,10 +429,10 @@
         
         NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
         [urlString appendString:parameters];
-        //    NSLog(@"url:%@",urlString);
+        //    //NSLog(@"url:%@",urlString);
         self.activityIndicator.hidden = NO;
         __block NSError *errorData = nil;
-        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
         //            [self.activityIndicator startAnimating];
         //            self.activityIndicator.hidden = NO;
         [request setCompletionBlock:
@@ -440,14 +440,14 @@
              NSData *responseData = [request responseData];
              NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
              
-             //         NSLog(@"json:%@",json);
+             //         //NSLog(@"json:%@",json);
              if ([json objectForKey:@"status"]) {
-                 NSLog(@"Success");
+                 //NSLog(@"Success");
                  UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"POPs™ Saved" message:[NSString stringWithFormat:@"This POPs™ is saved to %@",[actionSheet buttonTitleAtIndex:buttonIndex]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                  [av show];
              }
              else {
-                 NSLog(@"Failed");
+                 //NSLog(@"Failed");
              }
              
              
@@ -456,7 +456,7 @@
          }];
         [request setFailedBlock:^{
             NSError *error = [request error];
-            NSLog(@" error:%@",error);
+            //NSLog(@" error:%@",error);
         }];
         
         [request startAsynchronous];

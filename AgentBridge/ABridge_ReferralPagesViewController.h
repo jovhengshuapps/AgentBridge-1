@@ -10,8 +10,9 @@
 #import <AddressBook/AddressBook.h>
 #import "Referral.h"
 #import "ASIHTTPRequest.h"
+#import "ABridge_FeeCollectionViewController.h"
 
-@interface ABridge_ReferralPagesViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate>
+@interface ABridge_ReferralPagesViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate, ABridge_FeeCollectionViewControllerDelegate>
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) Referral *referralDetails;

@@ -44,7 +44,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelNumberOfAgentNetwork.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     self.buttonRefer.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     self.labelNumberOfAgentNetwork.text = @"My Network";
     [self.labelNumberOfAgentNetwork sizeToFit];
@@ -81,7 +81,7 @@
     self.urlConnectionAgentNetwork = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_network_info.php" andParameters:parameters];
     
     if (self.urlConnectionAgentNetwork) {
-//        NSLog(@"Connection Successful");
+//        //NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionAgentNetwork];
 //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
         
@@ -89,7 +89,7 @@
         [self.activityIndicator startAnimating];
     }
     else {
-//        NSLog(@"Connection Failed");
+//        //NSLog(@"Connection Failed");
     }
     
 }
@@ -161,17 +161,17 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     [self.dataReceived appendData:data];
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-//    NSLog(@"Did Fail");
+//    //NSLog(@"Did Fail");
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -181,7 +181,7 @@
     NSError *error = nil;
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"Did Finish:%@", json);
+//    //NSLog(@"Did Finish:%@", json);
     
     if ([[json objectForKey:@"data"] count]) {
         
@@ -201,11 +201,11 @@
                 
                 [agent setValuesForKeysWithDictionary:entry];
                 
-//                NSLog(@"agent:%@",[agent valueForKey:@"firstname"]);
+//                //NSLog(@"agent:%@",[agent valueForKey:@"firstname"]);
                 
                 NSError *error = nil;
                 if (![context save:&error]) {
-                    NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                    //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                 }
                 else {
                     if (self.arrayOfAgents == nil) {
@@ -244,7 +244,7 @@
                 [[self viewForPages] addSubview:[self.pageController view]];
                 [self.pageController didMoveToParentViewController:self];
                 self.buttonRefer.hidden = NO;
-//                NSLog(@"agents:%@",self.arrayOfAgents);
+//                //NSLog(@"agents:%@",self.arrayOfAgents);
             });
         
         });
@@ -264,7 +264,7 @@
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 

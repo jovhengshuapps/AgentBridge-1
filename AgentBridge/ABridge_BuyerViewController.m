@@ -51,8 +51,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    NSLog(@"buyer:%@",self.scrollToBuyerId);
-    self.labelNumberOfBuyers.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    //NSLog(@"buyer:%@",self.scrollToBuyerId);
+    self.labelNumberOfBuyers.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     
     self.labelNumberOfBuyers.text = @"My Buyers";
     [self.labelNumberOfBuyers sizeToFit];
@@ -96,14 +96,14 @@
     self.urlConnectionBuyer = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers.php" andParameters:parameters];
     
     if (self.urlConnectionBuyer) {
-        //        NSLog(@"Connection Successful");
+        //        //NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionBuyer];
         self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
         //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
     }
     else {
-        //        NSLog(@"Connection Failed");
+        //        //NSLog(@"Connection Failed");
     }
 }
 
@@ -180,26 +180,26 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     [self.dataReceived appendData:data];
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-//    NSLog(@"Did Fail");
+//    //NSLog(@"Did Fail");
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSError *error = nil;
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"Did Finish:%@", json);
+//    //NSLog(@"Did Finish:%@", json);
     
     if (connection == self.urlConnectionBuyer) {
         if ([[json objectForKey:@"data"] count]) {
@@ -222,7 +222,7 @@
                     
                     NSError *error = nil;
                     if (![context save:&error]) {
-                        NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                        //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                     }
                     else {
                         if (self.arrayOfBuyer == nil) {
@@ -285,7 +285,7 @@
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 

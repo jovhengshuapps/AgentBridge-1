@@ -29,9 +29,9 @@
     [[UITabBar appearance] setSelectionIndicatorImage:tabBackgroundSelected];
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIColor whiteColor], UITextAttributeTextColor,
+                                                       [UIColor colorWithRed:189.0f/255.0 green:189.0f/255.0 blue:189.0f/255.0 alpha:1.0], UITextAttributeTextColor,
                                                        nil] forState:UIControlStateSelected];
-    UIColor *titleHighlightedColor = [UIColor whiteColor];//[UIColor colorWithRed:44.0f/255.0 green:153.0f/255.0 blue:206.0f/255.0 alpha:1.0];
+    UIColor *titleHighlightedColor = [UIColor colorWithRed:189.0f/255.0 green:189.0f/255.0 blue:189.0f/255.0 alpha:1.0];
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                        titleHighlightedColor, UITextAttributeTextColor,
                                                        nil] forState:UIControlStateNormal];
@@ -79,7 +79,7 @@
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
              // Replace this implementation with code to handle the error appropriately.
              // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         } 
     }
@@ -151,7 +151,7 @@
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }    
     

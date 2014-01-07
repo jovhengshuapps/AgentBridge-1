@@ -128,14 +128,14 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     
     [request setCompletionBlock:
      ^{
          NSData *responseData = [request responseData];
          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
          
-         //         NSLog(@"urlString:%@",urlString);
+         //         //NSLog(@"urlString:%@",urlString);
          if ([[json objectForKey:@"data"] count]) {
              //             NSMutableString *numbers = [NSMutableString stringWithString:@""];
              //             NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
@@ -156,14 +156,14 @@
                  //
                  //                 NSError *error = nil;
                  //                 if (![context save:&error]) {
-                 //                     NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                 //                     //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                  //                 }
                  //                 else {
                  if (self.arrayOfMobileNumber == nil) {
                      self.arrayOfMobileNumber = [[NSMutableArray alloc] init];
                  }
                  //
-                 //                     NSLog(@"mobile:%@",[contactInfo valueForKey:@"value"]);
+                 //                     //NSLog(@"mobile:%@",[contactInfo valueForKey:@"value"]);
                  //                     [self.arrayOfMobileNumber addObject:contactInfo];
                  //                 }
                  
@@ -182,16 +182,16 @@
          self.activityIndicator.hidden = YES;
          
          [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
      }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];
     
-    parameters = @"";
+//    parameters = @"";
     [urlString setString: @""];
     
     parameters = [NSString stringWithFormat:@"?profile_id=%@",self.profile.profile_id];
@@ -199,13 +199,13 @@
     urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_faxnumber.php"];
     [urlString appendString:parameters];
     
-    //    NSLog(@"urlString:%@",urlString);
+    //    //NSLog(@"urlString:%@",urlString);
     self.activityIndicator.hidden = NO;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     __block NSError *errorDataFax = nil;
-    __block ASIHTTPRequest *requestFax = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *requestFax = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     
     [requestFax setCompletionBlock:
      ^{
@@ -232,14 +232,14 @@
                  //
                  //                 NSError *error = nil;
                  //                 if (![context save:&error]) {
-                 //                     NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                 //                     //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                  //                 }
                  //                 else {
                  if (self.arrayOfFaxNumber == nil) {
                      self.arrayOfFaxNumber = [[NSMutableArray alloc] init];
                  }
                  //
-                 //                     NSLog(@"fax:%@",[contactInfo valueForKey:@"value"]);
+                 //                     //NSLog(@"fax:%@",[contactInfo valueForKey:@"value"]);
                  //                     [self.arrayOfFaxNumber addObject:contactInfo];
                  //                 }
                  
@@ -255,16 +255,16 @@
          self.activityIndicator.hidden = YES;
          
          [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
      }];
     [requestFax setFailedBlock:^{
         NSError *error = [requestFax error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [requestFax startAsynchronous];
     
-    parameters = @"";
+//    parameters = @"";
     [urlString setString: @""];
     
     parameters = [NSString stringWithFormat:@"?profile_id=%@",self.profile.profile_id];
@@ -272,13 +272,13 @@
     urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_worknumber.php"];
     [urlString appendString:parameters];
     
-    //    NSLog(@"urlString:%@",urlString);
+    //    //NSLog(@"urlString:%@",urlString);
     self.activityIndicator.hidden = NO;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     __block NSError *errorDataWork = nil;
-    __block ASIHTTPRequest *requestWork = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *requestWork = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     
     [requestWork setCompletionBlock:
      ^{
@@ -305,14 +305,14 @@
                  //                 
                  //                 NSError *error = nil;
                  //                 if (![context save:&error]) {
-                 //                     NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
+                 //                     //NSLog(@"Error on saving Buyer:%@",[error localizedDescription]);
                  //                 }
                  //                 else {
                  if (self.arrayOfWorkNumber == nil) {
                      self.arrayOfWorkNumber = [[NSMutableArray alloc] init];
                  }
                  //
-                 //                     NSLog(@"work:%@",[contactInfo valueForKey:@"value"]);
+                 //                     //NSLog(@"work:%@",[contactInfo valueForKey:@"value"]);
                  //                     [self.arrayOfWorkNumber addObject:contactInfo];
                  //                 }
                  
@@ -329,11 +329,11 @@
          self.activityIndicator.hidden = YES;
          
          [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
      }];
     [requestWork setFailedBlock:^{
         NSError *error = [requestWork error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [requestWork startAsynchronous];
@@ -374,7 +374,7 @@
                 
                 self.activityIndicator.hidden = NO;
                 __block NSError *errorData = nil;
-                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                 
                 [request setCompletionBlock:
                  ^{
@@ -382,11 +382,11 @@
                      NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                      
                      if ([[json objectForKey:@"status"] integerValue] == YES) {
-//                         NSLog(@"successfully delete Mobile");
+//                         //NSLog(@"successfully delete Mobile");
                          self.deleteMobileSuccessful = 2;
                      }
                      else {
-//                         NSLog(@"failed to delete Mobile");
+//                         //NSLog(@"failed to delete Mobile");
                          self.deleteMobileSuccessful = 0;
                      }
                      
@@ -396,7 +396,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    NSLog(@" error:%@",error);
+                    //NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -418,7 +418,7 @@
                 
                 self.activityIndicator.hidden = NO;
                 __block NSError *errorData = nil;
-                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                 
                 [request setCompletionBlock:
                  ^{
@@ -426,11 +426,11 @@
                      NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                      
                      if ([[json objectForKey:@"status"] integerValue] == YES) {
-//                         NSLog(@"successfully delete Fax");
+//                         //NSLog(@"successfully delete Fax");
                          self.deleteFaxSuccessful = 2;
                      }
                      else {
-//                         NSLog(@"failed to delete Fax");
+//                         //NSLog(@"failed to delete Fax");
                          self.deleteFaxSuccessful = 0;
                      }
                      
@@ -440,7 +440,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    NSLog(@" error:%@",error);
+                    //NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -463,7 +463,7 @@
                 
                 self.activityIndicator.hidden = NO;
                 __block NSError *errorData = nil;
-                __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                 
                 [request setCompletionBlock:
                  ^{
@@ -471,11 +471,11 @@
                      NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                      
                      if ([[json objectForKey:@"status"] integerValue] == YES) {
-                         NSLog(@"successfully delete Work");
+                         //NSLog(@"successfully delete Work");
                          self.deleteWorkSuccessful = 2;
                      }
                      else {
-                         NSLog(@"failed to delete Work");
+                         //NSLog(@"failed to delete Work");
                          self.deleteWorkSuccessful = 0;
                      }
                      
@@ -485,7 +485,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    NSLog(@" error:%@",error);
+                    //NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -506,14 +506,14 @@
                 self.saveMobileSuccessful = 1;
                 if ([[entry valueForKey:@"pk_id"] isEqualToString:@"null"]) {
                     //insert
-                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[entry valueForKey:@"value"]];
+                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[[entry valueForKey:@"value"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                     
                     NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/add_mobilenumber.php"];
                     [urlString appendString:parameters];
                     
                     self.activityIndicator.hidden = NO;
                     __block NSError *errorData = nil;
-                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
+                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                     
                     [request setCompletionBlock:
                      ^{
@@ -521,11 +521,11 @@
                          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                          
                          if ([[json objectForKey:@"status"] integerValue] == YES) {
-//                             NSLog(@"successfully add Mobile");
+//                             //NSLog(@"successfully add Mobile");
                              self.saveMobileSuccessful = 2;
                          }
                          else {
-//                             NSLog(@"failed to add Mobile");
+//                             //NSLog(@"failed to add Mobile");
                              self.saveMobileSuccessful = 0;
                          }
                          
@@ -533,7 +533,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        NSLog(@" error:%@",error);
+                        //NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -549,7 +549,7 @@
 //                    
 //                    self.activityIndicator.hidden = NO;
 //                    __block NSError *errorData = nil;
-//                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
+//                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
 //                    
 //                    [request setCompletionBlock:
 //                     ^{
@@ -557,18 +557,18 @@
 //                         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
 //                         
 //                         if ([[json objectForKey:@"status"] integerValue] == YES) {
-//                             NSLog(@"successfully add Mobile");
+//                             //NSLog(@"successfully add Mobile");
 //                             self.saveMobileSuccessful = YES;
 //                         }
 //                         else {
-//                             NSLog(@"failed to add Mobile");
+//                             //NSLog(@"failed to add Mobile");
 //                             self.saveMobileSuccessful = NO;
 //                         }
 //                         
 //                     }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        NSLog(@" error:%@",error);
+//                        //NSLog(@" error:%@",error);
 //                    }];
 //                    
 //                    [request startAsynchronous];
@@ -588,15 +588,14 @@
                 self.saveFaxSuccessful = 1;
                 if ([[entry valueForKey:@"pk_id"] isEqualToString:@"null"]) {
                     //insert
-                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[entry valueForKey:@"value"]];
+                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[[entry valueForKey:@"value"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                     
                     NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/add_faxnumber.php"];
                     [urlString appendString:parameters];
                     
-                    
                     self.activityIndicator.hidden = NO;
                     __block NSError *errorData = nil;
-                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
+                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                     
                     [request setCompletionBlock:
                      ^{
@@ -604,18 +603,18 @@
                          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                          
                          if ([[json objectForKey:@"status"] integerValue] == YES) {
-//                             NSLog(@"successfully add Mobile");
+//                             //NSLog(@"successfully add Mobile");
                              self.saveFaxSuccessful = 2;
                          }
                          else {
-//                             NSLog(@"failed to add Mobile");
+//                             //NSLog(@"failed to add Mobile");
                              self.saveFaxSuccessful = 0;
                          }
                          
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        NSLog(@" error:%@",error);
+                        //NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -631,7 +630,7 @@
 //                    
 //                    self.activityIndicator.hidden = NO;
 //                    __block NSError *errorData = nil;
-//                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
+//                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
 //                    
 //                    [request setCompletionBlock:
 //                     ^{
@@ -639,18 +638,18 @@
 //                         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
 //                         
 //                         if ([[json objectForKey:@"status"] integerValue] == YES) {
-//                             NSLog(@"successfully add Mobile");
+//                             //NSLog(@"successfully add Mobile");
 //                             self.saveMobileSuccessful = YES;
 //                         }
 //                         else {
-//                             NSLog(@"failed to add Mobile");
+//                             //NSLog(@"failed to add Mobile");
 //                             self.saveMobileSuccessful = NO;
 //                         }
 //                         
 //                     }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        NSLog(@" error:%@",error);
+//                        //NSLog(@" error:%@",error);
 //                    }];
 //                    
 //                    [request startAsynchronous];
@@ -672,14 +671,14 @@
                 self.saveWorkSuccessful = 1;
                 if ([[entry valueForKey:@"pk_id"] isEqualToString:@"null"]) {
                     //insert
-                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[entry valueForKey:@"value"]];
+                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[[entry valueForKey:@"value"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                     
                     NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/add_worknumber.php"];
                     [urlString appendString:parameters];
                     
                     self.activityIndicator.hidden = NO;
                     __block NSError *errorData = nil;
-                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
+                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                     
                     [request setCompletionBlock:
                      ^{
@@ -687,11 +686,11 @@
                          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                          
                          if ([[json objectForKey:@"status"] integerValue] == YES) {
-//                             NSLog(@"successfully add Mobile");
+//                             //NSLog(@"successfully add Mobile");
                              self.saveWorkSuccessful = 2;
                          }
                          else {
-//                             NSLog(@"failed to add Mobile");
+//                             //NSLog(@"failed to add Mobile");
                              self.saveWorkSuccessful = 0;
                          }
                          
@@ -701,7 +700,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        NSLog(@" error:%@",error);
+                        //NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -717,7 +716,7 @@
 //                    
 //                    self.activityIndicator.hidden = NO;
 //                    __block NSError *errorData = nil;
-//                    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
+//                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]]];
 //                    
 //                    [request setCompletionBlock:
 //                     ^{
@@ -725,18 +724,18 @@
 //                         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
 //                         
 //                         if ([[json objectForKey:@"status"] integerValue] == YES) {
-//                             NSLog(@"successfully add Mobile");
+//                             //NSLog(@"successfully add Mobile");
 //                             self.saveMobileSuccessful = YES;
 //                         }
 //                         else {
-//                             NSLog(@"failed to add Mobile");
+//                             //NSLog(@"failed to add Mobile");
 //                             self.saveMobileSuccessful = NO;
 //                         }
 //                         
 //                     }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        NSLog(@" error:%@",error);
+//                        //NSLog(@" error:%@",error);
 //                    }];
 //                    
 //                    [request startAsynchronous];
@@ -763,7 +762,7 @@
 }
 
 - (void) showSuccessAlert {
-//    NSLog(@"[%i, %i, %i] - [%i, %i, %i]",self.deleteMobileSuccessful, self.deleteFaxSuccessful, self.deleteWorkSuccessful, self.saveMobileSuccessful, self.saveFaxSuccessful, self.saveWorkSuccessful);
+//    //NSLog(@"[%i, %i, %i] - [%i, %i, %i]",self.deleteMobileSuccessful, self.deleteFaxSuccessful, self.deleteWorkSuccessful, self.saveMobileSuccessful, self.saveFaxSuccessful, self.saveWorkSuccessful);
     if ((self.deleteMobileSuccessful + self.deleteFaxSuccessful + self.deleteWorkSuccessful + self.saveMobileSuccessful + self.saveFaxSuccessful + self.saveWorkSuccessful) == 12) {
         
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Update Success" message:@"Contact Info Successfully Updated" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -869,7 +868,7 @@
                 [mobileNumbers appendString: [NSString stringWithFormat:@"%@-%@",[number substringToIndex:3],[number substringFromIndex:4]]];
             }
             else if([number length] > 7 && [number length] < 11) {
-                [mobileNumbers appendString: [NSString stringWithFormat:@"(%@)%@-%@",[number substringWithRange:NSMakeRange(0, [number length]-7)],[number substringWithRange:NSMakeRange([number length]-7, 3)],[number substringWithRange:NSMakeRange([number length]-4, 4)]]];
+                [mobileNumbers appendString: [NSString stringWithFormat:@"(%@) %@-%@",[number substringWithRange:NSMakeRange(0, [number length]-7)],[number substringWithRange:NSMakeRange([number length]-7, 3)],[number substringWithRange:NSMakeRange([number length]-4, 4)]]];
             }
             
             if (![number isEqualToString:[[string componentsSeparatedByString:@","] lastObject]]) {
@@ -949,21 +948,21 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.frame.size.width - 20.0f, 40.0f)];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 0.0f, header.frame.size.width-30.0f, 20.0f)];
-    label.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    label.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     
     [header addSubview:label];
     
     switch (section) {
         case 0:
-            label.text = @"Mobile Numbers";
+            label.text = @"Mobile";
             break;
             
         case 1:
-            label.text = @"Fax Numbers";
+            label.text = @"Fax";
             break;
             
         case 2:
-            label.text = @"Work Numbers";
+            label.text = @"Work";
             break;
             
         default:
@@ -1124,6 +1123,10 @@
     
     cell.contentView.backgroundColor = [UIColor whiteColor];
     cell.backgroundColor = [UIColor whiteColor];
+    cell.layer.borderColor = [UIColor whiteColor].CGColor;
+    cell.layer.borderWidth = 0.0f;
+    
+    
     return cell;
     
 }

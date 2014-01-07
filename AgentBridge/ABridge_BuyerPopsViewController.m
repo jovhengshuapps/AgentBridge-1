@@ -55,7 +55,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelNumberOfProperty.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     self.labelSavedto.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL-2.0f);
     
@@ -95,9 +95,9 @@
         self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers_new.php" andParameters:parameters];
     }
     
-//    NSLog(@"url:%@",self.urlConnectionProperty.originalRequest.URL);
+//    //NSLog(@"url:%@",self.urlConnectionProperty.originalRequest.URL);
     if (self.urlConnectionProperty) {
-//        NSLog(@"Connection Successful");
+//        //NSLog(@"Connection Successful");
         [self addURLConnection:self.urlConnectionProperty];
         //        [self showOverlayWithMessage:@"LOADING" withIndicator:YES];
         
@@ -105,7 +105,7 @@
         [self.activityIndicator startAnimating];
     }
     else {
-//        NSLog(@"Connection Failed");
+//        //NSLog(@"Connection Failed");
     }
 }
 
@@ -133,7 +133,7 @@
 //    
 //    if ([self.loginDetail.user_id integerValue] != [property.user_id integerValue]) {
 //        for (RequestNetwork *network in self.arrayRequestNetwork) {
-//            NSLog(@"%@network:%@",property.user_id,network);
+//            //NSLog(@"%@network:%@",property.user_id,network);
 //            if ([property.user_id integerValue] == [network.other_user_id integerValue]) {
 //                if ([network.status integerValue] == 0) {
 //                    pagesViewController.modify_view_type = MODIFYVIEW_PENDINGREQUEST;
@@ -230,19 +230,19 @@
 }
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    //NSLog(@"Did Receive Data %@", data);
+    ////NSLog(@"Did Receive Data %@", data);
     [self.dataReceived appendData:data];
 }
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-    //    NSLog(@"Did Fail");
+    //    //NSLog(@"Did Fail");
     [self dismissOverlay];
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -250,7 +250,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    NSLog(@"%@ Did Finish:%@", (is_saved)?@"YES":@"NO", json);
+//    //NSLog(@"%@ Did Finish:%@", (is_saved)?@"YES":@"NO", json);
     if (connection == self.urlConnectionProperty) {
         
         if ([[json objectForKey:@"data"] count]) {
@@ -274,7 +274,7 @@
                     
                     NSError *error = nil;
                     if (![context save:&error]) {
-                        NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+                        //NSLog(@"Error on saving Property:%@",[error localizedDescription]);
                     }
                     else {
                         if (self.arrayOfProperty == nil) {
@@ -350,7 +350,7 @@
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     // Do something with responseData
 }
 
@@ -416,14 +416,14 @@
     
     LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%i",loginDetail.user_id,self.currentListingId, self.buyer_id];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%li",loginDetail.user_id,self.currentListingId, (long)self.buyer_id];
     
     NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
     [urlString appendString:parameters];
-//    NSLog(@"url:%@",urlString);
+//    //NSLog(@"url:%@",urlString);
     self.activityIndicator.hidden = NO;
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     //            [self.activityIndicator startAnimating];
     //            self.activityIndicator.hidden = NO;
     [request setCompletionBlock:
@@ -431,13 +431,13 @@
          NSData *responseData = [request responseData];
          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
          
-//         NSLog(@"json:%@",json);
+//         //NSLog(@"json:%@",json);
          if ([json objectForKey:@"status"]) {
-             NSLog(@"Success");
+             //NSLog(@"Success");
              [self replaceSaveWithText:[NSString stringWithFormat:@"Saved to %@",self.buyer_name]];
          }
          else {
-             NSLog(@"Failed");
+             //NSLog(@"Failed");
          }
          
          
@@ -446,7 +446,7 @@
      }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];

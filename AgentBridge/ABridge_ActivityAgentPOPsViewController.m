@@ -47,7 +47,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelNumberOfProperty.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelNumberOfProperty.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     self.labelNumberOfProperty.text = [NSString stringWithFormat:@"%@ POPs™",self.user_name];
@@ -82,7 +82,7 @@
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.user_id];
     
     __block NSError *errorData = nil;
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php%@",parameters]]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php%@",parameters]]];
     [request setCompletionBlock:^{
         
         // Use when fetching text data
@@ -109,7 +109,7 @@
                     
                     NSError *error = nil;
                     if (![context save:&error]) {
-                        NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+                        //NSLog(@"Error on saving Property:%@",[error localizedDescription]);
                     }
                     else {
                         if (self.arrayOfProperty == nil) {
@@ -166,7 +166,7 @@
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        NSLog(@" error:%@",error);
+        //NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];

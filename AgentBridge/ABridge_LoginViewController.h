@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface ABridge_LoginViewController : UIViewController <NSURLConnectionDelegate, UITextFieldDelegate, UIAlertViewDelegate>
+@interface ABridge_LoginViewController : UIViewController <NSURLConnectionDelegate, UITextFieldDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Activity.h"
 #import "ASIHTTPRequest.h"
+#import "ABridge_FeeCollectionViewController.h"
 
-@interface ABridge_ActivityPagesViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate>
+@interface ABridge_ActivityPagesViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, ABridge_FeeCollectionViewControllerDelegate>
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) Activity *activityDetail;

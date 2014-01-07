@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelNewPassword;
 @property (weak, nonatomic) IBOutlet UILabel *confirmPasswordHeader;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldNewPassword;
+@property (weak, nonatomic) IBOutlet UILabel *labelOldPassword;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldOldPassword;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldConfirmPassword;
 @property (weak, nonatomic) IBOutlet UIView *viewContent;
@@ -58,6 +59,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.labelNewPassword.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
+    self.confirmPasswordHeader.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
+    self.labelOldPassword.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.textFieldNewPassword.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldConfirmPassword.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldOldPassword.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -109,7 +113,7 @@
         NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_password.php"];
         [urlString appendString:parameters];
         __block NSError *errorData = nil;
-        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
         //            [self.activityIndicator startAnimating];
         //            self.activityIndicator.hidden = NO;
         [request setCompletionBlock:
@@ -117,7 +121,7 @@
              NSData *responseData = [request responseData];
              NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
              
-             NSLog(@"json:%@",json);
+//             //NSLog(@"json:%@",json);
              if ([[json objectForKey:@"data"] count]) {
                  NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&email=%@&password=%@",loginDetail.user_id,loginDetail.email,self.textFieldNewPassword.text];
                  
@@ -125,7 +129,7 @@
                  [urlString appendString:parameters];
                  
                  __block NSError *errorDataPassword = nil;
-                 __block ASIHTTPRequest *requestPassword = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                 __weak ASIHTTPRequest *requestPassword = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                  //            [self.activityIndicator startAnimating];
                  //            self.activityIndicator.hidden = NO;
                  [requestPassword setCompletionBlock:
@@ -133,9 +137,9 @@
                       NSData *responseData = [requestPassword responseData];
                       NSDictionary *jsonPassword = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorDataPassword];
                       
-                      if ([[json objectForKey:@"status"] integerValue] == YES) {
+                      if ([[jsonPassword objectForKey:@"status"] integerValue] == YES) {
                           
-                          UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Successfully Changed your Password" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                          UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Successful" message:@"Successfully Changed your Password" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                           [av show];
                           
                           self.textFieldOldPassword.text = @"";
@@ -151,14 +155,14 @@
                   }];
                  [requestPassword setFailedBlock:^{
                      NSError *error = [requestPassword error];
-                     NSLog(@" error:%@",error);
+                     //NSLog(@" error:%@",error);
                  }];
                  
                  [requestPassword startAsynchronous];
              }
              else {
                  
-                 NSLog(@"error");
+                 //NSLog(@"error");
                  UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your Old Password is incorrect." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                  [av show];
              }
@@ -168,7 +172,7 @@
          }];
         [request setFailedBlock:^{
             NSError *error = [request error];
-            NSLog(@" error:%@",error);
+            //NSLog(@" error:%@",error);
         }];
         
         [request startAsynchronous];
@@ -184,7 +188,7 @@
 - (IBAction)dismissKeyboard:(id)sender {
     [UIView animateWithDuration:0.2f animations:^{
         CGRect frame = self.viewContent.frame;
-            frame.origin.y = 107.0f;
+            frame.origin.y = 62.0f;
         
         self.viewContent.frame = frame;
     }];

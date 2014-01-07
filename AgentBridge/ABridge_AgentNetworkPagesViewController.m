@@ -223,8 +223,8 @@
             
             NSInteger array_index = [[key substringFromIndex:[key rangeOfString:@"mobile"].length] integerValue];
             text = [array objectAtIndex:array_index - 1];
-            if (array_index == 2) {
-                decreaseHeight = FONT_SIZE_FOR_PROFILE * array_index;
+            if (array_index > 1) {
+                decreaseHeight = FONT_SIZE_FOR_PROFILE * 2;
             }
             if ([self isNull:text]) {
                 text = [array objectAtIndex:array_index];
@@ -413,7 +413,7 @@
     [mobileNumber replaceOccurrencesOfString:@"(" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@")" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
     [mobileNumber replaceOccurrencesOfString:@" " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
-//    NSLog(@"number:[%@]",mobileNumber);
+//    //NSLog(@"number:[%@]",mobileNumber);
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",mobileNumber]];
     [[UIApplication sharedApplication] openURL:URL];
 }
@@ -436,7 +436,7 @@
     
     else {
         
-//        NSLog(@"Device is unable to send email in its current state.");
+//        //NSLog(@"Device is unable to send email in its current state.");
         
     }
     
