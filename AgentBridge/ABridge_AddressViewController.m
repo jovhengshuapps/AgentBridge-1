@@ -184,7 +184,7 @@
     }];
     [requestCountry setFailedBlock:^{
         NSError *error = [requestCountry error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [requestCountry startAsynchronous];
@@ -225,7 +225,7 @@
     }];
     [requestState setFailedBlock:^{
         NSError *error = [requestState error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [requestState startAsynchronous];

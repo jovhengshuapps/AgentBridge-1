@@ -446,7 +446,7 @@
      }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        //NSLog(@" error:%@",error);
+        NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];

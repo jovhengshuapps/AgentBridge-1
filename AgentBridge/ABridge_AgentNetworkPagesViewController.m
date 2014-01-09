@@ -185,7 +185,7 @@
         text = self.profileData.broker_name;
     }
     else if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"address"]) {
-        text = @"";
+//        text = @"";
         NSMutableString *string = [NSMutableString stringWithString:@""];
         if (![self isNull:self.profileData.street_address]) {
             [string appendFormat:@"%@\n",self.profileData.street_address];

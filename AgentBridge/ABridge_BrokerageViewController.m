@@ -105,12 +105,27 @@
     
     
     [self addPaddingAndBorder:self.textFieldBroker_label color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
+    
+    
+    // Set the anchor point and center so the view swings from the upper right
+//    self.buttonDeleteBroker.layer.anchorPoint = CGPointMake(1.0, 0.0);
+//    self.buttonDeleteBroker.center = CGPointMake(CGRectGetWidth(self.view.bounds), 0.0);
+    
+    // Rotate 90 degrees to hide it off screen
+//    CGAffineTransform rotationTransform = CGAffineTransformIdentity;
+//    rotationTransform = CGAffineTransformRotate(rotationTransform, M_PI_4);
+//    self.buttonDeleteBroker.transform = rotationTransform;
+    
+    
+    
     CGRect frame = self.buttonDeleteBroker.frame;
     frame.size.height = 20.0f;
     frame.size.width = 20.0f;
     self.buttonDeleteBroker.frame = frame;
-
+    
     self.buttonDeleteBroker.transform = CGAffineTransformMakeRotation(M_PI_4);
+    
+
     
     
 //    self.labelBroker.layer.borderWidth = 1.0f;
@@ -182,7 +197,7 @@
      }];
     [requestBroker setFailedBlock:^{
         NSError *error = [requestBroker error];
-        //NSLog(@" error:%@",error);
+        NSLog(@" error:%@",error);
     }];
     
     [requestBroker startAsynchronous];
@@ -227,7 +242,7 @@
      }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        //NSLog(@" error:%@",error);
+        NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];
@@ -327,10 +342,11 @@
      }];
     [requestUserDesignation setFailedBlock:^{
         NSError *error = [requestUserDesignation error];
-        //NSLog(@" error:%@",error);
+        NSLog(@" error:%@",error);
     }];
     
     [requestUserDesignation startAsynchronous];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -386,7 +402,7 @@
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                //NSLog(@" error:%@",error);
+                NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -431,7 +447,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        //NSLog(@" error:%@",error);
+                        NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -483,7 +499,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        //NSLog(@" error:%@",error);
+                        NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -554,29 +570,19 @@
     
     [self.arrayOfUserDesignation addObject:entry];
     
-//    if ([self.arrayOfUserDesignation count] > 2) {
-//        CGRect frame = self.tableViewDesignations.frame;
-//        frame.size.height += 30.0f;
-//        self.tableViewDesignations.frame = frame;
-//        
-//        frame = self.buttonSave.frame;
-//        frame.origin.y += 30.0f;
-//        self.buttonSave.frame = frame;
-//    }
-
-    
-    if (self.tableViewDesignations.frame.size.height + self.tableViewDesignations.frame.origin.y + 10.0f < self.viewContent.frame.size.height - 140.0f) {
-        if (self.tableViewDesignations.contentSize.height > self.tableViewDesignations.frame.size.height) {
-            CGRect frame = self.tableViewDesignations.frame;
-            frame.size.height = self.tableViewDesignations.contentSize.height;
-            self.tableViewDesignations.frame = frame;
-            
-            frame = self.buttonSave.frame;
-            frame.origin.y = self.tableViewDesignations.frame.size.height + self.tableViewDesignations.frame.origin.y + 10.0f;
-            self.buttonSave.frame = frame;
-            
-        }
-    }
+//    
+//        if (self.tableViewDesignations.contentSize.height > self.tableViewDesignations.frame.size.height) {
+//            CGRect frame = self.tableViewDesignations.frame;
+//            frame.size.height = self.tableViewDesignations.contentSize.height;
+//            self.tableViewDesignations.frame = frame;
+//            
+//            frame = self.buttonSave.frame;
+//            frame.origin.y = self.tableViewDesignations.frame.size.height + self.tableViewDesignations.frame.origin.y + 10.0f;
+//            self.buttonSave.frame = frame;
+//            
+//        }
+//    
+//    NSLog(@"height:%f > %f",self.tableViewDesignations.contentSize.height, self.tableViewDesignations.frame.size.height);
     
     
     [self.tableViewDesignations reloadData];
@@ -724,6 +730,7 @@
     CGFloat height = MAX(size.height, 30.0f);
     
     
+
     return height + 10.0f;
 }
 
@@ -758,7 +765,7 @@
         button.frame = CGRectMake(label.frame.origin.x + label.frame.size.width + 2.0f, 5.0f, 20.0f, 20.0f);
         button.tag = 2;
         
-        self.buttonDeleteBroker.transform = CGAffineTransformMakeRotation(M_PI_4);
+        button.transform = CGAffineTransformMakeRotation(M_PI_4);
         
         [button addTarget:self action:@selector(removeDesignation:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -801,6 +808,35 @@
     CGPoint center = button.center;
     center.y = label.frame.size.height/2.0f;
     button.center = center;
+    
+    CGFloat buttonFrameLimit = self.viewContent.frame.size.height - (self.buttonSave.frame.size.height + 10.0f);
+    
+    if ( self.tableViewDesignations.contentSize.height > self.tableViewDesignations.frame.size.height - 20.0f) {
+        [self.tableViewDesignations beginUpdates];
+        if (buttonFrameLimit > self.tableViewDesignations.contentSize.height + self.tableViewDesignations.frame.origin.y) {
+            
+            CGRect frame = self.tableViewDesignations.frame;
+            frame.size.height = self.tableViewDesignations.contentSize.height;
+            self.tableViewDesignations.frame = frame;
+            
+            frame = self.buttonSave.frame;
+            frame.origin.y = self.tableViewDesignations.frame.size.height + self.tableViewDesignations.frame.origin.y + 10.0f;
+            self.buttonSave.frame = frame;
+        }
+        else {
+            CGRect frame = self.tableViewDesignations.frame;
+            frame.size.height = self.tableViewDesignations.contentSize.height - 20.0f;
+            self.tableViewDesignations.frame = frame;
+            
+            frame = self.buttonSave.frame;
+            frame.origin.y = buttonFrameLimit;
+            self.buttonSave.frame = frame;
+        }
+        
+        [self.tableViewDesignations endUpdates];
+    }
+    
+//    NSLog(@"%f %f", buttonFrameLimit,self.tableViewDesignations.contentSize.height + self.tableViewDesignations.frame.origin.y);
     
     return cell;
 }

@@ -191,7 +191,6 @@
         
         NSDictionary *jsonActivities = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
         
-//        //NSLog(@"Did Finish:%@", jsonActivities);
         if ([[jsonActivities objectForKey:@"data"] count]) {
 //            //NSLog(@"total:%i",[[json objectForKey:@"data"] count]);
             for (NSDictionary *entryActivities in [jsonActivities objectForKey:@"data"]) {
@@ -201,6 +200,7 @@
                 
                 NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-%@.php%@", [entryActivities valueForKey:@"activity_type"], parameters];
                 
+//                NSLog(@"Did Finish:%@", urlString);
                 self.activityIndicator.hidden = NO;
                 [self.activityIndicator startAnimating];
                 __block NSError *errorData = nil;
@@ -252,12 +252,12 @@
                                 [self.arrayOfActivity replaceObjectAtIndex:[[jsonActivities objectForKey:@"data"] indexOfObject:entryActivities] withObject:activity];
                             }
                             
-                            NSSortDescriptor *sortDescriptor;
-                            sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date"
-                                                                         ascending:NO];
-                            NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-                            NSArray *sortedArray;
-                            sortedArray = [self.arrayOfActivity sortedArrayUsingDescriptors:sortDescriptors];
+//                            NSSortDescriptor *sortDescriptor;
+//                            sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date"
+//                                                                         ascending:NO];
+//                            NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+//                            NSArray *sortedArray;
+//                            sortedArray = [self.arrayOfActivity sortedArrayUsingDescriptors:sortDescriptors];
                             
                             self.numberOfActivity = [self.arrayOfActivity count];
                             self.labelNumberOfActivity.text = [NSString stringWithFormat:@"My Activity (%li)",(long)self.numberOfActivity];
@@ -279,7 +279,7 @@
                 }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    //NSLog(@"11 error:%@",error);
+                    NSLog(@"11 error:%@",error);
                     [self.activityIndicator stopAnimating];
                     self.activityIndicator.hidden = YES;
                 }];

@@ -136,10 +136,12 @@
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
     
+    self.buttonChangeStatus.hidden = YES;
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&update_id=%@", self.loginDetail.user_id, self.referralDetails.referral_id];
     
     NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed.php%@", parameters];
     
+    __block BOOL restricted = NO;
     __block NSString *client_name = self.referralDetails.client_name;
     
     __block NSError *errorData = nil;
@@ -167,30 +169,33 @@
             }
             self.labelBuyerName.text = encryptBuyerName;
             self.buttonVCard.hidden = YES;
+            restricted = YES;
         }
         else {
             self.labelBuyerName.text = client_name;
             self.buttonVCard.hidden = NO;
+            restricted = NO;
         }
         
+        if ([self.referralDetails.agent_b integerValue] == [self.loginDetail.user_id integerValue] && [self.referralDetails.status integerValue] != REFERRAL_STATUS_CLOSED && !restricted) {
+            self.buttonChangeStatus.hidden = NO;
+        }
+        else if ([self.referralDetails.agent_a integerValue] == [self.loginDetail.user_id integerValue] && [self.referralDetails.status integerValue] == REFERRAL_STATUS_CLOSED && !restricted) {
+            self.buttonChangeStatus.hidden = NO;
+        }
+        else {
+            self.buttonChangeStatus.hidden = YES;
+        }
         
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [request startAsynchronous];
     
-    if ([self.referralDetails.agent_b integerValue] == [self.loginDetail.user_id integerValue] && [self.referralDetails.status integerValue] != REFERRAL_STATUS_CLOSED) {
-        self.buttonChangeStatus.hidden = NO;
-    }
-    else if ([self.referralDetails.agent_a integerValue] == [self.loginDetail.user_id integerValue] && [self.referralDetails.status integerValue] == REFERRAL_STATUS_CLOSED) {
-        self.buttonChangeStatus.hidden = NO;
-    }
-    else {
-        self.buttonChangeStatus.hidden = YES;
-    }
+//    self.buttonChangeStatus.hidden = NO; //tester
     
 //    self.labelBuyerName.text = self.referralDetails.client_name;
     NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
@@ -212,17 +217,20 @@
     
     self.statusPicked_test = [self.referralDetails.status integerValue];
     
-    if (self.referralDetails.image == nil || [self.referralDetails.image isEqualToString:@""]) {
-        self.imagePicture.image = [UIImage imageNamed:@"blank-image"];
-    }
-    else {
         if (self.referralDetails.image_data == nil) {
             self.referralDetails.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.referralDetails.image]];
         }
         
         self.imagePicture.image = [UIImage imageWithData:self.referralDetails.image_data];
-        
+    
+    if (self.referralDetails.image_data == nil) {
+        self.imagePicture.image = [UIImage imageNamed:@"blank-image"];
     }
+    
+    
+    
+   
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -276,31 +284,33 @@
 
 - (IBAction)changeStatus:(id)sender {
     
-    switch (self.statusPicked_test) {
-        case REFERRAL_STATUS_UNDERCONTRACT:
-            self.arrayOfStatus = [NSArray arrayWithObjects: @"Active", @"Need Help", @"Closed", nil];
-            break;
-        case REFERRAL_STATUS_CLOSED:
-            self.arrayOfStatus = [NSArray arrayWithObjects: @"Completed", nil];
-            break;
-        case REFERRAL_STATUS_NOGO:
-            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
-            break;
-        case REFERRAL_STATUS_NEEDHELP:
-            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"Under Contract", @"No Go",nil];
-            break;
-        case REFERRAL_STATUS_PENDING:
-            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"No Go", @"Need Help", nil];
-            break;
-        case REFERRAL_STATUS_ACCEPTED:
-            self.arrayOfStatus = [NSArray arrayWithObjects: @"Under Contract", @"No Go", @"Need Help", nil];
-            break;
-        case REFERRAL_STATUS_COMMISSIONRECEIVED:
-            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
-            break;
-        default:
-            break;
-    }
+    self.arrayOfStatus = [NSArray arrayWithObjects: @"Active", @"Need Help", @"Closed", nil];
+    
+//    switch (self.statusPicked_test) {
+//        case REFERRAL_STATUS_UNDERCONTRACT:
+//            self.arrayOfStatus = [NSArray arrayWithObjects: @"Active", @"Need Help", @"Closed", nil];
+//            break;
+//        case REFERRAL_STATUS_CLOSED:
+//            self.arrayOfStatus = [NSArray arrayWithObjects: @"Completed", nil];
+//            break;
+//        case REFERRAL_STATUS_NOGO:
+//            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
+//            break;
+//        case REFERRAL_STATUS_NEEDHELP:
+//            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"Under Contract", @"No Go",nil];
+//            break;
+//        case REFERRAL_STATUS_PENDING:
+//            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"No Go", @"Need Help", nil];
+//            break;
+//        case REFERRAL_STATUS_ACCEPTED:
+//            self.arrayOfStatus = [NSArray arrayWithObjects: @"Under Contract", @"No Go", @"Need Help", nil];
+//            break;
+//        case REFERRAL_STATUS_COMMISSIONRECEIVED:
+//            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
+//            break;
+//        default:
+//            break;
+//    }
     
     if ([self.arrayOfStatus count]) {
         [self.pickerStatus reloadAllComponents];
@@ -365,7 +375,7 @@
         }];
         [request setFailedBlock:^{
             NSError *error = [request error];
-            //NSLog(@"error:%@",error);
+            NSLog(@" error:%@",error);
             
         }];
         [request startAsynchronous];
@@ -382,7 +392,7 @@
 
 - (IBAction)cancelChange:(id)sender {
     
-    [UIView animateWithDuration:0.6 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
         CGRect frame = self.viewChangeStatus.frame;
         frame.origin.y = 0.0f;
         self.viewChangeStatus.frame = frame;
@@ -594,24 +604,24 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-//    [UIView animateWithDuration:0.2 animations:^{
-//        CGRect frame = self.viewChangeStatus.frame;
-//        frame.origin.y = -165.0f;
-//        self.viewChangeStatus.frame = frame;
-//    } completion:^(BOOL finished) {
-//    }];
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = self.viewChangeStatus.frame;
+        frame.origin.y = -165.0f;
+        self.viewChangeStatus.frame = frame;
+    } completion:^(BOOL finished) {
+    }];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if ([text isEqualToString:@"\n"]) {
-//        [UIView animateWithDuration:1 animations:^{
-//            [textView resignFirstResponder];
-//            CGRect frame = self.viewChangeStatus.frame;
-//            frame.origin.y = 0.0f;
-//            self.viewChangeStatus.frame = frame;
-//        } completion:^(BOOL finished) {
-//            
-//        }];
+        [UIView animateWithDuration:0.2 animations:^{
+            [textView resignFirstResponder];
+            CGRect frame = self.viewChangeStatus.frame;
+            frame.origin.y = 0.0f;
+            self.viewChangeStatus.frame = frame;
+        } completion:^(BOOL finished) {
+            
+        }];
         return NO;
     }
     return YES;
@@ -624,7 +634,7 @@
     
     NSString *status_type = [NSString stringWithFormat:@"%i",REFERRAL_STATUS_CLOSED];
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&activity_type=%@note=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"19",@""];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&activity_type=%@note=%@&buyer_id=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"19",@"",self.referralDetails.client_id];
     
     self.urlStringStatusChange = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_status.php%@", parameters];
     
@@ -642,6 +652,7 @@
         if([[json objectForKey:@"status"] integerValue] == 1){
             self.statusPicked_test = self.statusPicked;
             self.imagePendingAccepted.image = [self imageForReferralStatus:self.statusPicked_test];
+            self.buttonChangeStatus.hidden = YES;
         }
         
         [UIView animateWithDuration:0.2 animations:^{
@@ -655,7 +666,7 @@
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [request startAsynchronous];

@@ -186,7 +186,7 @@
      }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        //NSLog(@" error:%@",error);
+        NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];
@@ -259,7 +259,7 @@
      }];
     [requestFax setFailedBlock:^{
         NSError *error = [requestFax error];
-        //NSLog(@" error:%@",error);
+        NSLog(@" error:%@",error);
     }];
     
     [requestFax startAsynchronous];
@@ -333,7 +333,7 @@
      }];
     [requestWork setFailedBlock:^{
         NSError *error = [requestWork error];
-        //NSLog(@" error:%@",error);
+        NSLog(@" error:%@",error);
     }];
     
     [requestWork startAsynchronous];
@@ -396,7 +396,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    //NSLog(@" error:%@",error);
+                    NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -440,7 +440,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    //NSLog(@" error:%@",error);
+                    NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -485,7 +485,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    //NSLog(@" error:%@",error);
+                    NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -533,7 +533,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        //NSLog(@" error:%@",error);
+                        NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -568,7 +568,7 @@
 //                     }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        //NSLog(@" error:%@",error);
+//                        NSLog(@" error:%@",error);
 //                    }];
 //                    
 //                    [request startAsynchronous];
@@ -614,7 +614,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        //NSLog(@" error:%@",error);
+                        NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -649,7 +649,7 @@
 //                     }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        //NSLog(@" error:%@",error);
+//                        NSLog(@" error:%@",error);
 //                    }];
 //                    
 //                    [request startAsynchronous];
@@ -700,7 +700,7 @@
                      }];
                     [request setFailedBlock:^{
                         NSError *error = [request error];
-                        //NSLog(@" error:%@",error);
+                        NSLog(@" error:%@",error);
                     }];
                     
                     [request startAsynchronous];
@@ -735,7 +735,7 @@
 //                     }];
 //                    [request setFailedBlock:^{
 //                        NSError *error = [request error];
-//                        //NSLog(@" error:%@",error);
+//                        NSLog(@" error:%@",error);
 //                    }];
 //                    
 //                    [request startAsynchronous];

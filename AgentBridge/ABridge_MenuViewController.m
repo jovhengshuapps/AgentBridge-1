@@ -105,23 +105,23 @@
         
         NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
         
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails" inManagedObjectContext:context];
-        [fetchRequest setEntity:entity];
-        NSError *error = nil;
-        NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+//        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails" inManagedObjectContext:context];
+//        [fetchRequest setEntity:entity];
+//        NSError *error = nil;
+//        NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
         
 //        LoginDetails *loginDetail = (LoginDetails*)[fetchedObjects firstObject];
         
-        fetchRequest = [[NSFetchRequest alloc] init];
-        entity = [NSEntityDescription entityForName:@"AgentProfile"
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"AgentProfile"
                              inManagedObjectContext:context];
         [fetchRequest setEntity:entity];
 //        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user_id=%@",loginDetail.user_id];
 //        [fetchRequest setPredicate:predicate];
-        error = nil;
-        fetchedObjects = nil;
-        fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+        NSError *error = nil;
+//        fetchedObjects = nil;
+        NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
         
 //        AgentProfile *profileData = (AgentProfile*)[fetchedObjects firstObject];
         
@@ -141,6 +141,10 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 5.0f, 60.0f, 60.0f)];
         imageView.contentMode = UIViewContentModeScaleAspectFill ;
         imageView.image = [UIImage imageWithData:profileData.image_data];
+        
+        if (imageView.image == nil) {
+            imageView.image = [UIImage imageNamed:@"blank-image"];
+        }
         
         [self.buttonProfile addSubview:imageView];
         self.buttonProfile.tag = YES;

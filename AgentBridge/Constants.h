@@ -59,4 +59,335 @@
 #define MODIFYVIEW_CHECKSETTING                                                     3
 #define MODIFYVIEW_REQUESTVIEWPRICE                                                 4
 
+#define HTMLSTRING_INVOICE          @"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"\
+"<html xmlns=\"http://www.w3.org/1999/xhtml\">"\
+"<head>"\
+"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"\
+"<title>AgentBridge - Invoice</title>"\
+"<style type=\"text/css\"> body { font-family: Arial; font-size: 12px;  -webkit-text-size-adjust: none;} </style>"\
+"</head>"\
+""\
+"<body>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"color:#181818;\">"\
+"<tr>"\
+"<td>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr>"\
+"<td valign=\"top\" ><img src=\"http://keydiscoveryinc.com/agent_bridge/images/ab_logo.jpg\" width=\"241\" height=\"69\" /></td>"\
+"<td style=\"text-align:center\"><strong>Invoice</strong></td>"\
+"</tr>"\
+"</table>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td valign=\"top\"><strong>Bill To:</strong></td>"\
+"<td valign=\"top\">"\
+"<ul style=\"list-style:none; \">"\
+"<li>&nbsp;</li>"\
+"<li>%@<br />%@<br />%@<br />%@<br />%@</li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" style=\"text-align:right\">"\
+"<strong>Customer Information</strong>"\
+"<ul style=\"list-style:none; \">"\
+"<li>%@<br />%@<br />%@<br />%@<br />%@</li>"\
+"</ul>"\
+"</td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"</table>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr>"\
+"<td align=\"center\" valign=\"top\"><strong>Invoice Date</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Invoice Number</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Due Date</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Terms</strong><br /></td>"\
+"</tr>"\
+"</table>"\
+""\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td align=\"center\" valign=\"top\"><strong>Product</strong><br />Referral</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Contract</strong><br />#%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Start Date</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>End Date</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Reference</strong><br />#%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Unit Price</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Qty</strong><br />1</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Amount</strong><br />%@</td>"\
+"</tr>"\
+"</table>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td valign=\"top\" style=\"font-size:9px;\" align=\"left\">"\
+"If you have any questions concerning this invoice, please call:<br />"\
+"The Accounts Receivable Department at (310) 421-2812"\
+"</td>"\
+"<td valign=\"top\">Subtotal<br />Charged to Credit Card:<br /><br /><strong>TOTAL DUE</strong></td>"\
+"<td valign=\"top\" align=\"right\">%@<br />[%@]<br /><br /><strong>0</strong></td>"\
+"</tr>"\
+"</table>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td style=\"border-bottom:1px dashed #333; height:1px; text-align:center; font-size:9px\">Retain this portion for your records</td>"\
+"</tr>"\
+"<tr>"\
+"<td align=\"center\" style=\"font-size:9px\">*Please detach this stub and return with your payments*</td>"\
+"</tr>"\
+""\
+"</table>"\
+""\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+""\
+"<tr>"\
+"<td valign=\"top\">"\
+"<ul style=\"list-style:none; \">"\
+"<li>%@<br />%@<br />%@<br />%@<br />%@</li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\">"\
+"<ul style=\"list-style:none; \">"\
+"<li>&nbsp;</li>"\
+"<li>&nbsp;</li>"\
+"<li>&nbsp;</li>"\
+"<li>Please make all checks payable to:</li>"\
+"<li><strong>AgentBridge, LLC</strong></li>"\
+"</ul>"\
+"</td>"\
+"</tr>"\
+"</table>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td align=\"center\" valign=\"top\"><strong>Cust #</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Customer Name</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Invoice Name</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Due Date</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Amount Due</strong><br />%@</td>"\
+"<td align=\"center\" valign=\"top\"><strong>Amount Enclosed</strong><br /></td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"</table>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr>"\
+"<td valign=\"top\" style=\"width:400px;\">"\
+"<ul style=\"list-style:none; \">"\
+"<li>&nbsp;</li>"\
+"<li>&nbsp;</li>"\
+"<li>&nbsp;</li>"\
+"<li>&nbsp;</li>"\
+"<li>&nbsp;</li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\">"\
+"<ul style=\"list-style:none; \">"\
+"<li><strong>Remit to:</strong></li>"\
+"<li>AgentBridge, LLC</li>"\
+"<li>Attn: Accounts Receivable</li>"\
+"<li>608 Silver Spur<br />Rolling Hills Estates, CA 90274 Powered by</li>"\
+""\
+"</ul>"\
+"</td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"</table>"\
+""\
+"</td>"\
+"</tr>"\
+""\
+"</table>"\
+""\
+"</body>"\
+"</html>"
+
+
+#define HTMLSTRING_PAYMENT          @"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"\
+"<html xmlns=\"http://www.w3.org/1999/xhtml\">"\
+"<head>"\
+"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"\
+"<title>AgentBridge - Payment</title>"\
+"<style type=\"text/css\"> body { font-family: Arial; font-size: 12px;  -webkit-text-size-adjust: none;} </style>"\
+"</head>"\
+""\
+"<body>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"color:#181818;\">"\
+"<tr>"\
+"<td>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr>"\
+"<td valign=\"top\" ><img src=\"http://keydiscoveryinc.com/agent_bridge/images/ab_logo.jpg\" width=\"241\" height=\"69\" /></td>"\
+"<td style=\"text-align:left\" valign=\"top\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li><strong>INSTRUCTIONS TO PAY AT CLOSING</strong></li>"\
+"<li>Agreement Date: November 12, 2013</li>"\
+"<li>Referral of Bono</li>"\
+"<li>Agent Bridge Referral ID: 1125</li>"\
+"</ul>"\
+"</td>"\
+"</tr>"\
+"</table>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td>Referencing AGREEMENT TO PAY REFERRAL FEE (\"Agreement\") by and between All Moves, (\"Referring Broker\")"\
+"and Al D'Amico & Associates (\"Receiving Broker\") with regard to the referral of Bono.</td>"\
+"</tr>"\
+"</table>"\
+""\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
+"<td valign=\"top\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\"><strong>REFERRING AGENT/BROKER</strong></li>"\
+"<li>Broker:</li>"\
+"<li>Broker State License Number:</li>"\
+"<li>Agent:</li>"\
+"<li>Agent License:</li>"\
+"<li>Agent Mobile:</li>"\
+"<li>Agent email:</li>"\
+"<li>TAX ID Number:</li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" style=\"text-align:left\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\">&nbsp;</li>"\
+"<li>All Moves</li>"\
+"<li>BL123</li>"\
+"<li>Rebekah Roque</li>"\
+"<li>AB123</li>"\
+"<li>(310) 341-0201</li>"\
+"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">rebekah.roque@yopmail.com</a></li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
+"<td valign=\"top\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\"><strong>RECEIVING AGENT/BROKER</strong></li>"\
+"<li>Broker:</li>"\
+"<li>Broker State License Number:</li>"\
+"<li>Agent:</li>"\
+"<li>Agent License:</li>"\
+"<li>Agent Mobile:</li>"\
+"<li>Agent email:</li>"\
+"<li>TAX ID Number:</li>"\
+""\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" style=\"text-align:left\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\">&nbsp;</li>"\
+"<li>Al D'Amico &amp; Associates</li>"\
+"<li>BL456</li>"\
+"<li>Morgan Ladrange</li>"\
+"<li>AB456</li>"\
+"<li>n/a</li>"\
+"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">morgan.ladrange@yopmail.com</a></li>"\
+"<li>12345677</li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
+"<td valign=\"top\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\"><strong>PRINCIPAL</strong></li>"\
+"<li>Name:</li>"\
+"<li>Mobile:</li>"\
+"<li>Email:</li>"\
+"<li>Address:</li>"\
+"<li>Principal is:</li>"\
+"<li>Agreed Referral Fee:</li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" style=\"text-align:left\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\">&nbsp;</li>"\
+"<li>Bono</li>"\
+"<li>(818) 213-4567</li>"\
+"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">bono@bono.com</a></li>"\
+"<li>Twentynine Palms California 92278, United States</li>"\
+"<li>Buying and Selling</li>"\
+"<li>25%%</li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
+"<td valign=\"top\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\"><strong>TRANSACTION DETAILS</strong></li>"\
+"<li>Client Transaction Completed</li>"\
+"<li>Gross Commission of Sale</li>"\
+"<li>Referral Fee Percentage</li>"\
+"<li>Referral Fee</li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" style=\"text-align:left\">"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\">&nbsp;</li>"\
+"<li>November 12, 2013</li>"\
+"<li>$100,000</li>"\
+"<li>25%%</li>"\
+"<li><strong>$25,000</strong></li>"\
+"</ul>"\
+"</td>"\
+"<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
+"</tr>"\
+"</table>"\
+"<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"\
+""\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td>Please Issue Payment to All Moves care of Rebekah Roque for client Bono in amount of $25,000</td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td>"\
+"<ul style=\"list-style:none; margin:0; padding:0;\">"\
+"<li style=\"margin-bottom:5px;\"><strong>Mail to:</strong></li>"\
+"<li>All Moves</li>"\
+"<li>Rodeo Drive<br />Beverly Hills, California 90210<br />United States</li>"\
+"</ul>"\
+"</td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr>"\
+"<td>Please enclose Closing Statement or HUD 1 with check. If wire transfer preferred, please email Rebekah Roque"\
+"at <a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">rebekah.roque@yopmail.com</a> to receive wire instructions.</td>"\
+"</tr>"\
+""\
+"</table>"\
+""\
+"</td>"\
+"</tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+"<tr><td>&nbsp;</td></tr>"\
+""\
+"</table>"\
+""\
+"</body>"\
+"</html>"
+
+
 #endif

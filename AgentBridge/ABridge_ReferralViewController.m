@@ -82,6 +82,7 @@
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
     
+    
     [self reloadPageController:@"In"];
 }
 
@@ -245,7 +246,7 @@
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        //NSLog(@" error:%@",error);
+        NSLog(@" error:%@",error);
     }];
     
     [request startAsynchronous];

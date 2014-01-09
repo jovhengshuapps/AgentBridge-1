@@ -77,12 +77,17 @@
 
 @property (strong, nonatomic) NSString *sessionToken;
 
-@property (strong, nonatomic) UIWebView *webView;
+@property (strong, nonatomic) UIWebView *webViewInvoice;
+@property (strong, nonatomic) UIWebView *webViewPayment;
 
 @property (assign, nonatomic) NSInteger webViewHeight;
 @property (assign, nonatomic) NSInteger imageName;
 
 @property (strong, nonatomic) LoginDetails *loginDetails;
+@property (strong, nonatomic) AgentProfile *profile;
+
+@property (strong, nonatomic) NSString *invoice_number;
+@property (strong, nonatomic) NSString *payment_id;
 
 - (IBAction)continuePressed:(id)sender;
 - (IBAction)cancelPressed:(id)sender;
@@ -115,11 +120,15 @@
 @synthesize referral_name;
 @synthesize grossCommissionValue;
 @synthesize referral_fee;
-@synthesize webView;
+@synthesize webViewInvoice;
+@synthesize webViewPayment;
 @synthesize webViewHeight;
 @synthesize imageName;
 
 @synthesize loginDetails;
+@synthesize profile;
+@synthesize invoice_number;
+@synthesize payment_id;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -282,7 +291,7 @@
     }];
     [requestCountry setFailedBlock:^{
         NSError *error = [requestCountry error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [requestCountry startAsynchronous];
@@ -332,7 +341,7 @@
     }];
     [requestState setFailedBlock:^{
         NSError *error = [requestState error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [requestState startAsynchronous];
@@ -371,10 +380,10 @@
     [fetchRequestProfile setPredicate:predicate];
     
     NSError *errorProfile = nil;
-    AgentProfile *profile = (AgentProfile*)[[context executeFetchRequest:fetchRequestProfile error:&errorProfile] firstObject];
+    self.profile = (AgentProfile*)[[context executeFetchRequest:fetchRequestProfile error:&errorProfile] firstObject];
     
     
-    NSString *parameter = [NSString stringWithFormat:@"?text=%@",[[profile.licence stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
+    NSString *parameter = [NSString stringWithFormat:@"?text=%@",[[self.profile.licence stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
     NSMutableString *urlStringDecrypt = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/decrypt_license.php"];
     
     [urlStringDecrypt appendString:parameter];
@@ -403,12 +412,12 @@
     }];
     [requestDecrypt setFailedBlock:^{
         NSError *error = [requestDecrypt error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [requestDecrypt startAsynchronous];
     
-    parameter = [NSString stringWithFormat:@"?text=%@",[[profile.brokerage_license stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
+    parameter = [NSString stringWithFormat:@"?text=%@",[[self.profile.brokerage_license stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
     [urlStringDecrypt setString:@"http://keydiscoveryinc.com/agent_bridge/webservice/decrypt_license.php"];
     
     [urlStringDecrypt appendString:parameter];
@@ -436,13 +445,13 @@
     }];
     [requestDecrypt setFailedBlock:^{
         NSError *error = [requestDecrypt error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [requestDecrypt startAsynchronous];
     
     
-    parameter = [NSString stringWithFormat:@"?text=%@",[[profile.tax_id_num stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
+    parameter = [NSString stringWithFormat:@"?text=%@",[[self.profile.tax_id_num stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
     [urlStringDecrypt setString:@"http://keydiscoveryinc.com/agent_bridge/webservice/decrypt_license.php"];
     
     [urlStringDecrypt appendString:parameter];
@@ -470,20 +479,20 @@
     }];
     [requestDecrypt setFailedBlock:^{
         NSError *error = [requestDecrypt error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [requestDecrypt startAsynchronous];
     
-    UITapGestureRecognizer *tapViewInfo = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resizeViewInfo)];
-    tapViewInfo.numberOfTapsRequired = 1;
-    tapViewInfo.numberOfTouchesRequired = 1;
-    [self.viewInfo addGestureRecognizer:tapViewInfo];
-    
-    UITapGestureRecognizer *tapTextView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resizeTextViewTop)];
-    tapTextView.numberOfTapsRequired = 1;
-    tapTextView.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:tapTextView];
+//    UITapGestureRecognizer *tapViewInfo = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resizeViewInfo)];
+//    tapViewInfo.numberOfTapsRequired = 1;
+//    tapViewInfo.numberOfTouchesRequired = 1;
+//    [self.viewInfo addGestureRecognizer:tapViewInfo];
+//    
+//    UITapGestureRecognizer *tapTextView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resizeTextViewTop)];
+//    tapTextView.numberOfTapsRequired = 1;
+//    tapTextView.numberOfTouchesRequired = 1;
+//    [self.view addGestureRecognizer:tapTextView];
     
     if (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO) {
         UIButton *sender = [[UIButton alloc] init];
@@ -497,6 +506,8 @@
         [self continuePressed:sender];
         
     }
+    
+    self.textViewTop.showsHorizontalScrollIndicator = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -550,14 +561,6 @@
 }
 
 - (IBAction)continuePressed:(id)sender {
-    
-//    NSString *htmlStringForPDF = [NSString stringWithFormat:@"<html><head><title>Agent Bridge Mobile</title></head><body><div><table><tr><td colspan=2 ></td><td colspan=2 ><strong>Invoice</strong></td></tr><tr><td> <strong>Bill To: %@</strong> </td><td> </td><td colspan=2 > <strong>Customer Information</strong> </td></tr><tr><td> </td><td> <ul><li>Bighor Golf Club</li><li>Giuletta Masina</li><li>Rodeo Drive</li><li>Beverly Hills, California 90210</li><li>United States</li></ul></td><td> <ul><li>Invoice No.</li><li>Customer Name:</li><li>Customer ID:</li></ul></td><td> <ul><li>Fee_1158_1_45</li><li>Referral One</li><li>0000000021</li></ul></td></tr></table></br></div></body></html>",self.grossCommission];
-//    
-//    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 1024.0f, 768.0f)];
-//    self.webView.delegate = self;
-//    [webView loadHTMLString:htmlStringForPDF baseURL:nil];
-    
-    
     BOOL continueToNextView = NO;
     
     switch ([sender tag]) {
@@ -599,7 +602,13 @@
 //                    //NSLog(@"json:%@",json);
                     
                     if ([[json objectForKey:@"data"] count]) {
-                        self.serviceFee = [[[json objectForKey:@"data"] firstObject]objectForKey:@"r2_fee"];
+                        
+                        if (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO) {
+                            self.serviceFee = [[[json objectForKey:@"data"] firstObject]objectForKey:@"r1_fee"];
+                        }
+                        else {
+                            self.serviceFee = [[[json objectForKey:@"data"] firstObject]objectForKey:@"r2_fee"];
+                        }
                         NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
                         formatter.numberStyle = NSNumberFormatterCurrencyStyle;
                         [formatter setMaximumFractionDigits:0];
@@ -613,19 +622,19 @@
                         
                         self.textViewTop.text = [NSString stringWithFormat:@"The %@ referral fee of %@ is ready to to be disbursed.\nAgentBridge will now be collecting the service fee of %@.\n\nGross Commission of %@: %@", self.referral_name, [formatter stringFromNumber: [NSNumber numberWithDouble:([self.grossCommission doubleValue] * self.referral_fee)]], [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]], self.loginDetails.name, [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]]];
                         
-                        CGSize constraint = CGSizeMake(self.textViewTop.frame.size.width - 10.0f, 20000.0f);
-                        
-                        CGSize size = [self.textViewTop.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                        
-                        CGFloat height = MAX(size.height, FONT_SIZE_REGULAR);
-                        
-                        CGRect frame = self.textViewTop.frame;
-                        frame.size.height = height + 20.0f;
-                        self.textViewTop.frame = frame;
-                        
-                        frame = self.viewInfo.frame;
-                        frame.origin.y = self.textViewTop.frame.size.height + self.textViewTop.frame.origin.y;
-                        self.viewInfo.frame = frame;
+//                        CGSize constraint = CGSizeMake(self.textViewTop.frame.size.width - 10.0f, 20000.0f);
+//                        
+//                        CGSize size = [self.textViewTop.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+//                        
+//                        CGFloat height = MAX(size.height, FONT_SIZE_REGULAR);
+//                        
+//                        CGRect frame = self.textViewTop.frame;
+//                        frame.size.height = height + 20.0f;
+//                        self.textViewTop.frame = frame;
+//                        
+//                        frame = self.viewInfo.frame;
+//                        frame.origin.y = self.textViewTop.frame.size.height + self.textViewTop.frame.origin.y;
+//                        self.viewInfo.frame = frame;
                         
                     }
                     else {
@@ -637,7 +646,7 @@
                 }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    //NSLog(@"error:%@",error);
+                    NSLog(@" error:%@",error);
                     
                 }];
                 [request startAsynchronous];
@@ -836,7 +845,7 @@
         NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/send_transaction.php"];
         [urlString appendString:parameters];
         
-        //NSLog(@"url:%@",urlString);
+        NSLog(@"url:%@",urlString);
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
@@ -848,28 +857,30 @@
          ^{
              NSData *responseData = [request responseData];
              NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-             //NSLog(@"json:%@",json);
+             NSLog(@"json:%@",json);
              if ([[json objectForKey:@"status"] integerValue] == YES) {
-                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transaction Successful" message:@"Your Transaction has completed Successfully!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                 av.tag = 99;
-                 [av show];
+                 self.invoice_number = [[json objectForKey:@"data"] objectForKey:@"invoice_number"];
+                 [self createInvoicePDF];
              }
              else if ([json objectForKey:@"error"] != nil) {
                  UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transaction Failed" message:[[json objectForKey:@"error"] substringFromIndex:[[json objectForKey:@"error"] rangeOfString:@"Response Reason Text:"].location+21] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                  [av show];
+                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                 [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+                 self.buttonSubmit.enabled = YES;
              }
              else {
                  UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transaction Failed" message:@"Something went wrong in your Transaction." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                  [av show];
+                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                 [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+                 self.buttonSubmit.enabled = YES;
              }
-             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-             [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-             self.buttonSubmit.enabled = YES;
              
          }];
         [request setFailedBlock:^{
             NSError *error = [request error];
-            //NSLog(@" error:%@",error);
+            NSLog(@" error:%@",error);
             
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transaction Failed" message:@"Received an Error in connection." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
@@ -913,93 +924,6 @@
         self.buttonSubmit.enabled = YES;
     }
     
-    
-    
-//    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: [[NSURL alloc] initWithString:@"http://keydiscoveryinc.com/agent_bridge/components/com_propertylisting/controller.php"]];
-//    [request setResponseEncoding:NSISOLatin1StringEncoding];
-//    [request setPostFormat:ASIMultipartFormDataPostFormat];
-//    [request setPostValue:self.textFieldGrossComission.text forKey:@"amount"];
-//    [request setPostValue:[NSString stringWithFormat:@"%li",(long)referral_id] forKey:@"ref_id"];
-//    [request setPostValue:self.textFieldEmail.text forKey:@"email"];
-//    [request setPostValue:[NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text] forKey:@"address"];
-//    [request setPostValue:@"223" forKey:@"city"];
-//    [request setPostValue:@"12" forKey:@"state"];
-//    [request setPostValue:self.textFieldZipcode.text forKey:@"zip"];
-//    [request setPostValue:self.textFieldFirstname.text forKey:@"firstname"];
-//    [request setPostValue:self.textFieldLastname.text forKey:@"lastname"];
-//    [request setPostValue:self.textFieldPhoneNumber.text forKey:@"phone"];
-//    [request setPostValue:@"BL29231" forKey:@"bslno"];
-//    [request setPostValue:@"AB9301838" forKey:@"alslno"];
-//    [request setPostValue:self.textFieldTaxId.text forKey:@"btino"];
-//    [request setPostValue:self.cardExpiry forKey:@"card_expiry"];
-//    [request setPostValue:self.textFieldCreditCard.text forKey:@"card_number"];
-//    [request setPostValue:self.textFieldSecurityCode.text forKey:@"security_no"];
-//    [request setPostValue:[NSString stringWithFormat:@"%i",self.switchAgree.isOn] forKey:@"agree_terms"];
-//    [request setPostValue:@"0" forKey:@"save_trans"];
-//    [request setPostValue:@"Submit" forKey:@"send"];
-//    
-//    [request setCompletionBlock:^{
-//        // Use when fetching text data
-//        NSString *responseString = [request responseString];
-//        // Use when fetching binary data
-//        NSError *errorData = nil;
-//        NSData *responseData = [request responseData];
-//        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-//        
-////        //NSLog(@"%@\njson,%@",responseString,json);
-//        
-//        [self dismissViewControllerAnimated:YES completion:^{
-//            
-//        }];
-//        
-//    }];
-//    [request setFailedBlock:^{
-//        NSError *error = [request error];
-//        //NSLog(@"error:%@",error);
-//        
-//    }];
-//    [request startAsynchronous];
-    
-//    ABridge_SendTransaction *send = [[ABridge_SendTransaction alloc] init];
-//    [send loginToGateway];
-    
-//    NSString *uuid = @"";
-//    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"UUID_mobile"] == nil) {
-//        [[NSUserDefaults standardUserDefaults] setObject:[[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@"_"] forKey:@"UUID_mobile"];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//    }
-//    
-//    uuid = [[NSUserDefaults standardUserDefaults] objectForKey:@"UUID_mobile"];
-    
-//    MobileDeviceRegistrationRequest *registrationRequest=[MobileDeviceRegistrationRequest mobileDeviceRegistrationRequest];
-//    
-//    registrationRequest.anetApiRequest.merchantAuthentication.name=@"jovhenni19";
-//    
-//    registrationRequest.anetApiRequest.merchantAuthentication.password = @"Vhengshua19";
-//    
-//    registrationRequest.mobileDevice.mobileDescription=@"asd";
-//    registrationRequest.mobileDevice.mobileDeviceId= uuid;
-//    [AuthNet authNetWithEnvironment:ENV_TEST];
-//    AuthNet *an = [AuthNet getInstance];
-//    
-//    [an setDelegate:self];
-    
-//    [an mobileDeviceRegistrationRequest:registrationRequest];
-    
-    // Create our login request.
-//    MobileDeviceLoginRequest *mobileDeviceLoginRequest = [MobileDeviceLoginRequest mobileDeviceLoginRequest];
-//    mobileDeviceLoginRequest.anetApiRequest.merchantAuthentication.name = @"jovhenni19";
-//    mobileDeviceLoginRequest.anetApiRequest.merchantAuthentication.password = @"Vhengshua19";
-//    mobileDeviceLoginRequest.anetApiRequest.merchantAuthentication.mobileDeviceId = uuid;
-//    
-//    [AuthNet authNetWithEnvironment:ENV_TEST];
-//    AuthNet *an2 = [AuthNet getInstance];
-//    
-//    [an2 setDelegate:self];
-//    
-//    [an2 mobileDeviceLoginRequest:mobileDeviceLoginRequest];
-    
-//    [self createTransaction];
 }
 
 - (IBAction)resignKeyboards:(id)sender {
@@ -1164,10 +1088,10 @@
         NSMutableString *expiry = [NSMutableString stringWithString:@""];
         if (component == 0) {
             if(row < 9){
-                [expiry appendFormat:@"0%li",row+1];
+                [expiry appendFormat:@"0%li",(long)row+1];
             }
             else {
-                [expiry appendFormat:@"%li",row+1];
+                [expiry appendFormat:@"%li",(long)row+1];
             }
             
             NSInteger yearRow = [pickerView selectedRowInComponent:1];
@@ -1176,10 +1100,10 @@
         else {
             NSInteger monthRow = [pickerView selectedRowInComponent:0];
             if(monthRow < 10){
-                [expiry appendFormat:@"0%li",monthRow+1];
+                [expiry appendFormat:@"0%li",(long)monthRow+1];
             }
             else {
-                [expiry appendFormat:@"%li",monthRow+1];
+                [expiry appendFormat:@"%li",(long)monthRow+1];
             }
             
             [expiry appendFormat:@"/%@",[[self.arrayOfYear objectAtIndex:row] substringFromIndex:2]];
@@ -1245,10 +1169,10 @@
     
     NSMutableString *expiry = [NSMutableString stringWithString:@""];
     if(rowMonth < 10){
-        [expiry appendFormat:@"0%li",rowMonth+1];
+        [expiry appendFormat:@"0%li",(long)rowMonth+1];
     }
     else {
-        [expiry appendFormat:@"%li",rowMonth+1];
+        [expiry appendFormat:@"%li",(long)rowMonth+1];
     }
     
     [expiry appendFormat:@"/%@",[[self.arrayOfYear objectAtIndex:rowYear] substringFromIndex:2]];
@@ -1295,12 +1219,12 @@
             
             NSString *urlString = @"";
             if (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO) {
-                //r2
-                urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r2.php%@", parameters];
-            }
-            else {
                 //r1
                 urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r1.php%@", parameters];
+            }
+            else {
+                //r2
+                urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r2.php%@", parameters];
             }
             
 //            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@&price_paid=%@", self.referral_id, self.grossCommission];
@@ -1328,7 +1252,7 @@
             }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                //NSLog(@"error:%@",error);
+                NSLog(@" error:%@",error);
                 
             }];
             [request startAsynchronous];
@@ -1341,6 +1265,70 @@
     }
 }
 
+- (void) createInvoicePDF {
+    
+    NSString *agent_name = [NSString stringWithFormat:@"%@ %@",self.textFieldFirstname.text, self.textFieldLastname.text];
+    NSString *address = @"";
+    if ([self textIsNull:self.textFieldAddress1.text] == NO && [self textIsNull:self.textFieldAddress2.text] == YES) {
+        address = self.textFieldAddress1.text;
+    }
+    else if ([self textIsNull:self.textFieldAddress1.text] == YES && [self textIsNull:self.textFieldAddress2.text] == NO) {
+        address = self.textFieldAddress2.text;
+    }
+    else if ([self textIsNull:self.textFieldAddress1.text] == NO && [self textIsNull:self.textFieldAddress2.text] == NO) {
+        address = [NSString stringWithFormat:@"%@, %@",self.textFieldAddress1.text, self.textFieldAddress2.text];
+    }
+    NSString *cityStateZip = [NSString stringWithFormat:@"%@, %@ %@",self.textFieldCity.text, [self.arrayOfState objectAtIndex:[self.pickerState selectedRowInComponent:0]], self.textFieldZipcode.text];
+    
+    NSString *country = [self.arrayOfCountry objectAtIndex:[self.pickerCountry selectedRowInComponent:0]];
+    
+    NSDate *today = [NSDate date];
+    NSCalendar *gregorian = [[NSCalendar alloc]
+                             initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *weekdayComponents = [gregorian components:(NSDayCalendarUnit | NSWeekdayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit) fromDate:today];
+    NSInteger day = [weekdayComponents day];
+    NSInteger month = [weekdayComponents month];
+    NSInteger year = [weekdayComponents year];
+    
+    NSString *invoice_date = [NSString stringWithFormat:@"%li-%li-%li",(long)month,(long)day,(long)year];
+    NSString *referrence = [NSString stringWithFormat:@"%@, %@",self.referral_id, self.referral_name];
+    
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    [formatter setMaximumFractionDigits:0];
+    formatter.currencyCode = @"USD";
+    
+    NSString *service_fee = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]];
+    
+    NSString *htmlStringForPDF = [NSString stringWithFormat:HTMLSTRING_INVOICE,self.profile.broker_name, agent_name, address, cityStateZip, country, self.profile.broker_name, agent_name, address, cityStateZip, country, invoice_date, self.invoice_number, invoice_date, self.referral_id, invoice_date, invoice_date, referrence, service_fee, service_fee, service_fee, service_fee, self.profile.broker_name, agent_name, address, cityStateZip, country, self.user_id, agent_name, self.invoice_number, invoice_date, service_fee];
+    
+        self.webViewInvoice = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 1024.0f, 768.0f)];
+        self.webViewInvoice.delegate = self;
+    [self.webViewInvoice loadHTMLString:htmlStringForPDF baseURL:nil];
+    
+}
+
+- (void) createPaymentPDF {
+    
+    NSDate *today = [NSDate date];
+    NSCalendar *gregorian = [[NSCalendar alloc]
+                             initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *weekdayComponents = [gregorian components:(NSDayCalendarUnit | NSWeekdayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit) fromDate:today];
+    NSInteger day = [weekdayComponents day];
+    NSInteger month = [weekdayComponents month];
+    NSInteger year = [weekdayComponents year];
+    
+    NSString *date_today = [NSString stringWithFormat:@"%li-%li-%li",(long)month,(long)day,(long)year];
+    
+    NSString *htmlStringForPDF = [NSString stringWithFormat:HTMLSTRING_PAYMENT];
+    
+    self.payment_id = [NSString stringWithFormat:@"Payment_%@_%@_%@",self.user_id,self.user_id,[date_today stringByReplacingOccurrencesOfString:@"-" withString:@"_"]];
+    
+        self.webViewPayment = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 1024.0f, 768.0f)];
+        self.webViewPayment.delegate = self;
+    [self.webViewPayment loadHTMLString:htmlStringForPDF baseURL:nil];
+}
+
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     //NSLog(@"start");
 }
@@ -1350,57 +1338,98 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)theWebView {
-    NSUInteger contentHeight = [[theWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.body.scrollHeight;"]] intValue];
-    NSUInteger contentWidth = [[theWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.body.scrollWidth;"]] intValue];
-    [theWebView setFrame:CGRectMake(0, 0, contentWidth, contentHeight)];
-//    //NSLog(@"width:%i height:%i",contentWidth, contentHeight);
-    
-//    self.webViewHeight = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"] integerValue];
-    
-    CGRect screenRect = self.webView.frame;
-//    double currentWebViewHeight = self.webViewHeight;
-//    while (currentWebViewHeight > 0)
-//    {
-        self.imageName ++;
+    if (theWebView == self.webViewInvoice) {
         
+        NSUInteger contentHeight = [[theWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.body.scrollHeight;"]] intValue];
+        //    NSUInteger contentWidth = [[theWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.body.scrollWidth;"]] intValue];
+        [theWebView setFrame:CGRectMake(0, 0, 1024, contentHeight)];
+        //    //NSLog(@"width:%i height:%i",contentWidth, contentHeight);
+        
+        //    self.webViewHeight = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"] integerValue];
+        
+        CGRect screenRect = self.webViewInvoice.frame;
         UIGraphicsBeginImageContext(screenRect.size);
         CGContextRef ctx = UIGraphicsGetCurrentContext();
         [[UIColor blackColor] set];
         CGContextFillRect(ctx, screenRect);
         
-        [self.webView.layer renderInContext:ctx];
+        [self.webViewInvoice.layer renderInContext:ctx];
         
         UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *pngPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.png",self.imageName]];
+        NSString *pngPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",self.invoice_number]];
         
-//        if(currentWebViewHeight < 700)
-//        {
-            CGRect lastImageRect = CGRectMake(0, /*700 - currentWebViewHeight*/0, self.webView.frame.size.width, /*currentWebViewHeight*/768);
-            CGImageRef imageRef = CGImageCreateWithImageInRect([newImage CGImage], lastImageRect);
-            
-            newImage = [UIImage imageWithCGImage:imageRef];
-            CGImageRelease(imageRef);
-//        }
+        CGRect lastImageRect = CGRectMake(0, 0, self.webViewInvoice.frame.size.width, self.webViewInvoice.frame.size.height);
+        CGImageRef imageRef = CGImageCreateWithImageInRect([newImage CGImage], lastImageRect);
+        
+        newImage = [UIImage imageWithCGImage:imageRef];
+        CGImageRelease(imageRef);
         [UIImagePNGRepresentation(newImage) writeToFile:pngPath atomically:YES];
         
-//        [self.webView stringByEvaluatingJavaScriptFromString:@"window.scrollBy(0,960);"];
-//        currentWebViewHeight -= 700;
-//    }
-    [self drawPdf];
+        CGSize pageSize = CGSizeMake(self.webViewInvoice.frame.size.width, self.webViewInvoice.frame.size.height);
+        
+        if([self drawPdf:self.invoice_number pageSize:pageSize]) {
+            NSLog(@"Successfully created invoice");
+            [self createPaymentPDF];
+        }
+    }
+    else if (theWebView == self.webViewPayment) {
+        
+        NSUInteger contentHeight = [[theWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.body.scrollHeight;"]] intValue];
+        //    NSUInteger contentWidth = [[theWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.body.scrollWidth;"]] intValue];
+        [theWebView setFrame:CGRectMake(0, 0, 1024, contentHeight)];
+        //    //NSLog(@"width:%i height:%i",contentWidth, contentHeight);
+        
+        //    self.webViewHeight = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"] integerValue];
+        
+        CGRect screenRect = self.webViewPayment.frame;
+        UIGraphicsBeginImageContext(screenRect.size);
+        CGContextRef ctx = UIGraphicsGetCurrentContext();
+        [[UIColor blackColor] set];
+        CGContextFillRect(ctx, screenRect);
+        
+        [self.webViewPayment.layer renderInContext:ctx];
+        
+        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *pngPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",self.payment_id]];
+        
+        CGRect lastImageRect = CGRectMake(0, 0, self.webViewPayment.frame.size.width, self.webViewPayment.frame.size.height);
+        CGImageRef imageRef = CGImageCreateWithImageInRect([newImage CGImage], lastImageRect);
+        
+        newImage = [UIImage imageWithCGImage:imageRef];
+        CGImageRelease(imageRef);
+        [UIImagePNGRepresentation(newImage) writeToFile:pngPath atomically:YES];
+        
+        CGSize pageSize = CGSizeMake(self.webViewPayment.frame.size.width, self.webViewPayment.frame.size.height);
+        
+        if([self drawPdf:self.payment_id pageSize:pageSize]) {
+            NSLog(@"Successfully created Payment");
+            //if done
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transaction Successful" message:@"Your Transaction has completed Successfully!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            av.tag = 99;
+            [av show];
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+            self.buttonSubmit.enabled = YES;
+        }
+    }
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     return YES;
 }
 
-- (void) drawPdf
+- (BOOL) drawPdf:(NSString*)filename pageSize:(CGSize)pageSize
 {
-    CGSize pageSize = CGSizeMake(612, /*self.webViewHeight*/768);
-    NSString *fileName = @"Demo.pdf";
+    NSString *fileName = [NSString stringWithFormat:@"%@.pdf",filename];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *pdfFileName = [documentsDirectory stringByAppendingPathComponent:fileName];
@@ -1410,17 +1439,22 @@
     // Mark the beginning of a new page.
     UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, pageSize.width, pageSize.height), nil);
     
-    double currentHeight = 0.0;
-    for (int index = 1; index  <= self.imageName ; index++)
-    {
-        NSString *pngPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.png", index]];
+//    double currentHeight = 0.0;
+        NSString *pngPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", filename]];
         UIImage *pngImage = [UIImage imageWithContentsOfFile:pngPath];
         
-        [pngImage drawInRect:CGRectMake(0, currentHeight, pageSize.width, pngImage.size.height)];
-        currentHeight += pngImage.size.height;
-    }
+        [pngImage drawInRect:CGRectMake(0, /*currentHeight*/0, pageSize.width, pngImage.size.height)];
+//        currentHeight += pngImage.size.height;
     
     UIGraphicsEndPDFContext();
+    
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSError *error;
+    BOOL success =[fileManager removeItemAtPath:pngPath error:&error];
+    
+    return success;
 }
 
 @end

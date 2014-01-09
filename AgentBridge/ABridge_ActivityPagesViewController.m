@@ -32,6 +32,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelDescription;
 @property (weak, nonatomic) IBOutlet UIButton *buttonDescription;
 @property (strong, nonatomic) LoginDetails * loginDetail;
+
+@property (strong, nonatomic) NSString *pricePaid;
+
 - (IBAction)buttonActionPressed:(id)sender;
 @end
 
@@ -42,6 +45,7 @@
 @synthesize urlConnectionRequestAccess;
 @synthesize urlConnectionRequestNetwork;
 @synthesize loginDetail;
+@synthesize pricePaid;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -154,7 +158,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    //NSLog(@" error:%@",error);
+                    NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -325,7 +329,7 @@
                                       }];
                                      [requestA setFailedBlock:^{
                                          NSError *error = [requestA error];
-                                         //NSLog(@" error:%@",error);
+                                         NSLog(@" error:%@",error);
                                      }];
                                      
                                      [requestA startAsynchronous];
@@ -378,7 +382,7 @@
                  }];
                 [request setFailedBlock:^{
                     NSError *error = [request error];
-                    //NSLog(@" error:%@",error);
+                    NSLog(@" error:%@",error);
                 }];
                 
                 [request startAsynchronous];
@@ -505,6 +509,9 @@
                                     self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",encryptBuyerName];
                                 }
                             }
+                            else {
+                                self.labelActivityName.text = [NSString stringWithFormat:@"Referral %@ Update",self.activityDetail.referral_buyer_name];
+                            }
                             
                             if ([self.activityDetail.referral_response integerValue]) {
                                 message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. %@'s contact will be released once you have signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block,buyer_block];
@@ -533,16 +540,16 @@
                             NSString *htmlString = [NSString stringWithFormat:@"<html><head><style>body{font-family:'OpenSans'} a{text-decoration: none; color:#2C99CE;}</style></head><body>%@</body></html>", message_block];
                             
 //                            dispatch_async(dispatch_get_main_queue(), ^{
-                                CGSize constraint = CGSizeMake(200.0f - 20.0f, 20000.0f);
+                                CGSize constraint = CGSizeMake(200.0f - 0.0f, 20000.0f);
                                 
                                 CGSize size = [self.labelActivityName.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
                                 
-                                CGFloat height = MAX(size.height, 21.0f);
+                                CGFloat height = MAX(size.height, FONT_SIZE_REGULAR);
                                 
                                 CGRect frame = self.labelActivityName.frame;
                                 frame.size.height = height;
                                 self.labelActivityName.frame = frame;
-                                
+//                            NSLog(@"height:%f",height);
                                 frame = self.labelDateTime.frame;
                                 frame.origin.y = self.labelActivityName.frame.origin.y + self.labelActivityName.frame.size.height + 5.0f;
                                 self.labelDateTime.frame = frame;
@@ -555,7 +562,7 @@
                         }];
                         [request setFailedBlock:^{
                             NSError *error = [request error];
-                            //NSLog(@"error:%@",error);
+                            NSLog(@" error:%@",error);
                             
                         }];
                         [request startAsynchronous];
@@ -599,11 +606,51 @@
                         message = [NSString stringWithFormat:@"%@ has now closed your referral %@. AgentBridge will now be collecting a service fee.", user_name,buyer_name];
                         dispatch_async(dispatch_get_main_queue(), ^{
 //                            self.viewForDescription.hidden = NO;
+                            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@", self.activityDetail.referral_id];
                             
-                            self.labelDescription.hidden = YES;
-                            self.buttonDescription.hidden = NO;
-                            [self.buttonDescription setTitle:@"Pay" forState:UIControlStateNormal];
-                            self.buttonDescription.tag = 1901;
+                            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_closed_referral.php%@", parameters];
+                            
+                            
+                            //            //NSLog(@"urlString:%@",urlString);
+                            __block NSError *errorData = nil;
+                            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                            [request setCompletionBlock:^{
+                                // Use when fetching text data
+                                //                        NSString *responseString = [request responseString];
+                                // Use when fetching binary data
+                                NSData *responseData = [request responseData];
+                                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                                
+                                //                //NSLog(@"json:%@",json);
+                                if([[json objectForKey:@"data"] count]){
+                                    
+                                    if ([[[[json objectForKey:@"data"] firstObject] valueForKey:@"r1_paid"] boolValue] == YES) {
+                                        
+                                        self.labelDescription.hidden = NO;
+                                        self.buttonDescription.hidden = YES;
+                                        
+                                        self.labelDescription.text = @"Thank you for the payment. You may now change the status of the Referral to Completed.";
+                                    }
+                                    else {
+                                        self.pricePaid = [[[json objectForKey:@"data"] firstObject] valueForKey:@"price_paid"];
+                                        
+                                        self.labelDescription.hidden = YES;
+                                        self.buttonDescription.hidden = NO;
+                                        [self.buttonDescription setTitle:@"Pay" forState:UIControlStateNormal];
+                                        self.buttonDescription.tag = 1901;
+                                    }
+                                    
+                                }
+                                
+                            }];
+                            [request setFailedBlock:^{
+                                NSError *error = [request error];
+                                NSLog(@" error:%@",error);
+                                
+                            }];
+                            [request startAsynchronous];
+                            
+                            
                         });}
                         break;
                     case 5:
@@ -663,7 +710,7 @@
                             }];
                             [request setFailedBlock:^{
                                 NSError *error = [request error];
-                                //NSLog(@"error:%@",error);
+                                NSLog(@" error:%@",error);
                                 
                             }];
                             [request startAsynchronous];
@@ -902,11 +949,11 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            CGSize constraint = CGSizeMake(200.0f - 20.0f, 20000.0f);
+            CGSize constraint = CGSizeMake(200.0f - 0.0f, 20000.0f);
             
             CGSize size = [self.labelActivityName.text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
             
-            CGFloat height = MAX(size.height, 21.0f);
+            CGFloat height = MAX(size.height, FONT_SIZE_REGULAR);
             
             CGRect frame = self.labelActivityName.frame;
             frame.size.height = height;
@@ -1202,7 +1249,7 @@
 }
 
 - (IBAction)buttonActionPressed:(id)sender {
-//    //NSLog(@"pressed:%i",[((UIButton*)sender) tag]);
+// NSLog(@"pressed:%i",[((UIButton*)sender) tag]);
     switch ([((UIButton*)sender) tag]) {
         case 2501:{
             
@@ -1237,7 +1284,7 @@
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                //NSLog(@" error:%@",error);
+                NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1281,7 +1328,7 @@
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                //NSLog(@" error:%@",error);
+                NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1330,7 +1377,7 @@
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                //NSLog(@" error:%@",error);
+                NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1369,7 +1416,7 @@
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                //NSLog(@" error:%@",error);
+                NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1409,7 +1456,7 @@
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                //NSLog(@" error:%@",error);
+                NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1450,7 +1497,7 @@
              }];
             [request setFailedBlock:^{
                 NSError *error = [request error];
-                //NSLog(@" error:%@",error);
+                NSLog(@" error:%@",error);
             }];
             
             [request startAsynchronous];
@@ -1459,32 +1506,32 @@
         case 1901:{
             
             
-            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@", self.activityDetail.referral_id];
-            
-            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_closed_referral.php%@", parameters];
-            
-            
-//            //NSLog(@"urlString:%@",urlString);
-            __block NSError *errorData = nil;
-            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-            [request setCompletionBlock:^{
-                // Use when fetching text data
-                //                        NSString *responseString = [request responseString];
-                // Use when fetching binary data
-                NSData *responseData = [request responseData];
-                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-                
-//                //NSLog(@"json:%@",json);
-                if([[json objectForKey:@"data"] count]){
-                    
-                    if ([[[[json objectForKey:@"data"] firstObject] valueForKey:@"r2_paid"] boolValue] == YES) {
-                        
-                        self.labelDescription.hidden = NO;
-                        self.buttonDescription.hidden = YES;
-                        
-                        self.labelDescription.text = @"Thank you for the payment. You may now change the status of the Referral to Completed.";
-                    }
-                    else {
+//            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@", self.activityDetail.referral_id];
+//            
+//            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_closed_referral.php%@", parameters];
+//            
+//            
+////            //NSLog(@"urlString:%@",urlString);
+//            __block NSError *errorData = nil;
+//            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+//            [request setCompletionBlock:^{
+//                // Use when fetching text data
+//                //                        NSString *responseString = [request responseString];
+//                // Use when fetching binary data
+//                NSData *responseData = [request responseData];
+//                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+//                
+////                //NSLog(@"json:%@",json);
+//                if([[json objectForKey:@"data"] count]){
+//                    
+//                    if ([[[[json objectForKey:@"data"] firstObject] valueForKey:@"r2_paid"] boolValue] == YES) {
+//                        
+//                        self.labelDescription.hidden = NO;
+//                        self.buttonDescription.hidden = YES;
+//                        
+//                        self.labelDescription.text = @"Thank you for the payment. You may now change the status of the Referral to Completed.";
+//                    }
+//                    else {
                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                         ABridge_FeeCollectionViewController *viewController = (ABridge_FeeCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FeeCollection"];
                         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -1495,23 +1542,23 @@
                         viewController.user_id = self.loginDetail.user_id;
                         viewController.delegate = self;
                         viewController.referral_fee = [self.activityDetail.referral_fee floatValue]/100.0f;
-                        viewController.grossCommissionValue = [[[json objectForKey:@"data"] firstObject] valueForKey:@"price_paid"];
+                        viewController.grossCommissionValue = self.pricePaid;
                         
                         //                    //NSLog(@"gross:%@",[[[json objectForKey:@"data"] firstObject] valueForKey:@"price_paid"]);
                         [self presentViewController:viewController animated:YES completion:^{
                             
                         }];
-                    }
-                    
-                }
-                
-            }];
-            [request setFailedBlock:^{
-                NSError *error = [request error];
-                //NSLog(@"error:%@",error);
-                
-            }];
-            [request startAsynchronous];
+//                    }
+//                    
+//                }
+//                
+//            }];
+//            [request setFailedBlock:^{
+//                NSError *error = [request error];
+//                NSLog(@" error:%@",error);
+//                
+//            }];
+//            [request startAsynchronous];
             
             
             break;
@@ -1526,7 +1573,7 @@
 - (void)transactionCompletedSuccessfully {
     
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&agent_a=%@&activity_type=%@&update_id=%@", self.loginDetail.user_id, self.activityDetail.user_id,@"22",self.activityDetail.referral_update_id];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&agent_a=%@&activity_type=%@&update_id=%@&buyer_id=%@", self.loginDetail.user_id, self.activityDetail.user_id,@"22",self.activityDetail.referral_update_id,self.activityDetail.buyer_id];
     
     NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/paid_service_fee.php%@", parameters];
     
@@ -1552,7 +1599,7 @@
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        //NSLog(@"error:%@",error);
+        NSLog(@" error:%@",error);
         
     }];
     [request startAsynchronous];

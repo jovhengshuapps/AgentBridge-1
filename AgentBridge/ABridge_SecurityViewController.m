@@ -155,7 +155,7 @@
                   }];
                  [requestPassword setFailedBlock:^{
                      NSError *error = [requestPassword error];
-                     //NSLog(@" error:%@",error);
+                     NSLog(@" error:%@",error);
                  }];
                  
                  [requestPassword startAsynchronous];
@@ -172,7 +172,7 @@
          }];
         [request setFailedBlock:^{
             NSError *error = [request error];
-            //NSLog(@" error:%@",error);
+            NSLog(@" error:%@",error);
         }];
         
         [request startAsynchronous];

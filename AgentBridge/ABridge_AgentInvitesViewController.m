@@ -64,21 +64,21 @@
     self.buttonSend.enabled = NO;
     NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    NSError *error = nil;
-    NSArray *fetchedObjects = [context
-                               executeFetchRequest:fetchRequest error:&error];
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails" inManagedObjectContext:context];
+//    [fetchRequest setEntity:entity];
+//    NSError *error = nil;
+//    NSArray *fetchedObjects = [context
+//                               executeFetchRequest:fetchRequest error:&error];
     
-    fetchRequest = [[NSFetchRequest alloc] init];
-    entity = [NSEntityDescription entityForName:@"AgentProfile"
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"AgentProfile"
                          inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
-    error = nil;
-    fetchedObjects = nil;
-    fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    NSError *error = nil;
+//    fetchedObjects = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     
     for (AgentProfile *profile in fetchedObjects) {
         if ([profile.user_id integerValue] == [[[fetchedObjects firstObject] valueForKey:@"user_id"] integerValue]) {
@@ -137,7 +137,7 @@
     }];
     [request setFailedBlock:^{
         NSError *error = [request error];
-        //NSLog(@"25 error:%@",error);
+        NSLog(@"25 error:%@",error);
         
     }];
     [request startAsynchronous];
@@ -191,7 +191,7 @@
         }];
         [request setFailedBlock:^{
             NSError *error = [request error];
-            //NSLog(@"25 error:%@",error);
+            NSLog(@"25 error:%@",error);
             
         }];
         [request startAsynchronous];
@@ -233,7 +233,7 @@
     }];
     [requestSend setFailedBlock:^{
         NSError *error = [requestSend error];
-        //NSLog(@"25 error:%@",error);
+        NSLog(@"25 error:%@",error);
         
     }];
     [requestSend startAsynchronous];

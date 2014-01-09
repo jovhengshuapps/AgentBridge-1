@@ -106,13 +106,13 @@
     self.textEmail.backgroundColor = [UIColor clearColor];
     self.textPassword.backgroundColor = [UIColor clearColor];
     
-    self.tableView.layer.borderColor = [UIColor colorWithRed:25.0f/255.0f green:25.0f/255.0f blue:25.0f/255.0f alpha:1.0f].CGColor;
+    self.tableView.layer.borderColor = [UIColor colorWithRed:75.0f/255.0f green:75.0f/255.0f blue:75.0f/255.0f alpha:1.0f].CGColor;
     self.tableView.layer.borderWidth = 1.0f;
     self.tableView.layer.cornerRadius = 4.0f;
     self.tableView.layer.masksToBounds = YES;
 //    self.tableView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
     
-    self.tableView.separatorColor = [UIColor colorWithRed:25.0f/255.0f green:25.0f/255.0f blue:25.0f/255.0f alpha:1.0f];
+    self.tableView.separatorColor = [UIColor colorWithRed:75.0f/255.0f green:75.0f/255.0f blue:75.0f/255.0f alpha:1.0f];
     
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
