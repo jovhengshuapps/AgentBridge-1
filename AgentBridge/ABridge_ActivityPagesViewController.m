@@ -34,6 +34,7 @@
 @property (strong, nonatomic) LoginDetails * loginDetail;
 
 @property (strong, nonatomic) NSString *pricePaid;
+@property (strong, nonatomic) NSString *clrf_id;
 
 - (IBAction)buttonActionPressed:(id)sender;
 @end
@@ -46,6 +47,7 @@
 @synthesize urlConnectionRequestNetwork;
 @synthesize loginDetail;
 @synthesize pricePaid;
+@synthesize clrf_id;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -624,6 +626,8 @@
                                 //                //NSLog(@"json:%@",json);
                                 if([[json objectForKey:@"data"] count]){
                                     
+                                    self.clrf_id = [[[json objectForKey:@"data"] firstObject] valueForKey:@"clrf_id"];
+                                    
                                     if ([[[[json objectForKey:@"data"] firstObject] valueForKey:@"r1_paid"] boolValue] == YES) {
                                         
                                         self.labelDescription.hidden = NO;
@@ -679,11 +683,11 @@
                                 NSString *message_block = @"";
                                 if ([[json objectForKey:@"data"] count] == 0) {
                                     
-                                    message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. You have signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block];
+                                    message_block = [NSString stringWithFormat:/*@"You have accepted %@'s %@ referral on %@.*/ @"%@ have accepted your %@ referral on %@. You have signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block];
                                 }
                                 else {
                                     
-                                    message_block = [NSString stringWithFormat:@"You have accepted %@'s %@ referral on %@. You have not signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block];
+                                    message_block = [NSString stringWithFormat:/*@"You have accepted %@'s %@ referral on %@.*/ @"%@ have accepted your %@ referral on %@. You have not signed the Referral Agreement.", user_name, self.activityDetail.referral_fee, buyer_block];
                                     
                                     dispatch_async(dispatch_get_main_queue(), ^{
 //                                        self.viewForDescription.hidden = NO;
@@ -1590,10 +1594,40 @@
 //        //NSLog(@"json:%@",json);
         if([[json objectForKey:@"status"] integerValue] == 1){
             
-            self.labelDescription.hidden = NO;
+            self.labelDescription.hidden = YES;
             self.buttonDescription.hidden = YES;
             
-            self.labelDescription.text = @"Thank you for the payment. You may now change the status of the Referral to Completed.";
+            
+            NSString *updateCloseReferralString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r1.php?close_referral_id=%@", self.clrf_id];
+            
+            
+            
+            __block NSError *errorDataCLRF = nil;
+            __weak ASIHTTPRequest *requestCLRF = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:updateCloseReferralString]];
+            [requestCLRF setCompletionBlock:^{
+                // Use when fetching text data
+                //                        NSString *responseString = [request responseString];
+                // Use when fetching binary data
+                NSData *responseDataCLRF = [requestCLRF responseData];
+                NSDictionary *jsonCLRF = [NSJSONSerialization JSONObjectWithData:responseDataCLRF options:NSJSONReadingAllowFragments error:&errorDataCLRF];
+                
+                NSLog(@"json:%@",jsonCLRF);
+                if([[json objectForKey:@"status"] integerValue] == 1){
+                    
+                    self.labelDescription.hidden = NO;
+                    self.buttonDescription.hidden = YES;
+                    
+                    self.labelDescription.text = @"Thank you for the payment. You may now change the status of the Referral to Completed.";
+                    
+                }
+                
+            }];
+            [requestCLRF setFailedBlock:^{
+                NSError *error = [requestCLRF error];
+                NSLog(@" error:%@",error);
+                
+            }];
+            [requestCLRF startAsynchronous];
         }
         
     }];

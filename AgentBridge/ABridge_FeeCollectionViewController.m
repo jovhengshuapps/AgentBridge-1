@@ -655,7 +655,9 @@
                         
                     }
                     else {
-                        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your Gross Commission exceeds the limit." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your Gross Commission exceeds the limit." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        av.tag = 12;
+                        [self.grossCommission setString:@""];
                         [av show];
                     }
                     
@@ -857,7 +859,7 @@
         
 //        CGFloat total = [self.grossCommission doubleValue] + [self.serviceFee doubleValue];
         
-        NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], [self.serviceFee doubleValue], self.textFieldCreditCard.text, [self.cardExpiry stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"], self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, [self.textFieldPhoneNumber.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+        NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], [self.serviceFee doubleValue], self.textFieldCreditCard.text, [self.cardExpiry stringByReplacingOccurrencesOfString:@"/" withString:@"-"], self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, [self.textFieldPhoneNumber.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
         
         NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/send_transaction.php"];
         [urlString appendString:parameters];
@@ -874,7 +876,7 @@
          ^{
              NSData *responseData = [request responseData];
              NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-             NSLog(@"json:%@",json);
+//             NSLog(@"json:%@",json);
              if ([[json objectForKey:@"status"] integerValue] == YES) {
                  self.invoice_number = [[json objectForKey:@"data"] objectForKey:@"invoice_number"];
                  [self createInvoicePDF];
@@ -1184,18 +1186,20 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (pickerView == self.pickerExpiry) {
         NSMutableString *expiry = [NSMutableString stringWithString:@""];
-        if (component == 0) {
-            if(row < 9){
-                [expiry appendFormat:@"0%li",(long)row+1];
-            }
-            else {
-                [expiry appendFormat:@"%li",(long)row+1];
-            }
-            
-            NSInteger yearRow = [pickerView selectedRowInComponent:1];
-            [expiry appendFormat:@"/%@",[[self.arrayOfYear objectAtIndex:yearRow] substringFromIndex:2]];
-        }
-        else {
+//        if (component == 0) {
+//            
+//            NSInteger monthRow = [pickerView selectedRowInComponent:0];
+//            if(monthRow < 9){
+//                [expiry appendFormat:@"0%li",(long)monthRow+1];
+//            }
+//            else {
+//                [expiry appendFormat:@"%li",(long)monthRow+1];
+//            }
+//            
+//            NSInteger yearRow = [pickerView selectedRowInComponent:1];
+//            [expiry appendFormat:@"/%@",[[self.arrayOfYear objectAtIndex:yearRow] substringFromIndex:2]];
+//        }
+//        else {
             NSInteger monthRow = [pickerView selectedRowInComponent:0];
             if(monthRow < 9){
                 [expiry appendFormat:@"0%li",(long)monthRow+1];
@@ -1204,8 +1208,8 @@
                 [expiry appendFormat:@"%li",(long)monthRow+1];
             }
             
-            [expiry appendFormat:@"/%@",[[self.arrayOfYear objectAtIndex:row] substringFromIndex:2]];
-        }
+            [expiry appendFormat:@"/%@",[self.arrayOfYear objectAtIndex:row]];
+//        }
         self.cardExpiry = expiry;
         [self.buttonExpiry setTitle:[NSString stringWithFormat:@"Expiry date: %@",expiry] forState:UIControlStateNormal];
     }
@@ -1344,6 +1348,14 @@
         case 1:
             [self.textFieldGrossComission becomeFirstResponder];
             break;
+        case 12:{
+            [UIView animateWithDuration:0.2 animations:^{
+                [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x - 320.0f, 0.0f)];
+            } completion:^(BOOL finished) {
+                
+                [self.textFieldGrossComission becomeFirstResponder];
+            }];}
+            break;
         case 21:
             [self.textFieldFirstname becomeFirstResponder];
             break;
@@ -1369,21 +1381,61 @@
             [self statePressed:nil];
             break;
         case 99:{
+//            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@&price_paid=%@", self.referral_id, self.grossCommission];
+//            
+//            NSString *urlString = @"";
+//            if (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO) {
+//                //r1
+//                urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r1.php%@", parameters];
+//            }
+//            else {
+//                //r2
+//                urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r2.php%@", parameters];
+//            }
+//            
+////            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@&price_paid=%@", self.referral_id, self.grossCommission];
+////            
+////            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral.php%@", parameters];
+//            
+//            
+//            __block NSError *errorData = nil;
+//            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+//            [request setCompletionBlock:^{
+//                // Use when fetching text data
+//                //                        NSString *responseString = [request responseString];
+//                // Use when fetching binary data
+//                NSData *responseData = [request responseData];
+//                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+//                
+//                NSLog(@"json:%@",json);
+//                if([[json objectForKey:@"status"] integerValue] == 1){
+//                    
+//                    [self dismissViewControllerAnimated:YES completion:^{
+//                        [self.delegate transactionCompletedSuccessfully];
+//                    }];
+//                }
+//                
+//            }];
+//            [request setFailedBlock:^{
+//                NSError *error = [request error];
+//                NSLog(@" error:%@",error);
+//                
+//            }];
+//            [request startAsynchronous];
+//
+            
             NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@&price_paid=%@", self.referral_id, self.grossCommission];
             
             NSString *urlString = @"";
-            if (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO) {
-                //r1
-                urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r1.php%@", parameters];
-            }
-            else {
+            if (self.grossCommissionValue == nil || [self.grossCommissionValue isEqualToString:@""] == YES) {
+                
                 //r2
                 urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r2.php%@", parameters];
-            }
             
-//            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@&price_paid=%@", self.referral_id, self.grossCommission];
-//            
-//            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral.php%@", parameters];
+            
+            //            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@&price_paid=%@", self.referral_id, self.grossCommission];
+            //
+            //            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral.php%@", parameters];
             
             
             __block NSError *errorData = nil;
@@ -1395,7 +1447,7 @@
                 NSData *responseData = [request responseData];
                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                 
-                //NSLog(@"json:%@",json);
+//                NSLog(@"json:%@",json);
                 if([[json objectForKey:@"status"] integerValue] == 1){
                     
                     [self dismissViewControllerAnimated:YES completion:^{
@@ -1410,10 +1462,17 @@
                 
             }];
             [request startAsynchronous];
-            
+                
+            }
+            else {
+                
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [self.delegate transactionCompletedSuccessfully];
+                }];
+            }
             
             break;
-        }
+    }
         default:
             break;
     }
