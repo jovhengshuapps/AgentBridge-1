@@ -284,33 +284,33 @@
 
 - (IBAction)changeStatus:(id)sender {
     
-    self.arrayOfStatus = [NSArray arrayWithObjects: @"Active", @"Need Help", @"Closed", nil];
+//    self.arrayOfStatus = [NSArray arrayWithObjects: @"Active", @"Need Help", @"Closed", nil];
     
-//    switch (self.statusPicked_test) {
-//        case REFERRAL_STATUS_UNDERCONTRACT:
-//            self.arrayOfStatus = [NSArray arrayWithObjects: @"Active", @"Need Help", @"Closed", nil];
-//            break;
-//        case REFERRAL_STATUS_CLOSED:
-//            self.arrayOfStatus = [NSArray arrayWithObjects: @"Completed", nil];
-//            break;
-//        case REFERRAL_STATUS_NOGO:
-//            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
-//            break;
-//        case REFERRAL_STATUS_NEEDHELP:
-//            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"Under Contract", @"No Go",nil];
-//            break;
-//        case REFERRAL_STATUS_PENDING:
-//            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"No Go", @"Need Help", nil];
-//            break;
-//        case REFERRAL_STATUS_ACCEPTED:
-//            self.arrayOfStatus = [NSArray arrayWithObjects: @"Under Contract", @"No Go", @"Need Help", nil];
-//            break;
-//        case REFERRAL_STATUS_COMMISSIONRECEIVED:
-//            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
-//            break;
-//        default:
-//            break;
-//    }
+    switch (self.statusPicked_test) {
+        case REFERRAL_STATUS_UNDERCONTRACT:
+            self.arrayOfStatus = [NSArray arrayWithObjects: @"Active", @"Need Help", @"Closed", nil];
+            break;
+        case REFERRAL_STATUS_CLOSED:
+            self.arrayOfStatus = [NSArray arrayWithObjects: @"Completed", nil];
+            break;
+        case REFERRAL_STATUS_NOGO:
+            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
+            break;
+        case REFERRAL_STATUS_NEEDHELP:
+            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"Under Contract", @"No Go",nil];
+            break;
+        case REFERRAL_STATUS_PENDING:
+            self.arrayOfStatus = [NSArray arrayWithObjects:@"Active", @"No Go", @"Need Help", nil];
+            break;
+        case REFERRAL_STATUS_ACCEPTED:
+            self.arrayOfStatus = [NSArray arrayWithObjects: @"Under Contract", @"No Go", @"Need Help", nil];
+            break;
+        case REFERRAL_STATUS_COMMISSIONRECEIVED:
+            self.arrayOfStatus = [NSArray arrayWithObjects:nil];
+            break;
+        default:
+            break;
+    }
     
     if ([self.arrayOfStatus count]) {
         [self.pickerStatus reloadAllComponents];
@@ -331,6 +331,41 @@
         
         viewController.referral_id = self.referralDetails.referral_id;
         viewController.referral_name = self.referralDetails.client_name;
+        
+        viewController.client_email = self.referralDetails.client_email;
+        viewController.client_number = self.referralDetails.client_number;
+        
+        NSMutableString *addressString = [NSMutableString stringWithString:@""];
+        
+        if ([self isNull:self.referralDetails.client_address_1] == NO && [self isNull:self.referralDetails.client_address_2] == YES) {
+            [addressString appendString: self.referralDetails.client_address_1];
+        }
+        else if ([self isNull:self.referralDetails.client_address_1] == YES && [self isNull:self.referralDetails.client_address_2] == NO) {
+            [addressString appendString: self.referralDetails.client_address_2];
+        }
+        else if ([self isNull:self.referralDetails.client_address_1] == NO && [self isNull:self.referralDetails.client_address_2] == NO) {
+            [addressString appendString: [NSString stringWithFormat:@"%@, %@",self.referralDetails.client_address_1, self.referralDetails.client_address_2]];
+        }
+        
+        if ([self isNull:self.referralDetails.client_city] == NO && [self isNull:self.referralDetails.client_state_name] == YES) {
+            [addressString appendString: self.referralDetails.client_city];
+        }
+        else if ([self isNull:self.referralDetails.client_city] == YES && [self isNull:self.referralDetails.client_state_name] == NO) {
+            [addressString appendString: self.referralDetails.client_state_name];
+        }
+        else if ([self isNull:self.referralDetails.client_city] == NO && [self isNull:self.referralDetails.client_state_name] == NO) {
+            [addressString appendString: [NSString stringWithFormat:@"%@ %@ ",self.referralDetails.client_city, self.referralDetails.client_state_name]];
+        }
+        
+        [addressString appendString:self.referralDetails.client_zip];
+        
+        if ([self isNull:self.referralDetails.client_country_name] == NO) {
+            [addressString appendString: [NSString stringWithFormat:@", %@",self.referralDetails.client_country_name]];
+        }
+        NSLog(@"address:%@",addressString);
+        viewController.client_address = addressString;
+        
+        viewController.referral_agentname = self.referralDetails.agent_name;
         viewController.user_id = self.loginDetail.user_id;
         viewController.delegate = self;
         
@@ -634,9 +669,9 @@
     
     NSString *status_type = [NSString stringWithFormat:@"%i",REFERRAL_STATUS_CLOSED];
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&activity_type=%@note=%@&buyer_id=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"19",@"",self.referralDetails.client_id];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&note=%@&buyer_id=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"",self.referralDetails.client_id];
     
-    self.urlStringStatusChange = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_status.php%@", parameters];
+    self.urlStringStatusChange = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_status_referral_payment.php%@", parameters];
     
     
     __block NSError *errorData = nil;

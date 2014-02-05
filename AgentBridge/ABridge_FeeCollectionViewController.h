@@ -19,8 +19,14 @@
 @interface ABridge_FeeCollectionViewController : ABridge_ParentViewController <UITextFieldDelegate, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate, UIWebViewDelegate>
 
 @property (strong, nonatomic) NSString *referral_id;
-@property (strong, nonatomic) NSString *referral_name;
+@property (strong, nonatomic) NSString *referral_name; //client_name
 @property (assign, nonatomic) CGFloat referral_fee;
+@property (strong, nonatomic) NSString *referral_agentname;
+
+@property (strong, nonatomic) NSString *client_number;
+@property (strong, nonatomic) NSString *client_email;
+@property (strong, nonatomic) NSString *client_address;
+@property (strong, nonatomic) NSString *client_type;
 
 @property (strong, nonatomic) NSNumber *user_id;
 

@@ -200,7 +200,7 @@
                 
                 NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-%@.php%@", [entryActivities valueForKey:@"activity_type"], parameters];
                 
-//                NSLog(@"Did Finish:%@", urlString);
+                //NSLog(@"Did Finish:%@", urlString);
                 self.activityIndicator.hidden = NO;
                 [self.activityIndicator startAnimating];
                 __block NSError *errorData = nil;

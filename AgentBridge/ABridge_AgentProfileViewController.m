@@ -222,9 +222,9 @@
         cell.detailTextLabel.text = @"";
     }
     else {
-        if(![self.profileData.activation_status integerValue]){
+//        if(![self.profileData.activation_status integerValue]){
 //            row += 1;
-        }
+//        }
         if ([[self.arrayKTableKeys objectAtIndex:[indexPath row]] isEqualToString:@"brokerage"]) {
             cell.textLabel.text = @"Brokerage";
             cell.detailTextLabel.text = self.profileData.broker_name;
@@ -472,7 +472,7 @@
             frame.origin.y = self.labelName.frame.origin.y + self.labelName.frame.size.height + 5.0f;
             self.imageViewVerified.frame = frame;
             
-            if([self.profileData.activation_status integerValue])
+            if([self.profileData.is_term_accepted integerValue])
                 self.imageViewVerified.hidden = NO;
             else
                 self.imageViewVerified.hidden = YES;

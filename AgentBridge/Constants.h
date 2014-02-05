@@ -228,9 +228,9 @@
 "<td style=\"text-align:left\" valign=\"top\">"\
 "<ul style=\"list-style:none; margin:0; padding:0;\">"\
 "<li><strong>INSTRUCTIONS TO PAY AT CLOSING</strong></li>"\
-"<li>Agreement Date: November 12, 2013</li>"\
-"<li>Referral of Bono</li>"\
-"<li>Agent Bridge Referral ID: 1125</li>"\
+"<li>Agreement Date: %@</li>"\
+"<li>Referral of %@</li>"\
+"<li>Agent Bridge Referral ID: %@</li>"\
 "</ul>"\
 "</td>"\
 "</tr>"\
@@ -240,7 +240,7 @@
 "<tr><td>&nbsp;</td></tr>"\
 "<tr>"\
 "<td>Referencing AGREEMENT TO PAY REFERRAL FEE (\"Agreement\") by and between All Moves, (\"Referring Broker\")"\
-"and Al D'Amico & Associates (\"Receiving Broker\") with regard to the referral of Bono.</td>"\
+"and %@ (\"Receiving Broker\") with regard to the referral of %@.</td>"\
 "</tr>"\
 "</table>"\
 ""\
@@ -292,13 +292,13 @@
 "<td valign=\"top\" style=\"text-align:left\">"\
 "<ul style=\"list-style:none; margin:0; padding:0;\">"\
 "<li style=\"margin-bottom:5px;\">&nbsp;</li>"\
-"<li>Al D'Amico &amp; Associates</li>"\
-"<li>BL456</li>"\
-"<li>Morgan Ladrange</li>"\
-"<li>AB456</li>"\
-"<li>n/a</li>"\
-"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">morgan.ladrange@yopmail.com</a></li>"\
-"<li>12345677</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">%@</a></li>"\
+"<li>%@</li>"\
 "</ul>"\
 "</td>"\
 "<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
@@ -320,12 +320,12 @@
 "<td valign=\"top\" style=\"text-align:left\">"\
 "<ul style=\"list-style:none; margin:0; padding:0;\">"\
 "<li style=\"margin-bottom:5px;\">&nbsp;</li>"\
-"<li>Bono</li>"\
-"<li>(818) 213-4567</li>"\
-"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">bono@bono.com</a></li>"\
-"<li>Twentynine Palms California 92278, United States</li>"\
-"<li>Buying and Selling</li>"\
-"<li>25%%</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">%@</a></li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
 "</ul>"\
 "</td>"\
 "<td valign=\"top\" width=\"50px\">&nbsp;</td>"\
@@ -345,10 +345,10 @@
 "<td valign=\"top\" style=\"text-align:left\">"\
 "<ul style=\"list-style:none; margin:0; padding:0;\">"\
 "<li style=\"margin-bottom:5px;\">&nbsp;</li>"\
-"<li>November 12, 2013</li>"\
-"<li>$100,000</li>"\
-"<li>25%%</li>"\
-"<li><strong>$25,000</strong></li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li><strong>%@</strong></li>"\
 "</ul>"\
 "</td>"\
 "<td valign=\"top\" width=\"50px\">&nbsp;</td>"\

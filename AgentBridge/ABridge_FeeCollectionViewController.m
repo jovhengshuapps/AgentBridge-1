@@ -59,7 +59,11 @@
 @property (weak, nonatomic) IBOutlet UIView *viewInfo;
 @property (weak, nonatomic) IBOutlet UILabel *labelContactInfoHeader; //order summary
 @property (weak, nonatomic) IBOutlet UILabel *labelCreditCardInfo;
+@property (weak, nonatomic) IBOutlet UIView *viewForTerms;
+@property (weak, nonatomic) IBOutlet UITextView *textViewForTerms;
+@property (weak, nonatomic) IBOutlet UIView *viewForScrollView;
 
+@property (weak, nonatomic) IBOutlet UIView *topNavBar;
 
 @property (strong, nonatomic) NSArray *arrayOfMonth;
 @property (strong, nonatomic) NSMutableArray *arrayOfYear;
@@ -98,6 +102,7 @@
 - (IBAction)expiryPressed:(id)sender;
 - (IBAction)submitTransaction:(id)sender;
 - (IBAction)resignKeyboards:(id)sender;
+- (IBAction)hideTermsView:(id)sender;
 
 @end
 
@@ -129,6 +134,11 @@
 @synthesize profile;
 @synthesize invoice_number;
 @synthesize payment_id;
+@synthesize referral_agentname;
+@synthesize client_address;
+@synthesize client_email;
+@synthesize client_number;
+@synthesize client_type;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -507,7 +517,12 @@
         
     }
     
-    self.textViewTop.showsHorizontalScrollIndicator = YES;
+    self.textViewTop.showsVerticalScrollIndicator = YES;
+    
+    UITapGestureRecognizer *tapTerms = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showTermsView)];
+    tapTerms.numberOfTapsRequired = 1;
+    tapTerms.numberOfTouchesRequired = 1;
+    [self.labelAgree addGestureRecognizer:tapTerms];
 }
 
 - (void)didReceiveMemoryWarning
@@ -620,7 +635,9 @@
                         
                         self.labelTotalValue.text = [formatter stringFromNumber: [NSNumber numberWithDouble:total]];
                         
-                        self.textViewTop.text = [NSString stringWithFormat:@"The %@ referral fee of %@ is ready to to be disbursed.\nAgentBridge will now be collecting the service fee of %@.\n\nGross Commission of %@: %@", self.referral_name, [formatter stringFromNumber: [NSNumber numberWithDouble:([self.grossCommission doubleValue] * self.referral_fee)]], [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]], self.loginDetails.name, [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]]];
+                        NSString * commissionString = (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO)?[NSString stringWithFormat:@"Your Gross Commission: %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]] ]: [NSString stringWithFormat:@"Gross Commission of %@: %@", self.referral_agentname, [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]]];
+                        
+                        self.textViewTop.text = [NSString stringWithFormat:@"The %@ referral fee of %@ is ready to to be disbursed. AgentBridge will now be collecting the service fee of %@.\n\n%@", self.referral_name, [formatter stringFromNumber: [NSNumber numberWithDouble:([self.grossCommission doubleValue] * self.referral_fee)]], [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]], commissionString ];
                         
 //                        CGSize constraint = CGSizeMake(self.textViewTop.frame.size.width - 10.0f, 20000.0f);
 //                        
@@ -840,12 +857,12 @@
         
 //        CGFloat total = [self.grossCommission doubleValue] + [self.serviceFee doubleValue];
         
-        NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], [self.serviceFee doubleValue], self.textFieldCreditCard.text, [self.cardExpiry stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"], self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, self.textFieldPhoneNumber.text, self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+        NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], [self.serviceFee doubleValue], self.textFieldCreditCard.text, [self.cardExpiry stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"], self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, [self.textFieldPhoneNumber.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
         
         NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/send_transaction.php"];
         [urlString appendString:parameters];
         
-        NSLog(@"url:%@",urlString);
+//        NSLog(@"url:%@",urlString);
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
@@ -946,6 +963,42 @@
     [self.textFieldSecurityCode resignFirstResponder];
 }
 
+- (IBAction)hideTermsView:(id)sender {
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = self.viewForScrollView.frame;
+        frame.origin.x = 0.0f;
+        self.viewForScrollView.frame = frame;
+//
+//        frame = self.scrollView.frame;
+//        frame.origin.x = 0.0f;
+//        self.scrollView.frame = frame;
+        
+        frame = self.viewForTerms.frame;
+        frame.origin.x = 320.0f;
+        self.viewForTerms.frame = frame;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void) showTermsView {
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = self.viewForScrollView.frame;
+        frame.origin.x = -320.0f;
+        self.viewForScrollView.frame = frame;
+//
+//        frame = self.scrollView.frame;
+//        frame.origin.x = -320.0f;
+//        self.scrollView.frame = frame;
+        
+        frame = self.viewForTerms.frame;
+        frame.origin.x = 0.0f;
+        self.viewForTerms.frame = frame;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 - (BOOL) textIsNull:(NSString*)text {
     return ([text isEqualToString:@""] == YES || text == nil);
 }
@@ -1039,6 +1092,51 @@
 }
 
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+    if (textField == self.textFieldPhoneNumber) {
+        
+        NSMutableString *mobileNumber = [NSMutableString stringWithString:textField.text];
+        [mobileNumber replaceOccurrencesOfString:@"-" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
+        [mobileNumber replaceOccurrencesOfString:@"(" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
+        [mobileNumber replaceOccurrencesOfString:@")" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
+        [mobileNumber replaceOccurrencesOfString:@" " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [mobileNumber length])];
+        textField.text = mobileNumber;
+    }
+    
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    
+    if (textField == self.textFieldPhoneNumber) {
+        
+        NSMutableString *string = [NSMutableString stringWithString:textField.text];
+        [string replaceOccurrencesOfString:@";" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [string length])];
+        [string replaceOccurrencesOfString:@"+" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [string length])];
+        [string replaceOccurrencesOfString:@"#" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [string length])];
+        [string replaceOccurrencesOfString:@"*" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [string length])];
+        NSMutableString *mobileNumbers = [NSMutableString stringWithString:@""];
+        for (NSString *number in [string componentsSeparatedByString:@","]) {
+            if (![number isEqualToString:@""]) {
+                if([number length] == 7) {
+                    [mobileNumbers appendString: [NSString stringWithFormat:@"%@-%@",[number substringToIndex:3],[number substringFromIndex:3]]];
+                }
+                else if([number length] > 7 && [number length] < 11) {
+                    [mobileNumbers appendString: [NSString stringWithFormat:@"(%@) %@-%@",[number substringWithRange:NSMakeRange(0, [number length]-7)],[number substringWithRange:NSMakeRange([number length]-7, 3)],[number substringWithRange:NSMakeRange([number length]-4, 4)]]];
+                }
+                
+                if (![number isEqualToString:[[string componentsSeparatedByString:@","] lastObject]]) {
+                    [mobileNumbers appendString:@","];
+                }
+                
+            }
+        }
+        
+        textField.text = mobileNumbers;
+    }
+    
+}
+
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     if(pickerView == self.pickerExpiry){
         return 2;
@@ -1099,7 +1197,7 @@
         }
         else {
             NSInteger monthRow = [pickerView selectedRowInComponent:0];
-            if(monthRow < 10){
+            if(monthRow < 9){
                 [expiry appendFormat:@"0%li",(long)monthRow+1];
             }
             else {
@@ -1168,7 +1266,7 @@
     self.selectedStateID = [self.arrayOfState_ID objectAtIndex:rowState];
     
     NSMutableString *expiry = [NSMutableString stringWithString:@""];
-    if(rowMonth < 10){
+    if(rowMonth < 9){
         [expiry appendFormat:@"0%li",(long)rowMonth+1];
     }
     else {
@@ -1183,6 +1281,62 @@
     self.viewPickerExpiry.hidden = YES;
     self.viewPickerCountry.hidden = YES;
     self.viewPickerState.hidden = YES;
+}
+
+- (NSString*) monthName:(NSInteger)monthNumber {
+    switch (monthNumber) {
+        case 1:
+            return @"January";
+            break;
+            
+        case 2:
+            return @"February";
+            break;
+            
+        case 3:
+            return @"March";
+            break;
+            
+        case 4:
+            return @"April";
+            break;
+            
+        case 5:
+            return @"May";
+            break;
+            
+        case 6:
+            return @"June";
+            break;
+            
+        case 7:
+            return @"July";
+            break;
+            
+        case 8:
+            return @"August";
+            break;
+            
+        case 9:
+            return @"September";
+            break;
+            
+        case 10:
+            return @"October";
+            break;
+            
+        case 11:
+            return @"November";
+            break;
+            
+        case 12:
+            return @"December";
+            break;
+            
+        default:
+            return @"January";
+            break;
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -1310,6 +1464,7 @@
 
 - (void) createPaymentPDF {
     
+    NSString *agent_name = [NSString stringWithFormat:@"%@ %@",self.textFieldFirstname.text, self.textFieldLastname.text];
     NSDate *today = [NSDate date];
     NSCalendar *gregorian = [[NSCalendar alloc]
                              initWithCalendarIdentifier:NSGregorianCalendar];
@@ -1320,7 +1475,18 @@
     
     NSString *date_today = [NSString stringWithFormat:@"%li-%li-%li",(long)month,(long)day,(long)year];
     
-    NSString *htmlStringForPDF = [NSString stringWithFormat:HTMLSTRING_PAYMENT];
+    NSString *payment_date = [NSString stringWithFormat:@"%@ %li, %li",[self monthName:month],(long)day,(long)year];
+    
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    [formatter setMaximumFractionDigits:0];
+    formatter.currencyCode = @"USD";
+    
+    NSString *referralFeeDetail = [formatter stringFromNumber: [NSNumber numberWithDouble:(self.referral_fee * 100.0f)]];
+    
+    NSString *grossCommissionSale = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]];
+    
+    NSString *htmlStringForPDF = [NSString stringWithFormat:HTMLSTRING_PAYMENT, payment_date, self.referral_name, self.loginDetails.user_id, self.profile.broker_name, self.referral_name, self.profile.broker_name,self.textFieldBrokerLicense.text, agent_name, self.textFieldAgentLicense.text, self.textFieldPhoneNumber.text, self.textFieldEmail.text, self.textFieldTaxId.text, self.referral_name, self.client_number, self.client_email, self.client_address, self.client_type, [NSString stringWithFormat:@"%f%%",(self.referral_fee * 100.0f) ], payment_date, grossCommissionSale, [NSString stringWithFormat:@"%f%%",(self.referral_fee * 100.0f) ], referralFeeDetail];
     
     self.payment_id = [NSString stringWithFormat:@"Payment_%@_%@_%@",self.user_id,self.user_id,[date_today stringByReplacingOccurrencesOfString:@"-" withString:@"_"]];
     

@@ -865,7 +865,7 @@
     for (NSString *number in [string componentsSeparatedByString:@","]) {
         if (![number isEqualToString:@""]) {
             if([number length] == 7) {
-                [mobileNumbers appendString: [NSString stringWithFormat:@"%@-%@",[number substringToIndex:3],[number substringFromIndex:4]]];
+                [mobileNumbers appendString: [NSString stringWithFormat:@"%@-%@",[number substringToIndex:3],[number substringFromIndex:3]]];
             }
             else if([number length] > 7 && [number length] < 11) {
                 [mobileNumbers appendString: [NSString stringWithFormat:@"(%@) %@-%@",[number substringWithRange:NSMakeRange(0, [number length]-7)],[number substringWithRange:NSMakeRange([number length]-7, 3)],[number substringWithRange:NSMakeRange([number length]-4, 4)]]];

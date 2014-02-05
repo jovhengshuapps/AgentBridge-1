@@ -1543,7 +1543,8 @@
                         viewController.delegate = self;
                         viewController.referral_fee = [self.activityDetail.referral_fee floatValue]/100.0f;
                         viewController.grossCommissionValue = self.pricePaid;
-                        
+            
+//            NSLog(@"referral_id:%@", self.activityDetail.referral_id);
                         //                    //NSLog(@"gross:%@",[[[json objectForKey:@"data"] firstObject] valueForKey:@"price_paid"]);
                         [self presentViewController:viewController animated:YES completion:^{
                             
@@ -1573,10 +1574,9 @@
 - (void)transactionCompletedSuccessfully {
     
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&agent_a=%@&activity_type=%@&update_id=%@&buyer_id=%@", self.loginDetail.user_id, self.activityDetail.user_id,@"22",self.activityDetail.referral_update_id,self.activityDetail.buyer_id];
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&agent_a=%@&activity_type=%@&update_id=%@&buyer_id=%@", self.loginDetail.user_id, self.activityDetail.user_id,@"22",self.activityDetail.referral_id,self.activityDetail.buyer_id];
     
     NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/paid_service_fee.php%@", parameters];
-    
     
     __block NSError *errorData = nil;
     __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
