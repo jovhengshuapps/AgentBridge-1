@@ -13,5 +13,6 @@
 @interface ABridge_ActivityAgentProfileViewController : ABridge_ParentViewController <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) NSString *user_id;
+@property (assign, nonatomic) BOOL fromSearch;
 
 @end

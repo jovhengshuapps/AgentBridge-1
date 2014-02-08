@@ -9,6 +9,10 @@
 #import "ABridge_SearchViewController.h"
 #import "ASIHTTPRequest.h"
 #import "Constants.h"
+#import "MyImage.h"
+#import "ABridge_ActivityAgentProfileViewController.h"
+#import "UIImage+ImageResize.h"
+#import "ABridge_ActivityAgentPOPsViewController.h"
 
 @interface ABridge_SearchViewController ()
 @property (nonatomic, assign) CGFloat peekLeftAmount;
@@ -16,6 +20,8 @@
 
 @property (strong, nonatomic) NSMutableArray *arrayAgents;
 @property (strong, nonatomic) NSMutableArray *arrayPOPs;
+@property (strong, nonatomic) NSTimer* timer;
+@property (strong, nonatomic) UIView *viewOverlay;
 @end
 
 @implementation ABridge_SearchViewController
@@ -23,6 +29,8 @@
 @synthesize selectedScope;
 @synthesize arrayAgents;
 @synthesize arrayPOPs;
+@synthesize viewOverlay;
+@synthesize timer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,9 +46,35 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    
+    
     self.peekLeftAmount = 50.0f;
     [self.slidingViewController setAnchorLeftPeekAmount:self.peekLeftAmount];
     self.slidingViewController.underRightWidthLayout = ECVariableRevealWidth;
+    
+    self.searchDisplayController.searchBar.showsScopeBar = YES;
+    
+    
+    self.viewOverlay = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 50.0f, 50.0f)];
+    self.viewOverlay.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
+    self.viewOverlay.layer.cornerRadius = 10.0f;
+    self.viewOverlay.layer.masksToBounds = YES;
+    
+    CGPoint center = self.view.center;
+    center.x -= 50.0f;
+    self.viewOverlay.center = center;
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    activityIndicator.frame = CGRectMake(15.0, 15.0f, 20.0f, 20.0f);
+    activityIndicator.hidden = NO;
+        [activityIndicator startAnimating];
+        
+        [self.viewOverlay addSubview:activityIndicator];
+
+    
+    [self.view addSubview:self.viewOverlay];
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkIfLoading) userInfo:nil repeats:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,6 +83,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void) checkIfLoading {
+    if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
+        self.viewOverlay.hidden = NO;
+    }
+    else {
+        self.viewOverlay.hidden = YES;
+        [timer invalidate];
+    }
+}
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
@@ -62,6 +106,8 @@
         }
         self.view.frame = frame;
     } onComplete:nil];
+    
+    searchBar.showsScopeBar = YES;
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
@@ -76,17 +122,31 @@
         }
         self.view.frame = frame;
     } onComplete:nil];
+    
+    searchBar.showsScopeBar = YES;
+    [searchBar sizeToFit];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope_ {
+    searchBar.showsScopeBar = YES;
     self.selectedScope = selectedScope_;
 //    [self loadResults];
+
+    self.arrayPOPs = nil;
+    self.arrayAgents = nil;
     
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    searchBar.showsScopeBar = YES;
     [self loadResults];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+    searchBar.showsScopeBar = YES;
+    [searchBar sizeToFit];
 }
 
 - (void) loadResults {
@@ -132,6 +192,7 @@
                      NSData *responseData = [request responseData];
                      NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                      
+//                     NSLog(@"jsonSearch:%@",json);
                      if ([[json objectForKey:@"data"] count]) {
                          
                          if (self.arrayPOPs == nil) {
@@ -146,7 +207,7 @@
                              else {
                                  imageString = [entry valueForKey:@"pops_image"];
                              }
-                             [self.arrayPOPs addObject:[NSDictionary dictionaryWithObjectsAndKeys:[entry valueForKey:@"property_name"], @"name_key", [entry valueForKey:@"listing_id"], @"id_key", imageString, @"image_key", nil]];
+                             [self.arrayPOPs addObject:[NSDictionary dictionaryWithObjectsAndKeys:[entry valueForKey:@"property_name"], @"name_key", [entry valueForKey:@"listing_id"], @"id_key",[entry valueForKey:@"user_id"], @"user_id_key", imageString, @"image_key", nil]];
                              
                          }
                          
@@ -184,7 +245,6 @@
          ^{
              NSData *responseData = [request responseData];
              NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-             
              if ([[json objectForKey:@"data"] count]) {
                  
                  if (self.arrayAgents == nil) {
@@ -192,7 +252,7 @@
                  }
                  
                  for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                     [self.arrayAgents addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%@ %@",[entry valueForKey:@"firstname"], [entry valueForKey:@"lastname"]], @"name_key", [entry valueForKey:@"user_id"], @"id_key", [entry valueForKey:@"image"], @"image_key", nil]];
+                     [self.arrayAgents addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%@ %@",[entry valueForKey:@"firstname"], [entry valueForKey:@"lastname"]], @"name_key", [entry valueForKey:@"unique_id"], @"id_key", [entry valueForKey:@"image"], @"image_key", nil]];
                  }
                  
              }
@@ -302,6 +362,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    tableView.backgroundColor = [UIColor clearColor];
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     if (self.selectedScope == 1) {
         return [self.arrayPOPs count];
     }
@@ -322,9 +385,9 @@
     
     CGSize constraint = CGSizeMake(tableView.frame.size.width - 20.0f, 20000.0f);
     
-    CGSize size = [text sizeWithFont:FONT_OPENSANS_REGULAR(22.0f) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    CGFloat height = MAX(size.height, 22.0f);
+    CGFloat height = MAX(size.height, 44.0f);
     
     return height;
 }
@@ -337,14 +400,16 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.textLabel.font = FONT_OPENSANS_REGULAR(22.0f);
+        cell.textLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.textLabel.numberOfLines = 0;
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.backgroundColor = [UIColor clearColor];
     }
     
     if (self.selectedScope == 1) {
         cell.textLabel.text = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"name_key"];
-        cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        cell.imageView.contentMode = UIViewContentModeRedraw;
         
         NSString *imageURLString = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"image_key"];
         
@@ -361,21 +426,59 @@
     }
     else {
         cell.textLabel.text = [[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"name_key"];
-        cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        cell.imageView.backgroundColor = [UIColor redColor];
+        
         if ([[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"image_key"] == nil || [[[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"image_key"] isEqualToString:@""] == YES || [[[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"image_key"] isEqualToString:@"/agent_bridge/templates/agentbridge/images/temp/blank-image.jpg"] == YES) {
-            cell.imageView.image = [UIImage imageNamed:@"blank-image.png"];
+            cell.imageView.image = [MyImage imageWithImage:[UIImage imageNamed:@"blank-image.png"] resizeToFitWidth:44.0f];
             
         }
         else {
             
             NSData *image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"image_key"]]];
-            cell.imageView.image = [UIImage imageWithData:image_data];
+            UIImage *image =[UIImage imageWithData:image_data];
+            
+            cell.imageView.image = [image resizeImageToFitWidth:44.0f fromData:image_data];
+            
         }
     }
     
     
     
     return cell;
+}
+
+#pragma
+#pragma mark UITableView Delegate Methods
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.selectedScope == 1) {
+        
+        ABridge_ActivityAgentPOPsViewController *popsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ActivityAgentPOPs"];
+        popsViewController.user_id = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"user_id_key"];
+        popsViewController.listing_id = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"id_key"];
+        popsViewController.fromSearch = YES;
+        
+        popsViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        popsViewController.modalPresentationStyle = UIModalPresentationNone;
+        
+        [self presentViewController:popsViewController animated:NO completion:^{
+            
+        }];
+    }
+    else {
+        
+        ABridge_ActivityAgentProfileViewController *profileViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ActivityAgentProfile"];
+        profileViewController.user_id = [[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"id_key"];
+        profileViewController.fromSearch = YES;
+        
+        profileViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        profileViewController.modalPresentationStyle = UIModalPresentationNone;
+        
+        [self presentViewController:profileViewController animated:NO completion:^{
+        
+        }];
+        
+    }
 }
 
 @end

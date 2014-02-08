@@ -64,6 +64,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewForScrollView;
 
 @property (weak, nonatomic) IBOutlet UIView *topNavBar;
+@property (weak, nonatomic) IBOutlet UIWebView *webViewTerms;
 
 @property (strong, nonatomic) NSArray *arrayOfMonth;
 @property (strong, nonatomic) NSMutableArray *arrayOfYear;
@@ -523,6 +524,9 @@
     tapTerms.numberOfTapsRequired = 1;
     tapTerms.numberOfTouchesRequired = 1;
     [self.labelAgree addGestureRecognizer:tapTerms];
+    
+    
+    [self.webViewTerms loadHTMLString:HTMLSTRING_TERMS baseURL:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -584,7 +588,7 @@
             if ([self textIsNull:self.grossCommission] == YES) {
                 
                 continueToNextView = NO;
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Required Information" message:@"Please enter the Gross Commission." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Required Information" message:@"Please enter Gross Comission." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 av.tag = 1;
                 [av show];
             }
@@ -635,7 +639,7 @@
                         
                         self.labelTotalValue.text = [formatter stringFromNumber: [NSNumber numberWithDouble:total]];
                         
-                        NSString * commissionString = (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO)?[NSString stringWithFormat:@"Your Gross Commission: %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]] ]: [NSString stringWithFormat:@"Gross Commission of %@: %@", self.referral_agentname, [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]]];
+                        NSString * commissionString = (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO)?[NSString stringWithFormat:@"Your Gross Comission: %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]] ]: [NSString stringWithFormat:@"Gross Comission of %@: %@", self.referral_agentname, [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]]];
                         
                         self.textViewTop.text = [NSString stringWithFormat:@"The %@ referral fee of %@ is ready to to be disbursed. AgentBridge will now be collecting the service fee of %@.\n\n%@", self.referral_name, [formatter stringFromNumber: [NSNumber numberWithDouble:([self.grossCommission doubleValue] * self.referral_fee)]], [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]], commissionString ];
                         
@@ -655,7 +659,7 @@
                         
                     }
                     else {
-                        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your Gross Commission exceeds the limit." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your Gross Comission exceeds the limit." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                         av.tag = 12;
                         [self.grossCommission setString:@""];
                         [av show];
@@ -859,7 +863,7 @@
         
 //        CGFloat total = [self.grossCommission doubleValue] + [self.serviceFee doubleValue];
         
-        NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], [self.serviceFee doubleValue], self.textFieldCreditCard.text, [self.cardExpiry stringByReplacingOccurrencesOfString:@"/" withString:@"-"], self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, [self.textFieldPhoneNumber.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+        NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], [self.serviceFee doubleValue], self.textFieldCreditCard.text, /*[*/self.cardExpiry/* stringByReplacingOccurrencesOfString:@"/" withString:@"-"]*/, self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, [self.textFieldPhoneNumber.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
         
         NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/send_transaction.php"];
         [urlString appendString:parameters];
@@ -1208,7 +1212,7 @@
                 [expiry appendFormat:@"%li",(long)monthRow+1];
             }
             
-            [expiry appendFormat:@"/%@",[self.arrayOfYear objectAtIndex:row]];
+            [expiry appendFormat:@"-%@",[self.arrayOfYear objectAtIndex:row]];
 //        }
         self.cardExpiry = expiry;
         [self.buttonExpiry setTitle:[NSString stringWithFormat:@"Expiry date: %@",expiry] forState:UIControlStateNormal];
@@ -1277,7 +1281,7 @@
         [expiry appendFormat:@"%li",(long)rowMonth+1];
     }
     
-    [expiry appendFormat:@"/%@",[[self.arrayOfYear objectAtIndex:rowYear] substringFromIndex:2]];
+    [expiry appendFormat:@"-%@",[self.arrayOfYear objectAtIndex:rowYear]];
     
     self.cardExpiry = expiry;
     [self.buttonExpiry setTitle:[NSString stringWithFormat:@"Expiry date: %@",expiry] forState:UIControlStateNormal];

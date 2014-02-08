@@ -16,4 +16,5 @@
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) Referral *referralDetails;
+@property (assign, nonatomic) BOOL isReferralOut;
 @end

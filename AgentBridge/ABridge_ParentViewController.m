@@ -48,6 +48,7 @@
         self.slidingViewController.underRightViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Search"];
     }
     
+    
 //    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     [self.imageViewTopBar addGestureRecognizer:self.slidingViewController.panGesture];
 }

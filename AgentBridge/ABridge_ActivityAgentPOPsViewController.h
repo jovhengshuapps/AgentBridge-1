@@ -15,6 +15,9 @@
 @property (strong, nonatomic) UIPageViewController *pageController;
 
 @property (strong, nonatomic) NSString *user_id;
+@property (strong, nonatomic) NSString *listing_id;
 @property (strong, nonatomic) NSString *user_name;
+
+@property (assign, nonatomic) BOOL fromSearch;
 
 @end

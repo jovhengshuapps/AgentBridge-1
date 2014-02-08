@@ -9,6 +9,7 @@
 #import "ABridge_ReferralPagesViewController.h"
 #import "Constants.h"
 #import "ABridge_AppDelegate.h"
+#import "ABridge_ActivityAgentProfileViewController.h"
 #import "LoginDetails.h"
 
 @interface ABridge_ReferralPagesViewController ()
@@ -56,6 +57,7 @@
 @synthesize statusPicked;
 @synthesize statusPicked_test;
 @synthesize pickerChanged;
+@synthesize isReferralOut;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -229,8 +231,10 @@
     
     
     
-   
-    
+    UITapGestureRecognizer *tapAgent = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAgentProfile)];
+    tapAgent.numberOfTapsRequired = 1;
+    tapAgent.numberOfTouchesRequired = 1;
+    [self.labelAgentName addGestureRecognizer:tapAgent];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -362,7 +366,7 @@
         if ([self isNull:self.referralDetails.client_country_name] == NO) {
             [addressString appendString: [NSString stringWithFormat:@", %@",self.referralDetails.client_country_name]];
         }
-        NSLog(@"address:%@",addressString);
+//        NSLog(@"address:%@",addressString);
         viewController.client_address = addressString;
         
         viewController.referral_agentname = self.referralDetails.agent_name;
@@ -660,6 +664,18 @@
         return NO;
     }
     return YES;
+}
+
+- (void) showAgentProfile {
+    NSLog(@"show:%@",self.referralDetails.agent_a);
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ABridge_ActivityAgentProfileViewController *profileViewController = [storyboard instantiateViewControllerWithIdentifier:@"ActivityAgentProfile"];
+    if (isReferralOut) {
+        profileViewController.user_id = self.referralDetails.agent_b;
+    }
+    else
+        profileViewController.user_id = self.referralDetails.agent_a;
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 #pragma mark ABridge_FeeCollectionViewControllerDelegate

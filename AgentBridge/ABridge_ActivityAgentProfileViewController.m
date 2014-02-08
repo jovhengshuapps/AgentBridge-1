@@ -30,6 +30,7 @@
 @synthesize profileData;
 @synthesize arrayKTableKeys;
 @synthesize user_id;
+@synthesize fromSearch;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,9 +46,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.slidingViewController.underRightViewController = nil;
-    
-    
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.user_id];
     
     __block NSError *errorData = nil;
@@ -60,6 +58,7 @@
         NSData *responseData = [request responseData];
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
         
+        NSLog(@"json:%@",json);
             if ([[json objectForKey:@"data"] count]) {
                 NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -490,6 +489,13 @@
 }
 
 - (IBAction)goBack:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.fromSearch) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }
+    else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 @end

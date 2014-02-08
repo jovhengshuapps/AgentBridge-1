@@ -32,6 +32,8 @@
 @synthesize scrollToListingId;
 @synthesize user_id;
 @synthesize user_name;
+@synthesize listing_id;
+@synthesize fromSearch;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +53,17 @@
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     self.labelNumberOfProperty.text = [NSString stringWithFormat:@"%@ POPs™",self.user_name];
+    
+    if (fromSearch) {
+        self.labelNumberOfProperty.hidden = YES;
+        self.activityIndicator.hidden = YES;
+        self.buttonSave.hidden = YES;
+    }
+    else {
+        self.labelNumberOfProperty.hidden = NO;
+        self.activityIndicator.hidden = NO;
+        self.buttonSave.hidden = NO;
+    }
     
     [self.labelNumberOfProperty sizeToFit];
     
@@ -79,18 +92,104 @@
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
     
-    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.user_id];
     
-    __block NSError *errorData = nil;
-    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php%@",parameters]]];
-    [request setCompletionBlock:^{
+    if (fromSearch) {
+        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@",self.user_id,self.listing_id];
         
-        // Use when fetching text data
-        //                        NSString *responseString = [request responseString];
-        // Use when fetching binary data
-        NSData *responseData = [request responseData];
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+        __block NSError *errorData = nil;
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_byid.php%@",parameters]]];
+        [request setCompletionBlock:^{
+            
+            // Use when fetching text data
+            //                        NSString *responseString = [request responseString];
+            // Use when fetching binary data
+            NSData *responseData = [request responseData];
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+            
+            if ([[json objectForKey:@"data"] count]) {
+                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+                    Property *property = nil;
+                    
+                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"listing_id == %@", [entry objectForKey:@"listing_id"]];
+                    NSArray *result = [self fetchObjectsWithEntityName:@"Property" andPredicate:predicate];
+                    if ([result count]) {
+                        property = (Property*)[result firstObject];
+                    }
+                    else {
+                        property = [NSEntityDescription insertNewObjectForEntityForName: @"Property" inManagedObjectContext: context];
+                    }
+                    
+                    [property setValuesForKeysWithDictionary:entry];
+                    
+                    NSError *error = nil;
+                    if (![context save:&error]) {
+                        //NSLog(@"Error on saving Property:%@",[error localizedDescription]);
+                    }
+                    else {
+                        if (self.arrayOfProperty == nil) {
+                            self.arrayOfProperty = [[NSMutableArray alloc] init];
+                        }
+                        
+                        [self.arrayOfProperty addObject:property];
+                    }
+                }
+                
+                self.numberOfProperty = [self.arrayOfProperty count];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+                    
+                    self.pageController.dataSource = self;
+                    CGRect pageControllerFrame = self.viewForPages.frame;
+                    pageControllerFrame.origin.x = 0.0f;
+                    pageControllerFrame.origin.y = 1.0f;
+                    self.pageController.view.frame = pageControllerFrame;
+                    
+                    [self.labelNumberOfProperty sizeToFit];
+                    
+                    CGRect frame = self.activityIndicator.frame;
+                    frame.origin.x = self.labelNumberOfProperty.frame.origin.x + self.labelNumberOfProperty.frame.size.width + 10.0f;
+                    self.activityIndicator.frame = frame;
+                    
+                    ABridge_PropertyPagesViewController *initialViewController = [self viewControllerAtIndex:0];
+                    
+                    NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+                    
+                    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+                    
+                    [self addChildViewController:self.pageController];
+                    [[self viewForPages] addSubview:[self.pageController view]];
+                    [self.pageController didMoveToParentViewController:self];
+                    
+                    
+                });
+                
+            }
+            
+            
+        }];
+        [request setFailedBlock:^{
+            NSError *error = [request error];
+            NSLog(@" error:%@",error);
+        }];
         
+        [request startAsynchronous];
+    }
+    else {
+        
+        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.user_id];
+        
+        __block NSError *errorData = nil;
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php%@",parameters]]];
+        [request setCompletionBlock:^{
+            
+            // Use when fetching text data
+            //                        NSString *responseString = [request responseString];
+            // Use when fetching binary data
+            NSData *responseData = [request responseData];
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+            
             if ([[json objectForKey:@"data"] count]) {
                 NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -162,14 +261,16 @@
                 self.buttonSave.hidden = YES;
                 [self showOverlayWithMessage:@"You currently don't have any POPs™." withIndicator:NO];
             }
+            
+        }];
+        [request setFailedBlock:^{
+            NSError *error = [request error];
+            NSLog(@" error:%@",error);
+        }];
         
-    }];
-    [request setFailedBlock:^{
-        NSError *error = [request error];
-        NSLog(@" error:%@",error);
-    }];
+        [request startAsynchronous];
+    }
     
-    [request startAsynchronous];
 }
 
 
@@ -262,6 +363,16 @@
 
 
 - (IBAction)goBack:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    if (self.fromSearch) {
+        
+        [self dismissViewControllerAnimated:YES completion:^{
+        
+        
+        }];
+    }
+    else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 @end

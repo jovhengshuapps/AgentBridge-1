@@ -287,9 +287,11 @@
     
     if (self.segmentedControl.selectedSegmentIndex) {
         pagesViewController.referralDetails = (Referral*)[self.arrayOfReferralOut objectAtIndex:index];
+        pagesViewController.isReferralOut = YES;
     }
     else {
         pagesViewController.referralDetails = (Referral*)[self.arrayOfReferralIn objectAtIndex:index];
+        pagesViewController.isReferralOut = NO;
     }
     
     return pagesViewController;
