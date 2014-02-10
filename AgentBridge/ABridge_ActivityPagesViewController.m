@@ -68,7 +68,7 @@
     self.labelDateTime.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     self.buttonDescription.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
-    self.labelDescription.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.labelDescription.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
 //    self.textViewMessage.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.webView.backgroundColor = [UIColor whiteColor];

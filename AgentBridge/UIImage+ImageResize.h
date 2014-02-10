@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (ImageResize)
-
-- (UIImage*) resizeImageToFitWidth:(CGFloat)width fromData:(NSData*)data;
+- (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize;
 @end

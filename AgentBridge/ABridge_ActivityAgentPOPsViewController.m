@@ -52,10 +52,10 @@
     self.labelNumberOfProperty.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     self.buttonSave.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
-    self.labelNumberOfProperty.text = [NSString stringWithFormat:@"%@ POPs™",self.user_name];
+    self.labelNumberOfProperty.text = [NSString stringWithFormat:@"%@'s POPs™",self.user_name];
     
     if (fromSearch) {
-        self.labelNumberOfProperty.hidden = YES;
+        self.labelNumberOfProperty.hidden = NO;
         self.activityIndicator.hidden = YES;
         self.buttonSave.hidden = YES;
     }
@@ -366,9 +366,16 @@
     
     if (self.fromSearch) {
         
-        [self dismissViewControllerAnimated:YES completion:^{
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.4;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionPush;
+        transition.subtype = kCATransitionFromLeft;
+        [self.view.window.layer addAnimation:transition forKey:nil];
         
         
+        [self dismissViewControllerAnimated:NO completion:^{
+            
         }];
     }
     else {

@@ -58,7 +58,7 @@
         NSData *responseData = [request responseData];
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
         
-        NSLog(@"json:%@",json);
+//        NSLog(@"json:%@",json);
             if ([[json objectForKey:@"data"] count]) {
                 NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
@@ -490,7 +490,16 @@
 
 - (IBAction)goBack:(id)sender {
     if (self.fromSearch) {
-        [self dismissViewControllerAnimated:YES completion:^{
+        
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.4;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionPush;
+        transition.subtype = kCATransitionFromLeft;
+        [self.view.window.layer addAnimation:transition forKey:nil];
+        
+        
+        [self dismissViewControllerAnimated:NO completion:^{
             
         }];
     }

@@ -576,7 +576,7 @@
             [imageString appendString:@"sfr"];
             break;
     }
-//    [imageString appendString:@".png"];
+    [imageString appendString:@".png"];
     
 //    //NSLog(@"image:%@",imageString);
     return imageString;
@@ -1002,7 +1002,9 @@
                         [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
                         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
                         imageView.contentMode = UIViewContentModeCenter;
-                        NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+                        NSString *imageName = [self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]];
+                        
+                        imageName = [imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"];
                         imageView.image = [UIImage imageNamed:imageName];
                         
                         [self.scrollImages addSubview:imageView];

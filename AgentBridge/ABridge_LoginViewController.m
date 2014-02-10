@@ -321,6 +321,7 @@
         else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Error" message:@"Email and password does not match a member profile. Please try again or apply for membership." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         }
     }
     else if(connection == self.urlConnectionProfile) {

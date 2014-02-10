@@ -21,7 +21,6 @@
 		6E483EF1186303200071691D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E483EEB1863031F0071691D /* README.md */; };
 		6E483EF2186303200071691D /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E483EEC1863031F0071691D /* release_notes.md */; };
 		6E503B94186BE88D00E0F329 /* ABridge_UILabelInset.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E503B93186BE88D00E0F329 /* ABridge_UILabelInset.m */; };
-		6E54D2D018A5BFC2009F6ECB /* MyImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E54D2CF18A5BFC1009F6ECB /* MyImage.m */; };
 		6E54D2D618A5EF7A009F6ECB /* UIImage+ImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E54D2D518A5EF7A009F6ECB /* UIImage+ImageResize.m */; };
 		6E5A0A2C1867EEC30030F2FF /* ABridge_AutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */; };
 		6E5A0A35186818490030F2FF /* MLPAutoCompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A2F186818490030F2FF /* MLPAutoCompleteTextField.m */; };
@@ -29,6 +28,7 @@
 		6E5AEF8D184C7C2800FE7B9E /* RequestAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */; };
 		6E5AEF90184C7C2900FE7B9E /* RequestNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */; };
 		6E5AEF93184CA8AF00FE7B9E /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF92184CA8AF00FE7B9E /* Buyer.m */; };
+		6E63DF0318A63EA1007931EE /* ABridge_MembershipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E63DF0218A63EA1007931EE /* ABridge_MembershipViewController.m */; };
 		6E67D995184D864200568C5F /* ABridge_BuyerPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */; };
 		6E697995187541DF0037F564 /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E697994187541DF0037F564 /* Property.m */; };
 		6E6D0A78185AF5C500D02B92 /* ABridge_ActivityAgentPOPsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D0A77185AF5C400D02B92 /* ABridge_ActivityAgentPOPsViewController.m */; };
@@ -134,8 +134,6 @@
 		6E483EEF1863031F0071691D /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		6E503B92186BE88C00E0F329 /* ABridge_UILabelInset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_UILabelInset.h; sourceTree = "<group>"; };
 		6E503B93186BE88D00E0F329 /* ABridge_UILabelInset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_UILabelInset.m; sourceTree = "<group>"; };
-		6E54D2CE18A5BFC1009F6ECB /* MyImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyImage.h; sourceTree = "<group>"; };
-		6E54D2CF18A5BFC1009F6ECB /* MyImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyImage.m; sourceTree = "<group>"; };
 		6E54D2D418A5EF7A009F6ECB /* UIImage+ImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageResize.h"; sourceTree = "<group>"; };
 		6E54D2D518A5EF7A009F6ECB /* UIImage+ImageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageResize.m"; sourceTree = "<group>"; };
 		6E5A0A2A1867EEC30030F2FF /* ABridge_AutocompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_AutocompleteTextField.h; sourceTree = "<group>"; };
@@ -153,6 +151,8 @@
 		6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestNetwork.m; sourceTree = "<group>"; };
 		6E5AEF91184CA8AF00FE7B9E /* Buyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Buyer.h; sourceTree = "<group>"; };
 		6E5AEF92184CA8AF00FE7B9E /* Buyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Buyer.m; sourceTree = "<group>"; };
+		6E63DF0118A63EA1007931EE /* ABridge_MembershipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_MembershipViewController.h; sourceTree = "<group>"; };
+		6E63DF0218A63EA1007931EE /* ABridge_MembershipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_MembershipViewController.m; sourceTree = "<group>"; };
 		6E67D993184D864200568C5F /* ABridge_BuyerPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPagesViewController.h; sourceTree = "<group>"; };
 		6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_BuyerPagesViewController.m; sourceTree = "<group>"; };
 		6E697993187541DF0037F564 /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Property.h; sourceTree = "<group>"; };
@@ -352,6 +352,15 @@
 			path = MLPAutoCompleteTextField;
 			sourceTree = "<group>";
 		};
+		6E63DF0418A63EA8007931EE /* Membership */ = {
+			isa = PBXGroup;
+			children = (
+				6E63DF0118A63EA1007931EE /* ABridge_MembershipViewController.h */,
+				6E63DF0218A63EA1007931EE /* ABridge_MembershipViewController.m */,
+			);
+			name = Membership;
+			sourceTree = "<group>";
+		};
 		6E72F7A6185FF00E0082447B /* Service Fee Collection */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +506,7 @@
 				6EFCFC78184749A5004EB0B7 /* AccountSettings Security */,
 				6EFCFC6E184703B4004EB0B7 /* AccountSettings About */,
 				6E4000501856C8DF000B78E6 /* AgentInvites Controller */,
+				6E63DF0418A63EA8007931EE /* Membership */,
 				6E72F7A6185FF00E0082447B /* Service Fee Collection */,
 				6EEF584B18337E4000C3214E /* Images.xcassets */,
 				6E3B3C7E185EF8D80065B51C /* ABridge_SendTransaction.h */,
@@ -513,8 +523,6 @@
 				6E503B93186BE88D00E0F329 /* ABridge_UILabelInset.m */,
 				6EB32BDC1848328C00F291AF /* HTTPURLConnection.h */,
 				6EB32BDD1848328C00F291AF /* HTTPURLConnection.m */,
-				6E54D2CE18A5BFC1009F6ECB /* MyImage.h */,
-				6E54D2CF18A5BFC1009F6ECB /* MyImage.m */,
 				6E54D2D418A5EF7A009F6ECB /* UIImage+ImageResize.h */,
 				6E54D2D518A5EF7A009F6ECB /* UIImage+ImageResize.m */,
 				6EEF586918337E6B00C3214E /* Main.storyboard */,
@@ -789,6 +797,7 @@
 				6E67D995184D864200568C5F /* ABridge_BuyerPagesViewController.m in Sources */,
 				6EB327BF185ABDC700284E7E /* ABridge_ActivityAgentProfileViewController.m in Sources */,
 				6EB6E35A183F134C00161E75 /* PropertyImages.m in Sources */,
+				6E63DF0318A63EA1007931EE /* ABridge_MembershipViewController.m in Sources */,
 				6EFCFC671846FA26004EB0B7 /* ABridge_AddressViewController.m in Sources */,
 				6EFCFC6A1846FD39004EB0B7 /* ABridge_BrokerageViewController.m in Sources */,
 				6E72F7A3185FEFF30082447B /* ABridge_FeeCollectionViewController.m in Sources */,
@@ -813,7 +822,6 @@
 				6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */,
 				6E791B49183CD28200BB76B3 /* Referral.m in Sources */,
 				6E47185D186456B60016B407 /* Activity.m in Sources */,
-				6E54D2D018A5BFC2009F6ECB /* MyImage.m in Sources */,
 				6EFF61401851BB5700A5A86A /* ASIDownloadCache.m in Sources */,
 				6E697995187541DF0037F564 /* Property.m in Sources */,
 				6EFCFC611846F053004EB0B7 /* ABridge_AccountSettingsViewController.m in Sources */,
@@ -901,8 +909,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Damian Want (H352635WJ8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Damian Want (H352635WJ8)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: AgentBridge, LLC (DVF8T5U936)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AgentBridge, LLC (DVF8T5U936)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -931,7 +939,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/ANMobilePaymentLib";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
-				PROVISIONING_PROFILE = "1761CBF8-909C-436E-AEE3-65640094A91B";
+				PROVISIONING_PROFILE = "AB61BDC2-9539-41BC-9B73-C836E729B625";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -953,8 +961,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Damian Want (H352635WJ8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Damian Want (H352635WJ8)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: AgentBridge, LLC (DVF8T5U936)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AgentBridge, LLC (DVF8T5U936)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -976,7 +984,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/ANMobilePaymentLib";
 				OTHER_LDFLAGS = "-lxml2";
-				PROVISIONING_PROFILE = "1761CBF8-909C-436E-AEE3-65640094A91B";
+				PROVISIONING_PROFILE = "AB61BDC2-9539-41BC-9B73-C836E729B625";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -988,8 +996,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Damian Want (H352635WJ8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Damian Want (H352635WJ8)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: AgentBridge, LLC (DVF8T5U936)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AgentBridge, LLC (DVF8T5U936)";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
@@ -1003,7 +1011,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "BFD61837-38B6-4F75-8CF2-09B1C1BE0F6B";
+				PROVISIONING_PROFILE = "AB61BDC2-9539-41BC-9B73-C836E729B625";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1015,8 +1023,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Damian Want (H352635WJ8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Damian Want (H352635WJ8)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: AgentBridge, LLC (DVF8T5U936)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AgentBridge, LLC (DVF8T5U936)";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AgentBridge/AgentBridge-Prefix.pch";
@@ -1030,7 +1038,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "BFD61837-38B6-4F75-8CF2-09B1C1BE0F6B";
+				PROVISIONING_PROFILE = "AB61BDC2-9539-41BC-9B73-C836E729B625";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

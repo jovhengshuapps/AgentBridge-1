@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonSecurity;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLogOut;
 @property (weak, nonatomic) IBOutlet UIButton *buttonInvites;
+@property (weak, nonatomic) IBOutlet UIButton *buttonMembership;
     
     
 - (IBAction)gotoMain:(id)sender;
@@ -33,6 +34,7 @@
 - (IBAction)gotoInvites:(id)sender;
 - (IBAction)gotoContact:(id)sender;
 - (IBAction)gotoBrokerage:(id)sender;
+- (IBAction)gotoMembership:(id)sender;
 
 @end
 
@@ -69,6 +71,7 @@
     self.buttonSecurity.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonLogOut.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonInvites.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonMembership.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     
     // Add a bottomBorder.
@@ -99,6 +102,16 @@
     
     [self.buttonNotification.layer addSublayer:bottomBorder2];
     
+    
+    
+    // Add a bottomBorder.
+    CALayer *bottomBorder3 = [CALayer layer];
+    
+    bottomBorder3.frame = CGRectMake(0.0f, self.buttonMembership.frame.size.height-1.0f, self.buttonMembership.frame.size.width, 1.0f);
+    
+    bottomBorder3.backgroundColor = [UIColor colorWithRed:60.0f/255.0f green:60.0f/255.0f blue:60.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.buttonMembership.layer addSublayer:bottomBorder3];
     
     
     if (self.buttonProfile.tag == NO) {
@@ -168,6 +181,11 @@
             frame.origin.y += 33.0f;
             self.buttonNotification.frame = frame;
             
+            
+            frame = self.buttonMembership.frame;
+            frame.origin.y += 33.0f;
+            self.buttonMembership.frame = frame;
+            
             frame = self.buttonSecurity.frame;
             frame.origin.y += 33.0f;
             self.buttonSecurity.frame = frame;
@@ -175,6 +193,7 @@
             frame = self.buttonLogOut.frame;
             frame.origin.y += 33.0f;
             self.buttonLogOut.frame = frame;
+            
         }
     }
 }
@@ -269,6 +288,17 @@
 
 - (IBAction)gotoBrokerage:(id)sender {
     UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Brokerage"];
+    
+    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+        CGRect frame = self.slidingViewController.topViewController.view.frame;
+        self.slidingViewController.topViewController = newTopViewController;
+        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
+}
+
+- (IBAction)gotoMembership:(id)sender {
+    UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Membership"];
     
     [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
         CGRect frame = self.slidingViewController.topViewController.view.frame;

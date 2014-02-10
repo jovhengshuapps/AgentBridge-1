@@ -38,8 +38,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *textFieldCity;
 @property (weak, nonatomic) IBOutlet UIButton *buttonState;
 @property (weak, nonatomic) IBOutlet UIButton *buttonContinueBilling;
-@property (weak, nonatomic) IBOutlet UILabel *labelTotalFree;
-@property (weak, nonatomic) IBOutlet UILabel *labelTotalValue;
+
 @property (weak, nonatomic) IBOutlet UITextField *textFieldCreditCard;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldSecurityCode;
 @property (weak, nonatomic) IBOutlet UIButton *buttonExpiry;
@@ -53,18 +52,32 @@
 @property (weak, nonatomic) IBOutlet UIView *viewPickerState;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerState;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbarKeyboard;
-@property (weak, nonatomic) IBOutlet UILabel *labelServiceFee;
+
 @property (weak, nonatomic) IBOutlet UITextView *textViewTop;
 
 @property (weak, nonatomic) IBOutlet UIView *viewInfo;
-@property (weak, nonatomic) IBOutlet UILabel *labelContactInfoHeader; //order summary
+
 @property (weak, nonatomic) IBOutlet UILabel *labelCreditCardInfo;
 @property (weak, nonatomic) IBOutlet UIView *viewForTerms;
-@property (weak, nonatomic) IBOutlet UITextView *textViewForTerms;
+
 @property (weak, nonatomic) IBOutlet UIView *viewForScrollView;
 
 @property (weak, nonatomic) IBOutlet UIView *topNavBar;
 @property (weak, nonatomic) IBOutlet UIWebView *webViewTerms;
+
+@property (weak, nonatomic) IBOutlet UILabel *labelOrderSummaryHeader;
+@property (weak, nonatomic) IBOutlet UILabel *labelServiceHeader;
+@property (weak, nonatomic) IBOutlet UILabel *labelServiceName;
+@property (weak, nonatomic) IBOutlet UILabel *labelQuantityHeader;
+@property (weak, nonatomic) IBOutlet UILabel *labelQuantity;
+@property (weak, nonatomic) IBOutlet UILabel *labelSubtotalheader;
+@property (weak, nonatomic) IBOutlet UILabel *labelSubtotalPrice;
+@property (weak, nonatomic) IBOutlet UILabel *labelDiscountHeader;
+@property (weak, nonatomic) IBOutlet UILabel *labelDiscountPrice;
+@property (weak, nonatomic) IBOutlet UILabel *labelTotalheader;
+@property (weak, nonatomic) IBOutlet UILabel *labelTotalPrice;
+@property (weak, nonatomic) IBOutlet UIButton *buttonContinueOrderSummary;
+
 
 @property (strong, nonatomic) NSArray *arrayOfMonth;
 @property (strong, nonatomic) NSMutableArray *arrayOfYear;
@@ -93,6 +106,9 @@
 
 @property (strong, nonatomic) NSString *invoice_number;
 @property (strong, nonatomic) NSString *payment_id;
+
+@property (assign, nonatomic) NSInteger discount;
+@property (assign, nonatomic) CGFloat totalServiceFee;
 
 - (IBAction)continuePressed:(id)sender;
 - (IBAction)cancelPressed:(id)sender;
@@ -141,6 +157,9 @@
 @synthesize client_number;
 @synthesize client_type;
 
+@synthesize discount;
+@synthesize totalServiceFee;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -186,11 +205,26 @@
     self.buttonState.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     self.buttonContinueBilling.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
-    self.labelContactInfoHeader.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
+    
     self.labelCreditCardInfo.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.textFieldCreditCard.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.textFieldSecurityCode.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonSubmit.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
+    
+    
+    self.labelOrderSummaryHeader.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
+    
+    self.labelServiceName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelQuantityHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelQuantity.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelSubtotalheader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelSubtotalPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelDiscountHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelDiscountPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelTotalheader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelTotalPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.buttonContinueOrderSummary.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
+    
     
     self.textViewTop.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
@@ -527,6 +561,42 @@
     
     
     [self.webViewTerms loadHTMLString:HTMLSTRING_TERMS baseURL:nil];
+    
+    NSString *urlStringCheckFirstPayment = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_first_payment.php?user_id=%@",self.user_id];
+    
+    self.discount = 0;
+    self.totalServiceFee = 0.01f;
+    
+    __block NSError *errorFirstPayment = nil;
+    __weak ASIHTTPRequest *requestFirstPayment = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringCheckFirstPayment]];
+    
+    [requestFirstPayment setCompletionBlock:^{
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        
+        NSData *responseData = [requestFirstPayment responseData];
+        
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorFirstPayment];
+        NSLog(@"json:%@",json);
+        
+        if ([[json valueForKey:@"data"] count]) {
+            if ([[[[json valueForKey:@"data"] firstObject] valueForKey:@"count"] integerValue] <= 1) {
+                self.discount = 100;
+            }
+            else {
+                self.discount = 0;
+            }
+        }
+        
+        
+    }];
+    [requestFirstPayment setFailedBlock:^{
+        NSError *error = [requestFirstPayment error];
+        NSLog(@" error:%@",error);
+        
+    }];
+    [requestFirstPayment startAsynchronous];
 }
 
 - (void)didReceiveMemoryWarning
@@ -633,15 +703,62 @@
                         [formatter setMaximumFractionDigits:0];
                         formatter.currencyCode = @"USD";
                         
-                        self.labelServiceFee.text = [NSString stringWithFormat:@"Service Fee: %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]]];
+                        self.labelSubtotalPrice.text = [NSString stringWithFormat:@"%@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]]];
                         
-                        CGFloat total = [self.grossCommission doubleValue] + [self.serviceFee doubleValue];
-                        
-                        self.labelTotalValue.text = [formatter stringFromNumber: [NSNumber numberWithDouble:total]];
+                        if (self.discount > 0) {
+                            
+                            CGRect frame = self.labelTotalheader.frame;
+                            frame.origin.y = 229.0f;
+                            self.labelTotalheader.frame = frame;
+                            
+                            frame = self.labelTotalPrice.frame;
+                            frame.origin.y = 229.0f;
+                            self.labelTotalPrice.frame = frame;
+                            
+                            frame = self.buttonContinueOrderSummary.frame;
+                            frame.origin.y = 283.0f;
+                            self.buttonContinueOrderSummary.frame = frame;
+                            
+                            self.labelDiscountHeader.hidden = NO;
+                            self.labelDiscountPrice.hidden = NO;
+                            
+                            CGFloat discountedPrice = ([self.serviceFee doubleValue] * (self.discount/100));
+                            
+                            self.labelDiscountPrice.text = [NSString stringWithFormat:@"%@",[formatter stringFromNumber: [NSNumber numberWithDouble:discountedPrice]]];
+                            
+                            self.totalServiceFee = [self.serviceFee integerValue] - discountedPrice;
+                            
+                            if (self.totalServiceFee == 0.0f) {
+                                self.totalServiceFee = 0.01f;
+                            }
+                            
+                            self.labelTotalPrice.text = [NSString stringWithFormat:@"%@",[formatter stringFromNumber: [NSNumber numberWithFloat:self.totalServiceFee]]];
+                        }
+                        else {
+                            
+                            CGRect frame = self.labelTotalheader.frame;
+                            frame.origin.y = 185.0f;
+                            self.labelTotalheader.frame = frame;
+                            
+                            frame = self.labelTotalPrice.frame;
+                            frame.origin.y = 185.0f;
+                            self.labelTotalPrice.frame = frame;
+                            
+                            frame = self.buttonContinueOrderSummary.frame;
+                            frame.origin.y = 239.0f;
+                            self.buttonContinueOrderSummary.frame = frame;
+                            
+                            self.labelDiscountHeader.hidden = YES;
+                            self.labelDiscountPrice.hidden = YES;
+                            
+                            self.totalServiceFee = [self.serviceFee floatValue];
+                            
+                            self.labelTotalPrice.text = self.labelSubtotalPrice.text;
+                        }
                         
                         NSString * commissionString = (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO)?[NSString stringWithFormat:@"Your Gross Comission: %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]] ]: [NSString stringWithFormat:@"Gross Comission of %@: %@", self.referral_agentname, [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]]];
                         
-                        self.textViewTop.text = [NSString stringWithFormat:@"The %@ referral fee of %@ is ready to to be disbursed. AgentBridge will now be collecting the service fee of %@.\n\n%@", self.referral_name, [formatter stringFromNumber: [NSNumber numberWithDouble:([self.grossCommission doubleValue] * self.referral_fee)]], [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]], commissionString ];
+                        self.textViewTop.text = [NSString stringWithFormat:@"The %@ referral fee of %@ is ready to to be disbursed. AgentBridge will now be collecting the service fee of %@.\n\n%@", self.referral_name, [formatter stringFromNumber: [NSNumber numberWithDouble:([self.grossCommission doubleValue] * self.referral_fee)]], [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]/*[NSNumber numberWithFloat:self.totalServiceFee]*/], commissionString ];
                         
 //                        CGSize constraint = CGSizeMake(self.textViewTop.frame.size.width - 10.0f, 20000.0f);
 //                        
@@ -721,9 +838,6 @@
             }
             break;
         }
-        case 3:
-            continueToNextView = YES;
-            break;
         case 4: {
             if ([self textIsNull:self.textFieldZipcode.text] == NO && [self textIsNull:self.textFieldCity.text] == NO && self.selectedCountryID != nil && self.selectedStateID != nil) {
                 
@@ -760,6 +874,7 @@
             break;
         }
         default:
+            continueToNextView = YES;
             break;
     }
     
@@ -863,7 +978,7 @@
         
 //        CGFloat total = [self.grossCommission doubleValue] + [self.serviceFee doubleValue];
         
-        NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], [self.serviceFee doubleValue], self.textFieldCreditCard.text, /*[*/self.cardExpiry/* stringByReplacingOccurrencesOfString:@"/" withString:@"-"]*/, self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, [self.textFieldPhoneNumber.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+        NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], /*[self.serviceFee doubleValue]*/self.totalServiceFee, self.textFieldCreditCard.text, /*[*/self.cardExpiry/* stringByReplacingOccurrencesOfString:@"/" withString:@"-"]*/, self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, [self.textFieldPhoneNumber.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
         
         NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/send_transaction.php"];
         [urlString appendString:parameters];
@@ -1052,7 +1167,7 @@
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 65.0f) animated:YES];
     }
     else if (textField == self.textFieldCreditCard) {
-        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 65.0f) animated:YES];
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 45.0f) animated:YES];
     }
 //    else if (textField == self.textFieldEmail || textField == self.textFieldPhoneNumber) {
 //        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 80.0f) animated:YES];
@@ -1060,7 +1175,7 @@
     else if (textField == self.textFieldAddress2) {
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 100.0f) animated:YES];
     }
-    else if (textField == self.textFieldZipcode || textField == self.textFieldCity || textField == self.textFieldSecurityCode) {
+    else if (textField == self.textFieldZipcode || textField == self.textFieldCity/* || textField == self.textFieldSecurityCode*/) {
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 130.0f) animated:YES];
     }
     else if (textField == self.textFieldGrossComission) {
@@ -1515,7 +1630,7 @@
     [formatter setMaximumFractionDigits:0];
     formatter.currencyCode = @"USD";
     
-    NSString *service_fee = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]];
+    NSString *service_fee = [formatter stringFromNumber: /*[NSNumber numberWithDouble:[self.serviceFee doubleValue]]*/[NSNumber numberWithFloat:self.totalServiceFee]];
     
     NSString *htmlStringForPDF = [NSString stringWithFormat:HTMLSTRING_INVOICE,self.profile.broker_name, agent_name, address, cityStateZip, country, self.profile.broker_name, agent_name, address, cityStateZip, country, invoice_date, self.invoice_number, invoice_date, self.referral_id, invoice_date, invoice_date, referrence, service_fee, service_fee, service_fee, service_fee, self.profile.broker_name, agent_name, address, cityStateZip, country, self.user_id, agent_name, self.invoice_number, invoice_date, service_fee];
     

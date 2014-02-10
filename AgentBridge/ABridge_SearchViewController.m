@@ -9,7 +9,7 @@
 #import "ABridge_SearchViewController.h"
 #import "ASIHTTPRequest.h"
 #import "Constants.h"
-#import "MyImage.h"
+
 #import "ABridge_ActivityAgentProfileViewController.h"
 #import "UIImage+ImageResize.h"
 #import "ABridge_ActivityAgentPOPsViewController.h"
@@ -22,6 +22,8 @@
 @property (strong, nonatomic) NSMutableArray *arrayPOPs;
 @property (strong, nonatomic) NSTimer* timer;
 @property (strong, nonatomic) UIView *viewOverlay;
+@property (assign, nonatomic) NSInteger login_user_id;
+@property (strong, nonatomic) NSString *agent_name;
 @end
 
 @implementation ABridge_SearchViewController
@@ -31,6 +33,8 @@
 @synthesize arrayPOPs;
 @synthesize viewOverlay;
 @synthesize timer;
+@synthesize login_user_id;
+@synthesize agent_name;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -75,6 +79,18 @@
     [self.view addSubview:self.viewOverlay];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkIfLoading) userInfo:nil repeats:YES];
+    
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    self.login_user_id = [[[fetchedObjects firstObject] valueForKey:@"user_id"] integerValue];
+    self.agent_name = [[[[fetchedObjects firstObject] valueForKey:@"name"] componentsSeparatedByString:@" "] firstObject];
 }
 
 - (void)didReceiveMemoryWarning
@@ -151,6 +167,7 @@
 
 - (void) loadResults {
     
+    self.viewOverlay.hidden = NO;
     if (self.selectedScope == 1) {
         
         self.arrayPOPs = nil;
@@ -201,12 +218,22 @@
                          
                          for (NSDictionary *entry in [json objectForKey:@"data"]) {
                              NSString *imageString = @"";
-                             if ([entry valueForKey:@"pops_image"] == nil || [[entry valueForKey:@"pops_image"] isKindOfClass:[NSNull class]]) {
-                                 imageString = [self imageStringForPropertyType:[[entry valueForKey:@"property_type"] integerValue] andSubType:[[entry valueForKey:@"sub_type"] integerValue]];
+                             
+                             if (self.login_user_id == [[entry valueForKey:@"user_id"] integerValue]) {
+                                 
+                                 if ([entry valueForKey:@"pops_image"] == nil || [[entry valueForKey:@"pops_image"] isKindOfClass:[NSNull class]]) {
+                                     imageString = [self imageStringForPropertyType:[[entry valueForKey:@"property_type"] integerValue] andSubType:[[entry valueForKey:@"sub_type"] integerValue]];
+                                 }
+                                 else {
+                                     imageString = [entry valueForKey:@"pops_image"];
+                                 }
                              }
                              else {
-                                 imageString = [entry valueForKey:@"pops_image"];
+                                 imageString = [self imageStringForPropertyType:[[entry valueForKey:@"property_type"] integerValue] andSubType:[[entry valueForKey:@"sub_type"] integerValue]];
+                                 imageString = [imageString stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"];
                              }
+                             
+                             
                              [self.arrayPOPs addObject:[NSDictionary dictionaryWithObjectsAndKeys:[entry valueForKey:@"property_name"], @"name_key", [entry valueForKey:@"listing_id"], @"id_key",[entry valueForKey:@"user_id"], @"user_id_key", imageString, @"image_key", nil]];
                              
                          }
@@ -260,7 +287,7 @@
                  
              }
              
-             [self.searchDisplayController.searchResultsTableView reloadData];
+                 [self.searchDisplayController.searchResultsTableView reloadData];
          }];
         [request setFailedBlock:^{
             NSError *error = [request error];
@@ -271,6 +298,7 @@
     }
     
     
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkIfLoading) userInfo:nil repeats:YES];
 }
 
 -(NSString*)imageStringForPropertyType:(NSInteger)property_type andSubType:(NSInteger)sub_type {
@@ -365,6 +393,12 @@
     tableView.backgroundColor = [UIColor clearColor];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    
+    CGRect frame = self.searchDisplayController.searchResultsTableView.frame;
+    frame.size.height = 360.0f;
+    self.searchDisplayController.searchResultsTableView.frame = frame;
+    
+    
     if (self.selectedScope == 1) {
         return [self.arrayPOPs count];
     }
@@ -415,21 +449,22 @@
         
         if ([[imageURLString substringToIndex:4] isEqualToString:@"http"] == NO) {
             
-            cell.imageView.image = [UIImage imageNamed:imageURLString];
+            cell.imageView.image = [[UIImage imageNamed:imageURLString] imageByScalingAndCroppingForSize:CGSizeMake(44.0f, 44.0f)];
             
         }
         else {
             
                 NSData *image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
-                cell.imageView.image = [UIImage imageWithData:image_data];
+             UIImage *image =[UIImage imageWithData:image_data];
+                cell.imageView.image = [image imageByScalingAndCroppingForSize:CGSizeMake(44.0f, 44.0f)];
         }
+        
     }
     else {
         cell.textLabel.text = [[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"name_key"];
-        cell.imageView.backgroundColor = [UIColor redColor];
         
         if ([[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"image_key"] == nil || [[[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"image_key"] isEqualToString:@""] == YES || [[[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"image_key"] isEqualToString:@"/agent_bridge/templates/agentbridge/images/temp/blank-image.jpg"] == YES) {
-            cell.imageView.image = [MyImage imageWithImage:[UIImage imageNamed:@"blank-image.png"] resizeToFitWidth:44.0f];
+            cell.imageView.image = [[UIImage imageNamed:@"blank-image.png"] imageByScalingAndCroppingForSize:CGSizeMake(44.0f, 44.0f)];
             
         }
         else {
@@ -437,11 +472,11 @@
             NSData *image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"image_key"]]];
             UIImage *image =[UIImage imageWithData:image_data];
             
-            cell.imageView.image = [image resizeImageToFitWidth:44.0f fromData:image_data];
+            cell.imageView.image = [image imageByScalingAndCroppingForSize:CGSizeMake(44.0f, 44.0f)];
             
         }
+        
     }
-    
     
     
     return cell;
@@ -452,18 +487,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.selectedScope == 1) {
+        NSString * pops_user_id = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"user_id_key"];
         
-        ABridge_ActivityAgentPOPsViewController *popsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ActivityAgentPOPs"];
-        popsViewController.user_id = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"user_id_key"];
-        popsViewController.listing_id = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"id_key"];
-        popsViewController.fromSearch = YES;
         
-        popsViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        popsViewController.modalPresentationStyle = UIModalPresentationNone;
-        
-        [self presentViewController:popsViewController animated:NO completion:^{
+        if(self.login_user_id == [pops_user_id integerValue]) {
+            ABridge_ActivityAgentPOPsViewController *popsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ActivityAgentPOPs"];
+            popsViewController.user_id = pops_user_id;
+            popsViewController.listing_id = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"id_key"];
+            popsViewController.fromSearch = YES;
+            popsViewController.user_name = self.agent_name;
             
-        }];
+            CATransition *transition = [CATransition animation];
+            transition.duration = 0.4;
+            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            transition.type = kCATransitionPush;
+            transition.subtype = kCATransitionFromRight;
+            [self.view.window.layer addAnimation:transition forKey:nil];
+            
+            [self presentViewController:popsViewController animated:NO completion:^{
+                
+            }];
+        }
+        
+        
+        
     }
     else {
         
@@ -471,14 +518,20 @@
         profileViewController.user_id = [[self.arrayAgents objectAtIndex:[indexPath row]] objectForKey:@"id_key"];
         profileViewController.fromSearch = YES;
         
-        profileViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        profileViewController.modalPresentationStyle = UIModalPresentationNone;
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.4;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionPush;
+        transition.subtype = kCATransitionFromRight;
+        [self.view.window.layer addAnimation:transition forKey:nil];
         
         [self presentViewController:profileViewController animated:NO completion:^{
-        
+            
         }];
         
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

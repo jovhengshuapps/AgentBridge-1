@@ -243,7 +243,7 @@
                 [self addChildViewController:self.pageController];
                 [[self viewForPages] addSubview:[self.pageController view]];
                 [self.pageController didMoveToParentViewController:self];
-                self.buttonRefer.hidden = NO;
+//                self.buttonRefer.hidden = NO;
 //                //NSLog(@"agents:%@",self.arrayOfAgents);
             });
         
@@ -257,7 +257,7 @@
         self.numberOfAgentNetwork = 0;
         self.labelNumberOfAgentNetwork.text = @"My Network";
         
-        self.buttonRefer.hidden = YES;
+//        self.buttonRefer.hidden = YES;
         [self showOverlayWithMessage:@"You currently have no members in your Network." withIndicator:NO];
     }
     
