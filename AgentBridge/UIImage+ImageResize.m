@@ -61,7 +61,8 @@
     UIGraphicsBeginImageContext(targetSize); // this will crop
     
     CGRect thumbnailRect = CGRectZero;
-    thumbnailRect.origin = thumbnailPoint;
+    thumbnailRect.origin.x = thumbnailPoint.x;
+    thumbnailRect.origin.y = thumbnailPoint.y;
     thumbnailRect.size.width  = scaledWidth;
     thumbnailRect.size.height = scaledHeight;
     

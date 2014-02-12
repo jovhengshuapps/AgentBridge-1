@@ -66,7 +66,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.labelHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_TITLE);
+    self.labelHeader.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     
     self.labelMonthlyCurrent.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelMonthlyName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
@@ -104,12 +104,14 @@ dummy_data_monthly:
         
         NSDictionary *dic4 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Authorization to use AgentBridge marketing materials for self promotion.", @"description", @"1", @"bool", nil];
         
+        NSDictionary *dic5 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Unlimited use of AgentBridge mobile app.", @"description", @"1", @"bool", nil];
         
         
         [self.arrayBenefitsMonthly addObject:dic1];
         [self.arrayBenefitsMonthly addObject:dic2];
         [self.arrayBenefitsMonthly addObject:dic3];
         [self.arrayBenefitsMonthly addObject:dic4];
+        [self.arrayBenefitsMonthly addObject:dic5];
         
         [self.tableViewMonthlyBenefits reloadData];
     }
@@ -130,12 +132,14 @@ dummy_data_quarterly:
         
         NSDictionary *dic4 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Authorization to use AgentBridge marketing materials for self promotion.", @"description", @"1", @"bool", nil];
         
+        NSDictionary *dic5 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Unlimited use of AgentBridge mobile app.", @"description", @"1", @"bool", nil];
         
         
         [self.arrayBenefitsQuarterly addObject:dic1];
         [self.arrayBenefitsQuarterly addObject:dic2];
         [self.arrayBenefitsQuarterly addObject:dic3];
         [self.arrayBenefitsQuarterly addObject:dic4];
+        [self.arrayBenefitsQuarterly addObject:dic5];
         
         [self.tableViewQuarterlyBenefits reloadData];
     }
@@ -156,12 +160,14 @@ dummy_data_annual:
         
         NSDictionary *dic4 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Authorization to use AgentBridge marketing materials for self promotion.", @"description", @"1", @"bool", nil];
         
+        NSDictionary *dic5 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Unlimited use of AgentBridge mobile app.", @"description", @"1", @"bool", nil];
         
         
         [self.arrayBenefitsAnnual addObject:dic1];
         [self.arrayBenefitsAnnual addObject:dic2];
         [self.arrayBenefitsAnnual addObject:dic3];
         [self.arrayBenefitsAnnual addObject:dic4];
+        [self.arrayBenefitsAnnual addObject:dic5];
         
         [self.tableViewAnnualBenefits reloadData];
     }

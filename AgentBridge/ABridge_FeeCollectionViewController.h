@@ -9,6 +9,7 @@
 #import "ABridge_ParentViewController.h"
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
 @protocol ABridge_FeeCollectionViewControllerDelegate <NSObject>
 
@@ -16,7 +17,7 @@
 
 @end
 
-@interface ABridge_FeeCollectionViewController : ABridge_ParentViewController <UITextFieldDelegate, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate, UIWebViewDelegate>
+@interface ABridge_FeeCollectionViewController : ABridge_ParentViewController <UITextFieldDelegate, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate, UIWebViewDelegate, MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) NSString *referral_id;
 @property (strong, nonatomic) NSString *referral_name; //client_name

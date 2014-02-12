@@ -79,7 +79,7 @@
                                             <action selector="signIn:" destination="1IC-Ks-EJV" eventType="touchUpInside" id="M4c-5v-PnN"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eEu-tv-M4W">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eEu-tv-M4W">
                                         <rect key="frame" x="30" y="167" width="240" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -420,7 +420,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kld-xE-5x8">
-                                <rect key="frame" x="0.0" y="317" width="255" height="30"/>
+                                <rect key="frame" x="0.0" y="281" width="255" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -451,7 +451,7 @@
                                     <action selector="gotoContact:" destination="ms5-oB-1zM" eventType="touchUpInside" id="msn-KF-k2S"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="P5K-xI-zNx">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="P5K-xI-zNx">
                                 <rect key="frame" x="0.0" y="212" width="255" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.2110011889" green="0.2110011889" blue="0.2110011889" alpha="1" colorSpace="calibratedRGB"/>
@@ -465,7 +465,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8T3-1e-yfy">
-                                <rect key="frame" x="0.0" y="282" width="255" height="34"/>
+                                <rect key="frame" x="0.0" y="246" width="255" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.2110011889" green="0.2110011889" blue="0.2110011889" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -497,7 +497,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1J0-np-sxw">
-                                <rect key="frame" x="0.0" y="247" width="255" height="34"/>
+                                <rect key="frame" x="0.0" y="211" width="255" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.2110011889" green="0.2110011889" blue="0.2110011889" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -1276,16 +1276,16 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="491"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter Gross Comission" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BxL-Ln-A3v">
-                                                        <rect key="frame" x="20" y="0.0" width="261" height="21"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter Gross Commission" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BxL-Ln-A3v">
+                                                        <rect key="frame" x="16" y="119" width="280" height="21"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" id="Dwy-4O-yac">
-                                                        <rect key="frame" x="20" y="29" width="280" height="30"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <rect key="frame" x="16" y="148" width="280" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                         <connections>
@@ -1293,10 +1293,10 @@
                                                         </connections>
                                                     </textField>
                                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="TWE-H6-k2x">
-                                                        <rect key="frame" x="207" y="67" width="100" height="33"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                                        <rect key="frame" x="16" y="202" width="288" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                        <state key="normal" title="Continue" backgroundImage="blue_small">
+                                                        <state key="normal" title="Continue" backgroundImage="button-long">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1310,16 +1310,75 @@
                                                 <rect key="frame" x="320" y="0.0" width="320" height="491"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Summary of Transaction" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bIK-jy-lxC">
+                                                        <rect key="frame" x="20" y="61" width="288" height="25"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                     <textView clipsSubviews="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" selectable="NO" id="Ydo-ul-sbb">
-                                                        <rect key="frame" x="20" y="0.0" width="280" height="175"/>
+                                                        <rect key="frame" x="20" y="94" width="280" height="218"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <inset key="scrollIndicatorInsets" minX="5" minY="0.0" maxX="-5" maxY="0.0"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
+                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hY3-69-LOX">
+                                                        <rect key="frame" x="20" y="320" width="288" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                        <state key="normal" title="Continue" backgroundImage="button-long">
+                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="continuePressed:" destination="0t0-MX-hgI" eventType="touchUpInside" id="WdO-Hn-s8P"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                            <view contentMode="scaleToFill" id="EdJ-oX-fci">
+                                                <rect key="frame" x="640" y="0.0" width="320" height="491"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broker Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8kI-NT-aZg">
+                                                        <rect key="frame" x="20" y="0.0" width="184" height="21"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Agent License" minimumFontSize="17" id="lnR-vt-r5M">
+                                                        <rect key="frame" x="20" y="29" width="280" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="0t0-MX-hgI" id="abo-HV-vZM"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Broker License" minimumFontSize="17" id="gkG-bq-OZA">
+                                                        <rect key="frame" x="20" y="67" width="280" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="0t0-MX-hgI" id="P4z-Lu-D98"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tax Id Number" minimumFontSize="17" id="VkI-CZ-qij">
+                                                        <rect key="frame" x="20" y="105" width="280" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="0t0-MX-hgI" id="QQm-Fi-46q"/>
+                                                        </connections>
+                                                    </textField>
                                                     <view contentMode="scaleToFill" id="ArO-ns-QWW">
-                                                        <rect key="frame" x="0.0" y="183" width="320" height="250"/>
+                                                        <rect key="frame" x="0.0" y="157" width="320" height="250"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <subviews>
                                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Personal Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zxi-Ra-oqI">
@@ -1365,11 +1424,11 @@
                                                                     <outlet property="delegate" destination="0t0-MX-hgI" id="aMT-fT-rog"/>
                                                                 </connections>
                                                             </textField>
-                                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kd2-pn-4dn">
-                                                                <rect key="frame" x="200" y="182" width="100" height="33"/>
+                                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kd2-pn-4dn">
+                                                                <rect key="frame" x="20" y="191" width="288" height="44"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                                <state key="normal" title="Continue" backgroundImage="blue_small">
+                                                                <state key="normal" title="Continue" backgroundImage="button-long">
                                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </state>
                                                                 <connections>
@@ -1379,58 +1438,6 @@
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                                     </view>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
-                                            <view contentMode="scaleToFill" id="EdJ-oX-fci">
-                                                <rect key="frame" x="640" y="0.0" width="320" height="491"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <subviews>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broker Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8kI-NT-aZg">
-                                                        <rect key="frame" x="20" y="0.0" width="184" height="21"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Agent License" minimumFontSize="17" id="lnR-vt-r5M">
-                                                        <rect key="frame" x="20" y="29" width="280" height="30"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="0t0-MX-hgI" id="abo-HV-vZM"/>
-                                                        </connections>
-                                                    </textField>
-                                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xdo-Rs-1vJ">
-                                                        <rect key="frame" x="200" y="143" width="100" height="33"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                        <state key="normal" title="Continue" backgroundImage="blue_small">
-                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="continuePressed:" destination="0t0-MX-hgI" eventType="touchUpInside" id="TI3-yB-o69"/>
-                                                        </connections>
-                                                    </button>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Broker License" minimumFontSize="17" id="gkG-bq-OZA">
-                                                        <rect key="frame" x="20" y="67" width="280" height="30"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="0t0-MX-hgI" id="P4z-Lu-D98"/>
-                                                        </connections>
-                                                    </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tax Id Number" minimumFontSize="17" id="VkI-CZ-qij">
-                                                        <rect key="frame" x="20" y="105" width="280" height="30"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="0t0-MX-hgI" id="QQm-Fi-46q"/>
-                                                        </connections>
-                                                    </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
@@ -1446,10 +1453,10 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="usI-3A-dlO">
-                                                        <rect key="frame" x="200" y="257" width="100" height="33"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                                        <rect key="frame" x="20" y="275" width="288" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                        <state key="normal" title="Continue" backgroundImage="blue_small">
+                                                        <state key="normal" title="Continue" backgroundImage="button-long">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1532,81 +1539,100 @@
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Service:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Vw-iN-6pn">
-                                                        <rect key="frame" x="20" y="68" width="71" height="21"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Vw-iN-6pn">
+                                                        <rect key="frame" x="20" y="68" width="80" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Referral Service Fee" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nv2-Pt-6UV">
-                                                        <rect key="frame" x="89" y="68" width="207" height="21"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AgentBridge Referral Fee" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nv2-Pt-6UV">
+                                                        <rect key="frame" x="20" y="90" width="129" height="38"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quantity:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fNh-Vh-WeX">
-                                                        <rect key="frame" x="20" y="97" width="200" height="21"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QTY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fNh-Vh-WeX">
+                                                        <rect key="frame" x="179" y="68" width="41" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OqU-9q-ob0">
-                                                        <rect key="frame" x="93" y="97" width="207" height="21"/>
+                                                        <rect key="frame" x="179" y="97" width="41" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sub-total:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mds-Ty-Hh0">
-                                                        <rect key="frame" x="20" y="156" width="90" height="21"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6Xq-Fb-Q03">
+                                                        <rect key="frame" x="244" y="68" width="56" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$XXX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vtt-OO-e2C">
-                                                        <rect key="frame" x="104" y="156" width="190" height="21"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$ XXX" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BJf-px-gx2">
+                                                        <rect key="frame" x="228" y="97" width="76" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" id="RBh-Yc-vJG">
+                                                        <rect key="frame" x="20" y="136" width="284" height="3"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                    </view>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtotal:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mds-Ty-Hh0">
+                                                        <rect key="frame" x="139" y="156" width="68" height="21"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$XXX" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vtt-OO-e2C">
+                                                        <rect key="frame" x="244" y="156" width="60" height="21"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Discount (100%):" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="03m-8s-nK7">
-                                                        <rect key="frame" x="20" y="185" width="141" height="21"/>
+                                                        <rect key="frame" x="139" y="175" width="121" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$XXX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MrP-qP-cKn">
-                                                        <rect key="frame" x="161" y="185" width="143" height="21"/>
+                                                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-$XXX" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MrP-qP-cKn">
+                                                        <rect key="frame" x="255" y="175" width="49" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Glf-AM-KPQ">
-                                                        <rect key="frame" x="20" y="185" width="200" height="21"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOTAL:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Glf-AM-KPQ">
+                                                        <rect key="frame" x="139" y="202" width="65" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$XXX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2bl-vM-5j6">
-                                                        <rect key="frame" x="70" y="185" width="200" height="21"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$XXX" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2bl-vM-5j6">
+                                                        <rect key="frame" x="254" y="202" width="50" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nhD-OO-y6Y">
-                                                        <rect key="frame" x="110" y="239" width="100" height="33"/>
+                                                        <rect key="frame" x="20" y="255" width="288" height="44"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                        <state key="normal" title="Continue" backgroundImage="blue_small">
+                                                        <state key="normal" title="Continue" backgroundImage="button-long">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1620,18 +1646,28 @@
                                                 <rect key="frame" x="1600" y="0.0" width="320" height="491"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credit Card Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iL3-Eh-S3I">
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Payment Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iL3-Eh-S3I">
                                                         <rect key="frame" x="20" y="20" width="200" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We accept:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vKX-bP-2zs">
+                                                        <rect key="frame" x="20" y="59" width="200" height="21"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <imageView userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="payment" id="qtv-4l-icV">
+                                                        <rect key="frame" x="20" y="82" width="280" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="G6n-JA-x5m">
-                                                        <rect key="frame" x="77" y="226" width="165" height="33"/>
+                                                        <rect key="frame" x="20" y="300" width="288" height="44"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                        <state key="normal" title="Submit" backgroundImage="blue_small">
+                                                        <state key="normal" title="Submit" backgroundImage="button-long">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1639,7 +1675,7 @@
                                                         </connections>
                                                     </button>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Credit Card Number" minimumFontSize="17" id="WHx-ch-Xb7">
-                                                        <rect key="frame" x="20" y="46" width="280" height="30"/>
+                                                        <rect key="frame" x="20" y="120" width="280" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -1648,7 +1684,7 @@
                                                         </connections>
                                                     </textField>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Security Code" minimumFontSize="17" id="koG-EO-Ing">
-                                                        <rect key="frame" x="20" y="122" width="280" height="30"/>
+                                                        <rect key="frame" x="20" y="196" width="280" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -1657,7 +1693,7 @@
                                                         </connections>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="K0K-6X-0mW">
-                                                        <rect key="frame" x="20" y="84" width="280" height="30"/>
+                                                        <rect key="frame" x="20" y="158" width="280" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                         <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1670,13 +1706,13 @@
                                                         </connections>
                                                     </button>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="eVN-0g-TBs">
-                                                        <rect key="frame" x="20" y="160" width="79" height="27"/>
+                                                        <rect key="frame" x="10" y="234" width="79" height="27"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </switch>
                                                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I agree to Terms &amp; Conditions" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fwn-rh-wf3">
-                                                        <rect key="frame" x="115" y="163" width="195" height="41"/>
+                                                        <rect key="frame" x="105" y="234" width="195" height="24"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" red="0.0" green="0.4823529411764706" blue="0.68235294117647061" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1729,6 +1765,16 @@
                                 <rect key="frame" x="0.0" y="612" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
+                                    <barButtonItem title="Prev" id="Tbk-JC-Rqc">
+                                        <connections>
+                                            <action selector="gotoPreviousTextfield:" destination="0t0-MX-hgI" id="tV6-0E-Z3y"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Next" id="Ui8-mU-9jA">
+                                        <connections>
+                                            <action selector="gotoNextTextfield:" destination="0t0-MX-hgI" id="IhS-Lw-UXI"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZKc-aN-KTB"/>
                                     <barButtonItem title="Done" width="69" style="done" id="cLb-O0-fAd">
                                         <connections>
@@ -1861,13 +1907,15 @@
                     <navigationItem key="navigationItem" id="5ja-ws-kVd"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="barButtonNext" destination="Ui8-mU-9jA" id="qQ5-ex-m33"/>
+                        <outlet property="barButtonPrev" destination="Tbk-JC-Rqc" id="t7o-xB-oQs"/>
                         <outlet property="buttonBack" destination="usc-uI-gyw" id="v8i-vp-PAU"/>
                         <outlet property="buttonCancel" destination="pBd-yb-hAu" id="w6f-o1-e8R"/>
                         <outlet property="buttonContinueBilling" destination="usI-3A-dlO" id="Edp-Po-BSg"/>
-                        <outlet property="buttonContinueBroker" destination="xdo-Rs-1vJ" id="XbR-zC-9hC"/>
                         <outlet property="buttonContinueComission" destination="TWE-H6-k2x" id="ljm-fX-scb"/>
                         <outlet property="buttonContinueOrderSummary" destination="nhD-OO-y6Y" id="f4N-20-v9s"/>
                         <outlet property="buttonContinuePersonalInfo" destination="kd2-pn-4dn" id="3Th-Mm-cXE"/>
+                        <outlet property="buttonContinueTransactionSummary" destination="hY3-69-LOX" id="FMe-j0-rej"/>
                         <outlet property="buttonCountry" destination="eot-kX-muV" id="zWV-hx-j5G"/>
                         <outlet property="buttonExpiry" destination="K0K-6X-0mW" id="Bfh-WZ-dUI"/>
                         <outlet property="buttonState" destination="hcq-MH-jro" id="NQ0-C0-Qph"/>
@@ -1875,6 +1923,8 @@
                         <outlet property="labelAgree" destination="fwn-rh-wf3" id="Icb-OF-Vcz"/>
                         <outlet property="labelBillingAddress" destination="rbh-oc-xlB" id="FcL-Ak-e4H"/>
                         <outlet property="labelBrokerInfo" destination="8kI-NT-aZg" id="M8o-dZ-IRD"/>
+                        <outlet property="labelColPrice" destination="6Xq-Fb-Q03" id="yz5-oR-O8e"/>
+                        <outlet property="labelColPriceValue" destination="BJf-px-gx2" id="e9z-EV-yWc"/>
                         <outlet property="labelCreditCardInfo" destination="iL3-Eh-S3I" id="2SS-D2-bdD"/>
                         <outlet property="labelDiscountHeader" destination="03m-8s-nK7" id="k0V-Qu-sdq"/>
                         <outlet property="labelDiscountPrice" destination="MrP-qP-cKn" id="eaf-0f-BTp"/>
@@ -1889,6 +1939,8 @@
                         <outlet property="labelSubtotalheader" destination="mds-Ty-Hh0" id="qRM-0f-k78"/>
                         <outlet property="labelTotalPrice" destination="2bl-vM-5j6" id="r4X-re-C5r"/>
                         <outlet property="labelTotalheader" destination="Glf-AM-KPQ" id="neg-I2-QO5"/>
+                        <outlet property="labelTransactionSummary" destination="bIK-jy-lxC" id="WRr-Y5-qUa"/>
+                        <outlet property="labelWeAccept" destination="vKX-bP-2zs" id="lpA-sS-ISm"/>
                         <outlet property="pickerCountry" destination="byg-xc-BZj" id="n5W-fF-dnS"/>
                         <outlet property="pickerExpiry" destination="kgW-8u-nOI" id="Rje-ek-imr"/>
                         <outlet property="pickerState" destination="bnC-ES-fi2" id="tTd-NP-lIw"/>
@@ -1912,6 +1964,7 @@
                         <outlet property="toolbarKeyboard" destination="Y8L-fR-EiK" id="D6p-XQ-DuB"/>
                         <outlet property="topNavBar" destination="aNc-Qu-l1Z" id="2Pw-SH-xY7"/>
                         <outlet property="view" destination="ArW-YK-GPF" id="ly7-Qv-h0u"/>
+                        <outlet property="viewBarLine" destination="RBh-Yc-vJG" id="kPF-UQ-oQL"/>
                         <outlet property="viewForScrollView" destination="LL9-Lm-F9w" id="YEG-jx-ILx"/>
                         <outlet property="viewForTerms" destination="Jde-rO-Msk" id="Wgv-x6-m59"/>
                         <outlet property="viewInfo" destination="ArO-ns-QWW" id="t2A-sl-8wt"/>
@@ -3121,11 +3174,11 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zDm-PX-7Rn">
-                                                        <rect key="frame" x="20" y="280" width="280" height="30"/>
+                                                        <rect key="frame" x="20" y="270" width="288" height="44"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                        <state key="normal" title="Cancel Membership">
-                                                            <color key="titleColor" red="0.0" green="0.4823529412" blue="0.68235294120000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <state key="normal" title="Upgrade Membership" backgroundImage="button-long">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -3192,8 +3245,8 @@
                                                 <rect key="frame" x="320" y="0.0" width="320" height="322"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8vY-SR-vMV">
-                                                        <rect key="frame" x="20" y="280" width="280" height="30"/>
+                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8vY-SR-vMV">
+                                                        <rect key="frame" x="20" y="270" width="288" height="44"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                         <state key="normal" title="Upgrade Membership" backgroundImage="button-long">
@@ -3264,8 +3317,8 @@
                                                 <rect key="frame" x="640" y="0.0" width="320" height="322"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yvM-fx-1u1">
-                                                        <rect key="frame" x="20" y="280" width="280" height="30"/>
+                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yvM-fx-1u1">
+                                                        <rect key="frame" x="20" y="270" width="288" height="44"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                         <state key="normal" title="Upgrade Membership" backgroundImage="button-long">
@@ -3739,6 +3792,7 @@
         <image name="logo" width="112" height="27"/>
         <image name="menu-icon" width="22" height="17"/>
         <image name="nav_bg" width="1" height="44"/>
+        <image name="payment" width="148" height="12"/>
         <image name="pops_icon" width="31" height="21"/>
         <image name="referral_icon" width="26" height="21"/>
         <image name="search-icon" width="21" height="21"/>

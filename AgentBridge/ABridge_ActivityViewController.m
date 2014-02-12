@@ -44,7 +44,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    
     self.labelNumberOfActivity.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
     self.labelNumberOfActivity.text = @"My Activity";
     [self.labelNumberOfActivity sizeToFit];

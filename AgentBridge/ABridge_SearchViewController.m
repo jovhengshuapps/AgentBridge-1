@@ -60,12 +60,11 @@
     
     
     self.viewOverlay = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 50.0f, 50.0f)];
-    self.viewOverlay.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
+    self.viewOverlay.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
     self.viewOverlay.layer.cornerRadius = 10.0f;
     self.viewOverlay.layer.masksToBounds = YES;
     
     CGPoint center = self.view.center;
-    center.x -= 50.0f;
     self.viewOverlay.center = center;
     
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -193,7 +192,7 @@
                     index--;
                 }
                 else {
-                    parameters = [NSString stringWithFormat:@"?keyword=%@",[keywords objectAtIndex:index]];
+                    parameters = [NSString stringWithFormat:@"?keyword=%@&user_id=%i",[keywords objectAtIndex:index],self.login_user_id];
                     
                     [urlString setString:@"http://keydiscoveryinc.com/agent_bridge/webservice/search_pops.php"];
                 }
@@ -209,7 +208,7 @@
                      NSData *responseData = [request responseData];
                      NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                      
-//                     NSLog(@"jsonSearch:%@",json);
+//                    NSLog(@"jsonSearch:%@",json);
                      if ([[json objectForKey:@"data"] count]) {
                          
                          if (self.arrayPOPs == nil) {
@@ -219,7 +218,7 @@
                          for (NSDictionary *entry in [json objectForKey:@"data"]) {
                              NSString *imageString = @"";
                              
-                             if (self.login_user_id == [[entry valueForKey:@"user_id"] integerValue]) {
+                             if (self.login_user_id == [[entry valueForKey:@"user_id"] integerValue] || ([[json objectForKey:@"network_status"] integerValue] == 1 && [[json objectForKey:@"access_status"] integerValue] == 1)) {
                                  
                                  if ([entry valueForKey:@"pops_image"] == nil || [[entry valueForKey:@"pops_image"] isKindOfClass:[NSNull class]]) {
                                      imageString = [self imageStringForPropertyType:[[entry valueForKey:@"property_type"] integerValue] andSubType:[[entry valueForKey:@"sub_type"] integerValue]];
@@ -234,7 +233,7 @@
                              }
                              
                              
-                             [self.arrayPOPs addObject:[NSDictionary dictionaryWithObjectsAndKeys:[entry valueForKey:@"property_name"], @"name_key", [entry valueForKey:@"listing_id"], @"id_key",[entry valueForKey:@"user_id"], @"user_id_key", imageString, @"image_key", nil]];
+                             [self.arrayPOPs addObject:[NSDictionary dictionaryWithObjectsAndKeys:[entry valueForKey:@"property_name"], @"name_key", [entry valueForKey:@"listing_id"], @"id_key",[entry valueForKey:@"user_id"], @"user_id_key", [entry valueForKey:@"agent_name"], @"agent_name_key", imageString, @"image_key",[json objectForKey:@"network_status"],@"network_key", [json objectForKey:@"access_status"],@"access_key", nil]];
                              
                          }
                          
@@ -396,6 +395,7 @@
     
     CGRect frame = self.searchDisplayController.searchResultsTableView.frame;
     frame.size.height = 360.0f;
+    frame.origin.x = 10.0f;
     self.searchDisplayController.searchResultsTableView.frame = frame;
     
     
@@ -423,7 +423,7 @@
     
     CGFloat height = MAX(size.height, 44.0f);
     
-    return height;
+    return height + 2.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -439,6 +439,7 @@
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.backgroundColor = [UIColor clearColor];
+        
     }
     
     if (self.selectedScope == 1) {
@@ -490,12 +491,12 @@
         NSString * pops_user_id = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"user_id_key"];
         
         
-        if(self.login_user_id == [pops_user_id integerValue]) {
+//        if(self.login_user_id == [pops_user_id integerValue]) {
             ABridge_ActivityAgentPOPsViewController *popsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ActivityAgentPOPs"];
             popsViewController.user_id = pops_user_id;
             popsViewController.listing_id = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"id_key"];
             popsViewController.fromSearch = YES;
-            popsViewController.user_name = self.agent_name;
+            popsViewController.user_name = [[self.arrayPOPs objectAtIndex:[indexPath row]] objectForKey:@"agent_name_key"];
             
             CATransition *transition = [CATransition animation];
             transition.duration = 0.4;
@@ -507,7 +508,7 @@
             [self presentViewController:popsViewController animated:NO completion:^{
                 
             }];
-        }
+//        }
         
         
         

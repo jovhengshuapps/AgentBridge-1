@@ -92,6 +92,11 @@
     
     self.loginDetail = (LoginDetails*)[fetchedObjects firstObject];
     
+    if ([self.user_id integerValue] == [self.loginDetail.user_id integerValue]) {
+        
+        self.labelNumberOfProperty.text = @"My POPs™";
+    }
+    
     
     if (fromSearch) {
         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@",self.user_id,self.listing_id];

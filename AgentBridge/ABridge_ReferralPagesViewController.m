@@ -211,6 +211,14 @@
         [priceText appendFormat:@" - %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.referralDetails.price_2 doubleValue]]]];
     }
     self.labelPrice.text = priceText;
+    
+    if ([self.referralDetails.price_1 doubleValue] == 0 || [self.referralDetails.price_2 doubleValue] == 0) {
+        self.labelPrice.hidden = YES;
+    }
+    else {
+        self.labelPrice.hidden = NO;
+    }
+    
     self.labelIntention.text = CLIENT_INTENTION([self.referralDetails.client_intention integerValue]);
     
     self.labelReferralFee.text = [NSString stringWithFormat:@"Referral Agreement (%@)",self.referralDetails.referral_fee];

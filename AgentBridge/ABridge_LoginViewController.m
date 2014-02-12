@@ -106,14 +106,13 @@
     self.textEmail.backgroundColor = [UIColor clearColor];
     self.textPassword.backgroundColor = [UIColor clearColor];
     
-    self.tableView.layer.borderColor = [UIColor colorWithRed:75.0f/255.0f green:75.0f/255.0f blue:75.0f/255.0f alpha:1.0f].CGColor;
+    self.tableView.layer.borderColor = [UIColor colorWithRed:35.0f/255.0f green:35.0f/255.0f blue:35.0f/255.0f alpha:0.5f].CGColor;
     self.tableView.layer.borderWidth = 1.0f;
     self.tableView.layer.cornerRadius = 4.0f;
     self.tableView.layer.masksToBounds = YES;
 //    self.tableView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
     
-    self.tableView.separatorColor = [UIColor colorWithRed:75.0f/255.0f green:75.0f/255.0f blue:75.0f/255.0f alpha:1.0f];
-    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
@@ -449,6 +448,15 @@
         self.textEmail.frame = frame;
         
         [cell.contentView addSubview:self.textEmail];
+        
+        // Add a bottomBorder.
+        CALayer *bottomBorder = [CALayer layer];
+        
+        bottomBorder.frame = CGRectMake(0.0f, cell.frame.size.height-1.0f, cell.frame.size.width, 1.0f);
+        
+        bottomBorder.backgroundColor = [UIColor colorWithRed:35.0f/255.0f green:35.0f/255.0f blue:35.0f/255.0f alpha:0.5].CGColor;
+        
+        [cell.layer addSublayer:bottomBorder];
     }
     else if ([indexPath row] == 1) {
         CGRect frame = self.textPassword.frame;

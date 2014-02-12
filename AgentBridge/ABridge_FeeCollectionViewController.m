@@ -78,6 +78,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelTotalPrice;
 @property (weak, nonatomic) IBOutlet UIButton *buttonContinueOrderSummary;
 
+@property (weak, nonatomic) IBOutlet UILabel *labelTransactionSummary;
+@property (weak, nonatomic) IBOutlet UIButton *buttonContinueTransactionSummary;
+@property (weak, nonatomic) IBOutlet UILabel *labelColPrice;
+@property (weak, nonatomic) IBOutlet UILabel *labelColPriceValue;
+@property (weak, nonatomic) IBOutlet UIView *viewBarLine;
+@property (weak, nonatomic) IBOutlet UILabel *labelWeAccept;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonPrev;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonNext;
 
 @property (strong, nonatomic) NSArray *arrayOfMonth;
 @property (strong, nonatomic) NSMutableArray *arrayOfYear;
@@ -110,6 +118,12 @@
 @property (assign, nonatomic) NSInteger discount;
 @property (assign, nonatomic) CGFloat totalServiceFee;
 
+@property (strong, nonatomic) UITextField *prevTextField;
+@property (strong, nonatomic) UITextField *nextTextField;
+
+@property (strong, nonatomic) UIAlertView *avOverlay;
+@property (assign, nonatomic) BOOL isSendingInvoice;
+
 - (IBAction)continuePressed:(id)sender;
 - (IBAction)cancelPressed:(id)sender;
 - (IBAction)backPressed:(id)sender;
@@ -120,6 +134,8 @@
 - (IBAction)submitTransaction:(id)sender;
 - (IBAction)resignKeyboards:(id)sender;
 - (IBAction)hideTermsView:(id)sender;
+- (IBAction)gotoPreviousTextfield:(id)sender;
+- (IBAction)gotoNextTextfield:(id)sender;
 
 @end
 
@@ -159,6 +175,10 @@
 
 @synthesize discount;
 @synthesize totalServiceFee;
+@synthesize prevTextField;
+@synthesize nextTextField;
+@synthesize avOverlay;
+@synthesize isSendingInvoice;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -214,17 +234,25 @@
     
     self.labelOrderSummaryHeader.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     
-    self.labelServiceName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelQuantityHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelQuantity.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelSubtotalheader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelSubtotalPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelDiscountHeader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelDiscountPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelTotalheader.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
-    self.labelTotalPrice.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelServiceHeader.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.labelServiceName.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelQuantityHeader.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.labelQuantity.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelSubtotalheader.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelSubtotalPrice.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelDiscountHeader.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelDiscountPrice.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelTotalheader.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelTotalPrice.font = FONT_OPENSANS_REGULAR(14.0f);
+    self.labelColPrice.font = FONT_OPENSANS_REGULAR(12.0f);
+    self.labelColPriceValue.font = FONT_OPENSANS_REGULAR(14.0f);
     self.buttonContinueOrderSummary.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
+    self.labelTransactionSummary.font = FONT_OPENSANS_BOLD(FONT_SIZE_TITLE);
+    self.buttonContinueTransactionSummary.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
+    
+    self.labelWeAccept.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
+    self.labelAgree.font = FONT_OPENSANS_REGULAR(14.0f);
     
     self.textViewTop.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
@@ -238,6 +266,15 @@
     self.buttonExpiry.layer.borderWidth = 1.0f;
     
     [self addPaddingAndBorder:self.textFieldGrossComission color:[UIColor colorWithRed:178.0f/255.0f green:178.0f/255.0f blue:178.0f/255.0f alpha:1.0f]];
+    
+    // Add a bottomBorder.
+    CALayer *bottomBorder = [CALayer layer];
+    
+    bottomBorder.frame = CGRectMake(0.0f, 0.0f, self.viewBarLine.frame.size.width, 1.0f);
+    
+    bottomBorder.backgroundColor = [UIColor colorWithRed:60.0f/255.0f green:60.0f/255.0f blue:60.0f/255.0f alpha:1.0f].CGColor;
+    
+    [self.viewBarLine.layer addSublayer:bottomBorder];
     
 //    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(self.textFieldGrossComission.frame.size.width - 15.0f, 0, 15, 20)];
 //    self.textFieldGrossComission.rightView = paddingView;
@@ -597,6 +634,7 @@
         
     }];
     [requestFirstPayment startAsynchronous];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -658,7 +696,7 @@
             if ([self textIsNull:self.grossCommission] == YES) {
                 
                 continueToNextView = NO;
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Required Information" message:@"Please enter Gross Comission." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Required Information" message:@"Please enter Gross Commission." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 av.tag = 1;
                 [av show];
             }
@@ -703,7 +741,9 @@
                         [formatter setMaximumFractionDigits:0];
                         formatter.currencyCode = @"USD";
                         
-                        self.labelSubtotalPrice.text = [NSString stringWithFormat:@"%@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]]];
+                        self.labelColPriceValue.text = [NSString stringWithFormat:@"%@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]]];
+                        
+                        self.labelSubtotalPrice.text = self.labelColPriceValue.text;
                         
                         if (self.discount > 0) {
                             
@@ -724,7 +764,7 @@
                             
                             CGFloat discountedPrice = ([self.serviceFee doubleValue] * (self.discount/100));
                             
-                            self.labelDiscountPrice.text = [NSString stringWithFormat:@"%@",[formatter stringFromNumber: [NSNumber numberWithDouble:discountedPrice]]];
+                            self.labelDiscountPrice.text = [NSString stringWithFormat:@"- %@",[formatter stringFromNumber: [NSNumber numberWithDouble:discountedPrice]]];
                             
                             self.totalServiceFee = [self.serviceFee integerValue] - discountedPrice;
                             
@@ -756,7 +796,7 @@
                             self.labelTotalPrice.text = self.labelSubtotalPrice.text;
                         }
                         
-                        NSString * commissionString = (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO)?[NSString stringWithFormat:@"Your Gross Comission: %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]] ]: [NSString stringWithFormat:@"Gross Comission of %@: %@", self.referral_agentname, [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]]];
+                        NSString * commissionString = (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO)?[NSString stringWithFormat:@"Your Gross Commission: %@",[formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]] ]: [NSString stringWithFormat:@"Gross Commission of %@: %@", self.referral_agentname, [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]]];
                         
                         self.textViewTop.text = [NSString stringWithFormat:@"The %@ referral fee of %@ is ready to to be disbursed. AgentBridge will now be collecting the service fee of %@.\n\n%@", self.referral_name, [formatter stringFromNumber: [NSNumber numberWithDouble:([self.grossCommission doubleValue] * self.referral_fee)]], [formatter stringFromNumber: [NSNumber numberWithDouble:[self.serviceFee doubleValue]]/*[NSNumber numberWithFloat:self.totalServiceFee]*/], commissionString ];
                         
@@ -776,7 +816,7 @@
                         
                     }
                     else {
-                        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your Gross Comission exceeds the limit." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your Gross Commission exceeds the limit." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                         av.tag = 12;
                         [self.grossCommission setString:@""];
                         [av show];
@@ -795,7 +835,7 @@
             }
             break;
         }
-        case 2: {
+        case 3: {
             if ([self textIsNull:self.textFieldFirstname.text] == NO && [self textIsNull:self.textFieldLastname.text] == NO && [self textIsNull:self.textFieldEmail.text] == NO && [self textIsNull:self.textFieldPhoneNumber.text] == NO) {
                 
                 if ([self NSStringIsValidEmail:self.textFieldEmail.text] == YES) {
@@ -1102,6 +1142,14 @@
     }];
 }
 
+- (IBAction)gotoPreviousTextfield:(id)sender {
+    [self.prevTextField becomeFirstResponder];
+}
+
+- (IBAction)gotoNextTextfield:(id)sender {
+    [self.nextTextField becomeFirstResponder];
+}
+
 - (void) showTermsView {
     [UIView animateWithDuration:0.2 animations:^{
         CGRect frame = self.viewForScrollView.frame;
@@ -1154,33 +1202,125 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    if (textField == self.textFieldFirstname || textField == self.textFieldLastname) {
-        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 25.0f + self.textViewTop.frame.size.height) animated:YES];
+    if (textField == self.textFieldGrossComission) {
+        
+        self.barButtonPrev.enabled = NO;
+        self.barButtonNext.enabled = NO;
+        
+        self.grossCommission = nil;
+        textField.text = @"";
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 105.0f) animated:YES];
+    }
+    else if (textField == self.textFieldFirstname || textField == self.textFieldLastname) {
+        if (textField == self.textFieldFirstname) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = self.textFieldTaxId;
+            self.nextTextField = self.textFieldLastname;
+        }
+        else if (textField == self.textFieldLastname) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = self.textFieldFirstname;
+            self.nextTextField = self.textFieldEmail;
+        }
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, -35.0f + self.textViewTop.frame.size.height) animated:YES];
     }
     else if (textField == self.textFieldEmail || textField == self.textFieldPhoneNumber) {
-        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 50.0f + self.textViewTop.frame.size.height) animated:YES];
+        
+        if (textField == self.textFieldEmail) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = self.textFieldLastname;
+            self.nextTextField = self.textFieldPhoneNumber;
+        }
+        else if (textField == self.textFieldPhoneNumber) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = NO;
+            
+            self.prevTextField = self.textFieldEmail;
+            self.nextTextField = nil;
+        }
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 40.0f + self.textViewTop.frame.size.height) animated:YES];
     }
     else if (textField == self.textFieldAgentLicense || textField == self.textFieldBrokerLicense || textField == self.textFieldTaxId) {
+        
+        if (textField == self.textFieldAgentLicense) {
+            self.barButtonPrev.enabled = NO;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = nil;
+            self.nextTextField = self.textFieldBrokerLicense;
+        }
+        else if (textField == self.textFieldBrokerLicense) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = self.textFieldAgentLicense;
+            self.nextTextField = self.textFieldTaxId;
+        }
+        else if (textField == self.textFieldTaxId) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = self.textFieldAgentLicense;
+            self.nextTextField = self.textFieldFirstname;
+        }
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 25.0f) animated:YES];
     }
-    else if (textField == self.textFieldAddress1) {
+    else if (textField == self.textFieldAddress1 || textField == self.textFieldAddress2) {
+        if (textField == self.textFieldAddress1) {
+            self.barButtonPrev.enabled = NO;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = nil;
+            self.nextTextField = self.textFieldAddress2;
+        }
+        else if (textField == self.textFieldAddress2) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = self.textFieldAddress1;
+            self.nextTextField = self.textFieldZipcode;
+        }
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 65.0f) animated:YES];
     }
     else if (textField == self.textFieldCreditCard) {
+        self.barButtonPrev.enabled = NO;
+        self.barButtonNext.enabled = YES;
+        
+        self.prevTextField = nil;
+        self.nextTextField = self.textFieldSecurityCode;
+        
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 45.0f) animated:YES];
     }
-//    else if (textField == self.textFieldEmail || textField == self.textFieldPhoneNumber) {
-//        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 80.0f) animated:YES];
-//    }
-    else if (textField == self.textFieldAddress2) {
-        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 100.0f) animated:YES];
+    else if (textField == self.textFieldSecurityCode) {
+        self.barButtonPrev.enabled = YES;
+        self.barButtonNext.enabled = NO;
+        
+        self.prevTextField = self.textFieldCreditCard;
+        self.nextTextField = nil;
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 150.0f) animated:YES];
     }
-    else if (textField == self.textFieldZipcode || textField == self.textFieldCity/* || textField == self.textFieldSecurityCode*/) {
+    else if (textField == self.textFieldZipcode || textField == self.textFieldCity) {
+        if (textField == self.textFieldZipcode) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = YES;
+            
+            self.prevTextField = self.textFieldAddress2;
+            self.nextTextField = self.textFieldCity;
+        }
+        else if (textField == self.textFieldCity) {
+            self.barButtonPrev.enabled = YES;
+            self.barButtonNext.enabled = NO;
+            
+            self.prevTextField = self.textFieldZipcode;
+            self.nextTextField = nil;
+        }
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, 130.0f) animated:YES];
-    }
-    else if (textField == self.textFieldGrossComission) {
-        self.grossCommission = nil;
-        textField.text = @"";
     }
     return YES;
 }
@@ -1462,6 +1602,9 @@
     }
 }
 
+#pragma mark
+#pragma mark UIAlertView Methods
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch ([alertView tag]) {
         case 1:
@@ -1592,6 +1735,25 @@
             
             break;
     }
+        case 12345:{
+            if (buttonIndex == 0) {
+                NSLog(@"YES");
+                [self sendEmail:YES];
+            }
+            else {
+                NSLog(@"NO");
+            }
+        }break;
+        case 67890: {
+            
+            if (buttonIndex == 0) {
+                NSLog(@"YES");
+                [self sendEmail:NO];
+            }
+            else {
+                NSLog(@"NO");
+            }
+        }break;
         default:
             break;
     }
@@ -1637,7 +1799,7 @@
         self.webViewInvoice = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 1024.0f, 768.0f)];
         self.webViewInvoice.delegate = self;
     [self.webViewInvoice loadHTMLString:htmlStringForPDF baseURL:nil];
-    
+    [self displayOverlay:[NSString stringWithFormat:@"Sending invoice: %@ to your email.",self.invoice_number]];
 }
 
 - (void) createPaymentPDF {
@@ -1671,6 +1833,7 @@
         self.webViewPayment = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 1024.0f, 768.0f)];
         self.webViewPayment.delegate = self;
     [self.webViewPayment loadHTMLString:htmlStringForPDF baseURL:nil];
+    [self displayOverlay:[NSString stringWithFormat:@"Sending payment details: %@ to your email.",self.payment_id]];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
@@ -1718,6 +1881,8 @@
         if([self drawPdf:self.invoice_number pageSize:pageSize]) {
             NSLog(@"Successfully created invoice");
             [self createPaymentPDF];
+            
+//            [self sendEmail:YES];
         }
     }
     else if (theWebView == self.webViewPayment) {
@@ -1755,14 +1920,18 @@
         
         if([self drawPdf:self.payment_id pageSize:pageSize]) {
             NSLog(@"Successfully created Payment");
-            //if done
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transaction Successful" message:@"Your Transaction has completed Successfully!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            av.tag = 99;
-            [av show];
             
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-            self.buttonSubmit.enabled = YES;
+            
+            [self sendEmail:NO];
+            
+//            //if done
+//            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transaction Successful" message:@"Your Transaction has completed Successfully!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//            av.tag = 99;
+//            [av show];
+//            
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//            self.buttonSubmit.enabled = YES;
         }
     }
 }
@@ -1800,5 +1969,168 @@
     
     return success;
 }
+
+#pragma 
+#pragma mark MFMailComposeViewController Methods
+- (void) sendEmail:(BOOL)sendingInvoice {
+    
+    self.isSendingInvoice = sendingInvoice;
+    
+    NSString * subject = @"AgentBridge Referral Transaction Receipt - Mobile";
+//        if (sendingInvoice) {
+//            subject = @"AgentBridge Referral Invoice PDF";
+//        }
+//        else {
+//            subject = @"AgentBridge Referral Payment Details PDF";
+//        }
+        NSString * bodyMessage = @"Attached to this email is your AgentBridge Referral Transaction Receipt (Invoice and Payment Details). Thank you!";
+        
+//        if (sendingInvoice) {
+//            bodyMessage = [NSString stringWithFormat:@"Attached to this email is a copy of your Invoice from AgentBridge. Thank you!"];
+//        }
+//        else {
+//            bodyMessage = [NSString stringWithFormat:@"Attached to this email is a copy of your Payment Details from AgentBridge. Thank you!"];
+//        }
+
+    
+        
+        
+//        NSString *pdfName = @"";
+//        
+//        if (sendingInvoice) {
+//            pdfName = self.invoice_number;
+//        }
+//        else {
+//            pdfName = self.payment_id;
+//        }
+    
+        
+        NSString *fileNameInvoice = [NSString stringWithFormat:@"%@.pdf",self.invoice_number];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *pdfFileName = [documentsDirectory stringByAppendingPathComponent:fileNameInvoice];
+        
+        
+        NSData *pdfInvoiceData = [NSData dataWithContentsOfFile:pdfFileName];
+        
+    
+    paths = nil;
+    documentsDirectory = nil;
+    pdfFileName = nil;
+    
+    NSString *fileNamePayment = [NSString stringWithFormat:@"%@.pdf",self.payment_id];
+    paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    documentsDirectory = [paths objectAtIndex:0];
+    pdfFileName = [documentsDirectory stringByAppendingPathComponent:fileNamePayment];
+    
+    
+    NSData *pdfPaymentData = [NSData dataWithContentsOfFile:pdfFileName];
+    
+    
+    NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/send_pdf_email.php";
+    NSURL *url = [NSURL URLWithString: urlString];
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    
+    [request setUseKeychainPersistence:YES];
+    //if you have your site secured by .htaccess
+    
+    //[request setUsername:@"login"];
+    //[request setPassword:@"password"];
+    
+    
+    
+    [request addPostValue:subject forKey:@"subject"];
+    [request addPostValue:bodyMessage forKey:@"message"];
+    
+    [request addPostValue:self.textFieldEmail.text forKey:@"email"];
+    
+    
+    [request addPostValue:fileNameInvoice forKey:@"name"];
+    [request addPostValue:fileNamePayment forKey:@"payment_name"];
+    
+    // Upload file
+    [request setData:pdfInvoiceData withFileName:fileNameInvoice andContentType:@"application/octet-stream" forKey:@"userfile"];
+    [request setData:pdfPaymentData withFileName:fileNamePayment andContentType:@"application/octet-stream" forKey:@"paymentfile"];
+    
+    [request setDelegate:self];
+    [request setDidFinishSelector:@selector(uploadRequestFinished:)];
+    [request setDidFailSelector:@selector(uploadRequestFailed:)];
+    
+    [request startAsynchronous];
+    
+    
+}
+
+
+- (void)uploadRequestFinished:(ASIHTTPRequest *)request{
+    NSError *errorData = nil;
+    NSData *responseData = [request responseData];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+//    NSLog(@"json:%@",json);
+    if ([[json objectForKey:@"status"] boolValue] == YES) {
+//        if (self.isSendingInvoice) {
+//            
+//                
+//                [self createPaymentPDF];
+//        }
+//        else {
+        
+            
+            [self removeOverlay];
+                //if done
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transaction Successful" message:@"Your Transaction has completed Successfully!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                av.tag = 99;
+                [av show];
+                
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+                self.buttonSubmit.enabled = YES;
+        
+//        }
+    }
+    else {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Email Failed" message:[json objectForKey:@"message"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+    }
+}
+
+- (void)uploadRequestFailed:(ASIHTTPRequest *)request{
+    
+    NSLog(@" Error - Statistics file upload failed: \"%@\"",[[request error] localizedDescription]);
+}
+
+
+- (void) displayOverlay:(NSString*)message {
+    
+    [self removeOverlay];
+    
+    self.avOverlay = [[UIAlertView alloc] initWithTitle:@"AgentBridge Alert" message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+    
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    CGFloat yOffset = 0.0f;
+    if ([message rangeOfString:@"invoice"].location != NSNotFound) {
+        yOffset = 150.0f;
+    }
+    else {
+        yOffset = 100.0f;
+    }
+    
+    // Adjust the indicator so it is up a few pixels from the bottom of the alert
+    indicator.center = CGPointMake((self.view.frame.size.width / 2) - 20.0f, (self.view.frame.size.height / 2) - yOffset);
+    [indicator startAnimating];
+    [self.avOverlay addSubview:indicator];
+    
+    [self.avOverlay show];
+    self.view.userInteractionEnabled = NO;
+}
+
+- (void) removeOverlay {
+    [self.avOverlay dismissWithClickedButtonIndex:0 animated:YES];
+    self.avOverlay = nil;
+    self.view.userInteractionEnabled = YES;
+}
+
 
 @end

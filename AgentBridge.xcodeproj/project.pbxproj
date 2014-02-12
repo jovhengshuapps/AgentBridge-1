@@ -12,14 +12,11 @@
 		6E28ACBA1835ED2D007E0C63 /* LoginDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28ACB71835ED2D007E0C63 /* LoginDetails.m */; };
 		6E3B3C7D185EF6310065B51C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF94F24185EDEB900460878 /* SenTestingKit.framework */; };
 		6E3B3C80185EF8D80065B51C /* ABridge_SendTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E3B3C7F185EF8D80065B51C /* ABridge_SendTransaction.m */; };
-		6E3C54A41863144100147E0E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E483EEA1863031F0071691D /* libTestFlight.a */; };
 		6E40004F1856C8D6000B78E6 /* ABridge_AgentInvitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E40004E1856C8D5000B78E6 /* ABridge_AgentInvitesViewController.m */; };
 		6E47185D186456B60016B407 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E47185C186456B60016B407 /* Activity.m */; };
 		6E483ECE1862D0E80071691D /* ContactInfoNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483ECD1862D0E60071691D /* ContactInfoNumber.m */; };
 		6E483EDB1862EC370071691D /* Brokerage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483EDA1862EC370071691D /* Brokerage.m */; };
 		6E483EDE1862EC380071691D /* Designation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E483EDD1862EC380071691D /* Designation.m */; };
-		6E483EF1186303200071691D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E483EEB1863031F0071691D /* README.md */; };
-		6E483EF2186303200071691D /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E483EEC1863031F0071691D /* release_notes.md */; };
 		6E503B94186BE88D00E0F329 /* ABridge_UILabelInset.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E503B93186BE88D00E0F329 /* ABridge_UILabelInset.m */; };
 		6E54D2D618A5EF7A009F6ECB /* UIImage+ImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E54D2D518A5EF7A009F6ECB /* UIImage+ImageResize.m */; };
 		6E5A0A2C1867EEC30030F2FF /* ABridge_AutocompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */; };
@@ -28,6 +25,9 @@
 		6E5AEF8D184C7C2800FE7B9E /* RequestAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */; };
 		6E5AEF90184C7C2900FE7B9E /* RequestNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */; };
 		6E5AEF93184CA8AF00FE7B9E /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF92184CA8AF00FE7B9E /* Buyer.m */; };
+		6E63C55B18ABD0810001616B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E63C55518ABD0810001616B /* libTestFlight.a */; };
+		6E63C55C18ABD0810001616B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E63C55618ABD0810001616B /* README.md */; };
+		6E63C55D18ABD0810001616B /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E63C55718ABD0810001616B /* release_notes.md */; };
 		6E63DF0318A63EA1007931EE /* ABridge_MembershipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E63DF0218A63EA1007931EE /* ABridge_MembershipViewController.m */; };
 		6E67D995184D864200568C5F /* ABridge_BuyerPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E67D994184D864200568C5F /* ABridge_BuyerPagesViewController.m */; };
 		6E697995187541DF0037F564 /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E697994187541DF0037F564 /* Property.m */; };
@@ -126,12 +126,6 @@
 		6E483EDA1862EC370071691D /* Brokerage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brokerage.m; sourceTree = "<group>"; };
 		6E483EDC1862EC380071691D /* Designation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Designation.h; sourceTree = "<group>"; };
 		6E483EDD1862EC380071691D /* Designation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Designation.m; sourceTree = "<group>"; };
-		6E483EEA1863031F0071691D /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		6E483EEB1863031F0071691D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		6E483EEC1863031F0071691D /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
-		6E483EED1863031F0071691D /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		6E483EEE1863031F0071691D /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
-		6E483EEF1863031F0071691D /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		6E503B92186BE88C00E0F329 /* ABridge_UILabelInset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_UILabelInset.h; sourceTree = "<group>"; };
 		6E503B93186BE88D00E0F329 /* ABridge_UILabelInset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_UILabelInset.m; sourceTree = "<group>"; };
 		6E54D2D418A5EF7A009F6ECB /* UIImage+ImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageResize.h"; sourceTree = "<group>"; };
@@ -151,6 +145,12 @@
 		6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestNetwork.m; sourceTree = "<group>"; };
 		6E5AEF91184CA8AF00FE7B9E /* Buyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Buyer.h; sourceTree = "<group>"; };
 		6E5AEF92184CA8AF00FE7B9E /* Buyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Buyer.m; sourceTree = "<group>"; };
+		6E63C55518ABD0810001616B /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		6E63C55618ABD0810001616B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		6E63C55718ABD0810001616B /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
+		6E63C55818ABD0810001616B /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
+		6E63C55918ABD0810001616B /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
+		6E63C55A18ABD0810001616B /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		6E63DF0118A63EA1007931EE /* ABridge_MembershipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_MembershipViewController.h; sourceTree = "<group>"; };
 		6E63DF0218A63EA1007931EE /* ABridge_MembershipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABridge_MembershipViewController.m; sourceTree = "<group>"; };
 		6E67D993184D864200568C5F /* ABridge_BuyerPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABridge_BuyerPagesViewController.h; sourceTree = "<group>"; };
@@ -278,7 +278,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E3C54A41863144100147E0E /* libTestFlight.a in Frameworks */,
+				6E63C55B18ABD0810001616B /* libTestFlight.a in Frameworks */,
 				6EFF61501851BBBC00A5A86A /* libz.dylib in Frameworks */,
 				6EFF614E1851BBAF00A5A86A /* MobileCoreServices.framework in Frameworks */,
 				6EFF614C1851BBA700A5A86A /* SystemConfiguration.framework in Frameworks */,
@@ -325,19 +325,6 @@
 			name = "AgentInvites Controller";
 			sourceTree = "<group>";
 		};
-		6E483EE91863031F0071691D /* TestFlightSDK2.1.3 */ = {
-			isa = PBXGroup;
-			children = (
-				6E483EEA1863031F0071691D /* libTestFlight.a */,
-				6E483EEB1863031F0071691D /* README.md */,
-				6E483EEC1863031F0071691D /* release_notes.md */,
-				6E483EED1863031F0071691D /* TestFlight+AsyncLogging.h */,
-				6E483EEE1863031F0071691D /* TestFlight+ManualSessions.h */,
-				6E483EEF1863031F0071691D /* TestFlight.h */,
-			);
-			path = TestFlightSDK2.1.3;
-			sourceTree = "<group>";
-		};
 		6E5A0A2D186818490030F2FF /* MLPAutoCompleteTextField */ = {
 			isa = PBXGroup;
 			children = (
@@ -350,6 +337,19 @@
 				6E5A0A34186818490030F2FF /* NSString+Levenshtein.m */,
 			);
 			path = MLPAutoCompleteTextField;
+			sourceTree = "<group>";
+		};
+		6E63C55418ABD0810001616B /* TestFlightSDK2.2.1 */ = {
+			isa = PBXGroup;
+			children = (
+				6E63C55518ABD0810001616B /* libTestFlight.a */,
+				6E63C55618ABD0810001616B /* README.md */,
+				6E63C55718ABD0810001616B /* release_notes.md */,
+				6E63C55818ABD0810001616B /* TestFlight+AsyncLogging.h */,
+				6E63C55918ABD0810001616B /* TestFlight+ManualSessions.h */,
+				6E63C55A18ABD0810001616B /* TestFlight.h */,
+			);
+			path = TestFlightSDK2.2.1;
 			sourceTree = "<group>";
 		};
 		6E63DF0418A63EA8007931EE /* Membership */ = {
@@ -511,11 +511,11 @@
 				6EEF584B18337E4000C3214E /* Images.xcassets */,
 				6E3B3C7E185EF8D80065B51C /* ABridge_SendTransaction.h */,
 				6E3B3C7F185EF8D80065B51C /* ABridge_SendTransaction.m */,
-				6E483EE91863031F0071691D /* TestFlightSDK2.1.3 */,
 				6EEF587A1833837600C3214E /* ABridge_ParentViewController.h */,
 				6EEF587B1833837600C3214E /* ABridge_ParentViewController.m */,
 				6EF948A2185ED7AE00460878 /* ABridge_TabBarViewController.h */,
 				6EF948A3185ED7AE00460878 /* ABridge_TabBarViewController.m */,
+				6E63C55418ABD0810001616B /* TestFlightSDK2.2.1 */,
 				6E5A0A2D186818490030F2FF /* MLPAutoCompleteTextField */,
 				6E5A0A2A1867EEC30030F2FF /* ABridge_AutocompleteTextField.h */,
 				6E5A0A2B1867EEC30030F2FF /* ABridge_AutocompleteTextField.m */,
@@ -761,14 +761,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E483EF2186303200071691D /* release_notes.md in Resources */,
+				6E63C55D18ABD0810001616B /* release_notes.md in Resources */,
 				6EA551041844525E00702E94 /* OpenSans-Regular-webfont.ttf in Resources */,
 				6EEF586A18337E6B00C3214E /* Main.storyboard in Resources */,
 				6EDF11B61845A762001BFC6B /* OpenSans-Bold-webfont.ttf in Resources */,
 				6EBBD750183473B200166D63 /* ABridge_PropertyPagesViewController.xib in Resources */,
 				6EBBD7681834A71D00166D63 /* ABridge_ReferralPagesViewController.xib in Resources */,
-				6E483EF1186303200071691D /* README.md in Resources */,
 				6EEF584118337E4000C3214E /* InfoPlist.strings in Resources */,
+				6E63C55C18ABD0810001616B /* README.md in Resources */,
 				6EEF584C18337E4000C3214E /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1007,7 +1007,10 @@
 				);
 				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = "/Users/host24_iosdev/Desktop/AgentBridge\\ App/AgentBridge/AgentBridge/TestFlightSDK2.1.3";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/host24_iosdev/Desktop/AgentBridge\\ App/AgentBridge/AgentBridge/TestFlightSDK2.1.3",
+					"/Users/host24_iosdev/Desktop/AgentBridge\\ App/AgentBridge/AgentBridge/TestFlightSDK2.2.1",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1034,7 +1037,10 @@
 				);
 				INFOPLIST_FILE = "AgentBridge/AgentBridge-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = "/Users/host24_iosdev/Desktop/AgentBridge\\ App/AgentBridge/AgentBridge/TestFlightSDK2.1.3";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/host24_iosdev/Desktop/AgentBridge\\ App/AgentBridge/AgentBridge/TestFlightSDK2.1.3",
+					"/Users/host24_iosdev/Desktop/AgentBridge\\ App/AgentBridge/AgentBridge/TestFlightSDK2.2.1",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
