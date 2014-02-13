@@ -11,6 +11,7 @@
 #import "LoginDetails.h"
 #import "ABridge_AppDelegate.h"
 #import "AgentProfile.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_LoginViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewBackground;
@@ -309,6 +310,31 @@
                 
                 if (self.urlConnectionProfile) {
                     self.labelLoading.text = @"Retrieving Profile.";
+                    
+                    NSString *deviceToken = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).deviceTokenString;
+                    NSInteger user_id = [self.item.user_id integerValue];
+                    
+                    
+                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/register_device.php?user_id=%i&token=%@", user_id, deviceToken];
+//                    NSLog(@"urlString:%@",urlString);
+                    __block NSError *errorData = nil;
+                    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+                    [request setCompletionBlock:^{
+                        // Use when fetching text data
+                        //                        NSString *responseString = [request responseString];
+                        // Use when fetching binary data
+                        NSData *responseData = [request responseData];
+                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+//                        NSLog(@"json:%@",json);
+                        ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).tokenId = [[[json objectForKey:@"data"] firstObject] objectForKey:@"token_id"];
+                    }];
+                    [request setFailedBlock:^{
+                        NSError *error = [request error];
+                        NSLog(@"error:%@",error);
+                    }];
+                    [request startAsynchronous];
+                    
+                    
                     //                //NSLog(@"Connection Successful");
                 }
                 else {

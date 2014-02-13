@@ -25,7 +25,6 @@
 		6E5AEF8D184C7C2800FE7B9E /* RequestAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8C184C7C2700FE7B9E /* RequestAccess.m */; };
 		6E5AEF90184C7C2900FE7B9E /* RequestNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF8F184C7C2900FE7B9E /* RequestNetwork.m */; };
 		6E5AEF93184CA8AF00FE7B9E /* Buyer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5AEF92184CA8AF00FE7B9E /* Buyer.m */; };
-		6E63C55B18ABD0810001616B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E63C55518ABD0810001616B /* libTestFlight.a */; };
 		6E63C55C18ABD0810001616B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E63C55618ABD0810001616B /* README.md */; };
 		6E63C55D18ABD0810001616B /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 6E63C55718ABD0810001616B /* release_notes.md */; };
 		6E63DF0318A63EA1007931EE /* ABridge_MembershipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E63DF0218A63EA1007931EE /* ABridge_MembershipViewController.m */; };
@@ -47,6 +46,7 @@
 		6EBBD76C1834B1FE00166D63 /* ABridge_ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD76B1834B1FE00166D63 /* ABridge_ActivityViewController.m */; };
 		6EBBD7701834B48A00166D63 /* ABridge_ActivityPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD76E1834B48A00166D63 /* ABridge_ActivityPagesViewController.m */; };
 		6EBBD7751834CA2200166D63 /* ABridge_AgentProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBD7741834CA2200166D63 /* ABridge_AgentProfileViewController.m */; };
+		6EC6A9A618ACD52F00B745A1 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E63C55518ABD0810001616B /* libTestFlight.a */; };
 		6EDF11B61845A762001BFC6B /* OpenSans-Bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EDF11B51845A762001BFC6B /* OpenSans-Bold-webfont.ttf */; };
 		6EDF11B91845D5FA001BFC6B /* AgentProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EDF11B81845D5FA001BFC6B /* AgentProfile.m */; };
 		6EEF583518337E4000C3214E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEF583418337E4000C3214E /* Foundation.framework */; };
@@ -278,7 +278,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E63C55B18ABD0810001616B /* libTestFlight.a in Frameworks */,
+				6EC6A9A618ACD52F00B745A1 /* libTestFlight.a in Frameworks */,
 				6EFF61501851BBBC00A5A86A /* libz.dylib in Frameworks */,
 				6EFF614E1851BBAF00A5A86A /* MobileCoreServices.framework in Frameworks */,
 				6EFF614C1851BBA700A5A86A /* SystemConfiguration.framework in Frameworks */,
@@ -1014,7 +1014,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "AB61BDC2-9539-41BC-9B73-C836E729B625";
+				PROVISIONING_PROFILE = "DCBDD2CD-63CA-4E1D-93FC-25765A038B3A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1044,7 +1044,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "AB61BDC2-9539-41BC-9B73-C836E729B625";
+				PROVISIONING_PROFILE = "DCBDD2CD-63CA-4E1D-93FC-25765A038B3A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

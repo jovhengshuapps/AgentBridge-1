@@ -43,6 +43,7 @@
 @dynamic user_id;
 @dynamic zip;
 @dynamic zipcodes;
-@dynamic is_term_accepted;
+    @dynamic is_term_accepted;
+    @dynamic fee_id;
 
 @end

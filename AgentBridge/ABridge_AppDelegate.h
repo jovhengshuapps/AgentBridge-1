@@ -16,6 +16,8 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong, nonatomic) UIStoryboard* initalStoryboard;
+@property (strong, nonatomic) NSString *deviceTokenString;
+@property (strong, nonatomic) NSString *tokenId;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

@@ -358,22 +358,22 @@
 ""\
 "<tr><td>&nbsp;</td></tr>"\
 "<tr>"\
-"<td>Please Issue Payment to All Moves care of Rebekah Roque for client Bono in amount of $25,000</td>"\
+"<td>Please Issue Payment to %@ care of %@ for client %@ in amount of %@</td>"\
 "</tr>"\
 "<tr><td>&nbsp;</td></tr>"\
 "<tr>"\
 "<td>"\
 "<ul style=\"list-style:none; margin:0; padding:0;\">"\
 "<li style=\"margin-bottom:5px;\"><strong>Mail to:</strong></li>"\
-"<li>All Moves</li>"\
-"<li>Rodeo Drive<br />Beverly Hills, California 90210<br />United States</li>"\
+"<li>%@</li>"\
+"<li>%@<br />%@, %@ %@<br />%@</li>"\
 "</ul>"\
 "</td>"\
 "</tr>"\
 "<tr><td>&nbsp;</td></tr>"\
 "<tr>"\
-"<td>Please enclose Closing Statement or HUD 1 with check. If wire transfer preferred, please email Rebekah Roque"\
-"at <a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">rebekah.roque@yopmail.com</a> to receive wire instructions.</td>"\
+"<td>Please enclose Closing Statement or HUD 1 with check. If wire transfer preferred, please email %@"\
+"at <a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">%@</a> to receive wire instructions.</td>"\
 "</tr>"\
 ""\
 "</table>"\

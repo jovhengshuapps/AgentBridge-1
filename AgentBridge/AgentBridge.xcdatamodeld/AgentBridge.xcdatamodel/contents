@@ -42,6 +42,7 @@
         <attribute name="countries_iso_code_3" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countries_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fee_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image_data" optional="YES" attributeType="Binary" syncable="YES"/>

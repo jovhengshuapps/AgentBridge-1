@@ -44,6 +44,7 @@
 @property (nonatomic, retain) NSString * user_id;
 @property (nonatomic, retain) NSString * zip;
 @property (nonatomic, retain) NSString * zipcodes;
-@property (nonatomic, retain) NSString * is_term_accepted;
+    @property (nonatomic, retain) NSString * is_term_accepted;
+    @property (nonatomic, retain) NSString * fee_id;
 
 @end

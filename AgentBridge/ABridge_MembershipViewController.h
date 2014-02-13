@@ -7,6 +7,7 @@
 //
 
 #import "ABridge_ParentViewController.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_MembershipViewController : ABridge_ParentViewController <UIScrollViewDelegate, UITableViewDataSource>
 

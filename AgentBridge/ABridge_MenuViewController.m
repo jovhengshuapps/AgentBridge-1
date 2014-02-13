@@ -11,6 +11,7 @@
 #import "LoginDetails.h"
 #import "AgentProfile.h"
 #import "Constants.h"
+#import "ASIHTTPRequest.h"
 
 @interface ABridge_MenuViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *buttonProfile;
@@ -322,7 +323,28 @@
             [self deleteDataFromEntity:@"RequestNetwork"] &&
             [self deleteDataFromEntity:@"RequestAccess"]) {
 
-            [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
+            NSString *tokenid = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).tokenId;
+            
+            
+            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/delete_device_token.php?token_id=%@", tokenid];
+            
+            __block NSError *errorData = nil;
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            [request setCompletionBlock:^{
+                // Use when fetching text data
+                //                        NSString *responseString = [request responseString];
+                // Use when fetching binary data
+                NSData *responseData = [request responseData];
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+                NSLog(@"json:%@",json);
+                [((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]) resetWindowToInitialView];
+            }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@"error:%@",error);
+            }];
+            [request startAsynchronous];
+            
         }
         else {
             //NSLog(@"error on deleting");

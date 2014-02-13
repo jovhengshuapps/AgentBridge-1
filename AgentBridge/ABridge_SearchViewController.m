@@ -57,6 +57,7 @@
     self.slidingViewController.underRightWidthLayout = ECVariableRevealWidth;
     
     self.searchDisplayController.searchBar.showsScopeBar = YES;
+    self.searchDisplayController.searchResultsTableView.hidden = YES;
     
     
     self.viewOverlay = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 50.0f, 50.0f)];
@@ -65,6 +66,7 @@
     self.viewOverlay.layer.masksToBounds = YES;
     
     CGPoint center = self.view.center;
+    center.x -= 15.0f;
     self.viewOverlay.center = center;
     
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -79,17 +81,6 @@
     
     timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkIfLoading) userInfo:nil repeats:YES];
     
-    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    NSError *error = nil;
-    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    
-    self.login_user_id = [[[fetchedObjects firstObject] valueForKey:@"user_id"] integerValue];
-    self.agent_name = [[[[fetchedObjects firstObject] valueForKey:@"name"] componentsSeparatedByString:@" "] firstObject];
 }
 
 - (void)didReceiveMemoryWarning
@@ -105,6 +96,7 @@
     }
     else {
         self.viewOverlay.hidden = YES;
+        self.searchDisplayController.searchResultsTableView.hidden = NO;
         [timer invalidate];
     }
 }
@@ -120,6 +112,7 @@
             frame.size.width = [UIScreen mainScreen].bounds.size.width;
         }
         self.view.frame = frame;
+        self.searchDisplayController.searchResultsTableView.hidden = YES;
     } onComplete:nil];
     
     searchBar.showsScopeBar = YES;
@@ -165,8 +158,24 @@
 }
 
 - (void) loadResults {
+    if (self.login_user_id == 0) {
+        NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                                  inManagedObjectContext:context];
+        [fetchRequest setEntity:entity];
+        NSError *error = nil;
+        NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+        
+        self.login_user_id = [[[fetchedObjects firstObject] valueForKey:@"user_id"] integerValue];
+        self.agent_name = [[[[fetchedObjects firstObject] valueForKey:@"name"] componentsSeparatedByString:@" "] firstObject];
+//        NSLog(@"id:%i   name:%@",self.login_user_id, self.agent_name);
+    }
+    
     
     self.viewOverlay.hidden = NO;
+    self.searchDisplayController.searchResultsTableView.hidden = YES;
     if (self.selectedScope == 1) {
         
         self.arrayPOPs = nil;
@@ -181,10 +190,10 @@
                 if ([fields containsObject:[keywords objectAtIndex:index]]) {
                     if (index == 0) {
                         
-                        parameters = [NSString stringWithFormat:@"?field=%@&keyword=%@",[keywords objectAtIndex:index], @""];
+                        parameters = [NSString stringWithFormat:@"?field=%@&keyword=%@&user_id=%i",[keywords objectAtIndex:index], @"", self.login_user_id];
                     }
                     else {
-                        parameters = [NSString stringWithFormat:@"?field=%@&keyword=%@",[keywords objectAtIndex:index], [keywords objectAtIndex:index-1]];
+                        parameters = [NSString stringWithFormat:@"?field=%@&keyword=%@&user_id=%i",[keywords objectAtIndex:index], [keywords objectAtIndex:index-1],self.login_user_id];
                     }
                     
                     [urlString setString:@"http://keydiscoveryinc.com/agent_bridge/webservice/search_pops_by_field.php"];
@@ -198,7 +207,7 @@
                 }
                 
                 [urlString appendString:parameters];
-//                NSLog(@"url:%@",urlString);
+                NSLog(@"url:%@",urlString);
                 __block NSError *errorData = nil;
                 __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
                 //            [self.activityIndicator startAnimating];

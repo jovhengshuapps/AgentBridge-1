@@ -15,10 +15,18 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize initalStoryboard = _initalStoryboard;
+@synthesize deviceTokenString = _deviceTokenString;
+@synthesize tokenId = _tokenId;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+//    UIRemoteNotificationType enabledTypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    
+    
     UIImage *tabBackground = [[UIImage imageNamed:@"nav_bg.png"]
                               resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     
@@ -42,7 +50,19 @@
     
     return YES;
 }
-
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+    {
+        NSLog(@"My token is: %@", deviceToken);
+        NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+        token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+        self.deviceTokenString = token;
+        NSLog(@"content---%@", token);
+    }
+    
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+    {
+        NSLog(@"Failed to get token, error: %@", error);
+    }
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

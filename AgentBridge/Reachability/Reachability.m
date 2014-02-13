@@ -171,7 +171,7 @@ static void logNetworkStatus_(const char *name, int line, NetworkStatus status) 
 			break;
 	}
 	
-	//NSLog(@"%s (%d) \n\tNetwork Status: %@", name, line, statusString);
+	NSLog(@"%s (%d) \n\tNetwork Status: %@", name, line, statusString);
 	
 } // logNetworkStatus_()
 

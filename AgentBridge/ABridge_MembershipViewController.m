@@ -7,6 +7,7 @@
 //
 
 #import "ABridge_MembershipViewController.h"
+#import "AgentProfile.h"
 
 @interface ABridge_MembershipViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewPlans;
@@ -88,6 +89,82 @@
     self.labelAnnualCost.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelAnnualSave.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonMembershipAnnual.titleLabel.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    
+    
+    self.labelMonthlyCurrent.hidden = YES;
+    self.labelQuarterlyCurrent.hidden = YES;
+    self.labelAnnualCurrent.hidden = YES;
+    
+    //get profile user_id
+    
+    
+    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoginDetails"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    NSInteger login_user_id = [[[fetchedObjects firstObject] valueForKey:@"user_id"] integerValue];
+    
+    
+    NSFetchRequest *fetchRequestProfile = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entityProfile = [NSEntityDescription entityForName:@"AgentProfile"
+                                              inManagedObjectContext:context];
+    [fetchRequestProfile setEntity:entityProfile];
+    
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user_id == %i",login_user_id];
+//    
+//    [fetchRequestProfile setPredicate:predicate];
+    
+    NSError *errorProfile = nil;
+    NSArray *fetchedObjectsProfile = [context executeFetchRequest:fetchRequestProfile error:&errorProfile];
+    
+//    BOOL found = NO;
+    AgentProfile *profileFound;
+    
+    for (AgentProfile *profile in fetchedObjectsProfile) {
+        if ([profile.user_id integerValue] == login_user_id) {
+//            found = YES;
+            profileFound = profile;
+            break;
+        }
+    }
+    
+    NSInteger profile_user_id = [profileFound.profile_id integerValue];
+    
+    NSString *parameters = [NSString stringWithFormat:@"?user_id=%i",profile_user_id];
+    
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_membership_fee.php"];
+    [urlString appendString:parameters];
+    NSLog(@"url:%@",urlString);
+    __block NSError *errorData = nil;
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    //            [self.activityIndicator startAnimating];
+    //            self.activityIndicator.hidden = NO;
+    [request setCompletionBlock:
+     ^{
+         NSData *responseData = [request responseData];
+         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
+         NSLog(@"json:%@",json);
+         if ([[json objectForKey:@"data"] count]) {
+             self.labelMonthlyName.text = [[[json objectForKey:@"data"] firstObject] objectForKey:@"fee_title"];
+             
+         }
+         else {
+             
+         }
+         
+         [self.searchDisplayController.searchResultsTableView reloadData];
+     }];
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        NSLog(@" error:%@",error);
+    }];
+    
+    [request startAsynchronous];
     
 dummy_data_monthly:
     {
