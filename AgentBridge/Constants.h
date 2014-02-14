@@ -239,7 +239,7 @@
 "<tr><td>&nbsp;</td></tr>"\
 "<tr><td>&nbsp;</td></tr>"\
 "<tr>"\
-"<td>Referencing AGREEMENT TO PAY REFERRAL FEE (\"Agreement\") by and between All Moves, (\"Referring Broker\")"\
+"<td>Referencing AGREEMENT TO PAY REFERRAL FEE (\"Agreement\") by and between %@, (\"Referring Broker\")"\
 "and %@ (\"Receiving Broker\") with regard to the referral of %@.</td>"\
 "</tr>"\
 "</table>"\
@@ -263,12 +263,13 @@
 "<td valign=\"top\" style=\"text-align:left\">"\
 "<ul style=\"list-style:none; margin:0; padding:0;\">"\
 "<li style=\"margin-bottom:5px;\">&nbsp;</li>"\
-"<li>All Moves</li>"\
-"<li>BL123</li>"\
-"<li>Rebekah Roque</li>"\
-"<li>AB123</li>"\
-"<li>(310) 341-0201</li>"\
-"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">rebekah.roque@yopmail.com</a></li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li>%@</li>"\
+"<li><a href=\"#\" style=\" color:#0d4a6f; text-decoration:none; \">%@</a></li>"\
+"<li>%@</li>"\
 "</ul>"\
 "</td>"\
 "<td valign=\"top\" width=\"50px\">&nbsp;</td>"\

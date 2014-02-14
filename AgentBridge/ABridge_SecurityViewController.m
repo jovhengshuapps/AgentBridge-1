@@ -59,6 +59,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.slidingViewController.underRightViewController = nil;
     self.labelNewPassword.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.confirmPasswordHeader.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.labelOldPassword.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);

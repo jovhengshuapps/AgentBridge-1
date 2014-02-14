@@ -292,6 +292,10 @@
     pagesViewController.index = index;
     pagesViewController.propertyDetails = (Property*)[self.arrayOfProperty objectAtIndex:index];
     pagesViewController.delegate = self;
+    if (self.fromSearch) {
+        pagesViewController.buyers_view = YES;
+        pagesViewController.fromSearch = YES;
+    }
     
     return pagesViewController;
     

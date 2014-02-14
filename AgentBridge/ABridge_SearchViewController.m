@@ -404,6 +404,7 @@
     
     CGRect frame = self.searchDisplayController.searchResultsTableView.frame;
     frame.size.height = 360.0f;
+//    frame.size.width = 300.0f;
     frame.origin.x = 10.0f;
     self.searchDisplayController.searchResultsTableView.frame = frame;
     
@@ -426,7 +427,7 @@
     }
     
     
-    CGSize constraint = CGSizeMake(tableView.frame.size.width - 20.0f, 20000.0f);
+    CGSize constraint = CGSizeMake(160.0f, 20000.0f);
     
     CGSize size = [text sizeWithFont:FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR) constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     

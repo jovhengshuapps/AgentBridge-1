@@ -51,6 +51,7 @@
 @synthesize loginDetail;
 @synthesize buyer_id;
 @synthesize buyer_name;
+    @synthesize fromSearch;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -90,7 +91,7 @@
     self.textFeatures.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     
     self.buttonDescription.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
-    self.labelDescription.font = FONT_OPENSANS_REGULAR(FONT_SIZE_SMALL);
+    self.labelDescription.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
     
     self.labelPage.text = [NSString stringWithFormat:@"%li",(long)self.index+1];
     
@@ -98,49 +99,57 @@
     self.labelPropertyName.text = self.propertyDetails.property_name;
     self.labelPropertyType.text = [NSString stringWithFormat:@"%@ - %@",self.propertyDetails.type_name, self.propertyDetails.sub_type_name];
     
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+    imageView.contentMode = UIViewContentModeCenter;
+    imageView.image = [UIImage imageNamed:[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+    
+    [self.scrollImages addSubview:imageView];
+    
     if (buyers_view) {
         
-        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%li",self.loginDetail.user_id,self.propertyDetails.listing_id, (long)self.buyer_id];
-        
-        NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_new_if_saved.php"];
-        [urlString appendString:parameters];
-//        //NSLog(@"url:%@",urlString);
-        
-        
-        if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-            [self.delegate hideSaveButton:YES];
-        }
-        __block NSError *errorData = nil;
-        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-        //            [self.activityIndicator startAnimating];
-        //            self.activityIndicator.hidden = NO;
-        [request setCompletionBlock:
-         ^{
-             NSData *responseData = [request responseData];
-             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
-             
-//              //NSLog(@"json:%@",json);
-             if ([[json objectForKey:@"status"] integerValue] == 1) {
-                 if ([self.delegate respondsToSelector:@selector(replaceSaveWithText:)]) {
-                     [self.delegate replaceSaveWithText:[NSString stringWithFormat:@"Saved to %@",self.buyer_name]];
-                 }
-             }
-             else {
-//                 //NSLog(@"Failed");
+        if (!self.fromSearch) {
+            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%li",self.loginDetail.user_id,self.propertyDetails.listing_id, (long)self.buyer_id];
+            
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_new_if_saved.php"];
+            [urlString appendString:parameters];
+            //        //NSLog(@"url:%@",urlString);
+            
+            
+            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+                [self.delegate hideSaveButton:YES];
+            }
+            __block NSError *errorData = nil;
+            __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            //            [self.activityIndicator startAnimating];
+            //            self.activityIndicator.hidden = NO;
+            [request setCompletionBlock:
+             ^{
+                 NSData *responseData = [request responseData];
+                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorData];
                  
-                 if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-                     [self.delegate hideSaveButton:NO];
+                 //              //NSLog(@"json:%@",json);
+                 if ([[json objectForKey:@"status"] integerValue] == 1) {
+                     if ([self.delegate respondsToSelector:@selector(replaceSaveWithText:)]) {
+                         [self.delegate replaceSaveWithText:[NSString stringWithFormat:@"Saved to %@",self.buyer_name]];
+                     }
                  }
-             }
-             
-             
-         }];
-        [request setFailedBlock:^{
-            NSError *error = [request error];
-            NSLog(@" error:%@",error);
-        }];
-        
-        [request startAsynchronous];
+                 else {
+                     //                 //NSLog(@"Failed");
+                     
+                     if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+                         [self.delegate hideSaveButton:NO];
+                     }
+                 }
+                 
+                 
+             }];
+            [request setFailedBlock:^{
+                NSError *error = [request error];
+                NSLog(@" error:%@",error);
+            }];
+            
+            [request startAsynchronous];
+        }
         
         if ([self.loginDetail.user_id integerValue] != [self.propertyDetails.user_id integerValue]) {
             //NSLog(@" REstriction %i --- %i",[self.loginDetail.user_id integerValue],[self.propertyDetails.user_id integerValue]);
@@ -258,6 +267,7 @@
                                               if ([access.permission boolValue] == YES) {
                                                   [self loadPOPsImages];
                                                   [self getPriceText];
+                                                  self.labelPropertyType.hidden = NO;
                                               }
                                               else if ([access.permission boolValue] == NO){
                                                   self.labelExpiry.text = @"";
@@ -265,14 +275,27 @@
                                                   //                    self.viewForDescription.hidden = NO;
                                                   self.labelDescription.hidden = NO;
                                                   self.buttonDescription.hidden = NO;
+                                                  self.labelPropertyType.hidden = YES;
+                                                  
+                                                  CGRect frame = self.labelDescription.frame;
+                                                  frame.origin.y -= 20.0f;
+                                                  self.labelDescription.frame = frame;
+                                                  
                                                   self.labelDescription.text = @"This POPs™ is restricted to private";
                                                   [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
                                                   
-                                                  [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                                                  
+                                                  while ([[self.scrollImages subviews]count] > 0) {
+                                                      
+                                                      [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                                                  }
+                                                  
+                                                  [self.loadingImageIndicator removeFromSuperview];
+                                                  
                                                   UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
                                                   imageView.contentMode = UIViewContentModeCenter;
-                                                  NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                                                  imageView.image = [UIImage imageNamed:imageName];
+                                                  NSString *imageName = [NSString stringWithFormat:@"%@",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+                                                  imageView.image = [UIImage imageNamed:[imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"]];
                                                   
                                                   [self.scrollImages addSubview:imageView];
                                                   
@@ -288,22 +311,34 @@
                                               //                self.viewForDescription.hidden = NO;
                                               self.labelDescription.hidden = NO;
                                               self.buttonDescription.hidden = NO;
-                                              self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+                                              self.labelPropertyType.hidden = YES;
+                                              
+                                              CGRect frame = self.labelDescription.frame;
+                                              frame.origin.y -= 20.0f;
+                                              self.labelDescription.frame = frame;
+                                              
+                                              self.labelDescription.text = @"You need to request permission to view this POPs™.";
                                               [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
                                               self.buttonDescription.tag = 20002;
                                               
-                                              [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                                              
+                                              while ([[self.scrollImages subviews]count] > 0) {
+                                                  
+                                                  [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                                              }
+                                              
+                                              [self.loadingImageIndicator removeFromSuperview];
+                                              
                                               UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
                                               imageView.contentMode = UIViewContentModeCenter;
-                                              NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                                              imageView.image = [UIImage imageNamed:imageName];
+                                              NSString *imageName = [NSString stringWithFormat:@"%@",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+                                              imageView.image = [UIImage imageNamed:[imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"]];
                                               
                                               [self.scrollImages addSubview:imageView];
                                               
                                           }
                                           
                                           [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                                          [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
                                       }
                                       else {
                                           self.labelExpiry.text = @"";
@@ -311,17 +346,29 @@
                                           //            self.viewForDescription.hidden = NO;
                                           self.labelDescription.hidden = NO;
                                           self.buttonDescription.hidden = NO;
-                                          self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+                                          self.labelPropertyType.hidden = YES;
+                                          
+                                          CGRect frame = self.labelDescription.frame;
+                                          frame.origin.y -= 20.0f;
+                                          self.labelDescription.frame = frame;
+                                          
+                                          self.labelDescription.text = @"You need to request permission to view this POPs™.";
                                           [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
                                           self.buttonDescription.tag = 20002;
                                           [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                                          [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
                                           
-                                          [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                                          
+                                          while ([[self.scrollImages subviews]count] > 0) {
+                                              
+                                              [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                                          }
+                                          
+                                          [self.loadingImageIndicator removeFromSuperview];
+                                          
                                           UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
                                           imageView.contentMode = UIViewContentModeCenter;
-                                          NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                                          imageView.image = [UIImage imageNamed:imageName];
+                                          NSString *imageName = [NSString stringWithFormat:@"%@",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+                                          imageView.image = [UIImage imageNamed:[imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"]];
                                           
                                           [self.scrollImages addSubview:imageView];
                                           
@@ -344,15 +391,27 @@
                              //                        self.viewForDescription.hidden = NO;
                              self.labelDescription.hidden = NO;
                              self.buttonDescription.hidden = NO;
+                             self.labelPropertyType.hidden = YES;
+                             
+                             CGRect frame = self.labelDescription.frame;
+                             frame.origin.y -= 20.0f;
+                             self.labelDescription.frame = frame;
+                             
                              self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
                              [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
                              
                              
-                             [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                             while ([[self.scrollImages subviews]count] > 0) {
+                                 
+                                 [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                             }
+                             
+                             [self.loadingImageIndicator removeFromSuperview];
+                             
                              UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
                              imageView.contentMode = UIViewContentModeCenter;
-                             NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                             imageView.image = [UIImage imageNamed:imageName];
+                             NSString *imageName = [NSString stringWithFormat:@"%@",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+                             imageView.image = [UIImage imageNamed:[imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"]];
                              
                              [self.scrollImages addSubview:imageView];
                              
@@ -361,7 +420,6 @@
                              }
                          }
                          else {
-                             
                              [self loadPOPsImages];
                          }
                      }
@@ -371,22 +429,33 @@
                          //                    self.viewForDescription.hidden = NO;
                          self.labelDescription.hidden = NO;
                          self.buttonDescription.hidden = NO;
-                         self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+                         self.labelPropertyType.hidden = YES;
+                         
+                         CGRect frame = self.labelDescription.frame;
+                         frame.origin.y -= 20.0f;
+                         self.labelDescription.frame = frame;
+                         
+                         self.labelDescription.text = @"You need to request permission to view this POPs™.";
                          [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
                          self.buttonDescription.tag = 10001;
                          
-                         [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                         while ([[self.scrollImages subviews]count] > 0) {
+                             
+                             [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                         }
+                         
+                         [self.loadingImageIndicator removeFromSuperview];
+                         
                          UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
                          imageView.contentMode = UIViewContentModeCenter;
-                         NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                         imageView.image = [UIImage imageNamed:imageName];
+                         NSString *imageName = [NSString stringWithFormat:@"%@",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+                         imageView.image = [UIImage imageNamed:[imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"]];
                          
                          [self.scrollImages addSubview:imageView];
                          
                      }
                      
                      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
                      
                  }
                  else {
@@ -395,17 +464,28 @@
                      //            self.viewForDescription.hidden = NO;
                      self.labelDescription.hidden = NO;
                      self.buttonDescription.hidden = NO;
-                     self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+                     self.labelPropertyType.hidden = YES;
+                     
+                     CGRect frame = self.labelDescription.frame;
+                     frame.origin.y -= 20.0f;
+                     self.labelDescription.frame = frame;
+                     
+                     self.labelDescription.text = @"You need to request permission to view this POPs™.";
                      [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
                      self.buttonDescription.tag = 10001;
                      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
                      
-                     [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                     while ([[self.scrollImages subviews]count] > 0) {
+                         
+                         [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+                     }
+                     
+                     [self.loadingImageIndicator removeFromSuperview];
+                     
                      UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
                      imageView.contentMode = UIViewContentModeCenter;
-                     NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                     imageView.image = [UIImage imageNamed:imageName];
+                     NSString *imageName = [NSString stringWithFormat:@"%@",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+                     imageView.image = [UIImage imageNamed:[imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"]];
                      
                      [self.scrollImages addSubview:imageView];
                      
@@ -423,12 +503,14 @@
         else {
             [self getPriceText];
             [self loadPOPsImages];
+            self.labelPropertyType.hidden = NO;
         }
         
     }
     else {
         [self getPriceText];
         [self loadPOPsImages];
+        self.labelPropertyType.hidden = NO;
     }
     
     [self getExpiredText];
@@ -447,11 +529,6 @@
     self.buttonDescription.frame = frame;
     
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-    imageView.contentMode = UIViewContentModeCenter;
-    imageView.image = [UIImage imageNamed:[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-    
-    [self.scrollImages addSubview:imageView];
     
     // Add a bottomBorder.
     CALayer *bottomBorder = [CALayer layer];
@@ -828,360 +905,360 @@
     }
 }
 
-- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
-{
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    self.dataReceived = nil;
-    self.dataReceived = [[NSMutableData alloc]init];
-}
-- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
-{
-    ////NSLog(@"Did Receive Data %@", data);
-    [self.dataReceived appendData:data];
-}
-- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
-{
-    //    //NSLog(@"Did Fail");
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    NSError *error = nil;
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
-    
-//    //NSLog(@"Did Finish:%@", json);
-    if (connection == self.urlConnectionImages) {
-        
-        if ([[json objectForKey:@"data"] count]) {
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                __block CGFloat xOffset = 0.0f;
-                __block NSInteger i = 0;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-                });
-                
-                for (NSDictionary *entry in [json objectForKey:@"data"]) {
-                    PropertyImages *image = nil;
-                    
-                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
-                    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-                    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-                    [fetchRequest setPredicate:predicate];
-                    [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
-                    NSError * error = nil;
-                    NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
-                    if ([results count]) {
-                        image = (PropertyImages*)[results firstObject];
-                    }
-                    else {
-                        image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
-                    }
-                    
-                    [image setValuesForKeysWithDictionary:entry];
-                    
-                    NSError *errorSave = nil;
-                    if (![context save:&errorSave]) {
-                        //NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
-                    }
-                    else {
-                        
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            // Update UI
-                            if (self.arrayOfImageData == nil) {
-                                self.arrayOfImageData = [[NSMutableArray alloc] init];
-                            }
-                            
-                            if (image.image_data == nil) {
-                                image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
-                            }
-                            
-                            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-                            imageView.contentMode = UIViewContentModeScaleAspectFill;
-                            imageView.image = [UIImage imageWithData:image.image_data];
-                            
-                            [self.arrayOfImageData addObject:image.image_data];
-                            
-                            [self.scrollImages addSubview:imageView];
-                            
-                            xOffset += imageView.frame.size.width;
-                            i++;
-                            
-                            [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
-                        });
-                        
-                    }
-                }
-                
-                
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
-                    
-                    tapZoom.numberOfTapsRequired = 1;
-                    tapZoom.numberOfTouchesRequired = 1;
-                    [self.scrollImages addGestureRecognizer:tapZoom];
-                });
-            });
-            
-        }
-        else {
-            //NSLog(@"no data");
-        }
-        
-        self.loadingImageIndicator.hidden = YES;
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    }
-    else if (connection == self.urlConnectionRequestNetwork) {
-        if ([[json objectForKey:@"data"] count]) {
-//            //NSLog(@"Did Finish:%@", json);
-                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-                
-                NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
-                if ([[json objectForKey:@"data"] count]) {
-                    RequestNetwork *network = nil;
-                    
-                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"network_id == %@", [entry objectForKey:@"network_id"]];
-                    
-                    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-                    [fetchRequest setPredicate:predicate];
-                    [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestNetwork" inManagedObjectContext:context]];
-                    NSError * error = nil;
-                    NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
-                    if ([result count]) {
-                        network = (RequestNetwork*)[result firstObject];
-                    }
-                    else {
-                        network = [NSEntityDescription insertNewObjectForEntityForName: @"RequestNetwork" inManagedObjectContext: context];
-                    }
-                    
-                    [network setValuesForKeysWithDictionary:entry];
-                    
-                    NSError *errorSave = nil;
-                    if (![context save:&errorSave]) {
-                        //NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
-                    }
-                    
-                    if ([network.status integerValue] == 1) {
-                        if ([self.propertyDetails.setting integerValue] == 1) {
-                            [self checkSettingGetPrice];
-                        }
-                        else if ([self.propertyDetails.setting integerValue] == 2) {
-                            
-                            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.propertyDetails.user_id,self.loginDetail.user_id, self.propertyDetails.listing_id];
-                            
-                            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
-                            [urlString_ appendString:parameters];
-                            //        //NSLog(@"url:%@",urlString_);
-                            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
-                            
-                            self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
-                            
-                            if (self.urlConnectionRequestAccess) {
-                                    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-                                    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-                            }
-                        }
-                        
-                    }
-                    else if ([network.status integerValue] == 0){
-                        self.labelExpiry.text = @"";
-                        self.labelExpiry.hidden = YES;
-//                        self.viewForDescription.hidden = NO;
-                        self.labelDescription.hidden = NO;
-                        self.buttonDescription.hidden = NO;
-                        self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
-                        [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
-                        
-                        
-                        [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-                        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-                        imageView.contentMode = UIViewContentModeCenter;
-                        NSString *imageName = [self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]];
-                        
-                        imageName = [imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"];
-                        imageView.image = [UIImage imageNamed:imageName];
-                        
-                        [self.scrollImages addSubview:imageView];
-                        
-                        if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-                            [self.delegate hideSaveButton:YES];
-                        }
-                    }
-                    else {
-                        
-                        [self loadPOPsImages];
-                    }
-                }
-                else {
-                    self.labelExpiry.text = @"";
-                    self.labelExpiry.hidden = YES;
-//                    self.viewForDescription.hidden = NO;
-                    self.labelDescription.hidden = NO;
-                    self.buttonDescription.hidden = NO;
-                    self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
-                    [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-                    self.buttonDescription.tag = 10001;
-                    
-                    [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-                    imageView.contentMode = UIViewContentModeCenter;
-                    NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                    imageView.image = [UIImage imageNamed:imageName];
-                    
-                    [self.scrollImages addSubview:imageView];
-                    
+//- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
+//{
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//    self.dataReceived = nil;
+//    self.dataReceived = [[NSMutableData alloc]init];
+//}
+//- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+//{
+//    ////NSLog(@"Did Receive Data %@", data);
+//    [self.dataReceived appendData:data];
+//}
+//- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+//{
+//    //    //NSLog(@"Did Fail");
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" message:@"You have no Internet Connection available." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alert show];
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//}
+//- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+//{
+//    NSError *error = nil;
+//    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
+//    
+////    //NSLog(@"Did Finish:%@", json);
+//    if (connection == self.urlConnectionImages) {
+//        
+//        if ([[json objectForKey:@"data"] count]) {
+//            
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                __block CGFloat xOffset = 0.0f;
+//                __block NSInteger i = 0;
+//                
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+//                });
+//                
+//                for (NSDictionary *entry in [json objectForKey:@"data"]) {
+//                    PropertyImages *image = nil;
+//                    
+//                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"image_id == %@", [entry objectForKey:@"image_id"]];
+//                    NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+//                    [fetchRequest setPredicate:predicate];
+//                    [fetchRequest setEntity:[NSEntityDescription entityForName:@"PropertyImages" inManagedObjectContext:context]];
+//                    NSError * error = nil;
+//                    NSArray * results = [context executeFetchRequest:fetchRequest error:&error];
+//                    if ([results count]) {
+//                        image = (PropertyImages*)[results firstObject];
+//                    }
+//                    else {
+//                        image = [NSEntityDescription insertNewObjectForEntityForName: @"PropertyImages" inManagedObjectContext: context];
+//                    }
+//                    
+//                    [image setValuesForKeysWithDictionary:entry];
+//                    
+//                    NSError *errorSave = nil;
+//                    if (![context save:&errorSave]) {
+//                        //NSLog(@"Error on saving PropertyImages:%@",[errorSave localizedDescription]);
+//                    }
+//                    else {
+//                        
+//                        dispatch_async(dispatch_get_main_queue(), ^{
+//                            // Update UI
+//                            if (self.arrayOfImageData == nil) {
+//                                self.arrayOfImageData = [[NSMutableArray alloc] init];
+//                            }
+//                            
+//                            if (image.image_data == nil) {
+//                                image.image_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image]];
+//                            }
+//                            
+//                            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+//                            imageView.contentMode = UIViewContentModeScaleAspectFill;
+//                            imageView.image = [UIImage imageWithData:image.image_data];
+//                            
+//                            [self.arrayOfImageData addObject:image.image_data];
+//                            
+//                            [self.scrollImages addSubview:imageView];
+//                            
+//                            xOffset += imageView.frame.size.width;
+//                            i++;
+//                            
+//                            [self.scrollImages setContentSize:CGSizeMake(xOffset, 0.0f)];
+//                        });
+//                        
+//                    }
+//                }
+//                
+//                
+//                
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    UITapGestureRecognizer *tapZoom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendDelegateImage:)];
+//                    
+//                    tapZoom.numberOfTapsRequired = 1;
+//                    tapZoom.numberOfTouchesRequired = 1;
+//                    [self.scrollImages addGestureRecognizer:tapZoom];
+//                });
+//            });
+//            
+//        }
+//        else {
+//            //NSLog(@"no data");
+//        }
+//        
+//        self.loadingImageIndicator.hidden = YES;
+//        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//    }
+//    else if (connection == self.urlConnectionRequestNetwork) {
+//        if ([[json objectForKey:@"data"] count]) {
+////            //NSLog(@"Did Finish:%@", json);
+//                NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//                
+//                NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+//                if ([[json objectForKey:@"data"] count]) {
+//                    RequestNetwork *network = nil;
+//                    
+//                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"network_id == %@", [entry objectForKey:@"network_id"]];
+//                    
+//                    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+//                    [fetchRequest setPredicate:predicate];
+//                    [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestNetwork" inManagedObjectContext:context]];
+//                    NSError * error = nil;
+//                    NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+//                    if ([result count]) {
+//                        network = (RequestNetwork*)[result firstObject];
+//                    }
+//                    else {
+//                        network = [NSEntityDescription insertNewObjectForEntityForName: @"RequestNetwork" inManagedObjectContext: context];
+//                    }
+//                    
+//                    [network setValuesForKeysWithDictionary:entry];
+//                    
+//                    NSError *errorSave = nil;
+//                    if (![context save:&errorSave]) {
+//                        //NSLog(@"Error on saving RequestNetwork:%@",[errorSave localizedDescription]);
+//                    }
+//                    
+//                    if ([network.status integerValue] == 1) {
+//                        if ([self.propertyDetails.setting integerValue] == 1) {
+//                            [self checkSettingGetPrice];
+//                        }
+//                        else if ([self.propertyDetails.setting integerValue] == 2) {
+//                            
+//                            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.propertyDetails.user_id,self.loginDetail.user_id, self.propertyDetails.listing_id];
+//                            
+//                            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
+//                            [urlString_ appendString:parameters];
+//                            //        //NSLog(@"url:%@",urlString_);
+//                            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
+//                            
+//                            self.urlConnectionRequestAccess = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
+//                            
+//                            if (self.urlConnectionRequestAccess) {
+//                                    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//                                    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//                            }
+//                        }
+//                        
+//                    }
+//                    else if ([network.status integerValue] == 0){
+//                        self.labelExpiry.text = @"";
+//                        self.labelExpiry.hidden = YES;
+////                        self.viewForDescription.hidden = NO;
+//                        self.labelDescription.hidden = NO;
+//                        self.buttonDescription.hidden = NO;
+//                        self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+//                        [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+//                        
+//                        
+//                        [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+//                        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+//                        imageView.contentMode = UIViewContentModeCenter;
+//                        NSString *imageName = [self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]];
+//                        
+//                        imageName = [imageName stringByReplacingOccurrencesOfString:@".png" withString:@"_bw.png"];
+//                        imageView.image = [UIImage imageNamed:imageName];
+//                        
+//                        [self.scrollImages addSubview:imageView];
+//                        
+//                        if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+//                            [self.delegate hideSaveButton:YES];
+//                        }
+//                    }
+//                    else {
+//                        
+//                        [self loadPOPsImages];
+//                    }
+//                }
+//                else {
+//                    self.labelExpiry.text = @"";
+//                    self.labelExpiry.hidden = YES;
+////                    self.viewForDescription.hidden = NO;
+//                    self.labelDescription.hidden = NO;
+//                    self.buttonDescription.hidden = NO;
+//                    self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+//                    [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+//                    self.buttonDescription.tag = 10001;
+//                    
+//                    [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+//                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+//                    imageView.contentMode = UIViewContentModeCenter;
+//                    NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+//                    imageView.image = [UIImage imageNamed:imageName];
+//                    
+//                    [self.scrollImages addSubview:imageView];
+//                    
+////                    if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+////                        [self.delegate hideSaveButton:YES];
+////                    }
+//                }
+//            
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//            
+//        }
+//        else {
+//            self.labelExpiry.text = @"";
+//            self.labelExpiry.hidden = YES;
+////            self.viewForDescription.hidden = NO;
+//            self.labelDescription.hidden = NO;
+//            self.buttonDescription.hidden = NO;
+//            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+//            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+//            self.buttonDescription.tag = 10001;
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//            
+//            [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+//            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+//            imageView.contentMode = UIViewContentModeCenter;
+//            NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+//            imageView.image = [UIImage imageNamed:imageName];
+//            
+//            [self.scrollImages addSubview:imageView];
+//            
+////            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+////                [self.delegate hideSaveButton:YES];
+////            }
+//        }
+//        
+//    }
+//    else if (connection == self.urlConnectionRequestAccess) {
+//        if ([[json objectForKey:@"data"] count]) {
+////            //NSLog(@"Did Finish:%@", json);
+//            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+//            NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
+//            
+//            if ([[json objectForKey:@"data"] count]) {
+//                RequestAccess *access = nil;
+//                
+//                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"access_id == %@", [entry objectForKey:@"access_id"]];
+//                
+//                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+//                [fetchRequest setPredicate:predicate];
+//                [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestAccess" inManagedObjectContext:context]];
+//                NSError * error = nil;
+//                NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
+//                
+//                if ([result count]) {
+//                    access = (RequestAccess*)[result firstObject];
+//                }
+//                else {
+//                    access = [NSEntityDescription insertNewObjectForEntityForName: @"RequestAccess" inManagedObjectContext: context];
+//                }
+//                
+//                [access setValuesForKeysWithDictionary:entry];
+//                
+//                NSError *errorSave = nil;
+//                if (![context save:&errorSave]) {
+//                    //NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
+//                }
+//                
+//                if ([access.permission boolValue] == YES) {
+//                    [self loadPOPsImages];
+//                    [self getPriceText];
+//                }
+//                else if ([access.permission boolValue] == NO){
+//                    self.labelExpiry.text = @"";
+//                    self.labelExpiry.hidden = YES;
+////                    self.viewForDescription.hidden = NO;
+//                    self.labelDescription.hidden = NO;
+//                    self.buttonDescription.hidden = NO;
+//                    self.labelDescription.text = @"This POPs™ is restricted to private";
+//                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
+//                    
+//                    [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+//                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+//                    imageView.contentMode = UIViewContentModeCenter;
+//                    NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+//                    imageView.image = [UIImage imageNamed:imageName];
+//                    
+//                    [self.scrollImages addSubview:imageView];
+//                    
 //                    if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
 //                        [self.delegate hideSaveButton:YES];
 //                    }
-                }
-            
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-            
-        }
-        else {
-            self.labelExpiry.text = @"";
-            self.labelExpiry.hidden = YES;
-//            self.viewForDescription.hidden = NO;
-            self.labelDescription.hidden = NO;
-            self.buttonDescription.hidden = NO;
-            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
-            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-            self.buttonDescription.tag = 10001;
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-            
-            [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-            imageView.contentMode = UIViewContentModeCenter;
-            NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-            imageView.image = [UIImage imageNamed:imageName];
-            
-            [self.scrollImages addSubview:imageView];
-            
-//            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-//                [self.delegate hideSaveButton:YES];
-//            }
-        }
-        
-    }
-    else if (connection == self.urlConnectionRequestAccess) {
-        if ([[json objectForKey:@"data"] count]) {
-//            //NSLog(@"Did Finish:%@", json);
-            NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-            NSDictionary *entry = [[json objectForKey:@"data"] firstObject];
-            
-            if ([[json objectForKey:@"data"] count]) {
-                RequestAccess *access = nil;
-                
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"access_id == %@", [entry objectForKey:@"access_id"]];
-                
-                NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-                [fetchRequest setPredicate:predicate];
-                [fetchRequest setEntity:[NSEntityDescription entityForName:@"RequestAccess" inManagedObjectContext:context]];
-                NSError * error = nil;
-                NSArray * result = [context executeFetchRequest:fetchRequest error:&error];
-                
-                if ([result count]) {
-                    access = (RequestAccess*)[result firstObject];
-                }
-                else {
-                    access = [NSEntityDescription insertNewObjectForEntityForName: @"RequestAccess" inManagedObjectContext: context];
-                }
-                
-                [access setValuesForKeysWithDictionary:entry];
-                
-                NSError *errorSave = nil;
-                if (![context save:&errorSave]) {
-                    //NSLog(@"Error on saving RequestAccess:%@",[errorSave localizedDescription]);
-                }
-                
-                if ([access.permission boolValue] == YES) {
-                    [self loadPOPsImages];
-                    [self getPriceText];
-                }
-                else if ([access.permission boolValue] == NO){
-                    self.labelExpiry.text = @"";
-                    self.labelExpiry.hidden = YES;
-//                    self.viewForDescription.hidden = NO;
-                    self.labelDescription.hidden = NO;
-                    self.buttonDescription.hidden = NO;
-                    self.labelDescription.text = @"This POPs™ is restricted to private";
-                    [self.buttonDescription setTitle:@"Pending" forState:UIControlStateNormal];
-                    
-                    [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-                    imageView.contentMode = UIViewContentModeCenter;
-                    NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                    imageView.image = [UIImage imageNamed:imageName];
-                    
-                    [self.scrollImages addSubview:imageView];
-                    
-                    if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-                        [self.delegate hideSaveButton:YES];
-                    }
-                }
-                
-            }
-            else {
-                self.labelExpiry.text = @"";
-                self.labelExpiry.hidden = YES;
-//                self.viewForDescription.hidden = NO;
-                self.labelDescription.hidden = NO;
-                self.buttonDescription.hidden = NO;
-                self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
-                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-                self.buttonDescription.tag = 20002;
-                
-                [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-                imageView.contentMode = UIViewContentModeCenter;
-                NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-                imageView.image = [UIImage imageNamed:imageName];
-                
-                [self.scrollImages addSubview:imageView];
-                
-//                if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-//                    [self.delegate hideSaveButton:YES];
 //                }
-            }
-            
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        }
-        else {
-            self.labelExpiry.text = @"";
-            self.labelExpiry.hidden = YES;
-//            self.viewForDescription.hidden = NO;
-            self.labelDescription.hidden = NO;
-            self.buttonDescription.hidden = NO;
-            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
-            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
-            self.buttonDescription.tag = 20002;
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-            
-            [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
-            imageView.contentMode = UIViewContentModeCenter;
-            NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
-            imageView.image = [UIImage imageNamed:imageName];
-            
-            [self.scrollImages addSubview:imageView];
-            
-//            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
-//                [self.delegate hideSaveButton:YES];
+//                
 //            }
-        }
-    }
-    // Do something with responseData
-}
+//            else {
+//                self.labelExpiry.text = @"";
+//                self.labelExpiry.hidden = YES;
+////                self.viewForDescription.hidden = NO;
+//                self.labelDescription.hidden = NO;
+//                self.buttonDescription.hidden = NO;
+//                self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+//                [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+//                self.buttonDescription.tag = 20002;
+//                
+//                [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+//                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+//                imageView.contentMode = UIViewContentModeCenter;
+//                NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+//                imageView.image = [UIImage imageNamed:imageName];
+//                
+//                [self.scrollImages addSubview:imageView];
+//                
+////                if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+////                    [self.delegate hideSaveButton:YES];
+////                }
+//            }
+//            
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//        }
+//        else {
+//            self.labelExpiry.text = @"";
+//            self.labelExpiry.hidden = YES;
+////            self.viewForDescription.hidden = NO;
+//            self.labelDescription.hidden = NO;
+//            self.buttonDescription.hidden = NO;
+//            self.labelDescription.text = [NSString stringWithFormat:@"This POPs™ is restricted to %@'s Network members only",self.propertyDetails.name];
+//            [self.buttonDescription setTitle:@"Request To View" forState:UIControlStateNormal];
+//            self.buttonDescription.tag = 20002;
+//            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//            
+//            [[[self.scrollImages subviews] firstObject] removeFromSuperview]; //remove default image
+//            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollImages.frame.size.width, self.scrollImages.frame.size.height)];
+//            imageView.contentMode = UIViewContentModeCenter;
+//            NSString *imageName = [NSString stringWithFormat:@"%@_bw",[self imageStringForPropertyType:[self.propertyDetails.type_property_type integerValue] andSubType:[self.propertyDetails.sub_type integerValue]]];
+//            imageView.image = [UIImage imageNamed:imageName];
+//            
+//            [self.scrollImages addSubview:imageView];
+//            
+////            if ([self.delegate respondsToSelector:@selector(hideSaveButton:)]) {
+////                [self.delegate hideSaveButton:YES];
+////            }
+//        }
+//    }
+//    // Do something with responseData
+//}
 
 - (void) sendDelegateImage:(UIGestureRecognizer*)gestureRecognizer {
     UIScrollView *scrollView = (UIScrollView*)gestureRecognizer.view;

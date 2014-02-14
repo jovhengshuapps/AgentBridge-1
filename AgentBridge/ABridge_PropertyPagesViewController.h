@@ -24,6 +24,7 @@
 @property (strong, nonatomic) Property *propertyDetails;
 @property (assign, nonatomic) id <ABridge_PropertyPagesViewControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL buyers_view;
+    @property (assign, nonatomic) BOOL fromSearch;
 @property (assign, nonatomic) NSInteger buyer_id;
 @property (strong, nonatomic) NSString *buyer_name;
 @end

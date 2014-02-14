@@ -73,6 +73,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    
+    
     self.labelAgentName.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelAddress.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.labelStateCountry.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);

@@ -197,6 +197,7 @@
 //    self.slidingViewController.underRightViewController = nil;
     
     
+    
     self.labelGrossComission.font = FONT_OPENSANS_BOLD(FONT_SIZE_REGULAR);
     self.textFieldGrossComission.font = FONT_OPENSANS_REGULAR(FONT_SIZE_REGULAR);
     self.buttonCancel.titleLabel.font = FONT_OPENSANS_BOLD(FONT_SIZE_SMALL);
@@ -1804,6 +1805,33 @@
 
 - (void) createPaymentPDF {
     
+    __block NSDictionary *agent_a_details;
+    __block NSDictionary *agent_b_details;
+    
+    NSString *urlStringTest = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/referral_data_payment.php?referral_id=%@", self.referral_id];
+//    NSLog(@"urlString:%@",urlStringTest);
+    __block NSError *errorDataTest = nil;
+    __weak ASIHTTPRequest *requestTest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringTest]];
+    [requestTest setCompletionBlock:^{
+        // Use when fetching text data
+        //                        NSString *responseString = [request responseString];
+        // Use when fetching binary data
+        NSData *responseData = [requestTest responseData];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&errorDataTest];
+        NSLog(@"json:%@",json);
+        NSDictionary *values = [[json objectForKey:@"data"] objectForKey:@"values"];
+        
+        agent_a_details = [NSDictionary dictionaryWithObjectsAndKeys:[values objectForKey:@"referring_user_id"],@"user_id",[values objectForKey:@"referring_name"],@"name",[values objectForKey:@"referring_email"],@"email",[[json objectForKey:@"data"] objectForKey:@"referring_agent_license"],@"agent_license",[[json objectForKey:@"data"] objectForKey:@"referring_brokerage_license"],@"brokerage_license", [[json objectForKey:@"data"] objectForKey:@"referring_tax_id"],@"tax_id",[values objectForKey:@"referring_mobile_number"],@"mobile_number",[values objectForKey:@"referring_broker_name"],@"broker_name", [values objectForKey:@"street_address"],@"street_address",[values objectForKey:@"city"],@"city",[values objectForKey:@"state"],@"state",[values objectForKey:@"zip"],@"zip",[values objectForKey:@"country"],@"country", nil];
+        
+        agent_b_details = [NSDictionary dictionaryWithObjectsAndKeys:[values objectForKey:@"receiving_user_id"],@"user_id",[values objectForKey:@"receiving_name"],@"name",[values objectForKey:@"receiving_email"],@"email",[[json objectForKey:@"data"] objectForKey:@"receiving_agent_license"],@"agent_license",[[json objectForKey:@"data"] objectForKey:@"receiving_brokerage_license"],@"brokerage_license", [[json objectForKey:@"data"] objectForKey:@"receiving_tax_id"],@"tax_id",[values objectForKey:@"receiving_mobile_number"],@"mobile_number",[values objectForKey:@"receiving_broker_name"],@"broker_name", nil];
+    }];
+    [requestTest setFailedBlock:^{
+        NSError *error = [requestTest error];
+        NSLog(@"error:%@",error);
+    }];
+    [requestTest startAsynchronous];
+    
+    
     NSString *agent_name = [NSString stringWithFormat:@"%@ %@",self.textFieldFirstname.text, self.textFieldLastname.text];
     NSDate *today = [NSDate date];
     NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1826,7 +1854,100 @@
     
     NSString *grossCommissionSale = [formatter stringFromNumber: [NSNumber numberWithDouble:[self.grossCommission doubleValue]]];
     
-    NSString *htmlStringForPDF = [NSString stringWithFormat:HTMLSTRING_PAYMENT, payment_date, self.referral_name, self.loginDetails.user_id, self.profile.broker_name, self.referral_name, self.profile.broker_name,self.textFieldBrokerLicense.text, agent_name, self.textFieldAgentLicense.text, self.textFieldPhoneNumber.text, self.textFieldEmail.text, self.textFieldTaxId.text, self.referral_name, self.client_number, self.client_email, self.client_address, self.client_type, [NSString stringWithFormat:@"%f%%",(self.referral_fee * 100.0f) ], payment_date, grossCommissionSale, [NSString stringWithFormat:@"%f%%",(self.referral_fee * 100.0f) ], referralFeeDetail,self.profile.broker_name, agent_name, self.referral_name, grossCommissionSale,self.profile.broker_name,self.profile.street_address,self.profile.city,self.profile.state_name,self.profile.zip,self.profile.countries_name,agent_name,self.profile.email];
+    NSString *htmlStringForPDF = @"";
+    
+    if ([self.loginDetails.user_id integerValue] == [[agent_a_details objectForKey:@"user_id"] integerValue]) {
+        
+        htmlStringForPDF = [NSString stringWithFormat:HTMLSTRING_PAYMENT,
+                            payment_date,
+                            self.referral_name,
+                            [agent_a_details objectForKey:@"user_id"],
+                            [agent_a_details objectForKey:@"broker_name"],
+                            [agent_b_details objectForKey:@"broker_name"],
+                            self.referral_name,
+                            [agent_a_details objectForKey:@"broker_name"],
+                            self.textFieldBrokerLicense.text,
+                            agent_name,
+                            self.textFieldAgentLicense.text,
+                            self.textFieldPhoneNumber.text,
+                            self.textFieldEmail.text,
+                            self.textFieldTaxId.text,
+                            [agent_b_details objectForKey:@"broker_name"],
+                            [agent_b_details objectForKey:@"brokerage_license"],
+                            [agent_b_details objectForKey:@"name"],
+                            [agent_b_details objectForKey:@"agent_license"],
+                            [agent_b_details objectForKey:@"mobile_number"],
+                            [agent_b_details objectForKey:@"email"],
+                            [agent_b_details objectForKey:@"tax_id"],
+                            self.referral_name,
+                            self.client_number,
+                            self.client_email,
+                            self.client_address,
+                            self.client_type,
+                            [NSString stringWithFormat:@"%f%%",(self.referral_fee * 100.0f) ],
+                            payment_date,
+                            grossCommissionSale,
+                            [NSString stringWithFormat:@"%f%%",(self.referral_fee * 100.0f) ],
+                            referralFeeDetail,
+                            [agent_a_details objectForKey:@"broker_name"],
+                            agent_name,
+                            self.referral_name,
+                            referralFeeDetail,
+                            [agent_a_details objectForKey:@"broker_name"],
+                            [agent_a_details objectForKey:@"street_address"],
+                            [agent_a_details objectForKey:@"city"],
+                            [agent_a_details objectForKey:@"state"],
+                            [agent_a_details objectForKey:@"zip"],
+                            [agent_a_details objectForKey:@"country"],
+                            agent_name,
+                            self.textFieldEmail.text];
+    }
+    else {
+        htmlStringForPDF = [NSString stringWithFormat:HTMLSTRING_PAYMENT,
+                            payment_date,
+                            self.referral_name,
+                            [agent_a_details objectForKey:@"user_id"],
+                            [agent_a_details objectForKey:@"broker_name"],
+                            [agent_b_details objectForKey:@"broker_name"],
+                            self.referral_name,
+                            [agent_a_details objectForKey:@"broker_name"],
+                            [agent_a_details objectForKey:@"brokerage_license"],
+                            [agent_a_details objectForKey:@"name"],
+                            [agent_a_details objectForKey:@"agent_license"],
+                            [agent_a_details objectForKey:@"mobile_number"],
+                            [agent_a_details objectForKey:@"email"],
+                            [agent_a_details objectForKey:@"tax_id"],
+                            [agent_b_details objectForKey:@"broker_name"],
+                            self.textFieldBrokerLicense.text,
+                            agent_name,
+                            self.textFieldAgentLicense.text,
+                            self.textFieldPhoneNumber.text,
+                            self.textFieldEmail.text,
+                            self.textFieldTaxId.text,
+                            self.referral_name,
+                            self.client_number,
+                            self.client_email,
+                            self.client_address,
+                            self.client_type,
+                            [NSString stringWithFormat:@"%f%%",(self.referral_fee * 100.0f) ],
+                            payment_date,
+                            grossCommissionSale,
+                            [NSString stringWithFormat:@"%f%%",(self.referral_fee * 100.0f) ],
+                            referralFeeDetail,
+                            [agent_a_details objectForKey:@"broker_name"],
+                            [agent_a_details objectForKey:@"name"],
+                            self.referral_name,
+                            referralFeeDetail,
+                            [agent_a_details objectForKey:@"broker_name"],
+                            [agent_a_details objectForKey:@"street_address"],
+                            [agent_a_details objectForKey:@"city"],
+                            [agent_a_details objectForKey:@"state"],
+                            [agent_a_details objectForKey:@"zip"],
+                            [agent_a_details objectForKey:@"country"],
+                            [agent_a_details objectForKey:@"name"],
+                            [agent_a_details objectForKey:@"email"]];
+    }
+    
     
     self.payment_id = [NSString stringWithFormat:@"Payment_%@_%@_%@",self.user_id,self.user_id,[date_today stringByReplacingOccurrencesOfString:@"-" withString:@"_"]];
     
