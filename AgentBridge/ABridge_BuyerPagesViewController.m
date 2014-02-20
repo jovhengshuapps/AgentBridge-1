@@ -113,8 +113,22 @@
     NSMutableString *featuresString = [NSMutableString stringWithFormat:@""];
     NSEntityDescription *entity = [self.buyerDetail entity];
     NSDictionary *attributes = [entity attributesByName];
-    int count = 0;
+    
+    NSMutableArray *arrayAttributes = [NSMutableArray array];
+    
     for (NSString *attribute in attributes) {
+        [arrayAttributes addObject:attribute];
+    }
+    
+    NSInteger bathroom = [arrayAttributes indexOfObject:@"bathroom"];
+    NSInteger bedroom = [arrayAttributes indexOfObject:@"bedroom"];
+    
+    [arrayAttributes replaceObjectAtIndex:bathroom withObject:@"bedroom"];
+    [arrayAttributes replaceObjectAtIndex:bedroom withObject:@"bathroom"];
+    
+    int count = 0;
+    for (NSString *attribute in arrayAttributes) {
+        
         if([attribute isEqualToString:@"available_sqft"]||[attribute isEqualToString:@"bathroom"]||[attribute isEqualToString:@"bedroom"]||[attribute isEqualToString:@"bldg_sqft"]||[attribute isEqualToString:@"cap_rate"]||[attribute isEqualToString:@"ceiling_height"]||[attribute isEqualToString:@"condition"]||[attribute isEqualToString:@"furnished"]||[attribute isEqualToString:@"garage"]||[attribute isEqualToString:@"grm"]||[attribute isEqualToString:@"lot_size"]||[attribute isEqualToString:@"lot_sqft"]||[attribute isEqualToString:@"view"]||[attribute isEqualToString:@"year_built"]||[attribute isEqualToString:@"stories"]||[attribute isEqualToString:@"unit_sqft"]||[attribute isEqualToString:@"features1"]||[attribute isEqualToString:@"features2"]||[attribute isEqualToString:@"features3"]){
             
             
