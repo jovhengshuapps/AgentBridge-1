@@ -98,7 +98,7 @@
 - (void) loadProperty {
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     
-    self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php" andParameters:parameters];
+    self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://agentbridge.com/webservice/getpops.php" andParameters:parameters];
     
     if (self.urlConnectionProperty) {
         //        //NSLog(@"Connection Successful");
@@ -356,7 +356,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@",self.loginDetail.user_id,self.currentListingId];
     
-    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyer_list_pops.php"];
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/getbuyer_list_pops.php"];
     [urlString appendString:parameters];
     
     self.activityIndicator.hidden = NO;
@@ -427,7 +427,7 @@
         
         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%@",self.loginDetail.user_id,self.currentListingId, buyer_id];
         
-        NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
+        NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/save_buyer.php"];
         [urlString appendString:parameters];
         //    //NSLog(@"url:%@",urlString);
         self.activityIndicator.hidden = NO;

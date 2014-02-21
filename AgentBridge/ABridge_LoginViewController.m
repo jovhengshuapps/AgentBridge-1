@@ -198,7 +198,7 @@
     
     if (self.textEmail.text != nil && self.textPassword.text != nil) {
         if ([self NSStringIsValidEmail:self.textEmail.text]) {
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/login.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/login.php"];
             NSString *parameters = [NSString stringWithFormat:@"?email=%@&password=%@",self.textEmail.text,self.textPassword.text];
             [urlString appendString:parameters];
 //            //NSLog(@"url:%@",urlString);
@@ -273,7 +273,7 @@
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.dataReceived options:NSJSONReadingAllowFragments error:&error];
     
-//    //NSLog(@"Did Finish:%@", json);
+     //NSLog(@"Did Finish:%@", json);
     
     if (connection == self.urlConnectionLogin) {
         
@@ -300,7 +300,7 @@
                 
                 NSString *parameters = [NSString stringWithFormat:@"?email=%@",self.item.email];
                 
-                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php"];
+                NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/getuser_info.php"];
                 [urlString appendString:parameters];
                 //            //NSLog(@"url:%@",urlString);
                 NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
@@ -315,7 +315,7 @@
                     NSInteger user_id = [self.item.user_id integerValue];
                     
                     
-                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/register_device.php?user_id=%i&token=%@", user_id, deviceToken];
+                    NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/register_device.php?user_id=%i&token=%@", user_id, deviceToken];
 //                    NSLog(@"urlString:%@",urlString);
                     __block NSError *errorData = nil;
                     __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];

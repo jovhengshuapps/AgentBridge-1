@@ -136,7 +136,7 @@
 //    self.buttonDeleteBroker.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
 //    self.buttonDeleteBroker.layer.shadowColor = [UIColor blackColor].CGColor;
     
-    NSMutableString *urlStringBroker = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_broker_list.php"];
+    NSMutableString *urlStringBroker = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_broker_list.php"];
     
     __block NSError *errorDataBroker = nil;
     __weak ASIHTTPRequest *requestBroker = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringBroker]];
@@ -210,7 +210,7 @@
     self.textFieldBrokerage.autoCompleteTableBackgroundColor = [UIColor whiteColor];
     self.textFieldBrokerage.autoCompleteTableViewHidden = YES;
     
-    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_designation_list.php"];
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_designation_list.php"];
     
     __block NSError *errorData = nil;
     __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -282,7 +282,7 @@
     
     self.textFieldBroker_label.text = self.profile.broker_name;
     
-//    NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_designations.php";
+//    NSString *urlString = @"http://agentbridge.com/webservice/getuser_designations.php";
 //    
 //    urlString = [NSString stringWithFormat:@"%@?user_id=%@",urlString, loginDetails.user_id];
 //    
@@ -297,7 +297,7 @@
 //        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 //    }
     
-    NSMutableString *urlStringUserDesignation = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_designations.php"];
+    NSMutableString *urlStringUserDesignation = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/getuser_designations.php"];
     [urlStringUserDesignation appendFormat:@"?user_id=%@", loginDetails.user_id];
     
     __block NSError *errorDataUserDesignation = nil;
@@ -374,7 +374,7 @@
         else {
             NSString *parameters = [NSString stringWithFormat:@"?profile_id=%@&broker_id=%@",self.profile.profile_id,self.selectedBrokerId];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/update_broker.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/update_broker.php"];
             [urlString appendString:parameters];
             
             self.activityIndicator.hidden = NO;
@@ -420,7 +420,7 @@
 //                    designationDeleted = NO;
                     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&designation_id=%@",[entry objectForKey:@"user_id"],[entry objectForKey:@"designation_id"]];
                     
-                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/delete_designation.php"];
+                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/delete_designation.php"];
                     [urlString appendString:parameters];
                     
                     self.activityIndicator.hidden = NO;
@@ -472,7 +472,7 @@
 //                    designationAdded = NO;
                     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&designation_id=%@",self.profile.user_id,[entry objectForKey:@"designation_id"]];
                     
-                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/add_designation.php"];
+                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/add_designation.php"];
                     [urlString appendString:parameters];
                     
                     self.activityIndicator.hidden = NO;

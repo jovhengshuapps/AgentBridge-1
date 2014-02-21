@@ -89,7 +89,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%i",profile_user_id];
     
-    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_membership_fee.php"];
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_membership_fee.php"];
     [urlString appendString:parameters];
 //    NSLog(@"url:%@",urlString);
     __block NSError *errorData = nil;

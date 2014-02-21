@@ -143,7 +143,7 @@
     self.buttonChangeStatus.hidden = YES;
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&update_id=%@", self.loginDetail.user_id, self.referralDetails.referral_id];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed.php%@", parameters];
+    NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/check_if_signed.php%@", parameters];
     
     __block BOOL restricted = NO;
     __block NSString *client_name = self.referralDetails.client_name;
@@ -649,7 +649,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&activity_type=%@note=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"17",note_text];
     
-    self.urlStringStatusChange = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_status.php%@", parameters];
+    self.urlStringStatusChange = [NSString stringWithFormat:@"http://agentbridge.com/webservice/change_status.php%@", parameters];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
@@ -697,7 +697,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&referral_id=%@&value_id=%@&agent_a=%@&status=%@&note=%@&buyer_id=%@", self.loginDetail.user_id, self.referralDetails.referral_id, self.referralDetails.referral_id,self.referralDetails.agent_a,status_type,@"",self.referralDetails.client_id];
     
-    self.urlStringStatusChange = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_status_referral_payment.php%@", parameters];
+    self.urlStringStatusChange = [NSString stringWithFormat:@"http://agentbridge.com/webservice/change_status_referral_payment.php%@", parameters];
     
     
     __block NSError *errorData = nil;

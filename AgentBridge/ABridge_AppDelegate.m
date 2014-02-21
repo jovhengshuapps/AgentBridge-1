@@ -46,19 +46,48 @@
     [self.window makeKeyAndVisible];
     _initalStoryboard = self.window.rootViewController.storyboard;
     
-    [TestFlight takeOff:@"c6b4d58a-dd3a-4c8f-8b39-d76c46aaeeef"];
+//    [TestFlight takeOff:@"c6b4d58a-dd3a-4c8f-8b39-d76c46aaeeef"];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
     return YES;
 }
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
     {
-        NSLog(@"My token is: %@", deviceToken);
+//        NSLog(@"My token is: %@", deviceToken);
         NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
         token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
         self.deviceTokenString = token;
-        NSLog(@"content---%@", token);
+//        NSLog(@"content---%@", token);
     }
+
+//- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+//    
+//    NSInteger badge_value = [UIApplication sharedApplication].applicationIconBadgeNumber;
+//    badge_value += 1;//[[[userInfo objectForKey:@"aps"] objectForKey:@"badge"]intValue];
+//    
+//    [UIApplication sharedApplication].applicationIconBadgeNumber = badge_value;
+//    
+//}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
+    
+    NSInteger badge_value = [UIApplication sharedApplication].applicationIconBadgeNumber;
+    badge_value += 1;//[[[userInfo objectForKey:@"aps"] objectForKey:@"badge"]intValue];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = badge_value;
+
+}
+
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+//    
+//    
+//    NSInteger badge_value = [UIApplication sharedApplication].applicationIconBadgeNumber;
+//    badge_value += 1;//[[[userInfo objectForKey:@"aps"] objectForKey:@"badge"]intValue];
+//
+//    [UIApplication sharedApplication].applicationIconBadgeNumber = badge_value;
+//}
+
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
     {
         NSLog(@"Failed to get token, error: %@", error);

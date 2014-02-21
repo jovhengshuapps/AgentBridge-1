@@ -99,7 +99,7 @@
     
     
     __block NSError *errorData = nil;
-    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:([value isEqualToString:@"In"])?@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_in.php%@":@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_out.php%@",parameters]]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:([value isEqualToString:@"In"])?@"http://agentbridge.com/webservice/getreferral_in.php%@":@"http://agentbridge.com/webservice/getreferral_out.php%@",parameters]]];
     [self.activityIndicator startAnimating];
     self.activityIndicator.hidden = NO;
     [self.pageController.view removeFromSuperview];
@@ -251,7 +251,7 @@
     
     [request startAsynchronous];
     
-//    self.urlConnectionReferral = [self urlConnectionWithURLString:([value isEqualToString:@"In"])?@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_in.php":@"http://keydiscoveryinc.com/agent_bridge/webservice/getreferral_out.php" andParameters:parameters];
+//    self.urlConnectionReferral = [self urlConnectionWithURLString:([value isEqualToString:@"In"])?@"http://agentbridge.com/webservice/getreferral_in.php":@"http://agentbridge.com/webservice/getreferral_out.php" andParameters:parameters];
 //
 //    if (self.urlConnectionReferral) {
 ////        //NSLog(@"Connection Successful");

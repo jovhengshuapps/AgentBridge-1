@@ -88,11 +88,11 @@
     
     if (is_saved) {
         self.buttonSave.hidden = YES;
-        self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers_saved.php" andParameters:parameters];
+        self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://agentbridge.com/webservice/getbuyers_saved.php" andParameters:parameters];
     }
     else {
         
-        self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers_new.php" andParameters:parameters];
+        self.urlConnectionProperty = [self urlConnectionWithURLString:@"http://agentbridge.com/webservice/getbuyers_new.php" andParameters:parameters];
     }
     
 //    //NSLog(@"url:%@",self.urlConnectionProperty.originalRequest.URL);
@@ -418,7 +418,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%li",loginDetail.user_id,self.currentListingId, (long)self.buyer_id];
     
-    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/save_buyer.php"];
     [urlString appendString:parameters];
 //    //NSLog(@"url:%@",urlString);
     self.activityIndicator.hidden = NO;

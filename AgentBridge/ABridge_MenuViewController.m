@@ -326,7 +326,7 @@
             NSString *tokenid = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).tokenId;
             
             
-            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/delete_device_token.php?token_id=%@", tokenid];
+            NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/delete_device_token.php?token_id=%@", tokenid];
             
             __block NSError *errorData = nil;
             __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];

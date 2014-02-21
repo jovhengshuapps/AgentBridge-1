@@ -78,7 +78,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",loginDetail.user_id];
     
-    self.urlConnectionAgentNetwork = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_network_info.php" andParameters:parameters];
+    self.urlConnectionAgentNetwork = [self urlConnectionWithURLString:@"http://agentbridge.com/webservice/getuser_network_info.php" andParameters:parameters];
     
     if (self.urlConnectionAgentNetwork) {
 //        //NSLog(@"Connection Successful");

@@ -49,7 +49,7 @@
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.user_id];
     
     __block NSError *errorData = nil;
-    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getprofile.php%@",parameters]]];
+    __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://agentbridge.com/webservice/getprofile.php%@",parameters]]];
     [request setCompletionBlock:^{
         
         // Use when fetching text data

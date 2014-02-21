@@ -110,7 +110,7 @@
         if (!self.fromSearch) {
             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%li",self.loginDetail.user_id,self.propertyDetails.listing_id, (long)self.buyer_id];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_new_if_saved.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/check_new_if_saved.php"];
             [urlString appendString:parameters];
             //        //NSLog(@"url:%@",urlString);
             
@@ -156,7 +156,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.propertyDetails.user_id,self.loginDetail.user_id];
             
-            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php"];
+            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_request_network.php"];
             [urlString_ appendString:parameters];
             //        //NSLog(@"url:%@",urlString_);
 //            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
@@ -214,7 +214,7 @@
                                  
                                  NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.propertyDetails.user_id,self.loginDetail.user_id, self.propertyDetails.listing_id];
                                  
-                                 NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
+                                 NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_request_access.php"];
                                  [urlString_ appendString:parameters];
                                  //        //NSLog(@"url:%@",urlString_);
 //                                 NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
@@ -736,7 +736,7 @@
     });
     
 ////    self.loadingImageIndicator.hidden = NO;
-////        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
+////        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/getpops_images.php"];
 ////        [urlString_ appendString:[NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id]];
 //////        //NSLog(@"url:%@",urlString_);
 ////        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
@@ -745,7 +745,7 @@
 ////        self.urlConnectionImages = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:YES];
 //    NSString *parameters = [NSString stringWithFormat:@"?listing_id=%@",self.propertyDetails.listing_id];
 //    
-//    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_images.php"];
+//    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/getpops_images.php"];
 //    [urlString appendString:parameters];
 //    
 //    __block NSError *errorData = nil;
@@ -1052,7 +1052,7 @@
 //                            
 //                            NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.propertyDetails.user_id,self.loginDetail.user_id, self.propertyDetails.listing_id];
 //                            
-//                            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
+//                            NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_request_access.php"];
 //                            [urlString_ appendString:parameters];
 //                            //        //NSLog(@"url:%@",urlString_);
 //                            NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
@@ -1275,7 +1275,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.loginDetail.user_id, self.propertyDetails.user_id];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_network.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/request_network.php"];
             [urlString appendString:parameters];
             //            //NSLog(@"url:%@",urlString);
             
@@ -1316,7 +1316,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&listing_id=%@",self.loginDetail.user_id, self.propertyDetails.user_id,self.propertyDetails.listing_id];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_access.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/request_access.php"];
             [urlString appendString:parameters];
             //            //NSLog(@"url:%@",urlString);
             

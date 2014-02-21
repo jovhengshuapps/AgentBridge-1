@@ -196,14 +196,14 @@
                         parameters = [NSString stringWithFormat:@"?field=%@&keyword=%@&user_id=%i",[keywords objectAtIndex:index], [keywords objectAtIndex:index-1],self.login_user_id];
                     }
                     
-                    [urlString setString:@"http://keydiscoveryinc.com/agent_bridge/webservice/search_pops_by_field.php"];
+                    [urlString setString:@"http://agentbridge.com/webservice/search_pops_by_field.php"];
                     
                     index--;
                 }
                 else {
                     parameters = [NSString stringWithFormat:@"?keyword=%@&user_id=%i",[keywords objectAtIndex:index],self.login_user_id];
                     
-                    [urlString setString:@"http://keydiscoveryinc.com/agent_bridge/webservice/search_pops.php"];
+                    [urlString setString:@"http://agentbridge.com/webservice/search_pops.php"];
                 }
                 
                 [urlString appendString:parameters];
@@ -268,7 +268,7 @@
         
         NSString *parameters = [NSString stringWithFormat:@"?keyword=%@",self.searchDisplayController.searchBar.text];
         
-        NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/search_agents.php"];
+        NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/search_agents.php"];
         [urlString appendString:parameters];
         
         self.arrayAgents = nil;

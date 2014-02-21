@@ -71,7 +71,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?email=%@",self.loginDetail.email];
     
-    self.urlConnectionProfile = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getuser_info.php" andParameters:parameters];
+    self.urlConnectionProfile = [self urlConnectionWithURLString:@"http://agentbridge.com/webservice/getuser_info.php" andParameters:parameters];
     
     if (self.urlConnectionProfile) {
 //        //NSLog(@"Connection Successful");

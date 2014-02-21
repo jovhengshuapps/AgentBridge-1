@@ -102,7 +102,7 @@
         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@",self.user_id,self.listing_id];
         
         __block NSError *errorData = nil;
-        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops_byid.php%@",parameters]]];
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://agentbridge.com/webservice/getpops_byid.php%@",parameters]]];
         [request setCompletionBlock:^{
             
             // Use when fetching text data
@@ -186,7 +186,7 @@
         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.user_id];
         
         __block NSError *errorData = nil;
-        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getpops.php%@",parameters]]];
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://agentbridge.com/webservice/getpops.php%@",parameters]]];
         [request setCompletionBlock:^{
             
             // Use when fetching text data

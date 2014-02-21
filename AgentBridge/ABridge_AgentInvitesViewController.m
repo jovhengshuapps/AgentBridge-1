@@ -100,7 +100,7 @@
 - (void) checkInvites {
     NSString *parameters = [NSString stringWithFormat:@"?profile_id=%@", self.profileData.profile_id];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getinvites.php%@",parameters];
+    NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/getinvites.php%@",parameters];
     
     __block NSError *errorData = nil;
     __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -164,7 +164,7 @@
     if ([self NSStringIsValidEmail:self.textFieldEmail.text]) {
         NSString *parameters = [NSString stringWithFormat:@"?email=%@", self.textFieldEmail.text];
         
-        NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/validate_invite.php%@",parameters];
+        NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/validate_invite.php%@",parameters];
         
         __block NSError *errorData = nil;
         __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -208,7 +208,7 @@
 - (void) submit {
     NSString *parametersSend = [NSString stringWithFormat:@"?firstname=%@&lastname=%@&email=%@&zip=%@&user_id=%@&profile_id=%@", self.textFieldFirstname.text, self.textFieldLastname.text, self.textFieldEmail.text, self.textFieldZipcode.text, self.profileData.user_id, self.profileData.profile_id];
     
-    NSString *urlStringSend = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/send_invite.php%@",parametersSend];
+    NSString *urlStringSend = [NSString stringWithFormat:@"http://agentbridge.com/webservice/send_invite.php%@",parametersSend];
 //    //NSLog(@"url:%@",urlStringSend);
     __block NSError *errorDataSend = nil;
     __weak ASIHTTPRequest *requestSend = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringSend]];

@@ -93,7 +93,7 @@
 - (void)loadBuyers{
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@",self.loginDetail.user_id];
     
-    self.urlConnectionBuyer = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getbuyers.php" andParameters:parameters];
+    self.urlConnectionBuyer = [self urlConnectionWithURLString:@"http://agentbridge.com/webservice/getbuyers.php" andParameters:parameters];
     
     if (self.urlConnectionBuyer) {
         //        //NSLog(@"Connection Successful");

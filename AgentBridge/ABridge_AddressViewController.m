@@ -10,7 +10,6 @@
 #import "AgentProfile.h"
 #import "State.h"
 #import "Country.h"
-#import "HTTPURLConnection.h"
 
 @interface ABridge_AddressViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *aboutMeTitle;
@@ -36,29 +35,17 @@
 
 @property (strong, nonatomic) NSString *state_code;
 @property (strong, nonatomic) NSString *country_code_3;
-@property (strong, nonatomic) HTTPURLConnection *urlConnectionState;
-@property (strong, nonatomic) HTTPURLConnection *urlConnectionCountry;
-//@property (strong, nonatomic) NSMutableData *dataReceivedState;
-//@property (strong, nonatomic) NSMutableData *dataReceivedCountry;
 @property (strong, nonatomic) NSMutableArray *arrayOfState;
 @property (strong, nonatomic) NSMutableArray *arrayOfCountry;
 @property (strong, nonatomic) NSMutableArray *arrayOfCountry_ID;
-//@property (strong, nonatomic) UIActionSheet *actionSheetState;
-//@property (strong, nonatomic) UIActionSheet *actionSheetCountry;
 @end
 
 @implementation ABridge_AddressViewController
 @synthesize state_code;
 @synthesize country_code_3;
-@synthesize urlConnectionState;
-@synthesize urlConnectionCountry;
-//@synthesize dataReceivedState;
-//@synthesize dataReceivedCountry;
 @synthesize arrayOfState;
 @synthesize arrayOfCountry;
 @synthesize arrayOfCountry_ID;
-//@synthesize actionSheetCountry;
-//@synthesize actionSheetState;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -140,7 +127,7 @@
     self.buttonCountry.enabled = NO;
     self.buttonCountry.backgroundColor = [UIColor lightGrayColor];
     self.activityIndicatorCountry.hidden = NO;
-    NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getdb_country.php";
+    NSString *urlString = @"http://agentbridge.com/webservice/getdb_country.php";
     
     __block NSError *errorData = nil;
     __weak ASIHTTPRequest *requestCountry = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -193,7 +180,7 @@
     self.buttonState.enabled = NO;
     self.buttonState.backgroundColor = [UIColor lightGrayColor];
     self.activityIndicatorState.hidden = NO;
-    urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getdb_state.php";
+    urlString = @"http://agentbridge.com/webservice/getdb_state.php";
     
     __weak ASIHTTPRequest *requestState = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     [requestState setCompletionBlock:^{

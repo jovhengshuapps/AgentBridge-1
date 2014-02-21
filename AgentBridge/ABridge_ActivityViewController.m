@@ -9,7 +9,6 @@
 #import "ABridge_ActivityViewController.h"
 #import "ABridge_ActivityPagesViewController.h"
 #import "Activity.h"
-#import "HTTPURLConnection.h"
 
 @interface ABridge_ActivityViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *labelNumberOfActivity;
@@ -197,7 +196,7 @@
                 
                 NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
                 
-                NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-%@.php%@", [entryActivities valueForKey:@"activity_type"], parameters];
+                NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/getactivity-%@.php%@", [entryActivities valueForKey:@"activity_type"], parameters];
                 
                 //NSLog(@"Did Finish:%@", urlString);
                 self.activityIndicator.hidden = NO;
@@ -292,7 +291,7 @@
 //                if ([[entryActivities valueForKey:@"activity_type"] integerValue] == 25) {
 //                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
 ////                    //NSLog(@"25 parameters:%@",parameters);
-//                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-25.php%@",parameters];
+//                    NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/getactivity-25.php%@",parameters];
 //                    
 //                    
 //                    self.activityIndicator.hidden = NO;
@@ -385,7 +384,7 @@
 //                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
 ////                    //NSLog(@"11 parameters:%@",parameters);
 //                    
-//                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-11.php%@",parameters];
+//                    NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/getactivity-11.php%@",parameters];
 //                    
 //                    self.activityIndicator.hidden = NO;
 //                    [self.activityIndicator startAnimating];
@@ -491,7 +490,7 @@
 //                else if ([[entryActivities valueForKey:@"activity_type"] integerValue] == 6) {
 //                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
 //                    
-//                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-6.php%@",parameters];
+//                    NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/getactivity-6.php%@",parameters];
 //                    
 //                    
 //                    self.activityIndicator.hidden = NO;
@@ -583,7 +582,7 @@
 //                else if ([[entryActivities valueForKey:@"activity_type"] integerValue] == 8 || [[entryActivities valueForKey:@"activity_type"] integerValue] == 28) {
 //                    NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&activities_id=%@", self.loginDetail.user_id, [entryActivities valueForKey:@"activities_id"]];
 //                    
-//                    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity-%@.php%@",[entryActivities valueForKey:@"activity_type"],parameters];
+//                    NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/getactivity-%@.php%@",[entryActivities valueForKey:@"activity_type"],parameters];
 //                    
 ////                    //NSLog(@"url:%@",urlString);
 //                    self.activityIndicator.hidden = NO;
@@ -749,7 +748,7 @@
     if ([fetchedObjects count]) {
         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@", self.loginDetail.user_id];
         //    //NSLog(@"parameters:%@",parameters);
-        self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://keydiscoveryinc.com/agent_bridge/webservice/getactivity.php" andParameters:parameters];
+        self.urlConnectionActivity = [self urlConnectionWithURLString:@"http://agentbridge.com/webservice/getactivity.php" andParameters:parameters];
         
         if (self.urlConnectionActivity) {
             [self addURLConnection:self.urlConnectionActivity];

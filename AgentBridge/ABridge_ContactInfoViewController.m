@@ -118,7 +118,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?profile_id=%@",self.profile.profile_id];
     
-    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_mobilenumber.php"];
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_mobilenumber.php"];
     [urlString appendString:parameters];
     
     self.activityIndicator.hidden = NO;
@@ -196,7 +196,7 @@
     
     parameters = [NSString stringWithFormat:@"?profile_id=%@",self.profile.profile_id];
     
-    urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_faxnumber.php"];
+    urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_faxnumber.php"];
     [urlString appendString:parameters];
     
     //    //NSLog(@"urlString:%@",urlString);
@@ -269,7 +269,7 @@
     
     parameters = [NSString stringWithFormat:@"?profile_id=%@",self.profile.profile_id];
     
-    urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_worknumber.php"];
+    urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_worknumber.php"];
     [urlString appendString:parameters];
     
     //    //NSLog(@"urlString:%@",urlString);
@@ -369,7 +369,7 @@
             for (NSDictionary *entry in self.arrayRemoveMobile) {
                 NSString *parameters = [NSString stringWithFormat:@"?id=%@&user_id=%@",[entry valueForKey:@"pk_id"],[entry valueForKey:@"user_id"]];
                 
-                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/delete_mobilenumber.php"];
+                NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/delete_mobilenumber.php"];
                 [urlString appendString:parameters];
                 
                 self.activityIndicator.hidden = NO;
@@ -413,7 +413,7 @@
             for (NSDictionary *entry in self.arrayRemoveFax) {
                 NSString *parameters = [NSString stringWithFormat:@"?id=%@&user_id=%@",[entry valueForKey:@"pk_id"],[entry valueForKey:@"user_id"]];
                 
-                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/delete_faxnumber.php"];
+                NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/delete_faxnumber.php"];
                 [urlString appendString:parameters];
                 
                 self.activityIndicator.hidden = NO;
@@ -458,7 +458,7 @@
             for (NSDictionary *entry in self.arrayRemoveWork) {
                 NSString *parameters = [NSString stringWithFormat:@"?id=%@&user_id=%@",[entry valueForKey:@"pk_id"],[entry valueForKey:@"user_id"]];
                 
-                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/delete_worknumber.php"];
+                NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/delete_worknumber.php"];
                 [urlString appendString:parameters];
                 
                 self.activityIndicator.hidden = NO;
@@ -508,7 +508,7 @@
                     //insert
                     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[[entry valueForKey:@"value"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                     
-                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/add_mobilenumber.php"];
+                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/add_mobilenumber.php"];
                     [urlString appendString:parameters];
                     
                     self.activityIndicator.hidden = NO;
@@ -544,7 +544,7 @@
 //                    //update
 //                    NSString *parameters = [NSString stringWithFormat:@"?id=%@&user_id=%@&value_number=%@",[entry valueForKey:@"pk_id"],[entry valueForKey:@"user_id"],[entry valueForKey:@"value"]];
 //                    
-//                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/update_mobilenumber.php"];
+//                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/update_mobilenumber.php"];
 //                    [urlString appendString:parameters];
 //                    
 //                    self.activityIndicator.hidden = NO;
@@ -590,7 +590,7 @@
                     //insert
                     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[[entry valueForKey:@"value"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                     
-                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/add_faxnumber.php"];
+                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/add_faxnumber.php"];
                     [urlString appendString:parameters];
                     
                     self.activityIndicator.hidden = NO;
@@ -625,7 +625,7 @@
                     //update
 //                    NSString *parameters = [NSString stringWithFormat:@"?id=%@&user_id=%@&value_number=%@",[entry valueForKey:@"pk_id"],[entry valueForKey:@"user_id"],[entry valueForKey:@"value"]];
 //                    
-//                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/update_faxnumber.php"];
+//                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/update_faxnumber.php"];
 //                    [urlString appendString:parameters];
 //                    
 //                    self.activityIndicator.hidden = NO;
@@ -673,7 +673,7 @@
                     //insert
                     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&value_number=%@",[entry valueForKey:@"user_id"],[[entry valueForKey:@"value"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                     
-                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/add_worknumber.php"];
+                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/add_worknumber.php"];
                     [urlString appendString:parameters];
                     
                     self.activityIndicator.hidden = NO;
@@ -711,7 +711,7 @@
                     //update
 //                    NSString *parameters = [NSString stringWithFormat:@"?id=%@&user_id=%@&value_number=%@",[entry valueForKey:@"pk_id"],[entry valueForKey:@"user_id"],[entry valueForKey:@"value"]];
 //                    
-//                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/update_worknumber.php"];
+//                    NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/update_worknumber.php"];
 //                    [urlString appendString:parameters];
 //                    
 //                    self.activityIndicator.hidden = NO;

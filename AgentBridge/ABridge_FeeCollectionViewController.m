@@ -330,7 +330,7 @@
     self.buttonCountry.enabled = NO;
     self.buttonCountry.backgroundColor = [UIColor lightGrayColor];
     
-    NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getdb_country.php";
+    NSString *urlString = @"http://agentbridge.com/webservice/getdb_country.php";
     
     __block NSError *errorData = nil;
     __weak ASIHTTPRequest *requestCountry = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -383,7 +383,7 @@
     self.buttonState.enabled = NO;
     self.buttonState.backgroundColor = [UIColor lightGrayColor];
     
-    urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/getdb_state.php";
+    urlString = @"http://agentbridge.com/webservice/getdb_state.php";
     
     __weak ASIHTTPRequest *requestState = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     [requestState setCompletionBlock:^{
@@ -467,7 +467,7 @@
     
     
     NSString *parameter = [NSString stringWithFormat:@"?text=%@",[[self.profile.licence stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
-    NSMutableString *urlStringDecrypt = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/decrypt_license.php"];
+    NSMutableString *urlStringDecrypt = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/decrypt_license.php"];
     
     [urlStringDecrypt appendString:parameter];
     
@@ -501,7 +501,7 @@
     [requestDecrypt startAsynchronous];
     
     parameter = [NSString stringWithFormat:@"?text=%@",[[self.profile.brokerage_license stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
-    [urlStringDecrypt setString:@"http://keydiscoveryinc.com/agent_bridge/webservice/decrypt_license.php"];
+    [urlStringDecrypt setString:@"http://agentbridge.com/webservice/decrypt_license.php"];
     
     [urlStringDecrypt appendString:parameter];
     
@@ -535,7 +535,7 @@
     
     
     parameter = [NSString stringWithFormat:@"?text=%@",[[self.profile.tax_id_num stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"]  stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"]];
-    [urlStringDecrypt setString:@"http://keydiscoveryinc.com/agent_bridge/webservice/decrypt_license.php"];
+    [urlStringDecrypt setString:@"http://agentbridge.com/webservice/decrypt_license.php"];
     
     [urlStringDecrypt appendString:parameter];
     
@@ -600,7 +600,7 @@
     
     [self.webViewTerms loadHTMLString:HTMLSTRING_TERMS baseURL:nil];
     
-    NSString *urlStringCheckFirstPayment = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_first_payment.php?user_id=%@",self.user_id];
+    NSString *urlStringCheckFirstPayment = [NSString stringWithFormat:@"http://agentbridge.com/webservice/check_first_payment.php?user_id=%@",self.user_id];
     
     self.discount = 0;
     self.totalServiceFee = 0.01f;
@@ -712,7 +712,7 @@
                 
                 
                 NSString *parameter = [NSString stringWithFormat:@"?fee=%@",self.grossCommission];
-                NSMutableString *urlStringDecrypt = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_referral_fee.php"];
+                NSMutableString *urlStringDecrypt = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_referral_fee.php"];
                 
                 [urlStringDecrypt appendString:parameter];
                 
@@ -1021,7 +1021,7 @@
         
         NSString *parameters = [[NSString stringWithFormat:@"?amount=%f&service_fee=%f&card_num=%@&card_exp=%@&user_id=%@&firstname=%@&lastname=%@&address=%@&city=%@&state=%@&zip=%@&country=%@&phone=%@&email=%@&referral_id=%@",[self.grossCommission doubleValue], /*[self.serviceFee doubleValue]*/self.totalServiceFee, self.textFieldCreditCard.text, /*[*/self.cardExpiry/* stringByReplacingOccurrencesOfString:@"/" withString:@"-"]*/, self.user_id, self.textFieldFirstname.text, self.textFieldLastname.text, [NSString stringWithFormat:@"%@,%@",self.textFieldAddress1.text,self.textFieldAddress2.text], self.textFieldCity.text, self.selectedStateID, self.textFieldZipcode.text, self.selectedCountryID, [self.textFieldPhoneNumber.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], self.textFieldEmail.text, self.referral_id] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
         
-        NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/send_transaction.php"];
+        NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/send_transaction.php"];
         [urlString appendString:parameters];
         
 //        NSLog(@"url:%@",urlString);
@@ -1649,16 +1649,16 @@
 //            NSString *urlString = @"";
 //            if (self.grossCommissionValue != nil && [self.grossCommissionValue isEqualToString:@""] == NO) {
 //                //r1
-//                urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r1.php%@", parameters];
+//                urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/save_closed_referral_r1.php%@", parameters];
 //            }
 //            else {
 //                //r2
-//                urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r2.php%@", parameters];
+//                urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/save_closed_referral_r2.php%@", parameters];
 //            }
 //            
 ////            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@&price_paid=%@", self.referral_id, self.grossCommission];
 ////            
-////            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral.php%@", parameters];
+////            NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/save_closed_referral.php%@", parameters];
 //            
 //            
 //            __block NSError *errorData = nil;
@@ -1693,12 +1693,12 @@
             if (self.grossCommissionValue == nil || [self.grossCommissionValue isEqualToString:@""] == YES) {
                 
                 //r2
-                urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r2.php%@", parameters];
+                urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/save_closed_referral_r2.php%@", parameters];
             
             
             //            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@&price_paid=%@", self.referral_id, self.grossCommission];
             //
-            //            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral.php%@", parameters];
+            //            NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/save_closed_referral.php%@", parameters];
             
             
             __block NSError *errorData = nil;
@@ -1808,7 +1808,7 @@
     __block NSDictionary *agent_a_details;
     __block NSDictionary *agent_b_details;
     
-    NSString *urlStringTest = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/referral_data_payment.php?referral_id=%@", self.referral_id];
+    NSString *urlStringTest = [NSString stringWithFormat:@"http://agentbridge.com/webservice/referral_data_payment.php?referral_id=%@", self.referral_id];
 //    NSLog(@"urlString:%@",urlStringTest);
     __block NSError *errorDataTest = nil;
     __weak ASIHTTPRequest *requestTest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStringTest]];
@@ -2148,7 +2148,7 @@
     NSData *pdfPaymentData = [NSData dataWithContentsOfFile:pdfFileName];
     
     
-    NSString *urlString = @"http://keydiscoveryinc.com/agent_bridge/webservice/send_pdf_email.php";
+    NSString *urlString = @"http://agentbridge.com/webservice/send_pdf_email.php";
     NSURL *url = [NSURL URLWithString: urlString];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];

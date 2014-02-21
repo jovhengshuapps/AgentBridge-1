@@ -111,7 +111,7 @@
         
         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&email=%@&password=%@",loginDetail.user_id,loginDetail.email,self.textFieldOldPassword.text];
         
-        NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_password.php"];
+        NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/check_password.php"];
         [urlString appendString:parameters];
         __block NSError *errorData = nil;
         __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -126,7 +126,7 @@
              if ([[json objectForKey:@"data"] count]) {
                  NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&email=%@&password=%@",loginDetail.user_id,loginDetail.email,self.textFieldNewPassword.text];
                  
-                 NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/change_password.php"];
+                 NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/change_password.php"];
                  [urlString appendString:parameters];
                  
                  __block NSError *errorDataPassword = nil;

@@ -125,7 +125,7 @@
                 
                 NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%@",self.loginDetail.user_id,self.activityDetail.listing_id, self.activityDetail.buyer_id];
                 
-                NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_new_if_saved.php"];
+                NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/check_new_if_saved.php"];
                 [urlString appendString:parameters];
 //                //NSLog(@"url:%@",urlString);
                 
@@ -171,7 +171,7 @@
             if ([self.loginDetail.user_id integerValue] != [self.activityDetail.pops_user_id integerValue]) {
                 NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id];
                 
-                NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_network.php"];
+                NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_request_network.php"];
                 [urlString_ appendString:parameters];
                 //        //NSLog(@"url:%@",urlString_);
 //                NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
@@ -231,7 +231,7 @@
                                      
                                      NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id, self.activityDetail.listing_id];
                                      
-                                     NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
+                                     NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_request_access.php"];
                                      [urlString_ appendString:parameters];
                                      //                        //NSLog(@"url:%@",urlString_);
 //                                     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
@@ -481,7 +481,7 @@
                         
                         NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&update_id=%@", self.loginDetail.user_id, self.activityDetail.referral_update_id];
                         
-                        NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed.php%@", parameters];
+                        NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/check_if_signed.php%@", parameters];
                         
                         __block NSString *buyer_block = buyer_name;
                         
@@ -610,7 +610,7 @@
 //                            self.viewForDescription.hidden = NO;
                             NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@", self.activityDetail.referral_id];
                             
-                            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_closed_referral.php%@", parameters];
+                            NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/get_closed_referral.php%@", parameters];
                             
                             
                             //            //NSLog(@"urlString:%@",urlString);
@@ -668,7 +668,7 @@
                             
                             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&update_id=%@", self.loginDetail.user_id, self.activityDetail.referral_update_id];
                             
-                            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/check_if_signed.php%@", parameters];
+                            NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/check_if_signed.php%@", parameters];
                             
                             __block NSString *buyer_block = buyer_name;
                             
@@ -1112,7 +1112,7 @@
 //                        
 //                        NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&property_id=%@",self.activityDetail.pops_user_id,self.loginDetail.user_id, self.activityDetail.listing_id];
 //                        
-//                        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_request_access.php"];
+//                        NSMutableString *urlString_ = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/get_request_access.php"];
 //                        [urlString_ appendString:parameters];
 ////                        //NSLog(@"url:%@",urlString_);
 //                        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString_]];
@@ -1259,7 +1259,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&listing_id=%@&buyer_id=%@",self.loginDetail.user_id,self.activityDetail.listing_id, self.activityDetail.buyer_id];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_buyer.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/save_buyer.php"];
             [urlString appendString:parameters];
 //             //NSLog(@"url:%@",urlString);
             
@@ -1298,7 +1298,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?access_id=%@&user_id=%@&other_user_id=%@",self.activityDetail.access_id, self.loginDetail.user_id, self.activityDetail.other_user_id];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_access.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/accept_access.php"];
             [urlString appendString:parameters];
 //             //NSLog(@"url:%@",urlString);
             
@@ -1342,7 +1342,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?network_id=%@&user_id=%@&other_user_id=%@&activity_type=%@",self.activityDetail.network_id, self.loginDetail.user_id, self.activityDetail.other_user_id,@"9"];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_network.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/accept_network.php"];
             [urlString appendString:parameters];
 //            //NSLog(@"url:%@",urlString);
             
@@ -1391,7 +1391,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?network_id=%@&user_id=%@&other_user_id=%@&activity_type=%@",self.activityDetail.network_id,self.loginDetail.user_id, self.activityDetail.other_user_id,@"29"];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/accept_network.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/accept_network.php"];
             [urlString appendString:parameters];
 //            //NSLog(@"url:%@",urlString);
             
@@ -1430,7 +1430,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@",self.loginDetail.user_id, self.activityDetail.other_user_id];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_network.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/request_network.php"];
             [urlString appendString:parameters];
             //            //NSLog(@"url:%@",urlString);
             
@@ -1470,7 +1470,7 @@
             
             NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&other_user_id=%@&listing_id=%@",self.loginDetail.user_id, self.activityDetail.other_user_id,self.activityDetail.listing_id];
             
-            NSMutableString *urlString = [NSMutableString stringWithString:@"http://keydiscoveryinc.com/agent_bridge/webservice/request_access.php"];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"http://agentbridge.com/webservice/request_access.php"];
             [urlString appendString:parameters];
             //            //NSLog(@"url:%@",urlString);
             
@@ -1512,7 +1512,7 @@
             
 //            NSString *parameters = [NSString stringWithFormat:@"?referral_id=%@", self.activityDetail.referral_id];
 //            
-//            NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/get_closed_referral.php%@", parameters];
+//            NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/get_closed_referral.php%@", parameters];
 //            
 //            
 ////            //NSLog(@"urlString:%@",urlString);
@@ -1580,7 +1580,7 @@
     
     NSString *parameters = [NSString stringWithFormat:@"?user_id=%@&agent_a=%@&activity_type=%@&update_id=%@&buyer_id=%@", self.loginDetail.user_id, self.activityDetail.user_id,@"22",self.activityDetail.referral_id,self.activityDetail.buyer_id];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/paid_service_fee.php%@", parameters];
+    NSString *urlString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/paid_service_fee.php%@", parameters];
     
     __block NSError *errorData = nil;
     __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -1598,7 +1598,7 @@
             self.buttonDescription.hidden = YES;
             
             
-            NSString *updateCloseReferralString = [NSString stringWithFormat:@"http://keydiscoveryinc.com/agent_bridge/webservice/save_closed_referral_r1.php?close_referral_id=%@", self.clrf_id];
+            NSString *updateCloseReferralString = [NSString stringWithFormat:@"http://agentbridge.com/webservice/save_closed_referral_r1.php?close_referral_id=%@", self.clrf_id];
             
             
             
