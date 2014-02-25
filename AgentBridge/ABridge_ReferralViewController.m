@@ -128,6 +128,8 @@
         
         [self dismissOverlay];
             if ([[json objectForKey:@"data"] count]) {
+                
+                NSLog(@"json:%@",json);
                 NSManagedObjectContext *context = ((ABridge_AppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
                 for (NSDictionary *entry in [json objectForKey:@"data"]) {
                     Referral *referral = nil;

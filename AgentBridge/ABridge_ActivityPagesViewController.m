@@ -521,9 +521,9 @@
 //                                    self.viewForDescription.hidden = NO;
                                     
                                     self.labelDescription.hidden = YES;
-                                    self.buttonDescription.hidden = NO;
-                                    [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
-                                    self.buttonDescription.tag = 0;
+                                    self.buttonDescription.hidden = YES;
+//                                    [self.buttonDescription setTitle:@"Sign" forState:UIControlStateNormal];
+//                                    self.buttonDescription.tag = 0;
                                 });
                             }
                             else {
@@ -532,9 +532,9 @@
 //                                    self.viewForDescription.hidden = NO;
                                     
                                     self.labelDescription.hidden = YES;
-                                    self.buttonDescription.hidden = NO;
-                                    [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
-                                    self.buttonDescription.tag = 0;
+                                    self.buttonDescription.hidden = YES;
+//                                    [self.buttonDescription setTitle:@"Accept" forState:UIControlStateNormal];
+//                                    self.buttonDescription.tag = 0;
                                 });
                             }
                             
